@@ -10,6 +10,7 @@ import {
 } from '../utils/contants'
 
 const COMPONENT_HIGHT = 50;
+const BANNER_HEIGHT = 300;
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
@@ -91,7 +92,13 @@ const styles = StyleSheet.create({
         height: COMPONENT_HIGHT,
         width: DEVICE_WIDTH - 40,
         backgroundColor: darkColor,
-        borderRadius: COMPONENT_HIGHT / 2
+        borderRadius: 10
+    },
+    twoButton: {
+        height: COMPONENT_HIGHT,
+        width: (DEVICE_WIDTH / 2) - 40,
+        backgroundColor: darkColor,
+        borderRadius: 10
     },
     marginBetweenVertical: {
         height: 10
@@ -107,6 +114,15 @@ const styles = StyleSheet.create({
     },
     text20: {
         fontSize: 20
+    },
+    fullWidth: {
+        width: DEVICE_WIDTH
+    },
+    fullHeight: {
+        height: DEVICE_HIGHT
+    },
+    bannerHeight: {
+        height: BANNER_HEIGHT
     }
 })
 

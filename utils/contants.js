@@ -1,9 +1,15 @@
 /**
  * Color
  */
-export const primaryColor       = '#0098fb'
-export const secondaryColor     = '#ffffff'
-export const darkColor          = '#00479a'
+export const primaryColor       = '#163151'
+export const secondaryColor     = '#c9a95e'
+export const darkColor          = '#102238'
+export const grayColor          = '#949599'
+export const redColor           = '#c51f1f'
+
+export const emptyColor         = '#9cd8b4'
+export const pendingColor       = '#efd380'
+export const reservColor        = '#efa693'
  /**
   * End
   */

@@ -1,4 +1,4 @@
-package com.singhamarket;
+package th.co.zoneidea.singhamarket;
 
 import android.app.Application;
 import android.content.Context;

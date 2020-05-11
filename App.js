@@ -40,6 +40,7 @@ setCustomText(customTextProps);
 setCustomTextInput(customTextProps);
 
 import Splashscreen from './screen/SplashScreen'
+import Choicescreen from './screen/ChoiceScreen'
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -48,6 +49,7 @@ function MyStack() {
       headerMode='none'
       initialRouteName='Splash'>
       <Stack.Screen name="Splash" component={Splashscreen} />
+      <Stack.Screen name="Choice" component={Choicescreen} />
     </Stack.Navigator>
   );
 }
