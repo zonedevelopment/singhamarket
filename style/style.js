@@ -9,7 +9,7 @@ import {
     secondaryColor,
 } from '../utils/contants'
 
-const COMPONENT_HIGHT = 50;
+const COMPONENT_HIGHT = 45;
 const BANNER_HEIGHT = 300;
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HIGHT = Dimensions.get('window').height;
@@ -61,10 +61,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: COMPONENT_HIGHT,
-        width: DEVICE_WIDTH - 40,
-        backgroundColor: secondaryColor,
+        width: '95%',
+        backgroundColor: 'white',
         justifyContent: 'space-between',
-        borderRadius: COMPONENT_HIGHT / 2
+        borderRadius: COMPONENT_HIGHT / 2,
+        margin: 10
     },
     imageLogo: {
         width: 180, 
@@ -89,16 +90,23 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     mainButton: {
+        alignSelf: 'center',
         height: COMPONENT_HIGHT,
-        width: DEVICE_WIDTH - 40,
-        backgroundColor: darkColor,
-        borderRadius: 10
+        width: DEVICE_WIDTH - 70,
+        backgroundColor: secondaryColor,
+        borderRadius: COMPONENT_HIGHT / 2
     },
     twoButton: {
         height: COMPONENT_HIGHT,
-        width: (DEVICE_WIDTH / 2) - 40,
+        width: (DEVICE_WIDTH / 2) - 30,
         backgroundColor: darkColor,
         borderRadius: 10
+    },
+    twoButtonRound: {
+        height: COMPONENT_HIGHT,
+        width: (DEVICE_WIDTH / 2) - 60,
+        backgroundColor: darkColor,
+        borderRadius: COMPONENT_HIGHT / 2
     },
     marginBetweenVertical: {
         height: 10
@@ -123,6 +131,32 @@ const styles = StyleSheet.create({
     },
     bannerHeight: {
         height: BANNER_HEIGHT
+    },
+    topBorderRadius: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
+    },
+    bottomBorderRadius: {
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20
+    },
+    topRightRadius: {
+        borderTopRightRadius: 20
+    },
+    topLeftRadius: {
+        borderTopLeftRadius: 20
+    },
+    bottomRightRadius: {
+        borderBottomRightRadius: 20
+    },
+    bottomLeftRadius: {
+        borderBottomLeftRadius: 20
+    },
+    panelWhite: {
+        backgroundColor: 'white',
+        width: DEVICE_WIDTH - 20,
+        borderRadius: 20,
+        padding: 20
     }
 })
 

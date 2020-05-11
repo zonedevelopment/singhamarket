@@ -8,77 +8,46 @@ import {
 const initialState = {
     indicator: false,
     userInfo: [],
-    sampleItem: [
+    building: [
         {
-            'picture': 'user',
-            "name": "Proxima Midnight",
-            "email": "proxima@appdividend.com"
+            building_id: 1,
+            building_name: 'SINGHA COMPLEX 1',
+            building_img: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg',
+            building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
+            building_condition: ''
         },
         {
-            'picture': 'user',
-            "name": "Ebony Maw",
-            "email": "ebony@appdividend.com"
+            building_id: 2,
+            building_name: 'SINGHA COMPLEX 2',
+            building_img: 'https://th1-cdn.pgimgs.com/listing/6643379/UPHO.65101474.V800/The-Esse-at-Singha-Complex-%E0%B8%A7%E0%B8%B1%E0%B8%92%E0%B8%99%E0%B8%B2-Thailand.jpg',
+            building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
+            building_condition: ''
         },
         {
-            'picture': 'user',
-            "name": "Black Dwarf",
-            "email": "dwarf@appdividend.com"
+            building_id: 3,
+            building_name: 'SINGHA COMPLEX 3',
+            building_img: 'https://lh3.googleusercontent.com/proxy/evXIrI_4s_LZxlVFlCVDg5tJaaaE3_01IH6Sq2_CGbxy8VjmFYKqwM_L34FJnX70hByM2KCOE3xF_ocdvVWgoennQXUTcrGi54rvFFwDVdGV6ojv07EPV_2cx4uvP8tetROGiVTzh9_YHmGGigKTwU1GUbkULgI',
+            building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
+            building_condition: ''
+        }
+    ],
+    news: [
+        {
+            id: 1,
+            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6ZR-sCVhLk9Qy_EkmBQkq29u_CYhmfJMC9jutBpPWxEt2andE&usqp=CAU',
+            title: 'Test news 1',
+            building: 'Build A',
+            date: '2020-05-11 09:00:00'
         },
         {
-            'picture': 'user',
-            "name": "Mad Titan",
-            "email": "thanos@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Supergiant",
-            "email": "supergiant@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Loki",
-            "email": "loki@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "corvus",
-            "email": "corvus@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Proxima Midnight",
-            "email": "proxima1@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Ebony Maw",
-            "email": "ebony1@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Black Dwarf",
-            "email": "dwarf1@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Mad Titan",
-            "email": "thanos1@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Supergiant",
-            "email": "supergiant1@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "Loki",
-            "email": "loki1@appdividend.com"
-        },
-        {
-            'picture': 'user',
-            "name": "corvus",
-            "email": "corvus1@appdividend.com"
-        }]
+            id: 2,
+            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6ZR-sCVhLk9Qy_EkmBQkq29u_CYhmfJMC9jutBpPWxEt2andE&usqp=CAU',
+            title: 'Test title news 2 for long text',
+            building: 'Build A',
+            date: '2020-05-11 09:00:00'
+        }
+    ],
+    banner: [{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }]
 }
 
 export default (state = initialState, action) => {

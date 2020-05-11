@@ -21,6 +21,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
 import styles from './style/style'
+import {
+  secondaryColor
+} from './utils/contants';
 
 import {
   setCustomView,
@@ -41,6 +44,8 @@ setCustomTextInput(customTextProps);
 
 import Splashscreen from './screen/SplashScreen'
 import Choicescreen from './screen/ChoiceScreen'
+import Loginscreen from './screen/LoginScreen'
+import Mainscreen from './screen/MainScreen'
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -50,15 +55,29 @@ function MyStack() {
       initialRouteName='Splash'>
       <Stack.Screen name="Splash" component={Splashscreen} />
       <Stack.Screen name="Choice" component={Choicescreen} />
+      <Stack.Screen name="Login" component={Loginscreen} />
+      <Stack.Screen name="Main" component={Mainscreen} />
     </Stack.Navigator>
   );
 }
 
 class App extends React.Component {
+
   render() {
+
+    const props = this.props.reducer
+
     return (
       <NavigationContainer>
         <MyStack />
+        {
+          props.indicator ?
+            <View style={[styles.loadingIndicator]}>
+              <ActivityIndicator color={secondaryColor} />
+            </View>
+            :
+            null
+        }
       </NavigationContainer>
     )
   }

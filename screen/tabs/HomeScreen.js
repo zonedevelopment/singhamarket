@@ -17,12 +17,12 @@ import {
     grayColor,
     primaryColor,
     secondaryColor
-} from '../utils/contants'
+} from '../../utils/contants'
 
-import styles from '../style/style'
+import styles from '../../style/style'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
-class ChoiceScreen extends React.Component {
+class HomeScreen extends React.Component {
 
     renderPage(value, index) {
         return (
@@ -56,21 +56,6 @@ class ChoiceScreen extends React.Component {
         )
     }
 
-    handleBack = () => {
-        if (this.props.navigation.state.routeName === 'Choice') {
-            this.props.navigation.pop();
-            return true;
-        }
-    };
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
-    }
-
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
-
     render() {
 
         const props = this.props
@@ -78,7 +63,7 @@ class ChoiceScreen extends React.Component {
         const news = props.reducer.news
 
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
+            <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <Carousel
                     autoplay
                     autoplayTimeout={5000}
@@ -89,21 +74,7 @@ class ChoiceScreen extends React.Component {
                         banner.map((value, index) => this.renderPage(value, index))
                     }
                 </Carousel>
-                <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 20 }]}>
-                    <TouchableOpacity style={[styles.twoButton, styles.center, { backgroundColor: darkColor, borderWidth: 0.5, borderColor: '#FFF' }]}
-                        onPress={
-                            () => { }
-                        }>
-                        <Text style={[styles.text22, { color: '#FFF' }]}>{`สมัครสามชิก`}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.twoButton, styles.center, { backgroundColor: secondaryColor }]}
-                        onPress={
-                            () => this.props.navigation.push('Login')
-                        }>
-                        <Text style={[styles.text22, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={[styles.container, styles.topBorderRadius, { backgroundColor: '#FFF' }]}>
+                <View style={[styles.container]}>
                     <FlatList
                         style={{ marginTop: 5 }}
                         data={news}
@@ -124,4 +95,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChoiceScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
