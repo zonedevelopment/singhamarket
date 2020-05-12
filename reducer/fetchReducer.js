@@ -14,7 +14,25 @@ const initialState = {
             building_name: 'SINGHA COMPLEX 1',
             building_img: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg',
             building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
-            building_condition: ''
+            building_condition: '',
+            building_floor:[
+                {
+                    floor_id: 1,
+                    floor_name: 'Floor1'
+                },
+                {
+                    floor_id: 2,
+                    floor_name: 'Floor2'
+                },
+                {
+                    floor_id: 3,
+                    floor_name: 'Floor3'
+                },
+                {
+                    floor_id: 4,
+                    floor_name: 'Floor4'
+                }
+            ]
         },
         {
             building_id: 2,

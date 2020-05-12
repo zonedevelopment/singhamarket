@@ -41,6 +41,10 @@ import Profilescreen from './tabs/ProfileScreen'
  */
 import Condition from './reservation/BuildingConditionScreen'
 import Floorzone from './reservation/FloorZoneScreen'
+import Planscreen from './reservation/PlanScreen'
+import Calendarscreen from './reservation/CalendarScreen'
+import Boothscreen from './reservation/BoothScreen'
+import Dayselectscreen from './reservation/DaySelectedScreen'
  /**
   * End
   */
@@ -54,6 +58,10 @@ const Reserv = function MyStack() {
       <Stack.Screen name="Building" component={Reservscreen} />
       <Stack.Screen name="Condition" component={Condition} />
       <Stack.Screen name="Floorzone" component={Floorzone} />
+      <Stack.Screen name="Plan" component={Planscreen} />
+      <Stack.Screen name="Calendar" component={Calendarscreen} />
+      <Stack.Screen name="Booth" component={Boothscreen} />
+      <Stack.Screen name="Dayselect" component={Dayselectscreen} />
     </Stack.Navigator>
   );
 }

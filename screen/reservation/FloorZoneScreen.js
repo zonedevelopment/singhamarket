@@ -4,6 +4,7 @@ import {
     Text,
     Image,
     FlatList,
+    ScrollView,
     Dimensions,
     BackHandler,
     TouchableOpacity
@@ -12,6 +13,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 
 import {
     darkColor,
@@ -24,6 +26,23 @@ import styles from '../../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class FloorZoneScreen extends React.Component {
+
+    state = {
+        zone: [
+            {
+                zone_id: 1,
+                zone_name: 'Zone A'
+            },
+            {
+                zone_id: 2,
+                zone_name: 'Zone B'
+            },
+        ]
+    }
+
+    onSelectFloor(index, value) {
+
+    }
 
     ComponentLeft = () => {
         return (
@@ -65,9 +84,12 @@ class FloorZoneScreen extends React.Component {
     }
 
     render() {
+
+        const props = this.props.reducer
+        const floor = props.building[0].building_floor
+
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 100, resizeMode: 'stretch', position: 'absolute', top: 40 }]} source={{ uri: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg' }} />
                 <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
@@ -82,9 +104,92 @@ class FloorZoneScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[styles.container]}>
-                    
-                </View>
+                <ScrollView >
+                    <View style={[styles.container]}>
+                        <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg' }} />
+                        <View style={{ padding: 15 }}>
+                            <View style={[styles.containerRow]}>
+                                <Text style={[styles.text22, styles.bold, { flex: 0.5, color: primaryColor }]}>{`SINGHA COMPLEX 1`}</Text>
+                                <TouchableOpacity style={{ flex: 0.5, alignItems: 'flex-end', justifyContent: 'center' }}
+                                    onPress={
+                                        () => this.props.navigation.push('Plan')
+                                    }>
+                                    <Text style={[{ flex: 0.5, color: primaryColor, fontSize: 18 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View>
+                                <Text style={[styles.text20]}>{`กรุณาเลือกชั้นที่ท่านต้องการ`}</Text>
+                                <RadioGroup
+                                    size={20}
+                                    thickness={2}
+                                    color={primaryColor}
+                                    style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
+                                    highlightColor='transparent'
+                                    onSelect={(index, value) => this.onSelectFloor(index, value)} >
+                                    {
+                                        floor.map((v, i) => {
+                                            return (
+                                                <RadioButton
+                                                    key={i}
+                                                    value={v.floor_id}
+                                                    color={primaryColor}
+                                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                                    <Text style={{ color: primaryColor, fontSize: 20 }}>{`${v.floor_name}`}</Text>
+                                                </RadioButton>
+                                            )
+                                        })
+                                    }
+                                </RadioGroup>
+                            </View>
+                            <View style={[styles.hr]}></View>
+                            <View>
+                                <Text style={[styles.text20]}>{`กรุณาเลือกโซน`}</Text>
+                                <RadioGroup
+                                    size={20}
+                                    thickness={2}
+                                    color={primaryColor}
+                                    style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
+                                    highlightColor='transparent'
+                                    onSelect={(index, value) => this.onSelectFloor(index, value)} >
+                                    {
+                                        this.state.zone.map((v, i) => {
+                                            return (
+                                                <RadioButton
+                                                    key={i}
+                                                    value={v.zone_id}
+                                                    color={primaryColor}
+                                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                                    <Text style={{ color: primaryColor, fontSize: 20 }}>{`${v.zone_name}`}</Text>
+                                                </RadioButton>
+                                            )
+                                        })
+                                    }
+                                </RadioGroup>
+                            </View>
+                            <View style={[styles.hr]}></View>
+                            <View>
+                                <Text style={[styles.text20]}>{`ประเภทสินค้าที่ขาย`}</Text>
+                                <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 15 }]}>
+                                    <Text style={[styles.text20, { color: 'white' }]}>{`อาหาร: อาหารญี่ปุ่น`}</Text>
+                                </View>
+                                <Text style={{ fontSize: 16, color: primaryColor, paddingLeft: 20 }}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
+                            </View>
+                            <View style={[styles.hr]}></View>
+                            <View>
+                                <Text style={[styles.text20]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
+                                <TouchableOpacity style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 15 }]}
+                                    onPress={
+                                        () => this.props.navigation.push('Calendar')
+                                    }>
+                                    <Text style={[styles.text20, { color: 'white' }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={[styles.hr]}></View>
+                            <Text style={[styles.bold, { fontSize: 18, color: primaryColor, paddingLeft: 10 }]}>{`*หมายเหตุ กรุณาชำระเงินภายใน 30 นาที นับจากการจองสำเร็จ`}</Text>
+                        </View>
+                    </View>
+                </ScrollView>
             </View>
         )
     }

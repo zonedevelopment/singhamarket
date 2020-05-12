@@ -15,6 +15,7 @@ import {
   Platform,
   ActivityIndicator
 } from 'react-native';
+require('moment/locale/th.js');
 console.disableYellowBox = true
 import { connect } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'

@@ -7,6 +7,10 @@ import {
     darkColor,
     primaryColor,
     secondaryColor,
+    grayColor,
+    emptyColor,
+    pendingColor,
+    reservColor
 } from '../utils/contants'
 
 const COMPONENT_HIGHT = 45;
@@ -96,6 +100,13 @@ const styles = StyleSheet.create({
         backgroundColor: secondaryColor,
         borderRadius: COMPONENT_HIGHT / 2
     },
+    mainButton2: {
+        alignSelf: 'center',
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH - 70,
+        backgroundColor: primaryColor,
+        borderRadius: COMPONENT_HIGHT / 2
+    },
     twoButton: {
         height: COMPONENT_HIGHT,
         width: (DEVICE_WIDTH / 2) - 30,
@@ -122,6 +133,9 @@ const styles = StyleSheet.create({
     },
     text20: {
         fontSize: 20
+    },
+    text18: {
+        fontSize: 18
     },
     fullWidth: {
         width: DEVICE_WIDTH
@@ -157,6 +171,49 @@ const styles = StyleSheet.create({
         width: DEVICE_WIDTH - 20,
         borderRadius: 20,
         padding: 20
+    },
+    panelRectangleGray: {
+        backgroundColor: grayColor,
+        width: DEVICE_WIDTH - 40,
+        height: 50,
+        borderRadius: 4,
+        padding: 20,
+        alignSelf: 'center'
+    },
+    hr: {
+        width: '90%',
+        height: 0.2,
+        backgroundColor: primaryColor,
+        alignSelf: 'center',
+        margin: 10
+    },
+    circleGreen: {
+        width: 25,
+        height: 25,
+        borderRadius: 100/2,
+        backgroundColor: emptyColor
+    },
+    circleYellow: {
+        width: 25,
+        height: 25,
+        borderRadius: 100/2,
+        backgroundColor: pendingColor
+    },
+    circleRed: {
+        width: 25,
+        height: 25,
+        borderRadius: 100/2,
+        backgroundColor: reservColor
+    },
+    statusButton: {
+        width: 80,
+        height: 30,
+        borderRadius: 15
+    },
+    smallStatusButton: {
+        width: 50,
+        height: 20,
+        borderRadius: 10
     }
 })
 

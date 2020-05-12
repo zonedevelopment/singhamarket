@@ -57,7 +57,7 @@ class ChoiceScreen extends React.Component {
     }
 
     handleBack = () => {
-        if (this.props.navigation.state.routeName === 'Choice') {
+        if (this.props.navigation.isFocused()) {
             this.props.navigation.pop();
             return true;
         }

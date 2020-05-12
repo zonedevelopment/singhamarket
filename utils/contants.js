@@ -10,6 +10,9 @@ export const redColor           = '#c51f1f'
 export const emptyColor         = '#9cd8b4'
 export const pendingColor       = '#efd380'
 export const reservColor        = '#efa693'
+export const alpaGreen          = '#f2fff6'
+export const alpaYellow         = '#fffbf0'
+export const alpaRed            = '#fff6f5'
  /**
   * End
   */
