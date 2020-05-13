@@ -36,8 +36,8 @@ import {
 
 const customTextProps = {
   style: {
-    fontSize: 22,
-    fontFamily: Platform.OS == 'android' ? 'DBYord' : 'DB Yord X',
+    fontSize: 18,
+    fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Regular' : 'SinghaEstate-Regular',
   }
 };
 setCustomText(customTextProps);

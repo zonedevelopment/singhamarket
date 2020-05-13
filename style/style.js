@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: secondaryColor
     },
     bold: {
-        fontFamily: Platform.OS == 'android' ? 'DBMed' : 'DB Helvethaica X'
+        fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Bold' : 'SinghaEstate-Bold'
     },
     positionBottom: {
         bottom: 0,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     mainButton2: {
         alignSelf: 'center',
         height: COMPONENT_HIGHT,
-        width: DEVICE_WIDTH - 70,
+        width: DEVICE_WIDTH - 60,
         backgroundColor: primaryColor,
         borderRadius: COMPONENT_HIGHT / 2
     },
@@ -122,6 +122,9 @@ const styles = StyleSheet.create({
     marginBetweenVertical: {
         height: 10
     },
+    text30: {
+        fontSize: 30
+    },
     text28: {
         fontSize: 28
     },
@@ -136,6 +139,15 @@ const styles = StyleSheet.create({
     },
     text18: {
         fontSize: 18
+    },
+    text16: {
+        fontSize: 16
+    },
+    text14: {
+        fontSize: 14
+    },
+    text12: {
+        fontSize: 12
     },
     fullWidth: {
         width: DEVICE_WIDTH
@@ -170,7 +182,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: DEVICE_WIDTH - 20,
         borderRadius: 20,
-        padding: 20
+        padding: 10
     },
     panelRectangleGray: {
         backgroundColor: grayColor,

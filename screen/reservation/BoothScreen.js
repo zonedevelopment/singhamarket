@@ -37,23 +37,26 @@ class BoothScreen extends React.Component {
             <View style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
                 <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booth_status == 1 ? alpaGreen : item.booth_status == 2 ? alpaYellow : alpaRed, justifyContent: 'center', alignItems: 'center', padding: 5 }]}>
                     <View style={{ width: 15, height: 15, borderRadius: 10, margin: 4, backgroundColor: item.booth_status == 1 ? emptyColor : item.booth_status == 2 ? pendingColor : reservColor }}></View>
-                    <Text style={[styles.text20, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
+                    <Text style={[styles.text16, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
                 </View>
                 <View style={[styles.containerRow, { flex: 0.75, backgroundColor: item.booth_status == 1 ? alpaGreen : item.booth_status == 2 ? alpaYellow : alpaRed, alignItems: 'center', padding: 5 }]}>
-                    <Text style={[styles.text20, { flex: 0.75, color: primaryColor, alignSelf: 'flex-start', paddingLeft: 5 }]}>{`รายละเอียด`}</Text>
+                    <Text style={[styles.text16, { flex: 0.75, color: primaryColor, alignSelf: 'flex-start', paddingLeft: 5 }]}>{`รายละเอียด`}</Text>
                     {
                         item.booth_status == 1 ?
-                            <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}>
-                                <Text style={[styles.text18, { color: primaryColor }]}>{`ว่าง`}</Text>
+                            <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
+                                onPress={
+                                    () => this.props.navigation.push('Accessories')
+                                }>
+                                <Text style={[styles.text14, { color: primaryColor }]}>{`ว่าง`}</Text>
                             </TouchableOpacity>
                             :
                             item.booth_status == 2 ?
                                 <TouchableOpacity style={[styles.circleYellow, styles.center, { flex: 0.25 }]}>
-                                    <Text style={[styles.text18, { color: primaryColor }]}>{`แจ้งเตือน`}</Text>
+                                    <Text style={[styles.text14, { color: primaryColor }]}>{`แจ้งเตือน`}</Text>
                                 </TouchableOpacity>
                                 :
                                 <View style={[styles.circleRed, styles.center, { flex: 0.25 }]}>
-                                    <Text style={[styles.text18, { color: primaryColor }]}>{`เต็ม`}</Text>
+                                    <Text style={[styles.text14, { color: primaryColor }]}>{`เต็ม`}</Text>
                                 </View>
                     }
                 </View>
@@ -72,7 +75,7 @@ class BoothScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[{ color: 'white', fontSize: 24 }]}>{`เลือกบูธขายของ`}</Text>
+                <Text style={[styles.text18, { color: 'white' }]}>{`เลือกบูธขายของ`}</Text>
             </View>
         );
     }
@@ -163,12 +166,12 @@ class BoothScreen extends React.Component {
                     }} />
                 <View style={[styles.container, { padding: 15 }]}>
                     <View style={[styles.containerRow]}>
-                        <Text style={[styles.text22, styles.bold, { flex: 0.5, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
+                        <Text style={[styles.text20, styles.bold, { flex: 0.5, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
                         <TouchableOpacity style={{ flex: 0.5, alignItems: 'flex-end', justifyContent: 'center' }}
                             onPress={
                                 () => this.props.navigation.push('Plan')
                             }>
-                            <Text style={[{ color: primaryColor, fontSize: 18 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
+                            <Text style={[styles.text18, { color: primaryColor }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
@@ -176,29 +179,29 @@ class BoothScreen extends React.Component {
                     <View style={{ padding: 10, height: 45, backgroundColor: '#f3f3f3' }}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             <View style={[styles.circleGreen]}></View>
-                            <Text style={[styles.text18, { marginLeft: 5, marginRight: 40 }]}>{`ว่าง`}</Text>
+                            <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`ว่าง`}</Text>
                             <View style={[styles.circleYellow]}></View>
-                            <Text style={[styles.text18, { marginLeft: 5, marginRight: 40 }]}>{`รอชำระเงิน`}</Text>
+                            <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`รอชำระเงิน`}</Text>
                             <View style={[styles.circleRed]}></View>
-                            <Text style={[styles.text18, { marginLeft: 5 }]}>{`จองแล้ว`}</Text>
+                            <Text style={[styles.text16, { marginLeft: 5 }]}>{`จองแล้ว`}</Text>
                         </View>
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow]}>
                         <View style={[styles.smallStatusButton, styles.center, { backgroundColor: pendingColor }]}>
-                            <Text style={[{ fontSize: 14, color: 'white' }]}>{`แจ้งเตือน`}</Text>
+                            <Text style={[{ fontSize: 10, color: 'white' }]}>{`แจ้งเตือน`}</Text>
                         </View>
-                        <Text style={{ fontSize: 16, color: primaryColor, marginLeft: 4 }}>{`ท่านสามารถกดแจ้งเตือนที่บูธสีเหลือง เพื่อรับการแจ้งเตือน\nเมื่อบูธนี้ว่าง`}</Text>
+                        <Text style={[styles.text14, { color: primaryColor, marginLeft: 4 }]}>{`ท่านสามารถกดแจ้งเตือนที่บูธสีเหลือง เพื่อรับการแจ้งเตือน\nเมื่อบูธนี้ว่าง`}</Text>
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow, { padding: 5, height: 55 }]}>
                         <View style={{ flex: 0.25, backgroundColor: primaryColor, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
-                            <Text style={[styles.text20, { color: 'white' }]}>{`Booth No.`}</Text>
+                            <Text style={[styles.text18, { color: 'white' }]}>{`Booth No.`}</Text>
                         </View>
                         <View style={{ width: 1, backgroundColor: 'white' }}></View>
                         <View style={{ flex: 0.75, backgroundColor: primaryColor, justifyContent: 'center', padding: 5 }}>
-                            <Text style={[styles.text20, { color: 'white' }]}>{`รายละเอียด`}</Text>
+                            <Text style={[styles.text18, { color: 'white' }]}>{`รายละเอียด`}</Text>
                         </View>
                     </View>
                     <FlatList

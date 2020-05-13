@@ -48,9 +48,9 @@ class HomeScreen extends React.Component {
                     }}>
                 <View style={{ marginBottom: 5 }}>
                     <Image style={{ width: '100%', height: 150, resizeMode: 'stretch' }} source={{ uri: item.img }} />
-                    <Text style={{ fontSize: 16, flexWrap: 'wrap' }} >{`${item.title}`} </Text>
-                    <Text style={{ fontSize: 16, color: secondaryColor }} >{item.building} </Text>
-                    <Text style={{ fontSize: 16, color: grayColor }} > {moment(item.date).format('LLL')} </Text>
+                    <Text style={[styles.text16, { flexWrap: 'wrap' }]} >{`${item.title}`} </Text>
+                    <Text style={[styles.text14, { color: secondaryColor }]} >{item.building} </Text>
+                    <Text style={[styles.text12, { color: grayColor }]} >{`${moment(item.date).format('ll')} ${moment(item.date).format('LT')}`}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -74,7 +74,10 @@ class HomeScreen extends React.Component {
                         banner.map((value, index) => this.renderPage(value, index))
                     }
                 </Carousel>
-                <View style={[styles.container]}>
+                <View style={[styles.container, { paddingTop: 15 }]}>
+                    <View>
+                        <Text style={[styles.text18, { paddingLeft: 10 }]}>{`ข่าวสารและโปรโมชั่น`}</Text>
+                    </View>
                     <FlatList
                         style={{ marginTop: 5 }}
                         data={news}

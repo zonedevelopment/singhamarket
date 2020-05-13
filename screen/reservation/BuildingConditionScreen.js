@@ -36,7 +36,7 @@ class BuildingConditionScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[{ color: 'white', fontSize: 24 }]}>{`ข้อตกลงและเงื่อนไข`}</Text>
+                <Text style={[styles.text18, { color: 'white'}]}>{`ข้อตกลงและเงื่อนไข`}</Text>
             </View>
         );
     }
@@ -82,8 +82,8 @@ class BuildingConditionScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, { alignItems: 'center' }]}>
-                    <Text style={[styles.bold, { color: secondaryColor, fontSize: 50 }]}>{`SUN PLAZA`}</Text>
-                    <Text style={[{ color: 'white', fontSize: 22 }]}>{`ข้อตกลงและเงื่อนไขการจองพื้นที่`}</Text>
+                    <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
+                    <Text style={[styles.text20, { color: 'white' }]}>{`ข้อตกลงและเงื่อนไขการจองพื้นที่`}</Text>
                     <View style={[styles.panelWhite, styles.shadow]}>
                         <ScrollView>
                             <View>
@@ -92,13 +92,13 @@ class BuildingConditionScreen extends React.Component {
                                         onPress={
                                             () => this.handleBack()
                                         }>
-                                        <Text style={[styles.text22, { color: '#FFF' }]}>{`ยกเลิก`}</Text>
+                                        <Text style={[styles.text18, { color: '#FFF' }]}>{`ยกเลิก`}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
                                             () => this.props.navigation.push('Floorzone')
                                         }>
-                                        <Text style={[styles.text22, { color: '#FFF' }]}>{`ยอมรับ`}</Text>
+                                        <Text style={[styles.text18, { color: '#FFF' }]}>{`ยอมรับ`}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>

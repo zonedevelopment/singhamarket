@@ -24,6 +24,8 @@ import {
 
 import styles from '../../style/style'
 
+import ic_plan from '../../assets/image/icon_plan_gold.png'
+
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class FloorZoneScreen extends React.Component {
 
@@ -55,7 +57,7 @@ class FloorZoneScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[{ color: 'white', fontSize: 24 }]}>{`จองพื้นที่ร้านค้า`}</Text>
+                <Text style={[styles.text18, { color: 'white' }]}>{`จองพื้นที่ร้านค้า`}</Text>
             </View>
         );
     }
@@ -109,17 +111,18 @@ class FloorZoneScreen extends React.Component {
                         <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg' }} />
                         <View style={{ padding: 15 }}>
                             <View style={[styles.containerRow]}>
-                                <Text style={[styles.text22, styles.bold, { flex: 0.5, color: primaryColor }]}>{`SINGHA COMPLEX 1`}</Text>
-                                <TouchableOpacity style={{ flex: 0.5, alignItems: 'flex-end', justifyContent: 'center' }}
+                                <Text style={[styles.text16, styles.bold, { flex: 0.5, color: primaryColor }]}>{`SINGHA COMPLEX 1`}</Text>
+                                <TouchableOpacity style={{ flex: 0.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
                                     onPress={
                                         () => this.props.navigation.push('Plan')
                                     }>
-                                    <Text style={[{ flex: 0.5, color: primaryColor, fontSize: 18 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
+                                    <Image source={ic_plan} style={{ width: 15, height: 15, resizeMode: 'contain' }} />
+                                    <Text style={[styles.text14, { color: primaryColor, marginLeft: 2 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View>
-                                <Text style={[styles.text20]}>{`กรุณาเลือกชั้นที่ท่านต้องการ`}</Text>
+                                <Text style={[styles.text16]}>{`กรุณาเลือกชั้นที่ท่านต้องการ`}</Text>
                                 <RadioGroup
                                     size={20}
                                     thickness={2}
@@ -135,7 +138,7 @@ class FloorZoneScreen extends React.Component {
                                                     value={v.floor_id}
                                                     color={primaryColor}
                                                     style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                                    <Text style={{ color: primaryColor, fontSize: 20 }}>{`${v.floor_name}`}</Text>
+                                                    <Text style={[styles.text16, { color: primaryColor }]}>{`${v.floor_name}`}</Text>
                                                 </RadioButton>
                                             )
                                         })
@@ -144,7 +147,7 @@ class FloorZoneScreen extends React.Component {
                             </View>
                             <View style={[styles.hr]}></View>
                             <View>
-                                <Text style={[styles.text20]}>{`กรุณาเลือกโซน`}</Text>
+                                <Text style={[styles.text16]}>{`กรุณาเลือกโซน`}</Text>
                                 <RadioGroup
                                     size={20}
                                     thickness={2}
@@ -160,7 +163,7 @@ class FloorZoneScreen extends React.Component {
                                                     value={v.zone_id}
                                                     color={primaryColor}
                                                     style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                                    <Text style={{ color: primaryColor, fontSize: 20 }}>{`${v.zone_name}`}</Text>
+                                                    <Text style={[styles.text14, { color: primaryColor }]}>{`${v.zone_name}`}</Text>
                                                 </RadioButton>
                                             )
                                         })
@@ -169,24 +172,25 @@ class FloorZoneScreen extends React.Component {
                             </View>
                             <View style={[styles.hr]}></View>
                             <View>
-                                <Text style={[styles.text20]}>{`ประเภทสินค้าที่ขาย`}</Text>
-                                <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 15 }]}>
-                                    <Text style={[styles.text20, { color: 'white' }]}>{`อาหาร: อาหารญี่ปุ่น`}</Text>
+                                <Text style={[styles.text16]}>{`ประเภทสินค้าที่ขาย`}</Text>
+                                <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
+                                    <Text style={[styles.text16, { color: 'white' }]}>{`อาหาร: อาหารญี่ปุ่น`}</Text>
                                 </View>
-                                <Text style={{ fontSize: 16, color: primaryColor, paddingLeft: 20 }}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
+                                <Text style={[styles.text12, { color: primaryColor, paddingLeft: 20 }]}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
                             </View>
                             <View style={[styles.hr]}></View>
                             <View>
-                                <Text style={[styles.text20]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
-                                <TouchableOpacity style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 15 }]}
+                                <Text style={[styles.text16]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
+                                <TouchableOpacity style={[styles.mainButton2, { flexDirection: 'row', marginTop: 5, marginBottom: 5, alignItems: 'center', justifyContent: 'space-between', paddingLeft: 10, paddingRight: 5 }]}
                                     onPress={
                                         () => this.props.navigation.push('Calendar')
                                     }>
-                                    <Text style={[styles.text20, { color: 'white' }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
+                                    <Text style={[styles.text16, { color: 'white' }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
+                                    <Icon name='chevron-right' size={12} color='white' />
                                 </TouchableOpacity>
                             </View>
                             <View style={[styles.hr]}></View>
-                            <Text style={[styles.bold, { fontSize: 18, color: primaryColor, paddingLeft: 10 }]}>{`*หมายเหตุ กรุณาชำระเงินภายใน 30 นาที นับจากการจองสำเร็จ`}</Text>
+                            <Text style={[styles.bold, styles.text12, { color: primaryColor, paddingLeft: 10 }]}>{`*หมายเหตุ กรุณาชำระเงินภายใน 30 นาที นับจากการจองสำเร็จ`}</Text>
                         </View>
                     </View>
                 </ScrollView>

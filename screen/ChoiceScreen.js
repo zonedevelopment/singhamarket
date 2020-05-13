@@ -48,9 +48,9 @@ class ChoiceScreen extends React.Component {
                     }}>
                 <View style={{ marginBottom: 5 }}>
                     <Image style={{ width: '100%', height: 150, resizeMode: 'stretch' }} source={{ uri: item.img }} />
-                    <Text style={{ fontSize: 16, flexWrap: 'wrap' }} >{`${item.title}`} </Text>
-                    <Text style={{ fontSize: 16, color: secondaryColor }} >{item.building} </Text>
-                    <Text style={{ fontSize: 16, color: grayColor }} > {moment(item.date).format('LLL')} </Text>
+                    <Text style={[styles.text16, { flexWrap: 'wrap' }]} >{`${item.title}`} </Text>
+                    <Text style={[styles.text14, { color: secondaryColor }]} >{item.building} </Text>
+                    <Text style={[styles.text12, { color: grayColor }]} >{`${moment(item.date).format('ll')} ${moment(item.date).format('LT')}`}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -94,13 +94,13 @@ class ChoiceScreen extends React.Component {
                         onPress={
                             () => { }
                         }>
-                        <Text style={[styles.text22, { color: '#FFF' }]}>{`สมัครสามชิก`}</Text>
+                        <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสามชิก`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.twoButton, styles.center, { backgroundColor: secondaryColor }]}
                         onPress={
                             () => this.props.navigation.push('Login')
                         }>
-                        <Text style={[styles.text22, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
+                        <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.container, styles.topBorderRadius, { backgroundColor: '#FFF' }]}>

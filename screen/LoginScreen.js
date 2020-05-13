@@ -22,6 +22,8 @@ import {
 } from '../utils/contants'
 
 import styles from '../style/style'
+import ic_user from '../assets/image/icon_user_login.png'
+import ic_lock from '../assets/image/icon_password.png'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class LoginScreen extends React.Component {
@@ -42,7 +44,7 @@ class LoginScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center]}>
-                <Text style={[{ color: 'white', fontSize: 24 }]}>{`เข้าสู่ระบบ`}</Text>
+                <Text style={[styles.text16, { color: 'white' }]}>{`เข้าสู่ระบบ`}</Text>
             </View>
         );
     }
@@ -88,12 +90,12 @@ class LoginScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, styles.center]}>
-                    <Text style={[styles.bold, { color: secondaryColor, fontSize: 50 }]}>{`SUN PLAZA`}</Text>
+                    <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <View style={[styles.panelWhite, styles.shadow]}>
-                        <Text style={[{ color: primaryColor, fontSize: 22, alignSelf: 'center' }]}>{`เข้าสู่ระบบ`}</Text>
+                        <Text style={[styles.text20, { color: primaryColor, alignSelf: 'center' }]}>{`เข้าสู่ระบบ`}</Text>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                            {/* <Image source={iconPhone} style={{ width: 30, height: 30, resizeMode: 'cover', marginLeft: 10 }} /> */}
+                            <Image source={ic_user} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
                             <TextInput
                                 ref={(input) => { this.username = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -105,7 +107,7 @@ class LoginScreen extends React.Component {
                                 onSubmitEditing={() => this.password.focus()} />
                         </View>
                         <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                            {/* <Image source={iconPhone} style={{ width: 30, height: 30, resizeMode: 'cover', marginLeft: 10 }} /> */}
+                            <Image source={ic_lock} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
                             <TextInput
                                 ref={(input) => { this.username = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -120,7 +122,7 @@ class LoginScreen extends React.Component {
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={{ width: '100%', alignItems: 'flex-end' }}>
                             <TouchableOpacity>
-                                <Text style={[{ color: primaryColor, fontSize: 22, alignSelf: 'center', textDecorationLine: 'underline' }]}>{`ลืมรหัสผ่าน?`}</Text>
+                                <Text style={[styles.text14, { color: primaryColor, alignSelf: 'center', textDecorationLine: 'underline' }]}>{`ลืมรหัสผ่าน?`}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={[styles.marginBetweenVertical]}></View>
@@ -128,13 +130,13 @@ class LoginScreen extends React.Component {
                             onPress={
                                 () => this.props.navigation.push('Main')
                             }>
-                            <Text style={[styles.text22, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
+                            <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
                         </TouchableOpacity>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={[styles.marginBetweenVertical]}></View>
-                        <Text style={[{ fontSize: 20, alignSelf: 'center' }]}>{`ถ้าท่านยังไม่ได้เป็นสมาชิก สมัครสมาชิกได้เลยค่ะ`}</Text>
+                        <Text style={[styles.text14, { alignSelf: 'center' }]}>{`ถ้าท่านยังไม่ได้เป็นสมาชิก สมัครสมาชิกได้เลยค่ะ`}</Text>
                         <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}>
-                            <Text style={[styles.text22, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
+                            <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

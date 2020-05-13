@@ -36,11 +36,37 @@ class CalendarScreen extends React.Component {
     }
 
     state = {
+        selectDate: [],
         _markedDates: this.initialState
     }
 
     onDaySelect = (day) => {
+        const _selectedDay = moment(day.dateString).format(_format)
+        let strDate = day.dateString
+        let selected = true
+        if (this.state._markedDates[_selectedDay]) {
+            selected = !this.state._markedDates[_selectedDay].selected
+        }
 
+        const updatedMarkedDates = { ...this.state._markedDates, ...{ [_selectedDay]: { selected, selectedColor: primaryColor } } }
+        this.setState({ _markedDates: updatedMarkedDates })
+        if (this.state.selectDate == '') {
+            this.state.selectDate.push(_selectedDay);
+        } else {
+            if (this.state.selectDate.includes(_selectedDay)) {
+                this.state.selectDate.filter((v, i) => {
+                    if (v === _selectedDay) {
+                        this.state.selectDate.splice(i, 1);
+                    }
+                })
+            } else {
+                this.state.selectDate.push(_selectedDay);
+            }
+        }
+
+        let sortDate = this.state.selectDate.sort((a, b) =>
+            a.split('-').reverse().join().localeCompare(b.split('-').reverse().join()));
+        this.setState({ selectDate: sortDate })
     }
 
     ComponentLeft = () => {
@@ -54,7 +80,7 @@ class CalendarScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[{ color: 'white', fontSize: 24 }]}>{`เลือกวันที่`}</Text>
+                <Text style={[styles.text18, { color: 'white' }]}>{`เลือกวันที่`}</Text>
             </View>
         );
     }
@@ -100,7 +126,7 @@ class CalendarScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, { padding: 15 }]}>
-                    <Text style={[styles.text22, styles.bold, { color: primaryColor }]}>{`เลือกวันที่ท่านต้องการขายของ`}</Text>
+                    <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกวันที่ท่านต้องการขายของ`}</Text>
                     <View style={[styles.panelRectangleGray, styles.center, { alignItems: 'flex-start' }]}>
                         <Text style={{ color: 'white' }}>{`${moment().format('dddd')}, ${moment().format('LL')}`}</Text>
                     </View>
@@ -115,9 +141,13 @@ class CalendarScreen extends React.Component {
                 <View style={[styles.positionBottom, styles.center, { padding: 10, bottom: 10, alignSelf: 'center' }]}>
                     <TouchableOpacity style={[styles.mainButton, styles.center]}
                         onPress={
-                            () => this.props.navigation.push('Dayselect')
+                            () => {
+                                this.props.navigation.navigate('Dayselect', {
+                                    daySelect: this.state.selectDate
+                                })
+                            }
                         }>
-                        <Text style={[styles.text20, { color: 'white' }]}>{`ยืนยัน`}</Text>
+                        <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

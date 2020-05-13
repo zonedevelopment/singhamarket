@@ -26,6 +26,24 @@ import styles from '../../style/style'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class DaySelectedScreen extends React.Component {
 
+    _renderItem = ({ item, index }) => {
+        return (
+            <View key={index} style={{ margin: 10, marginRight: 10 }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }} >
+                    {`วันที่ขาย ${moment(item).format('LL')}`}
+                </Text>
+                <TouchableOpacity disabled={false}
+                    style={[styles.mainButton2, styles.containerRow, {justifyContent: 'space-between', alignItems: 'center', padding: 5}]}
+                    onPress={
+                        () => this.props.navigation.push('Booth')
+                    }>
+                    <Text style={{ color: 'white' }}>{`เลือกล็อคขายของ`}</Text>
+                    <Icon name='chevron-right' size={12} color='white' />
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
 
     ComponentLeft = () => {
         return (
@@ -38,7 +56,7 @@ class DaySelectedScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[{ color: 'white', fontSize: 24 }]}>{`เลือกบูธขายของ`}</Text>
+                <Text style={[styles.text18, { color: 'white' }]}>{`เลือกบูธขายของ`}</Text>
             </View>
         );
     }
@@ -67,6 +85,9 @@ class DaySelectedScreen extends React.Component {
     }
 
     render() {
+
+        const { daySelect } = this.props.route.params;
+
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -84,6 +105,12 @@ class DaySelectedScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, { padding: 15 }]}>
+                    <FlatList
+                        style={{ marginTop: 15 }}
+                        data={daySelect}
+                        numColumns={1}
+                        keyExtractor={(item) => item}
+                        renderItem={this._renderItem} />
                 </View>
             </View>
         )

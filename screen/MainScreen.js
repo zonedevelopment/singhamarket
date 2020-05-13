@@ -45,25 +45,41 @@ import Planscreen from './reservation/PlanScreen'
 import Calendarscreen from './reservation/CalendarScreen'
 import Boothscreen from './reservation/BoothScreen'
 import Dayselectscreen from './reservation/DaySelectedScreen'
- /**
-  * End
-  */
+import Accessoriesscreen from './reservation/AccessoriesScreen'
+import Summaryscreen from './reservation/SummaryScreen'
+/**
+ * End
+ */
+
+import ic_home_active from '../assets/image/icon_home_gold.png'
+import ic_store_active from '../assets/image/icon_market_gold.png'
+import ic_cart_active from '../assets/image/icon_cart_gold.png'
+import ic_bell_active from '../assets/image/icon_noti_gold.png'
+import ic_profile_active from '../assets/image/icon_user_gold.png'
+
+import ic_home_inactive from '../assets/image/icon_home.png'
+import ic_store_inactive from '../assets/image/icon_market.png'
+import ic_cart_inactive from '../assets/image/icon_cart.png'
+import ic_bell_inactive from '../assets/image/icon_noti.png'
+import ic_profile_inactive from '../assets/image/icon_user.png'
 
 const Stack = createStackNavigator();
 const Reserv = function MyStack() {
-  return (
-    <Stack.Navigator
-      headerMode='none'
-      initialRouteName='Splash'>
-      <Stack.Screen name="Building" component={Reservscreen} />
-      <Stack.Screen name="Condition" component={Condition} />
-      <Stack.Screen name="Floorzone" component={Floorzone} />
-      <Stack.Screen name="Plan" component={Planscreen} />
-      <Stack.Screen name="Calendar" component={Calendarscreen} />
-      <Stack.Screen name="Booth" component={Boothscreen} />
-      <Stack.Screen name="Dayselect" component={Dayselectscreen} />
-    </Stack.Navigator>
-  );
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Splash'>
+            <Stack.Screen name="Building" component={Reservscreen} />
+            <Stack.Screen name="Condition" component={Condition} />
+            <Stack.Screen name="Floorzone" component={Floorzone} />
+            <Stack.Screen name="Plan" component={Planscreen} />
+            <Stack.Screen name="Calendar" component={Calendarscreen} />
+            <Stack.Screen name="Booth" component={Boothscreen} />
+            <Stack.Screen name="Dayselect" component={Dayselectscreen} />
+            <Stack.Screen name="Accessories" component={Accessoriesscreen} />
+            <Stack.Screen name="Summary" component={Summaryscreen} />
+        </Stack.Navigator>
+    );
 }
 
 const Tab = createBottomTabNavigator()
@@ -75,7 +91,7 @@ const tabMain = function MainTab() {
                 activeTintColor: secondaryColor,
                 inactiveTintColor: 'white',
                 labelStyle: {
-                    fontSize: 16
+                    fontSize: 12
                 },
                 style: {
                     justifyContent: 'center',
@@ -89,9 +105,14 @@ const tabMain = function MainTab() {
                 component={Homescreen}
                 options={{
                     tabBarLabel: 'หน้าแรก',
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: ({ focused, color }) => (
                         <View>
-                            <Icon name="home" color={color} size={18} />
+                            {
+                                focused ?
+                                    <Image source={ic_home_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_home_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
                         </View>
                     ),
                 }} />
@@ -100,9 +121,14 @@ const tabMain = function MainTab() {
                 component={Reserv}
                 options={{
                     tabBarLabel: 'จองพื้นที่',
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: ({ focused, color }) => (
                         <View>
-                            <Icon name="store-alt" color={color} size={18} />
+                            {
+                                focused ?
+                                    <Image source={ic_store_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_store_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
                         </View>
                     ),
                 }} />
@@ -111,11 +137,16 @@ const tabMain = function MainTab() {
                 component={Cartscreen}
                 options={{
                     tabBarLabel: 'รถเข็น',
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: ({ focused, color }) => (
                         <View>
-                            <Icon name="shopping-cart" color={color} size={18} />
+                            {
+                                focused ?
+                                    <Image source={ic_cart_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
                             <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                                <Text style={{ color: 'white', fontSize: 14 }}>{`1`}</Text>
+                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
                             </View>
                         </View>
                     ),
@@ -125,11 +156,16 @@ const tabMain = function MainTab() {
                 component={Notiscreen}
                 options={{
                     tabBarLabel: 'แจ้งเตือน',
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: ({ focused, color }) => (
                         <View>
-                            <Icon name="bell" color={color} size={18} />
+                            {
+                                focused ?
+                                    <Image source={ic_bell_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_bell_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
                             <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                                <Text style={{ color: 'white', fontSize: 14 }}>{`1`}</Text>
+                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
                             </View>
                         </View>
                     ),
@@ -139,9 +175,14 @@ const tabMain = function MainTab() {
                 component={Profilescreen}
                 options={{
                     tabBarLabel: 'บัญชีของฉัน',
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: ({ focused, color }) => (
                         <View>
-                            <Icon name="user" color={color} size={18} />
+                            {
+                                focused ?
+                                    <Image source={ic_profile_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_profile_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
                         </View>
                     ),
                 }} />

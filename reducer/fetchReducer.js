@@ -65,7 +65,42 @@ const initialState = {
             date: '2020-05-11 09:00:00'
         }
     ],
-    banner: [{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }]
+    banner: [{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }],
+    standardAccessories: [
+        {
+            id: 1,
+            name: 'โต๊ะพับเอนกประสงค์ 1 ตัว',
+            image: ''
+        },
+        {
+            id: 2,
+            name: 'เก้าอื้ 2 ตัว',
+            image: ''
+        }
+    ],
+    otherService: [
+        {
+            id: 1,
+            name: 'ไฟฟ้าและแสงสว่าง',
+            description: '(จุดละ 100 บาท)',
+            price: 100,
+            selected: 0
+        },
+        {
+            id: 2,
+            name: 'ไฟฟ้าไม่เกิน 8,000 วัตต์',
+            description: '(จุดละ 500 บาท)',
+            price: 500,
+            selected: 0
+        },
+        {
+            id: 3,
+            name: 'ไฟฟ้า 8,000 วัตต์ ขึ้นไป',
+            description: '(จุดละ 0 บาท)',
+            price: 0,
+            selected: 0
+        }
+    ]
 }
 
 export default (state = initialState, action) => {
