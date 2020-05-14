@@ -47,6 +47,8 @@ import Splashscreen from './screen/SplashScreen'
 import Choicescreen from './screen/ChoiceScreen'
 import Loginscreen from './screen/LoginScreen'
 import Mainscreen from './screen/MainScreen'
+import PaymentChannelscreen from './screen/PaymentChannelScreen'
+import RegisterPersonscreen from './screen/RegisterPersonScreen'
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -58,6 +60,8 @@ function MyStack() {
       <Stack.Screen name="Choice" component={Choicescreen} />
       <Stack.Screen name="Login" component={Loginscreen} />
       <Stack.Screen name="Main" component={Mainscreen} />
+      <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
+      <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
     </Stack.Navigator>
   );
 }

@@ -24,7 +24,7 @@ class ReservationScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <View key={item.building_id} style={[styles.container, styles.panelWhite, { height: 180, margin: 5 }]}>
+            <View key={item.building_id} style={[styles.container, styles.panelWhite, { height: 170, margin: 5 }]}>
                 <View style={[styles.containerRow, { marginBottom: 5 }]}>
                     <Image source={{ uri: item.building_img }} style={{ flex: 0.5, width: 120, height: 100 }} />
                     <View style={{ flex: 0.8, padding: 10 }}>

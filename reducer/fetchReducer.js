@@ -5,6 +5,9 @@ import {
     CLEAR_USERINFO,
 } from '../utils/contants'
 
+import ic_credit_card from '../assets/image/icon_creditcard.png'
+import ic_banking from '../assets/image/icon_paymeny.png'
+
 const initialState = {
     indicator: false,
     userInfo: [],
@@ -99,6 +102,18 @@ const initialState = {
             description: '(จุดละ 0 บาท)',
             price: 0,
             selected: 0
+        }
+    ],
+    paymentChannel: [
+        {
+            channel_id: 1,
+            channel_name: 'บัตรเครดิต / บัตรเดบิต',
+            channel_icon: ic_credit_card
+        },
+        {
+            channel_id: 2,
+            channel_name: 'iBanking / Mobile Banking',
+            channel_icon: ic_banking
         }
     ]
 }

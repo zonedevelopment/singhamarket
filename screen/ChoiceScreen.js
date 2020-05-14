@@ -92,7 +92,7 @@ class ChoiceScreen extends React.Component {
                 <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 20 }]}>
                     <TouchableOpacity style={[styles.twoButton, styles.center, { backgroundColor: darkColor, borderWidth: 0.5, borderColor: '#FFF' }]}
                         onPress={
-                            () => { }
+                            () => this.props.navigation.push('Registerperson')
                         }>
                         <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสามชิก`}</Text>
                     </TouchableOpacity>
