@@ -203,7 +203,7 @@ class ConfirmReservScreen extends React.Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
-                                            () => this.props.navigation.push('Paymentchannel')
+                                            () => this.props.navigation.navigate('Paymentchannel')
                                         }>
                                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ชำระเงิน`}</Text>
                                     </TouchableOpacity>

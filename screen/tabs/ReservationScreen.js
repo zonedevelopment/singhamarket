@@ -34,7 +34,7 @@ class ReservationScreen extends React.Component {
                 </View>
                 <TouchableOpacity style={[styles.mainButton, styles.center]}
                     onPress={
-                        () => this.props.navigation.push('Condition')
+                        () => this.props.navigation.navigate('Condition')
                     }>
                     <Text style={[styles.text18, { color: '#FFF' }]}>{`จองพื้นที่ร้านค้า`}</Text>
                 </TouchableOpacity>

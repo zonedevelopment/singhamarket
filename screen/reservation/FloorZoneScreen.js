@@ -183,7 +183,7 @@ class FloorZoneScreen extends React.Component {
                                 <Text style={[styles.text16]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
                                 <TouchableOpacity style={[styles.mainButton2, { flexDirection: 'row', marginTop: 5, marginBottom: 5, alignItems: 'center', justifyContent: 'space-between', paddingLeft: 10, paddingRight: 5 }]}
                                     onPress={
-                                        () => this.props.navigation.push('Calendar')
+                                        () => this.props.navigation.navigate('Calendar')
                                     }>
                                     <Text style={[styles.text16, { color: 'white' }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
                                     <Icon name='chevron-right' size={12} color='white' />

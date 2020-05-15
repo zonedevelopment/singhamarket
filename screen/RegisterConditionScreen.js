@@ -20,9 +20,9 @@ import {
     grayColor,
     primaryColor,
     secondaryColor
-} from '../../utils/contants'
+} from '../utils/contants'
 
-import styles from '../../style/style'
+import styles from '../style/style'
 
 const htmlContent = `
     <h1>This HTML snippet is now rendered with native components !</h1>
@@ -32,7 +32,7 @@ const htmlContent = `
 `;
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
-class BuildingConditionScreen extends React.Component {
+class RegisterConditionScreen extends React.Component {
 
     ComponentLeft = () => {
         return (
@@ -92,26 +92,31 @@ class BuildingConditionScreen extends React.Component {
                     }} />
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
-                    <Text style={[styles.text20, { color: 'white' }]}>{`ข้อตกลงและเงื่อนไขการจองพื้นที่`}</Text>
                     <ScrollView>
                         <View style={[styles.panelWhite, styles.shadow]}>
-                            <View>
-                                <HTML html={htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
-                            </View>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
                                     onPress={
-                                        () => this.handleBack()
+                                        () => null
                                     }>
-                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`ยกเลิก`}</Text>
+                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`บุคคลธรรมดา`}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
-                                        () => this.props.navigation.navigate('Floorzone')
+                                        () => null
                                     }>
-                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`ยอมรับ`}</Text>
+                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`นิติบุคคล`}</Text>
                                 </TouchableOpacity>
                             </View>
+                            <View>
+                                <HTML html={htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
+                            </View>
+                            <TouchableOpacity style={[styles.mainButton, styles.center]}
+                                onPress={
+                                    () => this.props.navigation.navigate('Registerperson')
+                                }>
+                                <Text style={[styles.text18, { color: '#FFF' }]}>{`ยืนยัน`}</Text>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </View>
@@ -128,4 +133,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BuildingConditionScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterConditionScreen)

@@ -45,7 +45,7 @@ class BoothScreen extends React.Component {
                         item.booth_status == 1 ?
                             <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
                                 onPress={
-                                    () => this.props.navigation.push('Accessories')
+                                    () => this.props.navigation.navigate('Accessories')
                                 }>
                                 <Text style={[styles.text14, { color: primaryColor }]}>{`ว่าง`}</Text>
                             </TouchableOpacity>

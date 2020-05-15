@@ -13,37 +13,27 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 
 import {
     darkColor,
     grayColor,
     primaryColor,
     secondaryColor
-} from '../../utils/contants'
+} from '../utils/contants'
 
-import styles from '../../style/style'
+import styles from '../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
-class DaySelectedScreen extends React.Component {
+class FoodCategoryScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <View key={index} style={{ margin: 10, marginRight: 10 }}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }} >
-                    {`วันที่ขาย ${moment(item).format('LL')}`}
-                </Text>
-                <TouchableOpacity disabled={false}
-                    style={[styles.mainButton2, styles.containerRow, {justifyContent: 'space-between', alignItems: 'center', padding: 5}]}
-                    onPress={
-                        () => this.props.navigation.navigate('Booth')
-                    }>
-                    <Text style={{ color: 'white' }}>{`เลือกล็อคขายของ`}</Text>
-                    <Icon name='chevron-right' size={12} color='white' />
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity key={index} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}>
+                <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{``}</Text>
+            </TouchableOpacity>
         )
     }
-
 
     ComponentLeft = () => {
         return (
@@ -56,7 +46,7 @@ class DaySelectedScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[styles.text18, { color: 'white' }]}>{`เลือกบูธขายของ`}</Text>
+                <Text style={[styles.text18, { color: 'white' }]}>{`เลือกประเภทอาหาร`}</Text>
             </View>
         );
     }
@@ -85,9 +75,6 @@ class DaySelectedScreen extends React.Component {
     }
 
     render() {
-
-        const { daySelect } = this.props.route.params;
-
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -104,13 +91,13 @@ class DaySelectedScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[styles.container, { padding: 15 }]}>
-                    <FlatList
-                        style={{ marginTop: 15 }}
-                        data={daySelect}
-                        numColumns={1}
-                        keyExtractor={(item) => item}
-                        renderItem={this._renderItem} />
+                <View style={[styles.container]}>
+                    <Text style={[styles.text20, { color: primaryColor }]}>{`เลือกประเภทอาหารที่ต้องการขาย`}</Text>
+                    {/* <FlatList
+                        style={{ marginTop: 5 }}
+                        data={chennal}
+                        keyExtractor={(item) => item.channel_id}
+                        renderItem={this._renderItem} /> */}
                 </View>
             </View>
         )
@@ -125,4 +112,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DaySelectedScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(FoodCategoryScreen)

@@ -175,7 +175,7 @@ class AccessoriesScreen extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                         onPress={
-                            () => this.props.navigation.push('Summary')
+                            () => this.props.navigation.navigate('Summary')
                         }>
                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ตกลง`}</Text>
                     </TouchableOpacity>

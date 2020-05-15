@@ -11,7 +11,10 @@ import {
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
+import * as Yup from "yup"
+import { Formik } from "formik"
 import { connect } from 'react-redux'
+import { CheckBox } from 'react-native-elements'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
@@ -28,8 +31,12 @@ import styles from '../style/style'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class RegisterPersonScreen extends React.Component {
 
-    onSelectType(index, value) {
+    state = {
+        productCate: 0
+    }
 
+    onSelectProductCategory(index, value) {
+        this.setState({ productCate: value })
     }
 
     ComponentLeft = () => {
@@ -88,9 +95,10 @@ class RegisterPersonScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[styles.container, { alignItems: 'center' }]}>
+                <View style={[styles.container, { alignItems: 'center', paddingBottom: 10 }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
-                    <ScrollView>
+                    <ScrollView
+                        keyboardShouldPersistTaps="handled">
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>
                             <View style={[styles.hr]}></View>
@@ -165,10 +173,9 @@ class RegisterPersonScreen extends React.Component {
                                     ref={(input) => { this.password = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='รหัสผ่าน'
-                                    returnKeyType={'next'}
+                                    returnKeyType={'done'}
                                     blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ password: text })}
-                                    onSubmitEditing={() => this.password.focus()} />
+                                    onChangeText={(text) => this.setState({ password: text })} />
                             </View>
                             <View style={[styles.container]}>
                                 <Text style={[styles.text18, { color: primaryColor }]}>{`กรุณาประเภทสินค้าที่จะนำมาขาย`}</Text>
@@ -179,20 +186,71 @@ class RegisterPersonScreen extends React.Component {
                                 color={primaryColor}
                                 style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
                                 highlightColor='transparent'
-                                onSelect={(index, value) => this.onSelectType(index, value)} >
+                                onSelect={(index, value) => this.onSelectProductCategory(index, value)}>
                                 <RadioButton
-                                    value={0}
+                                    value={1}
                                     color={primaryColor}
                                     style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
                                     <Text style={[styles.text16, { color: primaryColor }]}>{`อาหาร`}</Text>
                                 </RadioButton>
                                 <RadioButton
-                                    value={1}
+                                    value={2}
                                     color={primaryColor}
                                     style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
                                     <Text style={[styles.text16, { color: primaryColor }]}>{`สินค้าทั่วไป`}</Text>
                                 </RadioButton>
                             </RadioGroup>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.container]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`เลือกประเภทสินค้าที่ต้องการขาย`}</Text>
+                            </View>
+                            <TouchableOpacity
+                                style={[styles.mainButton2, styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}
+                                onPress={
+                                    () => {
+                                        if (this.state.productCate == 1) {
+                                            this.props.navigation.navigate('Foodcate')
+                                        } else {
+                                            
+                                        }
+                                    }
+                                }>
+                                <Text style={{ color: 'white' }}>{`เลือกประเภทสินค้าที่ต้องการขาย`}</Text>
+                                <Icon name='chevron-right' size={12} color='white' />
+                            </TouchableOpacity>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center'}]}>
+                                <CheckBox
+                                    center
+                                    containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
+                                    size={22}
+                                    checked={false}
+                                    onPress={() => null} />
+                                <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5}]}>{`ยอมรับข้อตกลงและเงื่อนไขในการจองตลาด `}</Text>
+                            </View>
+                            <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center'}]}>
+                                <CheckBox
+                                    center
+                                    containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
+                                    size={22}
+                                    checked={false}
+                                    onPress={() => null} />
+                                <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
+                            </View>
+                            <TouchableOpacity style={[styles.mainButton, styles.center]}
+                                onPress={
+                                    () => {
+
+                                    }
+                                }>
+                                <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
+                            </TouchableOpacity>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <Text style={[styles.text14, { alignSelf: 'center' }]}>{`ถ้าท่านเป็นสมาชิกอยู่ กรุณาเข้าสู่ระบบได้เลยค่ะ`}</Text>
+                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}>
+                                <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </View>
@@ -200,6 +258,15 @@ class RegisterPersonScreen extends React.Component {
         )
     }
 }
+
+const validationSchema = Yup.object().shape({
+    email: Yup.string()
+        .required()
+        .email("Welp, that's not an email"),
+    password: Yup.string()
+        .required()
+        .min(6, "That can't be very secure")
+});
 
 const mapStateToProps = (state) => ({
     reducer: state.fetchReducer

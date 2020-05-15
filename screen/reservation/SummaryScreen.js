@@ -259,7 +259,7 @@ class SummaryScreen extends React.Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
-                                            () => this.props.navigation.push('ConfirmReserv')
+                                            () => this.props.navigation.navigate('ConfirmReserv')
                                         }>
                                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ยืนยันการจอง`}</Text>
                                     </TouchableOpacity>

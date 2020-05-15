@@ -128,14 +128,17 @@ class LoginScreen extends React.Component {
                         <View style={[styles.marginBetweenVertical]}></View>
                         <TouchableOpacity style={[styles.mainButton, styles.center]}
                             onPress={
-                                () => this.props.navigation.push('Main')
+                                () => this.props.navigation.navigate('Main')
                             }>
                             <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
                         </TouchableOpacity>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <Text style={[styles.text14, { alignSelf: 'center' }]}>{`ถ้าท่านยังไม่ได้เป็นสมาชิก สมัครสมาชิกได้เลยค่ะ`}</Text>
-                        <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}>
+                        <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}
+                            onPress={
+                                () => this.props.navigation.navigate('Registercondition')
+                            }>
                             <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
                         </TouchableOpacity>
                     </View>
