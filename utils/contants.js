@@ -27,3 +27,17 @@ export const CLEAR_USERINFO     = 'CLEAR_USERINFO'
 /**
  * End
  */
+
+/**
+ * API
+ */
+export const BASE_URL                 = 'http://benz.ots.co.th'
+export const LOGIN_URL                = '/singha/api/Login'
+export const PRODUCT_CATEGORY_URL     = '/singha/api/ProductCategory'
+
+export const HEADERFORMDATA = {
+  'Content-Type': 'multipart/form-data'
+}
+/**
+ * End
+ */

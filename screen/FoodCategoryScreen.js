@@ -4,6 +4,7 @@ import {
     Text,
     Image,
     FlatList,
+    TextInput,
     ScrollView,
     Dimensions,
     BackHandler,
@@ -11,6 +12,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import { CheckBox } from 'react-native-elements'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
@@ -19,7 +21,10 @@ import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    BASE_URL,
+    PRODUCT_CATEGORY_URL,
+    HEADERFORMDATA
 } from '../utils/contants'
 
 import styles from '../style/style'
@@ -29,9 +34,13 @@ class FoodCategoryScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity key={index} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}>
-                <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{``}</Text>
-            </TouchableOpacity>
+            <View key={index} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}>
+                <CheckBox
+                    title={item.name}
+                    checked={item.checked}
+                    textStyle={[styles.text14, { fontFamily: 'SinghaEstate-Regular', color: primaryColor }]}
+                    containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, borderColor: 'transparent' }} />
+            </View>
         )
     }
 
@@ -75,6 +84,34 @@ class FoodCategoryScreen extends React.Component {
     }
 
     render() {
+
+        const cate = [
+            {
+                "category_id": "9",
+                "type_id": "1",
+                "name": "การแฟ ชาไข่มุก ลงเฉพาะ F1 - F5เท่านั้น",
+                "checked": false
+            },
+            {
+                "category_id": "10",
+                "type_id": "1",
+                "name": "อาหาร",
+                "checked": false
+            },
+            {
+                "category_id": "11",
+                "type_id": "1",
+                "name": "ต้ม ทอด นึ่ง ผัด ยำ (มีกลิ่น) ล้อค F6เท่านั้น",
+                "checked": false
+            },
+            {
+                "category_id": "12",
+                "type_id": "1",
+                "name": "อาหารแพค สำเร็จรูป ล้อค E2-E3",
+                "checked": false
+            },
+        ]
+
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -91,13 +128,24 @@ class FoodCategoryScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[styles.container]}>
+                <View style={[styles.container, { padding: 10 }]}>
+                    <View style={[styles.marginBetweenVertical]}></View>
                     <Text style={[styles.text20, { color: primaryColor }]}>{`เลือกประเภทอาหารที่ต้องการขาย`}</Text>
-                    {/* <FlatList
+                    <View style={[styles.marginBetweenVertical]}></View>
+                    <View style={[styles.mainButton2, styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', paddingLeft: 10, paddingRight: 10 }]}>
+                        <TextInput
+                            style={[{ color: 'white' }]}
+                            textContentType={{ color: 'white'}}
+                            placeholder='ค้นหาประเภทอาหาร...'
+                            placeholderTextColor="white" />
+                        <Icon name='search' size={16} color='white' />
+                    </View>
+                    <View style={[styles.marginBetweenVertical]}></View>
+                    <FlatList
                         style={{ marginTop: 5 }}
-                        data={chennal}
-                        keyExtractor={(item) => item.channel_id}
-                        renderItem={this._renderItem} /> */}
+                        data={cate}
+                        keyExtractor={(item) => item.category_id}
+                        renderItem={this._renderItem} />
                 </View>
             </View>
         )

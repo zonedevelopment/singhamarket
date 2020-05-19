@@ -51,6 +51,8 @@ import PaymentChannelscreen from './screen/PaymentChannelScreen'
 import Registerconditionsreen from './screen/RegisterConditionScreen'
 import RegisterPersonscreen from './screen/RegisterPersonScreen'
 import Foodcatescreen from './screen/FoodCategoryScreen'
+import Historyscreen from './screen/HistoryScreen'
+import Historydetailscreen from './screen/HistoryDetailScreen'
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -66,6 +68,8 @@ function MyStack() {
       <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
       <Stack.Screen name="Registercondition" component={Registerconditionsreen} />
       <Stack.Screen name="Foodcate" component={Foodcatescreen} />
+      <Stack.Screen name="History" component={Historyscreen} />
+      <Stack.Screen name="Historydetail" component={Historydetailscreen} />
     </Stack.Navigator>
   );
 }

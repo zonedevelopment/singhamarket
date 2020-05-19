@@ -107,6 +107,13 @@ const styles = StyleSheet.create({
         backgroundColor: primaryColor,
         borderRadius: COMPONENT_HIGHT / 2
     },
+    mainButton3: {
+        alignSelf: 'center',
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH - 150,
+        backgroundColor: primaryColor,
+        borderRadius: COMPONENT_HIGHT / 2
+    },
     twoButton: {
         height: COMPONENT_HIGHT,
         width: (DEVICE_WIDTH / 2) - 30,

@@ -16,6 +16,7 @@
     "@react-navigation/stack": "^5.2.10",
     "formik": "^2.1.4",
     "moment": "^2.25.3",
+    "native-base": "^2.13.12",
     "navigationbar-react-native": "0.0.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
