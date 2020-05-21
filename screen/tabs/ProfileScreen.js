@@ -73,6 +73,10 @@ class ProfileScreen extends React.Component {
     }
 
     render() {
+
+        const props = this.props.reducer
+        const userInfo = props.userInfo[0]
+
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -91,20 +95,24 @@ class ProfileScreen extends React.Component {
                     }} />
                 <ScrollView>
                     <View style={[styles.container]}>
-                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
-                            <Image source={ic_profile} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
-                            <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลส่วนตัว`}</Text>
-                            <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
-                                <Icon name='chevron-right' size={14} color={primaryColor} />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
-                            <Image source={ic_company} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
-                            <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>
-                            <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
-                                <Icon name='chevron-right' size={14} color={primaryColor} />
-                            </View>
-                        </TouchableOpacity>
+                        {
+                            userInfo.partners_type == 1 ?
+                                <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                                    <Image source={ic_profile} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
+                                    <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลส่วนตัว`}</Text>
+                                    <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
+                                        <Icon name='chevron-right' size={14} color={primaryColor} />
+                                    </View>
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                                    <Image source={ic_company} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
+                                    <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>
+                                    <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
+                                        <Icon name='chevron-right' size={14} color={primaryColor} />
+                                    </View>
+                                </TouchableOpacity>
+                        }
                         <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
                             onPress={
                                 () => this.props.navigation.navigate('History')
@@ -115,14 +123,20 @@ class ProfileScreen extends React.Component {
                                 <Icon name='chevron-right' size={14} color={primaryColor} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
+                            onPress={
+                                () => this.props.navigation.navigate('Favorite')
+                            }>
                             <Image source={ic_fav} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                             <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`บูธที่สนใจ`}</Text>
                             <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
                                 <Icon name='chevron-right' size={14} color={primaryColor} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
+                            onPress={
+                                () => this.props.navigation.navigate('Support')
+                            }>
                             <Image source={ic_support} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                             <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`แจ้งเรื่องร้องเรียน / ติดต่อเรา`}</Text>
                             <View style={{ flex: 0.2, alignItems: 'flex-end' }}>

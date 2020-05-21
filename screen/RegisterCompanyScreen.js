@@ -27,7 +27,7 @@ import {
 import styles from '../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
-class RegisterPersonScreen extends React.Component {
+class RegisterCompanyScreen extends React.Component {
 
     state = {
         productCate: 0,
@@ -116,7 +116,61 @@ class RegisterPersonScreen extends React.Component {
                             <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>
                             <View style={[styles.hr]}></View>
                             <View style={[styles.container]}>
-                                <Text style={[styles.text18, { color: primaryColor }]}>{`ลงทะเบียนแบบบุคคลธรรมดา`}</Text>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ลงทะเบียนแบบนิติบุคคล`}</Text>
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.compname = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ชื่อนิติบุคคล'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ compname: text })}
+                                    onSubmitEditing={() => this.compid.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.compid = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='เลขประจำตัวผู้เสียภาษีอากร'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ compid: text })}
+                                    onSubmitEditing={() => this.compAddr.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.compAddr = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ที่อยู่'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ compAddr: text })}
+                                    onSubmitEditing={() => this.zipcode.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.zipcode = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='รหัสไปรษณีย์'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    editable={false}
+                                    onChangeText={(text) => this.setState({ zipcode: text })}
+                                    onSubmitEditing={() => this.name.focus()} />
+                            </View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.container]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลผู้มาติดต่อ`}</Text>
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
@@ -167,6 +221,88 @@ class RegisterPersonScreen extends React.Component {
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ email: text })}
                                     onSubmitEditing={() => this.password.focus()} />
+                            </View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.container]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลเพื่อออกใบเสร็จรับเงิน`}</Text>
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.receiptName = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ชื่อนิติบุคคล'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ receiptName: text })}
+                                    onSubmitEditing={() => this.receiptPhone.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.receiptPhone = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='เบอร์โทรศัพท์'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ receiptPhone: text })} />
+                            </View>
+                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 15 }]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`แนบไฟล์ ภ.พ. 20`}</Text>
+                                <TouchableOpacity style={[styles.twoButton, styles.center, { width: 100, backgroundColor: grayColor }]}>
+                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`Choose file`}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.receiptOffice = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='สำนักงาน'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ receiptOffice: text })}
+                                    onSubmitEditing={() => this.receiptTelephone.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.receiptTelephone = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='เบอร์โทรศัพท์'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ receiptPhone: text })}
+                                    onSubmitEditing={() => this.receiptEmail.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.receiptEmail = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='อีเมล'
+                                    returnKeyType={'done'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ receiptEmail: text })} />
+                            </View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.container]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลเจ้าหน้าที่บัญชี`}</Text>
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.accountName = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ชื่อ - นามสกุล'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ accountName: text })}
+                                    onSubmitEditing={() => this.accountPhone.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.accountPhone = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='เบอร์โทรศัพท์'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ accountPhone: text })}
+                                    onSubmitEditing={() => this.username.focus()} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.container]}>
@@ -298,4 +434,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPersonScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterCompanyScreen)

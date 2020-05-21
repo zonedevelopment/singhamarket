@@ -52,6 +52,16 @@ import ConfirmReservscreen from './reservation/ConfirmReservScreen'
  * End
  */
 
+/**
+ * Account stack
+ */
+import Historyscreen from './account/HistoryScreen'
+import Favoritescreen from './account/FavoriteScreen'
+import Supportscreen from './account/SupportScreen'
+/**
+ * End
+ */
+
 import ic_home_active from '../assets/image/icon_home_gold.png'
 import ic_store_active from '../assets/image/icon_market_gold.png'
 import ic_cart_active from '../assets/image/icon_cart_gold.png'
@@ -69,7 +79,7 @@ const Reserv = function MyStack() {
     return (
         <Stack.Navigator
             headerMode='none'
-            initialRouteName='Splash'>
+            initialRouteName='Building'>
             <Stack.Screen name="Building" component={Reservscreen} />
             <Stack.Screen name="Condition" component={Condition} />
             <Stack.Screen name="Floorzone" component={Floorzone} />
@@ -82,6 +92,19 @@ const Reserv = function MyStack() {
             <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
         </Stack.Navigator>
     );
+}
+
+const Account = function AccStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Profile'>
+            <Stack.Screen name="Profile" component={Profilescreen} />
+            <Stack.Screen name="History" component={Historyscreen} />
+            <Stack.Screen name="Favorite" component={Favoritescreen} />
+            <Stack.Screen name="Support" component={Supportscreen} />
+        </Stack.Navigator>
+    )
 }
 
 const Tab = createBottomTabNavigator()
@@ -174,7 +197,7 @@ const tabMain = function MainTab() {
                 }} />
             <Tab.Screen
                 name="Profile"
-                component={Profilescreen}
+                component={Account}
                 options={{
                     tabBarLabel: 'บัญชีของฉัน',
                     tabBarIcon: ({ focused, color }) => (

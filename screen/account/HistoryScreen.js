@@ -27,9 +27,9 @@ import {
     BASE_URL,
     PRODUCT_CATEGORY_URL,
     HEADERFORMDATA
-} from '../utils/contants'
+} from '../../utils/contants'
 
-import styles from '../style/style'
+import styles from '../../style/style'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 const DEVICE_HEIGHT = Dimensions.get('screen').height

@@ -3,6 +3,7 @@ import {
     DISMISS_INDICATOR,
     SAVE_USERINFO,
     CLEAR_USERINFO,
+    SAVE_PRODUCT_TYPE
 } from '../utils/contants'
 
 
@@ -55,3 +56,18 @@ export const clearUserInfo = (data) => ({
 /**
 * End
 */
+
+
+/**
+ * Product type
+ */
+export function saveProductType(data) {
+    return (dispatch) => {
+        dispatch(setStateProductType(data))
+    }
+}
+
+export const setStateProductType = (data) => ({
+    type: SAVE_PRODUCT_TYPE,
+    payload: data
+})

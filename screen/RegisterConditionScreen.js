@@ -34,6 +34,10 @@ const htmlContent = `
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class RegisterConditionScreen extends React.Component {
 
+    state = {
+        type: 1
+    }
+
     ComponentLeft = () => {
         return (
             <TouchableOpacity onPress={() => this.handleBack()} style={{ padding: 10 }}>
@@ -95,15 +99,15 @@ class RegisterConditionScreen extends React.Component {
                     <ScrollView>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
-                                <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
+                                <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? secondaryColor : grayColor }]}
                                     onPress={
-                                        () => null
+                                        () => this.setState({ type: 1 })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`บุคคลธรรมดา`}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
+                                <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? grayColor : secondaryColor }]}
                                     onPress={
-                                        () => null
+                                        () => this.setState({ type: 2 })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`นิติบุคคล`}</Text>
                                 </TouchableOpacity>
@@ -113,7 +117,13 @@ class RegisterConditionScreen extends React.Component {
                             </View>
                             <TouchableOpacity style={[styles.mainButton, styles.center]}
                                 onPress={
-                                    () => this.props.navigation.navigate('Registerperson')
+                                    () => {
+                                        if (this.state.type == 1) {
+                                            this.props.navigation.navigate('Registerperson')
+                                        } else if (this.state.type == 2) {
+                                            this.props.navigation.navigate('Registercompany')
+                                        }
+                                    }
                                 }>
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`ยืนยัน`}</Text>
                             </TouchableOpacity>

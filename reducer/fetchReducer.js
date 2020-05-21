@@ -3,6 +3,7 @@ import {
     DISMISS_INDICATOR,
     SAVE_USERINFO,
     CLEAR_USERINFO,
+    SAVE_PRODUCT_TYPE
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -10,7 +11,11 @@ import ic_banking from '../assets/image/icon_paymeny.png'
 
 const initialState = {
     indicator: false,
-    userInfo: [],
+    userInfo: [
+        {
+            partners_type: 1
+        }
+    ],
     building: [
         {
             building_id: 1,
@@ -115,7 +120,8 @@ const initialState = {
             channel_name: 'iBanking / Mobile Banking',
             channel_icon: ic_banking
         }
-    ]
+    ],
+    product_type: []
 }
 
 export default (state = initialState, action) => {
@@ -139,6 +145,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 userInfo: []
+            }
+        case SAVE_PRODUCT_TYPE:
+            return {
+                ...state,
+                product_type: action.payload
             }
         default:
             return state
