@@ -30,14 +30,16 @@ class DaySelectedScreen extends React.Component {
         return (
             <View key={index} style={{ margin: 10, marginRight: 10 }}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }} >
-                    {`วันที่ขาย ${moment(item).format('LL')}`}
+                    {`วันที่ขาย ${moment(item.date).format('LL')}`}
                 </Text>
                 <TouchableOpacity disabled={false}
                     style={[styles.mainButton2, styles.containerRow, {justifyContent: 'space-between', alignItems: 'center', padding: 5}]}
                     onPress={
-                        () => this.props.navigation.navigate('Booth')
+                        () => this.props.navigation.navigate('Booth', {
+                            day: item
+                        })
                     }>
-                    <Text style={{ color: 'white' }}>{`เลือกล็อคขายของ`}</Text>
+                    <Text style={{ color: 'white' }}>{`${item.boothSelectName == '' ? 'เลือกล็อคขายของ' : item.boothSelectName}`}</Text>
                     <Icon name='chevron-right' size={12} color='white' />
                 </TouchableOpacity>
             </View>
@@ -86,7 +88,8 @@ class DaySelectedScreen extends React.Component {
 
     render() {
 
-        const { daySelect } = this.props.route.params;
+        const props = this.props.reducer
+        const daySelect = props.date_selected
 
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>

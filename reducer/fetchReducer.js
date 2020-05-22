@@ -3,7 +3,9 @@ import {
     DISMISS_INDICATOR,
     SAVE_USERINFO,
     CLEAR_USERINFO,
-    SAVE_PRODUCT_TYPE
+    SAVE_PRODUCT_TYPE,
+    SET_DATE_SELECTED,
+    CLEAR_DATE_SELECTED
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -23,7 +25,7 @@ const initialState = {
             building_img: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg',
             building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
             building_condition: '',
-            building_floor:[
+            building_floor: [
                 {
                     floor_id: 1,
                     floor_name: 'Floor1'
@@ -121,7 +123,8 @@ const initialState = {
             channel_icon: ic_banking
         }
     ],
-    product_type: []
+    product_type: [],
+    date_selected: []
 }
 
 export default (state = initialState, action) => {
@@ -150,6 +153,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 product_type: action.payload
+            }
+        case SET_DATE_SELECTED:
+            return {
+                ...state,
+                date_selected: action.payload
+            }
+        case CLEAR_DATE_SELECTED:
+            return {
+                ...state,
+                date_selected: []
             }
         default:
             return state

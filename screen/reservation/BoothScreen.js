@@ -28,9 +28,27 @@ import {
 } from '../../utils/contants'
 
 import styles from '../../style/style'
+import ic_plan from '../../assets/image/icon_plan_gold.png'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class BoothScreen extends React.Component {
+
+    state = {
+        dayItem: {},
+        dateSelected: []
+    }
+
+    async onSelectBooth(item) {
+        let dayItem = this.state.dayItem
+        dayItem.boothSelectID = item.booth_id
+        dayItem.boothSelectName = item.booth_name
+        
+        alert(JSON.stringify(dayItem))
+
+
+
+        // this.props.navigation.navigate('Accessories')
+    }
 
     _renderItem = ({ item, index }) => {
         return (
@@ -45,7 +63,7 @@ class BoothScreen extends React.Component {
                         item.booth_status == 1 ?
                             <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
                                 onPress={
-                                    () => this.props.navigation.navigate('Accessories')
+                                    () => this.onSelectBooth(item)
                                 }>
                                 <Text style={[styles.text14, { color: primaryColor }]}>{`ว่าง`}</Text>
                             </TouchableOpacity>
@@ -100,6 +118,10 @@ class BoothScreen extends React.Component {
     }
 
     componentDidMount() {
+        const props = this.props.reducer
+        const daySelect = props.date_selected
+        const { day } = this.props.route.params
+        this.setState({ dayItem: day, dateSelected: daySelect})
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -167,11 +189,12 @@ class BoothScreen extends React.Component {
                 <View style={[styles.container, { padding: 15 }]}>
                     <View style={[styles.containerRow]}>
                         <Text style={[styles.text20, styles.bold, { flex: 0.5, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
-                        <TouchableOpacity style={{ flex: 0.5, alignItems: 'flex-end', justifyContent: 'center' }}
+                        <TouchableOpacity style={[styles.containerRow, { flex: 0.5, alignItems: 'center', justifyContent: 'flex-end' }]}
                             onPress={
                                 () => this.props.navigation.push('Plan')
                             }>
-                            <Text style={[styles.text18, { color: primaryColor }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
+                            <Image source={ic_plan} style={{ width: 15, height: 15, resizeMode: 'contain' }} />
+                            <Text style={[styles.text14, { color: primaryColor, marginLeft: 2 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
@@ -197,7 +220,7 @@ class BoothScreen extends React.Component {
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow, { padding: 5, height: 55 }]}>
                         <View style={{ flex: 0.25, backgroundColor: primaryColor, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
-                            <Text style={[styles.text18, { color: 'white' }]}>{`Booth No.`}</Text>
+                            <Text style={[styles.text16, { color: 'white' }]}>{`Booth No.`}</Text>
                         </View>
                         <View style={{ width: 1, backgroundColor: 'white' }}></View>
                         <View style={{ flex: 0.75, backgroundColor: primaryColor, justifyContent: 'center', padding: 5 }}>

@@ -20,12 +20,14 @@ export const alpaRed            = '#fff6f5'
 /**
  * Constants key
  */
-export const OPEN_INDICATOR     = 'OPEN_INDICATOR'
-export const DISMISS_INDICATOR  = 'DISMISS_INDICATOR'
-export const SAVE_USERINFO      = 'SAVE_USERINFO'
-export const CLEAR_USERINFO     = 'CLEAR_USERINFO'
+export const OPEN_INDICATOR       = 'OPEN_INDICATOR'
+export const DISMISS_INDICATOR    = 'DISMISS_INDICATOR'
+export const SAVE_USERINFO        = 'SAVE_USERINFO'
+export const CLEAR_USERINFO       = 'CLEAR_USERINFO'
 
-export const SAVE_PRODUCT_TYPE  = 'SAVE_PRODUCT_TYPE'
+export const SAVE_PRODUCT_TYPE    = 'SAVE_PRODUCT_TYPE'
+export const SET_DATE_SELECTED    = 'SET_DATE_SELECTED'
+export const CLEAR_DATE_SELECTED  = 'CLEAR_DATE_SELECTED'
 /**
  * End
  */
@@ -36,6 +38,11 @@ export const SAVE_PRODUCT_TYPE  = 'SAVE_PRODUCT_TYPE'
 export const BASE_URL                 = 'http://benz.ots.co.th'
 export const LOGIN_URL                = '/singha/api/Login'
 export const BANNER_URL               = '/singha/api/Banner'
+export const NEWS_URL                 = '/singha/api/News'
+export const PROVINCE_URL             = '/singha/api/Province'
+export const DISTRICT_URL             = '/singha/api/District'
+export const SUBDISTRICT_URL          = '/singha/api/SubDistrict'
+export const ACCESSORY_URL            = '/singha/api/Accessory'
 export const PRODUCT_CATEGORY_URL     = '/singha/api/ProductCategory'
 
 export const HEADERFORMDATA = {

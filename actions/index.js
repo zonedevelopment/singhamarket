@@ -3,7 +3,9 @@ import {
     DISMISS_INDICATOR,
     SAVE_USERINFO,
     CLEAR_USERINFO,
-    SAVE_PRODUCT_TYPE
+    SAVE_PRODUCT_TYPE,
+    SET_DATE_SELECTED,
+    CLEAR_DATE_SELECTED
 } from '../utils/contants'
 
 
@@ -71,3 +73,31 @@ export const setStateProductType = (data) => ({
     type: SAVE_PRODUCT_TYPE,
     payload: data
 })
+/**
+* End
+*/
+
+/**
+ * Date selected
+ */
+export function saveDateSelected(event, data) {
+    return (dispatch) => {
+        if (event == 'save') {
+            dispatch(setStateDateSelected(data))
+        } else if (event == 'clear') {
+            dispatch(clearDateSelected())
+        }
+    }
+}
+
+export const setStateDateSelected = (data) => ({
+    type: SET_DATE_SELECTED,
+    payload: data
+})
+
+export const clearDateSelected = (data) => ({
+    type: CLEAR_DATE_SELECTED
+})
+/**
+* End
+*/

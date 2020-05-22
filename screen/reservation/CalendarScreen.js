@@ -22,6 +22,10 @@ import {
     secondaryColor
 } from '../../utils/contants'
 
+import {
+    saveDateSelected
+} from '../../actions'
+
 import styles from '../../style/style'
 
 const _format = 'YYYY-MM-DD'
@@ -51,21 +55,21 @@ class CalendarScreen extends React.Component {
         const updatedMarkedDates = { ...this.state._markedDates, ...{ [_selectedDay]: { selected, selectedColor: primaryColor } } }
         this.setState({ _markedDates: updatedMarkedDates })
         if (this.state.selectDate == '') {
-            this.state.selectDate.push(_selectedDay);
+            this.state.selectDate.push({ date: _selectedDay, boothSelectID: '', boothSelectName: '' });
         } else {
-            if (this.state.selectDate.includes(_selectedDay)) {
+            if (this.state.selectDate.includes({ date: _selectedDay, boothSelectID: '', boothSelectName: '' })) {
                 this.state.selectDate.filter((v, i) => {
-                    if (v === _selectedDay) {
+                    if (v.date === _selectedDay) {
                         this.state.selectDate.splice(i, 1);
                     }
                 })
             } else {
-                this.state.selectDate.push(_selectedDay);
+                this.state.selectDate.push({ date: _selectedDay, boothSelectID: '', boothSelectName: '' });
             }
         }
 
         let sortDate = this.state.selectDate.sort((a, b) =>
-            a.split('-').reverse().join().localeCompare(b.split('-').reverse().join()));
+            a.date.split('-').reverse().join().localeCompare(b.date.split('-').reverse().join()));
         this.setState({ selectDate: sortDate })
     }
 
@@ -141,10 +145,9 @@ class CalendarScreen extends React.Component {
                 <View style={[styles.positionBottom, styles.center, { padding: 10, bottom: 10, alignSelf: 'center' }]}>
                     <TouchableOpacity style={[styles.mainButton, styles.center]}
                         onPress={
-                            () => {
-                                this.props.navigation.navigate('Dayselect', {
-                                    daySelect: this.state.selectDate
-                                })
+                            async () => {
+                                await this.props.saveDateSelected('save', this.state.selectDate)
+                                this.props.navigation.navigate('Dayselect')
                             }
                         }>
                         <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>
@@ -160,7 +163,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    saveDateSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)
