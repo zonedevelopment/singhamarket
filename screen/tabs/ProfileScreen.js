@@ -143,7 +143,10 @@ class ProfileScreen extends React.Component {
                                 <Icon name='chevron-right' size={14} color={primaryColor} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
+                        onPress={
+                            () => this.props.navigation.navigate('Login')
+                        }>
                             <Image source={ic_logout} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                             <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ออกจากระบบ`}</Text>
                             <View style={{ flex: 0.2, alignItems: 'flex-end' }}>

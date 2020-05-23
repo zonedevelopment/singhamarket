@@ -8,7 +8,6 @@ import {
     CLEAR_DATE_SELECTED
 } from '../utils/contants'
 
-
 /**
  * 
  * Indicator controll

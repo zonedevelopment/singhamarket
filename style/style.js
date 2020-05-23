@@ -100,6 +100,13 @@ const styles = StyleSheet.create({
         backgroundColor: secondaryColor,
         borderRadius: COMPONENT_HIGHT / 2
     },
+    mainButtonDisabled: {
+        alignSelf: 'center',
+        height: COMPONENT_HIGHT,
+        width: DEVICE_WIDTH - 70,
+        backgroundColor: grayColor,
+        borderRadius: COMPONENT_HIGHT / 2
+    },
     mainButton2: {
         alignSelf: 'center',
         height: COMPONENT_HIGHT,

@@ -24,15 +24,62 @@ import {
     secondaryColor
 } from '../utils/contants'
 
+import {
+    openIndicator,
+    dismissIndicator
+} from '../actions'
+
 import styles from '../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
+const VALIDATION_FIELD = {
+    name : {
+        message : 'กรุณากรอกชื่อ-นามสกุล',
+        type : 'text'
+    },
+    idcard : {
+        message : 'กรุณากรอกเลขบัตรประชาชน',
+        type : 'text'
+    },
+    phone : {
+        message : 'กรุณากรอกเบอร์โทรศัพท์',
+        type : 'text'
+    },
+    // lineid : {
+    //     message : 'กรุณากรอกไอดีไลน์',
+    //     type : 'text'
+    // },
+    email : {
+        message : 'กรุณากรอก Email',
+        type : 'text'
+    },
+    username : {
+        message : 'กรุณากรอกชื่อผู้ใช้งาน',
+        type : 'text'
+    },
+    password : {
+        message : 'กรุณากรอกรหัสผ่าน',
+        type : 'text'
+    },
+    productCate : {
+        message : 'กรุณาเลือกประเภทสินค้า',
+        type : 'radio'
+    }
+}
+
 class RegisterPersonScreen extends React.Component {
 
     state = {
         productCate: 0,
         licenseAgree: false,
-        privacyAgree: false
+        privacyAgree: false,
+        name : '',
+        idcard : '',
+        phone : '',
+        lineid : '',
+        email : '',
+        username : '',
+        password : '',
     }
 
     onSelectProductCategory(index, value) {
@@ -84,6 +131,38 @@ class RegisterPersonScreen extends React.Component {
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    validateFields() {
+        const fields = this.state;
+        const names = Object.keys(fields);
+        for (const name of names) {
+            const validate = VALIDATION_FIELD[name] || {};
+            if(validate != {}){
+                if(validate.type === 'text'){
+                    if(fields[name] === ''){
+                        return alert(validate.message)
+                    }
+                }
+                if(validate.type === 'radio'){
+                    if(fields[name] == 0){
+                        return alert(validate.message)
+                    }
+                }
+            }
+        }
+        if(this.props.reducer.product_type.length == 0) {
+            return alert('กรุณาเลือกสินค้าที่ต้องการขาย')
+        }
+       
+
+        //// call api
+    }
+
+    onSubmit = () =>{
+        this.props.openIndicator()
+
+        this.props.dismissIndicator()
     }
 
     render() {
@@ -166,7 +245,7 @@ class RegisterPersonScreen extends React.Component {
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ email: text })}
-                                    onSubmitEditing={() => this.password.focus()} />
+                                    onSubmitEditing={() => this.username.focus()} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.container]}>
@@ -268,10 +347,11 @@ class RegisterPersonScreen extends React.Component {
                                     onPress={() => this.onCheckPrivacy(!this.state.privacyAgree)} />
                                 <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
                             </View>
-                            <TouchableOpacity style={[styles.mainButton, styles.center]}
+                            <TouchableOpacity disabled={this.state.licenseAgree && this.state.privacyAgree ? false : true} 
+                            style={[this.state.licenseAgree && this.state.privacyAgree ? styles.mainButton : styles.mainButtonDisabled , styles.center]}
                                 onPress={
                                     () => {
-
+                                        this.validateFields()
                                     }
                                 }>
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
@@ -295,7 +375,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPersonScreen)
