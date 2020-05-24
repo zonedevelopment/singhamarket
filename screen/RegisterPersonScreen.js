@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     View,
+    Alert,
     Text,
     Image,
     FlatList,
@@ -21,13 +22,21 @@ import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    BASE_URL,
+    REGISTER_PERSONAL_URL,
+    HEADERFORMDATA,
+    CHECK_REGISTER_URL,
 } from '../utils/contants'
+
+
 
 import {
     openIndicator,
-    dismissIndicator
+    dismissIndicator,
+    saveProductType
 } from '../actions'
+import Hepler from '../utils/Helper'
 
 import styles from '../style/style'
 
@@ -82,7 +91,8 @@ class RegisterPersonScreen extends React.Component {
         password : '',
     }
 
-    onSelectProductCategory(index, value) {
+    async onSelectProductCategory(index, value) {
+        await this.props.saveProductType([])
         this.setState({ productCate: value })
     }
 
@@ -141,29 +151,121 @@ class RegisterPersonScreen extends React.Component {
             if(validate != {}){
                 if(validate.type === 'text'){
                     if(fields[name] === ''){
-                        return alert(validate.message)
+                        return Alert.alert(validate.message)
                     }
                 }
                 if(validate.type === 'radio'){
                     if(fields[name] == 0){
-                        return alert(validate.message)
+                        return Alert.alert(validate.message)
                     }
                 }
             }
         }
         if(this.props.reducer.product_type.length == 0) {
-            return alert('กรุณาเลือกสินค้าที่ต้องการขาย')
+            return Alert.alert('กรุณาเลือกสินค้าที่ต้องการขาย')//alert('กรุณาเลือกสินค้าที่ต้องการขาย')
         }
-       
-
+        this.onSubmit()
         //// call api
     }
 
     onSubmit = () =>{
         this.props.openIndicator()
-
-        this.props.dismissIndicator()
+        let formData = new FormData();
+        formData.append('name', this.state.name)
+        formData.append('idcard', this.state.idcard)
+        formData.append('phone', this.state.phone)
+        formData.append('lineid', this.state.lineid)
+        formData.append('email', this.state.email)
+        formData.append('username', this.state.username)
+        formData.append('password', this.state.password)
+        formData.append('productCate', this.state.productCate)
+        formData.append('product_type', JSON.stringify(this.props.reducer.product_type))
+        Hepler.post(BASE_URL + REGISTER_PERSONAL_URL,formData,HEADERFORMDATA,(results) => {
+            if (results.status == 'SUCCESS') {
+                Alert.alert(
+                    'บันทึกสำเร็จ!',
+                    'สมัครสมาชิกเรียบร้อย',
+                    [
+                        { text: 'ตกลง', onPress: () => this.props.navigation.pop() }
+                    ],
+                    { cancelable: false }
+                );
+                this.props.dismissIndicator()
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
     }
+
+    chkDigitPid = (p_iPID) => {
+        var total = 0;
+        var iPID;
+        var chk;
+        var Validchk;
+        iPID = p_iPID.replace(/-/g, "");
+        Validchk = iPID.substr(12, 1);
+        var j = 0;
+        var pidcut;
+        for (var n = 0; n < 12; n++) {
+            pidcut = parseInt(iPID.substr(j, 1));
+            total = (total + ((pidcut) * (13 - n)));
+            j++;
+        }
+        chk = 11 - (total % 11);
+        if (chk == 10) {
+            chk = 0;
+        } else if (chk == 11) {
+            chk = 1;
+        }
+        if (chk == Validchk) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    CheckIDCard = () => {
+        let idcard = this.state.idcard
+        this.props.openIndicator()
+        if(idcard.length != 13 || this.chkDigitPid(idcard) == false){
+            Alert.alert('เลขบัตรประชาชนไม่ถูกต้อง!')
+            this.setState({idcard : ''})
+            this.props.dismissIndicator()
+        }else{
+            let formData = new FormData();
+            formData.append('TYPE', 'IDCARD')
+            formData.append('VALUE', idcard)
+            Hepler.post(BASE_URL + CHECK_REGISTER_URL,formData,HEADERFORMDATA,(results) => {
+                this.props.dismissIndicator()
+                if (results.status == 'SUCCESS') {
+                    //Alert.alert(results.message)
+                } else {
+                    Alert.alert(results.message)
+                    this.setState({idcard : ''})
+                }
+            })
+        }
+    }
+
+    CheckUserName = () => {
+        this.props.openIndicator()
+        let username = this.state.username
+        let formData = new FormData();
+        formData.append('TYPE', 'USERNAME')
+        formData.append('VALUE', username)
+        Hepler.post(BASE_URL + CHECK_REGISTER_URL,formData,HEADERFORMDATA,(results) => {
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                //Alert.alert(results.message)
+            } else {
+                Alert.alert(results.message)
+                this.setState({username : ''})
+            }
+        })
+    }
+
+ 
 
     render() {
 
@@ -212,8 +314,12 @@ class RegisterPersonScreen extends React.Component {
                                     ref={(input) => { this.idcard = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='เลขบัตรประชาชน'
+                                    maxLength={13} 
+                                    keyboardType='numeric'
                                     returnKeyType={'next'}
-                                    blurOnSubmit={false}
+                                    //blurOnSubmit={true}
+                                    value={this.state.idcard}
+                                    onBlur={(e) => this.CheckIDCard()}
                                     onChangeText={(text) => this.setState({ idcard: text })}
                                     onSubmitEditing={() => this.phone.focus()} />
                             </View>
@@ -222,7 +328,9 @@ class RegisterPersonScreen extends React.Component {
                                     ref={(input) => { this.phone = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='เบอร์โทรศัพท์'
+                                    maxLength={10} 
                                     returnKeyType={'next'}
+                                    keyboardType='numeric'
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ phone: text })}
                                     onSubmitEditing={() => this.lineid.focus()} />
@@ -258,6 +366,8 @@ class RegisterPersonScreen extends React.Component {
                                     placeholder='ชื่อผู้ใช้'
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    value={this.state.username}
+                                    onBlur={(e) => this.CheckUserName()}
                                     onChangeText={(text) => this.setState({ username: text })}
                                     onSubmitEditing={() => this.password.focus()} />
                             </View>
@@ -359,7 +469,10 @@ class RegisterPersonScreen extends React.Component {
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text14, { alignSelf: 'center' }]}>{`ถ้าท่านเป็นสมาชิกอยู่ กรุณาเข้าสู่ระบบได้เลยค่ะ`}</Text>
-                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}>
+                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}
+                            onPress={()=>{
+                                this.props.navigation.navigate('Login')
+                            }}>
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
                             </TouchableOpacity>
                         </View>
@@ -376,7 +489,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     openIndicator,
-    dismissIndicator
+    dismissIndicator,
+    saveProductType
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPersonScreen)

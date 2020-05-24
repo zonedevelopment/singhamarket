@@ -6,6 +6,7 @@ import {
     FlatList,
     TextInput,
     ScrollView,
+    Picker,
     Dimensions,
     BackHandler,
     TouchableOpacity
@@ -149,7 +150,13 @@ class RegisterCompanyScreen extends React.Component {
                                     onSubmitEditing={() => this.zipcode.focus()} />
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-
+                                <Picker
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                >
+                                    <Picker.Item label="Java" value="java" />
+                                    <Picker.Item label="JavaScript" value="js" />
+                                </Picker>
+                            
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
 

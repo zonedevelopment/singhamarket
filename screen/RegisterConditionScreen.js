@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import HTML from 'react-native-render-html'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
-
+import { CheckBox } from 'react-native-elements'
 import {
     darkColor,
     grayColor,
@@ -35,7 +35,9 @@ const DEVICE_WIDTH = Dimensions.get('screen').width
 class RegisterConditionScreen extends React.Component {
 
     state = {
-        type: 1
+        type: 1,
+        licenseAgree: false,
+        privacyAgree: false,
     }
 
     ComponentLeft = () => {
@@ -77,6 +79,14 @@ class RegisterConditionScreen extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
+    onCheckLicense(value) {
+        this.setState({ licenseAgree: value })
+    }
+
+    onCheckPrivacy(value) {
+        this.setState({ privacyAgree: value })
+    }
+
     render() {
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
@@ -101,13 +111,21 @@ class RegisterConditionScreen extends React.Component {
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? secondaryColor : grayColor }]}
                                     onPress={
-                                        () => this.setState({ type: 1 })
+                                        () => this.setState({ 
+                                            type: 1,
+                                            licenseAgree: false,
+                                            privacyAgree: false,
+                                         })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`บุคคลธรรมดา`}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? grayColor : secondaryColor }]}
                                     onPress={
-                                        () => this.setState({ type: 2 })
+                                        () => this.setState({ 
+                                            type: 2 , 
+                                            licenseAgree: false,
+                                            privacyAgree: false,
+                                        })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`นิติบุคคล`}</Text>
                                 </TouchableOpacity>
@@ -115,6 +133,42 @@ class RegisterConditionScreen extends React.Component {
                             <View>
                                 <HTML html={htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
                             </View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            {
+                                this.state.type == 1 ?
+                                    <View>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                            <CheckBox
+                                                center
+                                                containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
+                                                size={22}
+                                                checked={this.state.licenseAgree}
+                                                onPress={() => this.onCheckLicense(!this.state.licenseAgree)} />
+                                            <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ยอมรับข้อตกลงและเงื่อนไขในการจองตลาด `}</Text>
+                                        </View>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}>
+                                            <CheckBox
+                                                center
+                                                containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
+                                                size={22}
+                                                checked={this.state.privacyAgree}
+                                                onPress={() => this.onCheckPrivacy(!this.state.privacyAgree)} />
+                                            <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
+                                        </View>
+                                    </View>
+                                :
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                        <CheckBox
+                                            center
+                                            containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
+                                            size={22}
+                                            checked={this.state.licenseAgree}
+                                            onPress={() => this.onCheckLicense(!this.state.licenseAgree)} />
+                                        <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ยอมรับข้อตกลงและเงื่อนไขในการจองตลาด `}</Text>
+                                    </View>
+                            }
+
+                            <View style={[styles.marginBetweenVertical]}></View>
                             <TouchableOpacity style={[styles.mainButton, styles.center]}
                                 onPress={
                                     () => {

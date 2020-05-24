@@ -16,7 +16,10 @@ import { CheckBox } from 'react-native-elements'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
-
+import {
+    openIndicator,
+    dismissIndicator
+} from '../actions'
 import {
     darkColor,
     grayColor,
@@ -28,12 +31,14 @@ import {
 } from '../utils/contants'
 
 import styles from '../style/style'
+import Hepler from '../utils/Helper'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class CategoryListScreen extends React.Component {
 
     state = {
-        type_id: ''
+        type_id: '',
+        cate : []
     }
 
     _renderItem = ({ item, index }) => {
@@ -53,6 +58,25 @@ class CategoryListScreen extends React.Component {
                 <Text style={[styles.text16, { color: primaryColor }]}>{item.name}</Text>
             </TouchableOpacity>
         )
+    }
+
+    LoadData = (product_type) => {
+        let formData = new FormData();
+        this.props.openIndicator()
+        formData.append('product_type', product_type);
+        Hepler.post(BASE_URL + PRODUCT_CATEGORY_URL,formData,HEADERFORMDATA,(results) => {
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    cate: results.data,
+                })
+                this.props.dismissIndicator()
+            } else {
+                this.setState({
+                    cate : [],
+                })
+                this.props.dismissIndicator()
+            }
+        })
     }
 
     ComponentLeft = () => {
@@ -94,64 +118,65 @@ class CategoryListScreen extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const{ typeId } = this.props.route.params
-        this.setState({ type_id : typeId })
+        await this.setState({ type_id : typeId })
+        this.LoadData(typeId)
     }
 
     render() {
 
-        const cate = [
-            {
-                "category_id": "9",
-                "type_id": "1",
-                "name": "การแฟ ชาไข่มุก ลงเฉพาะ F1 - F5เท่านั้น",
-                "product": [
-                    {
-                        "product_id": "21",
-                        "type_id": "1",
-                        "category_id": "9",
-                        "product_name": "เครื่องดื่ม กาแฟ ชาไข่มุก น้ำผลไม้ ลงเฉพาะ F1-F6 เท่านั้น",
-                        "checked": false
-                    }
-                ]
-            },
-            {
-                "category_id": "10",
-                "type_id": "1",
-                "name": "อาหาร",
-                "product": [
-                    {
-                        "product_id": "20",
-                        "type_id": "1",
-                        "category_id": "10",
-                        "product_name": "อาหาร",
-                        "checked": false
-                    },
-                    {
-                        "product_id": "22",
-                        "type_id": "1",
-                        "category_id": "10",
-                        "product_name": "ของทอด",
-                        "checked": false
-                    },
-                    {
-                        "product_id": "23",
-                        "type_id": "1",
-                        "category_id": "10",
-                        "product_name": "ประเภทยำ ยำวุ้นเส้น ยำมาม่า ยำรวมมิตร",
-                        "checked": false
-                    },
-                    {
-                        "product_id": "25",
-                        "type_id": "1",
-                        "category_id": "10",
-                        "product_name": "ลูกชิ้นปิ้ง",
-                        "checked": false
-                    }
-                ]
-            },
-        ]
+        // const cate = [
+        //     {
+        //         "category_id": "9",
+        //         "type_id": "1",
+        //         "name": "การแฟ ชาไข่มุก ลงเฉพาะ F1 - F5เท่านั้น",
+        //         "product": [
+        //             {
+        //                 "product_id": "21",
+        //                 "type_id": "1",
+        //                 "category_id": "9",
+        //                 "product_name": "เครื่องดื่ม กาแฟ ชาไข่มุก น้ำผลไม้ ลงเฉพาะ F1-F6 เท่านั้น",
+        //                 "checked": false
+        //             }
+        //         ]
+        //     },
+        //     {
+        //         "category_id": "10",
+        //         "type_id": "1",
+        //         "name": "อาหาร",
+        //         "product": [
+        //             {
+        //                 "product_id": "20",
+        //                 "type_id": "1",
+        //                 "category_id": "10",
+        //                 "product_name": "อาหาร",
+        //                 "checked": false
+        //             },
+        //             {
+        //                 "product_id": "22",
+        //                 "type_id": "1",
+        //                 "category_id": "10",
+        //                 "product_name": "ของทอด",
+        //                 "checked": false
+        //             },
+        //             {
+        //                 "product_id": "23",
+        //                 "type_id": "1",
+        //                 "category_id": "10",
+        //                 "product_name": "ประเภทยำ ยำวุ้นเส้น ยำมาม่า ยำรวมมิตร",
+        //                 "checked": false
+        //             },
+        //             {
+        //                 "product_id": "25",
+        //                 "type_id": "1",
+        //                 "category_id": "10",
+        //                 "product_name": "ลูกชิ้นปิ้ง",
+        //                 "checked": false
+        //             }
+        //         ]
+        //     },
+        // ]
 
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
@@ -184,7 +209,7 @@ class CategoryListScreen extends React.Component {
                     <View style={[styles.marginBetweenVertical]}></View> */}
                     <FlatList
                         style={{ marginTop: 5 }}
-                        data={cate}
+                        data={this.state.cate}
                         keyExtractor={(item) => item.category_id}
                         renderItem={this._renderItem} />
                 </View>
@@ -198,7 +223,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryListScreen)

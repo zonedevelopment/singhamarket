@@ -154,11 +154,19 @@ class ProductListScreen extends React.Component {
                         <Icon name='search' size={16} color='white' />
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
-                    <FlatList
-                        style={{ marginTop: 5, paddingBottom: 60 }}
-                        data={this.state.productList}
-                        keyExtractor={(item) => item.product_id}
-                        renderItem={this._renderItem} />
+                    {
+                        this.state.productList.length > 0 ?
+                            <FlatList
+                            style={{ marginTop: 5, paddingBottom: 60 }}
+                            data={this.state.productList}
+                            keyExtractor={(item) => item.product_id}
+                            renderItem={this._renderItem} />
+                        :
+                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
+                            </View>
+                    }
+                    
                 </View>
                 {
                     this.state.productSelected.length > 0 ?
