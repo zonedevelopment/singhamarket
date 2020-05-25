@@ -45,6 +45,7 @@ export const SUBDISTRICT_URL          = '/singha/api/SubDistrict'
 export const ACCESSORY_URL            = '/singha/api/Accessory'
 export const PRODUCT_CATEGORY_URL     = '/singha/api/ProductCategory'
 export const REGISTER_PERSONAL_URL    = '/singha/api/RegisterPersonal'
+export const REGISTER_COMPANY_URL    = '/singha/api/RegisterCompany'
 export const CHECK_REGISTER_URL       = '/singha/api/CheckRegister'
 
 export const HEADERFORMDATA = {

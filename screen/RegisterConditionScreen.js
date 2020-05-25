@@ -169,7 +169,10 @@ class RegisterConditionScreen extends React.Component {
                             }
 
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <TouchableOpacity style={[styles.mainButton, styles.center]}
+                            <TouchableOpacity style={[
+                                this.state.type == 1 ? (this.state.licenseAgree && this.state.privacyAgree ? styles.mainButton : styles.mainButtonDisabled) : (this.state.licenseAgree ? styles.mainButton : styles.mainButtonDisabled),
+                                styles.center]}
+                                disabled={this.state.type == 1 ? (this.state.licenseAgree && this.state.privacyAgree ? false : true) : (this.state.licenseAgree ? false : true)} 
                                 onPress={
                                     () => {
                                         if (this.state.type == 1) {

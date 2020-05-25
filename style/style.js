@@ -71,6 +71,17 @@ const styles = StyleSheet.create({
         borderRadius: COMPONENT_HIGHT / 2,
         margin: 10
     },
+    TextAreaWithIcon: {
+        paddingLeft: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 150,
+        width: '95%',
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+        borderRadius: COMPONENT_HIGHT / 2,
+        margin: 10
+    },
     imageLogo: {
         width: 180, 
         height: '20%',

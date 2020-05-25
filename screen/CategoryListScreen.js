@@ -38,7 +38,8 @@ class CategoryListScreen extends React.Component {
 
     state = {
         type_id: '',
-        cate : []
+        cate : [],
+        RegisType : ''
     }
 
     _renderItem = ({ item, index }) => {
@@ -47,7 +48,8 @@ class CategoryListScreen extends React.Component {
                 onPress={
                     () => this.props.navigation.navigate('Productlist', {
                         typeId: this.state.type_id,
-                        product: item.product
+                        product: item.product,
+                        RegisType : this.state.RegisType
                     })
                 }>
                 {/* <CheckBox
@@ -119,8 +121,8 @@ class CategoryListScreen extends React.Component {
     }
 
     async componentDidMount() {
-        const{ typeId } = this.props.route.params
-        await this.setState({ type_id : typeId })
+        const{ typeId,RegisType } = this.props.route.params
+        await this.setState({ type_id : typeId ,RegisType:RegisType})
         this.LoadData(typeId)
     }
 

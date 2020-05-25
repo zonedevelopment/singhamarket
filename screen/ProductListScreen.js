@@ -39,7 +39,8 @@ class ProductListScreen extends React.Component {
     state = {
         type_id: '',
         productList: [],
-        productSelected: []
+        productSelected: [],
+        RegisType: ''
     }
 
     async onItemChecked(item, checked) {
@@ -120,7 +121,7 @@ class ProductListScreen extends React.Component {
     }
 
     componentDidMount() {
-        const { typeId, product } = this.props.route.params
+        const { typeId, product,RegisType } = this.props.route.params
         this.setState({ type_id: typeId, productList: product })
     }
 
@@ -175,7 +176,11 @@ class ProductListScreen extends React.Component {
                                 onPress={
                                     async () => {
                                         await this.props.saveProductType(this.state.productSelected)
-                                        this.props.navigation.navigate('Registerperson')
+                                        if(this.state.RegisType == 'Personal'){
+                                            this.props.navigation.navigate('Registerperson')
+                                        }else{
+                                            this.props.navigation.navigate('Registercompany')
+                                        }
                                     }
                                 }>
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`ยืนยัน`}</Text>

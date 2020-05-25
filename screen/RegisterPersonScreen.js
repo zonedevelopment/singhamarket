@@ -54,10 +54,6 @@ const VALIDATION_FIELD = {
         message : 'กรุณากรอกเบอร์โทรศัพท์',
         type : 'text'
     },
-    // lineid : {
-    //     message : 'กรุณากรอกไอดีไลน์',
-    //     type : 'text'
-    // },
     email : {
         message : 'กรุณากรอก Email',
         type : 'text'
@@ -235,7 +231,7 @@ class RegisterPersonScreen extends React.Component {
         }else{
             let formData = new FormData();
             formData.append('TYPE', 'IDCARD')
-            formData.append('VALUE', idcard)
+            formData.append('VALUE', idcard.trim())
             Hepler.post(BASE_URL + CHECK_REGISTER_URL,formData,HEADERFORMDATA,(results) => {
                 this.props.dismissIndicator()
                 if (results.status == 'SUCCESS') {
@@ -253,7 +249,7 @@ class RegisterPersonScreen extends React.Component {
         let username = this.state.username
         let formData = new FormData();
         formData.append('TYPE', 'USERNAME')
-        formData.append('VALUE', username)
+        formData.append('VALUE', username.trim())
         Hepler.post(BASE_URL + CHECK_REGISTER_URL,formData,HEADERFORMDATA,(results) => {
             this.props.dismissIndicator()
             if (results.status == 'SUCCESS') {
@@ -414,7 +410,8 @@ class RegisterPersonScreen extends React.Component {
                                     () => {
                                         if (this.state.productCate > 0) {
                                             this.props.navigation.navigate('Categoryscreen', {
-                                                typeId: this.state.productCate
+                                                typeId: this.state.productCate,
+                                                RegisType : 'Personal'
                                             })
                                         }
                                     }
