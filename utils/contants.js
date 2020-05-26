@@ -28,6 +28,8 @@ export const CLEAR_USERINFO       = 'CLEAR_USERINFO'
 export const SAVE_PRODUCT_TYPE    = 'SAVE_PRODUCT_TYPE'
 export const SET_DATE_SELECTED    = 'SET_DATE_SELECTED'
 export const CLEAR_DATE_SELECTED  = 'CLEAR_DATE_SELECTED'
+export const SAVE_BANNER          = 'SAVE_BANNER'
+export const SAVE_NEWS            = 'SAVE_NEWS'
 /**
  * End
  */

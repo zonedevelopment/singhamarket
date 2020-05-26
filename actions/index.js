@@ -5,7 +5,9 @@ import {
     CLEAR_USERINFO,
     SAVE_PRODUCT_TYPE,
     SET_DATE_SELECTED,
-    CLEAR_DATE_SELECTED
+    CLEAR_DATE_SELECTED,
+    SAVE_BANNER,
+    SAVE_NEWS
 } from '../utils/contants'
 
 /**
@@ -100,3 +102,27 @@ export const clearDateSelected = (data) => ({
 /**
 * End
 */
+
+/**
+ * BANNER
+ */
+export const setStateBanner = (data) => ({
+    type: SAVE_BANNER,
+    payload: data
+})
+/**
+* End
+*/
+
+/**
+ * NEWS
+ */
+export const setStateNews = (data) => ({
+    type: SAVE_NEWS,
+    payload: data
+})
+/**
+* End
+*/
+
+

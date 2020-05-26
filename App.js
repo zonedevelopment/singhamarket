@@ -54,6 +54,7 @@ import RegisterCompanyscreen from './screen/RegisterCompanyScreen'
 import Categoryscreen from './screen/CategoryListScreen'
 import Productscreen from './screen/ProductListScreen'
 import Historydetailscreen from './screen/HistoryDetailScreen'
+import NewsDetailsScreen from './screen/NewsDetailsScreen'
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -72,6 +73,7 @@ function MyStack() {
       <Stack.Screen name="Categoryscreen" component={Categoryscreen} />
       <Stack.Screen name="Productlist" component={Productscreen} />
       <Stack.Screen name="Historydetail" component={Historydetailscreen} />
+      <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
     </Stack.Navigator>
   );
 }

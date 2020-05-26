@@ -5,11 +5,14 @@ import {
     CLEAR_USERINFO,
     SAVE_PRODUCT_TYPE,
     SET_DATE_SELECTED,
-    CLEAR_DATE_SELECTED
+    CLEAR_DATE_SELECTED,
+    SAVE_BANNER,
+    SAVE_NEWS
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
 import ic_banking from '../assets/image/icon_paymeny.png'
+import styles from '../style/style'
 
 const initialState = {
     indicator: false,
@@ -75,7 +78,7 @@ const initialState = {
             date: '2020-05-11 09:00:00'
         }
     ],
-    banner: [{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }],
+    banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
     standardAccessories: [
         {
             id: 1,
@@ -163,6 +166,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 date_selected: []
+            }
+        case SAVE_BANNER:
+            return {
+                ...state,
+                banner : action.payload
+            }
+        case SAVE_NEWS:
+            return {
+                ...state,
+                news : action.payload
             }
         default:
             return state

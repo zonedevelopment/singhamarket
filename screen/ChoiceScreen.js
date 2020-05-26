@@ -2,7 +2,7 @@ import React from 'react'
 import {
     View,
     Text,
-    Image,
+    //Image,
     FlatList,
     Dimensions,
     BackHandler,
@@ -11,18 +11,54 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import Carousel from 'react-native-banner-carousel'
+import Image from 'react-native-fast-image'
 
 import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    BASE_URL,
+    BANNER_URL,
+    NEWS_URL,
+    HEADERFORMDATA,
 } from '../utils/contants'
+import Hepler from '../utils/Helper'
+import {
+    openIndicator,
+    dismissIndicator,
+    setStateBanner,
+    setStateNews
+} from '../actions'
 
 import styles from '../style/style'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class ChoiceScreen extends React.Component {
+
+
+    LoadBanner = () => {
+        Hepler.post(BASE_URL + BANNER_URL,null,HEADERFORMDATA, (results) =>{
+            console.log('BANNER_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.props.setStateBanner(results.data)
+            }else{
+                this.props.setStateBanner([])
+            }
+        })
+    }
+
+    LoadNews = () => {
+        Hepler.post(BASE_URL + NEWS_URL,null,HEADERFORMDATA, (results) =>{
+            console.log('NEWS_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.props.setStateNews(results.data)
+            }else{
+                this.props.setStateNews([])
+            }
+        })
+    }
+
 
     renderPage(value, index) {
         return (
@@ -33,7 +69,7 @@ class ChoiceScreen extends React.Component {
 
                         }
                     }>
-                    <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: value.link }} />
+                    <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: value.banner_image }} />
                 </TouchableOpacity>
             </View>
         );
@@ -44,13 +80,15 @@ class ChoiceScreen extends React.Component {
             <TouchableOpacity key={index} style={{ flex: 1, width: (DEVICE_WIDTH - 20) / 2, margin: 10 }}
                 onPress={
                     () => {
-
+                        this.props.navigation.navigate('NewsDetails',{
+                            news_details : item
+                        })
                     }}>
                 <View style={{ marginBottom: 5 }}>
-                    <Image style={{ width: '100%', height: 150, resizeMode: 'stretch' }} source={{ uri: item.img }} />
-                    <Text style={[styles.text16, { flexWrap: 'wrap' }]} >{`${item.title}`} </Text>
-                    <Text style={[styles.text14, { color: secondaryColor }]} >{item.building} </Text>
-                    <Text style={[styles.text12, { color: grayColor }]} >{`${moment(item.date).format('ll')} ${moment(item.date).format('LT')}`}</Text>
+                    <Image style={{ width: '100%', height: 150, resizeMode: 'stretch' }} source={{ uri: item.news_thumbs }} />
+                    <Text style={[styles.text16, { flexWrap: 'wrap' }]} >{`${item.news_title}`} </Text>
+                    <Text style={[styles.text14, { color: secondaryColor }]} >{item.news_building} </Text>
+                    <Text style={[styles.text12, { color: grayColor }]} >{`${moment(item.news_date).format('ll')} ${moment(item.news_date).format('LT')}`}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -67,7 +105,11 @@ class ChoiceScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        this.props.openIndicator()
+        await this.LoadBanner()
+        await this.LoadNews()
+        this.props.dismissIndicator()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -76,6 +118,7 @@ class ChoiceScreen extends React.Component {
         const props = this.props
         const banner = props.reducer.banner
         const news = props.reducer.news
+        console.log('banner',banner)
 
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
@@ -121,7 +164,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    setStateBanner,
+    setStateNews
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChoiceScreen)
