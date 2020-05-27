@@ -16,11 +16,7 @@ import styles from '../style/style'
 
 const initialState = {
     indicator: false,
-    userInfo: [
-        {
-            partners_type: 1
-        }
-    ],
+    userInfo: [],
     building: [
         {
             building_id: 1,
@@ -62,22 +58,7 @@ const initialState = {
             building_condition: ''
         }
     ],
-    news: [
-        {
-            id: 1,
-            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6ZR-sCVhLk9Qy_EkmBQkq29u_CYhmfJMC9jutBpPWxEt2andE&usqp=CAU',
-            title: 'Test news 1',
-            building: 'Build A',
-            date: '2020-05-11 09:00:00'
-        },
-        {
-            id: 2,
-            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6ZR-sCVhLk9Qy_EkmBQkq29u_CYhmfJMC9jutBpPWxEt2andE&usqp=CAU',
-            title: 'Test title news 2 for long text',
-            building: 'Build A',
-            date: '2020-05-11 09:00:00'
-        }
-    ],
+    news: [],
     banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
     standardAccessories: [
         {

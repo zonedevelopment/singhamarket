@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     View,
-    Text
+    Text,
+    Alert
 } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../style/style'
@@ -9,36 +10,68 @@ import styles from '../style/style'
 import {
     primaryColor,
     secondaryColor,
+    KEY_LOGIN,
     BASE_URL,
+    LOGIN_URL,
     BANNER_URL,
     NEWS_URL,
     HEADERFORMDATA,
 } from '../utils/contants'
 
 import Hepler from '../utils/Helper'
+import StorageServies from '../utils/StorageServies'
 import {
-    setStateBanner
+    setStateBanner,
+    saveUserInfo,
+    setStateNews
 } from '../actions'
 
 
 class SplashScreen extends React.Component {
+ 
+    async componentDidMount() {
 
+        await Hepler.post(BASE_URL + BANNER_URL,null,HEADERFORMDATA, (results) =>{
+            console.log('BANNER_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.props.setStateBanner(results.data)
+            }else{
+                this.props.setStateBanner([])
+            }
+        })
 
-    // LoadBanner = () => {
-    //     Hepler.post(BASE_URL + BANNER_URL,null,HEADERFORMDATA, (results) =>{
-    //         console.log('BANNER_URL',results)
-    //         if(results.state == 'SUCCESS'){
-    //             this.props.setStateBanner(results.data)
-    //         }else{
-    //             this.props.setStateBanner([])
-    //         }
-    //     })
-    // }
+        await Hepler.post(BASE_URL + NEWS_URL,null,HEADERFORMDATA, (results) =>{
+            console.log('NEWS_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.props.setStateNews(results.data)
+            }else{
+                this.props.setStateNews([])
+            }
+        })
 
-    componentDidMount() {
-        setTimeout(() => {
+        //// check Login
+        let LOGIN = await StorageServies.get(KEY_LOGIN)
+        if(LOGIN != null){
+            LOGIN = JSON.parse(LOGIN)
+            let formData = new FormData();
+            formData.append('USERNAME', LOGIN.username)
+            formData.append('PASSWORD', LOGIN.password_text)
+            Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+                console.log('LOGIN_URL',results)
+                if (results.status == 'SUCCESS') {
+                    StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                    this.props.saveUserInfo(results.data)
+                    this.props.navigation.navigate('Main')
+                } else {
+                    Alert.alert(results.message)
+                }
+            })
+        }else{
             this.props.navigation.replace('Choice')
-        }, 2500)
+        }
+        // setTimeout(() => {
+        //     this.props.navigation.replace('Choice')
+        // }, 2500)
     }
 
     render() {
@@ -55,7 +88,9 @@ const mapStateToProps = (state) => ({
   })
   
   const mapDispatchToProps = {
-    setStateBanner
+    setStateBanner,
+    setStateNews,
+    saveUserInfo
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    Alert,
     FlatList,
     TextInput,
     Dimensions,
@@ -18,8 +19,19 @@ import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    KEY_LOGIN,
+    BASE_URL,
+    HEADERFORMDATA,
+    LOGIN_URL,
 } from '../utils/contants'
+import Hepler from '../utils/Helper'
+import {
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo,
+} from '../actions'
+import StorageServies from '../utils/StorageServies'
 
 import styles from '../style/style'
 import ic_user from '../assets/image/icon_user_login.png'
@@ -72,6 +84,30 @@ class LoginScreen extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
+
+    CheckLogin() {
+        let userName = this.state.username
+        let passWord = this.state.password
+        if(userName.trim() == '' || passWord.trim() == ''){
+            return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
+        }else{
+            this.props.openIndicator()
+            let formData = new FormData();
+            formData.append('USERNAME', userName.trim())
+            formData.append('PASSWORD', passWord.trim())
+            Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+                this.props.dismissIndicator()
+                if (results.status == 'SUCCESS') {
+                    StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                    this.props.saveUserInfo(results.data)
+                    this.props.navigation.navigate('Main')
+                } else {
+                    Alert.alert(results.message)
+                }
+            })
+        }
+    }
+
     render() {
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
@@ -109,7 +145,7 @@ class LoginScreen extends React.Component {
                         <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                             <Image source={ic_lock} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
                             <TextInput
-                                ref={(input) => { this.username = input; }}
+                                ref={(input) => { this.password = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                 placeholder='รหัสผ่าน'
                                 returnKeyType={'done'}
@@ -128,7 +164,7 @@ class LoginScreen extends React.Component {
                         <View style={[styles.marginBetweenVertical]}></View>
                         <TouchableOpacity style={[styles.mainButton, styles.center]}
                             onPress={
-                                () => this.props.navigation.navigate('Main')
+                                () => this.CheckLogin()
                             }>
                             <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
                         </TouchableOpacity>
@@ -153,7 +189,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

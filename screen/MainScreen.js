@@ -74,6 +74,8 @@ import ic_cart_inactive from '../assets/image/icon_cart.png'
 import ic_bell_inactive from '../assets/image/icon_noti.png'
 import ic_profile_inactive from '../assets/image/icon_user.png'
 
+import NewsDetailsScreen from './NewsDetailsScreen'
+
 const Stack = createStackNavigator();
 const Reserv = function MyStack() {
     return (
@@ -107,6 +109,19 @@ const Account = function AccStack() {
     )
 }
 
+
+const Home = function AccStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Home'>
+            <Stack.Screen name="Home" component={Homescreen} />
+            <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
+        </Stack.Navigator>
+    )
+}
+
+
 const Tab = createBottomTabNavigator()
 const tabMain = function MainTab() {
     return (
@@ -127,7 +142,7 @@ const tabMain = function MainTab() {
             }}>
             <Tab.Screen
                 name="Home"
-                component={Homescreen}
+                component={Home}
                 options={{
                     tabBarLabel: 'หน้าแรก',
                     tabBarIcon: ({ focused, color }) => (

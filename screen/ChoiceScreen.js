@@ -38,6 +38,7 @@ class ChoiceScreen extends React.Component {
 
 
     LoadBanner = () => {
+        this.props.openIndicator()
         Hepler.post(BASE_URL + BANNER_URL,null,HEADERFORMDATA, (results) =>{
             console.log('BANNER_URL',results)
             if(results.status == 'SUCCESS'){
@@ -45,10 +46,12 @@ class ChoiceScreen extends React.Component {
             }else{
                 this.props.setStateBanner([])
             }
+            this.props.dismissIndicator()
         })
     }
 
     LoadNews = () => {
+        this.props.openIndicator()
         Hepler.post(BASE_URL + NEWS_URL,null,HEADERFORMDATA, (results) =>{
             console.log('NEWS_URL',results)
             if(results.status == 'SUCCESS'){
@@ -56,6 +59,7 @@ class ChoiceScreen extends React.Component {
             }else{
                 this.props.setStateNews([])
             }
+            this.props.dismissIndicator()
         })
     }
 
@@ -105,21 +109,18 @@ class ChoiceScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    async componentDidMount() {
-        this.props.openIndicator()
-        await this.LoadBanner()
-        await this.LoadNews()
-        this.props.dismissIndicator()
+    componentDidMount() {
+        //this.props.openIndicator()
+        //this.LoadBanner()
+        //this.LoadNews()
+        //this.props.dismissIndicator()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
-
         const props = this.props
         const banner = props.reducer.banner
         const news = props.reducer.news
-        console.log('banner',banner)
-
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
                 <Carousel
@@ -137,7 +138,7 @@ class ChoiceScreen extends React.Component {
                         onPress={
                             () => this.props.navigation.navigate('Registercondition')
                         }>
-                        <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสามชิก`}</Text>
+                        <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.twoButton, styles.center, { backgroundColor: secondaryColor }]}
                         onPress={

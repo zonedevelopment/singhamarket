@@ -18,6 +18,14 @@ export const alpaRed            = '#fff6f5'
   */
 
 /**
+ * Constants AsyncStorage
+ */
+export const KEY_LOGIN = 'KEY_LOGIN';
+  /**
+  * End
+  */
+ 
+/**
  * Constants key
  */
 export const OPEN_INDICATOR       = 'OPEN_INDICATOR'

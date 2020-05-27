@@ -22,6 +22,11 @@ import {
     secondaryColor
 } from '../../utils/contants'
 
+import {
+    saveUserInfo
+} from '../../actions'
+import StorageServies from '../../utils/StorageServies'
+
 import styles from '../../style/style'
 
 import ic_profile from '../../assets/image/icon_user_gold2.png'
@@ -75,7 +80,7 @@ class ProfileScreen extends React.Component {
     render() {
 
         const props = this.props.reducer
-        const userInfo = props.userInfo[0]
+        const userInfo = props.userInfo
 
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
@@ -145,7 +150,11 @@ class ProfileScreen extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
                         onPress={
-                            () => this.props.navigation.navigate('Login')
+                            async () => {
+                                await StorageServies.clear()
+                                await this.props.saveUserInfo([])
+                                this.props.navigation.navigate('Choice')
+                            }
                         }>
                             <Image source={ic_logout} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                             <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ออกจากระบบ`}</Text>
@@ -165,7 +174,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    saveUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)
