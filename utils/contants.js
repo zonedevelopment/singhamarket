@@ -38,6 +38,7 @@ export const SET_DATE_SELECTED    = 'SET_DATE_SELECTED'
 export const CLEAR_DATE_SELECTED  = 'CLEAR_DATE_SELECTED'
 export const SAVE_BANNER          = 'SAVE_BANNER'
 export const SAVE_NEWS            = 'SAVE_NEWS'
+export const SAVE_BUILDING        = 'SAVE_BUILDING'
 /**
  * End
  */
@@ -57,6 +58,7 @@ export const PRODUCT_CATEGORY_URL     = '/singha/api/ProductCategory'
 export const REGISTER_PERSONAL_URL    = '/singha/api/RegisterPersonal'
 export const REGISTER_COMPANY_URL    = '/singha/api/RegisterCompany'
 export const CHECK_REGISTER_URL       = '/singha/api/CheckRegister'
+export const GET_BUILDING_URL       = '/singha/api/GetBuilding'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

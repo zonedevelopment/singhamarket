@@ -2,7 +2,6 @@ import React from 'react'
 import {
     View,
     Text,
-    Image,
     FlatList,
     Dimensions,
     BackHandler,
@@ -10,31 +9,42 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
-
+import Image from 'react-native-fast-image'
 import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    BASE_URL,
+    GET_BUILDING_URL,
+    HEADERFORMDATA
 } from '../../utils/contants'
 
+import {
+    openIndicator,
+    dismissIndicator,
+    setStateBuilding
+} from '../../actions'
+import Hepler from '../../utils/Helper'
 import styles from '../../style/style'
 
 class ReservationScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <View key={item.building_id} style={[styles.container, styles.panelWhite, { height: 170, margin: 5 }]}>
+            <View key={item.building_id} style={[styles.container, styles.panelWhite, { /*height: 170,*/ margin: 5 }]}>
                 <View style={[styles.containerRow, { marginBottom: 5 }]}>
-                    <Image source={{ uri: item.building_img }} style={{ flex: 0.5, width: 120, height: 100 }} />
-                    <View style={{ flex: 0.8, padding: 10 }}>
+                    <Image source={{ uri: item.building_img }}  style={{ flex: 0.5, width: 120, height: 100,borderRadius:10 }} />
+                    <View style={{ flex: 0.8, padding: 10 ,paddingTop:0}}>
                         <Text style={[styles.bold, styles.text18, { color: primaryColor }]}>{`${item.building_name}`}</Text>
                         <Text style={[styles.text14, { flexWrap: 'wrap' }]}>{`${item.building_address}`}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={[styles.mainButton, styles.center]}
                     onPress={
-                        () => this.props.navigation.navigate('Condition')
+                        () => this.props.navigation.navigate('Condition',{
+                            building_data : item
+                        })
                     }>
                     <Text style={[styles.text18, { color: '#FFF' }]}>{`จองพื้นที่ร้านค้า`}</Text>
                 </TouchableOpacity>
@@ -79,6 +89,20 @@ class ReservationScreen extends React.Component {
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.LoadData()
+    }
+
+    LoadData() {
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + GET_BUILDING_URL,null,HEADERFORMDATA,(results) => {
+            console.log('GET_BUILDING_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.props.setStateBuilding(results.data)
+            }else{
+                this.props.setStateBuilding([])
+            }
+            this.props.dismissIndicator()
+        })
     }
 
     render() {
@@ -124,7 +148,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    setStateBuilding
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReservationScreen)

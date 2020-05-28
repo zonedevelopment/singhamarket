@@ -7,7 +7,8 @@ import {
     SET_DATE_SELECTED,
     CLEAR_DATE_SELECTED,
     SAVE_BANNER,
-    SAVE_NEWS
+    SAVE_NEWS,
+    SAVE_BUILDING
 } from '../utils/contants'
 
 /**
@@ -119,6 +120,18 @@ export const setStateBanner = (data) => ({
  */
 export const setStateNews = (data) => ({
     type: SAVE_NEWS,
+    payload: data
+})
+/**
+* End
+*/
+
+
+/**
+ * Building
+ */
+export const setStateBuilding = (data) => ({
+    type: SAVE_BUILDING,
     payload: data
 })
 /**

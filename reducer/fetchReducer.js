@@ -7,7 +7,8 @@ import {
     SET_DATE_SELECTED,
     CLEAR_DATE_SELECTED,
     SAVE_BANNER,
-    SAVE_NEWS
+    SAVE_NEWS,
+    SAVE_BUILDING
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -17,47 +18,7 @@ import styles from '../style/style'
 const initialState = {
     indicator: false,
     userInfo: [],
-    building: [
-        {
-            building_id: 1,
-            building_name: 'SINGHA COMPLEX 1',
-            building_img: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg',
-            building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
-            building_condition: '',
-            building_floor: [
-                {
-                    floor_id: 1,
-                    floor_name: 'Floor1'
-                },
-                {
-                    floor_id: 2,
-                    floor_name: 'Floor2'
-                },
-                {
-                    floor_id: 3,
-                    floor_name: 'Floor3'
-                },
-                {
-                    floor_id: 4,
-                    floor_name: 'Floor4'
-                }
-            ]
-        },
-        {
-            building_id: 2,
-            building_name: 'SINGHA COMPLEX 2',
-            building_img: 'https://th1-cdn.pgimgs.com/listing/6643379/UPHO.65101474.V800/The-Esse-at-Singha-Complex-%E0%B8%A7%E0%B8%B1%E0%B8%92%E0%B8%99%E0%B8%B2-Thailand.jpg',
-            building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
-            building_condition: ''
-        },
-        {
-            building_id: 3,
-            building_name: 'SINGHA COMPLEX 3',
-            building_img: 'https://lh3.googleusercontent.com/proxy/evXIrI_4s_LZxlVFlCVDg5tJaaaE3_01IH6Sq2_CGbxy8VjmFYKqwM_L34FJnX70hByM2KCOE3xF_ocdvVWgoennQXUTcrGi54rvFFwDVdGV6ojv07EPV_2cx4uvP8tetROGiVTzh9_YHmGGigKTwU1GUbkULgI',
-            building_address: '88 ถนนอโศกมนตรี แขวงคลองเตยเหนือ เขตวัฒนา กทม',
-            building_condition: ''
-        }
-    ],
+    building: [],
     news: [],
     banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
     standardAccessories: [
@@ -157,6 +118,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 news : action.payload
+            }
+        case SAVE_BUILDING:
+            return {
+                ...state,
+                building : action.payload
             }
         default:
             return state

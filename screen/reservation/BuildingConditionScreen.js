@@ -34,6 +34,10 @@ const htmlContent = `
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class BuildingConditionScreen extends React.Component {
 
+    state = {
+        building_data : []
+    }
+
     ComponentLeft = () => {
         return (
             <TouchableOpacity onPress={() => this.handleBack()} style={{ padding: 10 }}>
@@ -69,7 +73,9 @@ class BuildingConditionScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        const{ building_data } = this.props.route.params
+        await this.setState({building_data : building_data})
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -96,7 +102,7 @@ class BuildingConditionScreen extends React.Component {
                     <ScrollView>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View>
-                                <HTML html={htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
+                                <HTML html={this.state.building_data.building_condition} imagesMaxWidth={DEVICE_WIDTH - 20} />
                             </View>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
@@ -107,7 +113,9 @@ class BuildingConditionScreen extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
-                                        () => this.props.navigation.navigate('Floorzone')
+                                        () => this.props.navigation.navigate('Floorzone',{
+                                            building_id : this.state.building_data.building_id
+                                        })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`ยอมรับ`}</Text>
                                 </TouchableOpacity>
