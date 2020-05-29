@@ -114,7 +114,7 @@ class BuildingConditionScreen extends React.Component {
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
                                         () => this.props.navigation.navigate('Floorzone',{
-                                            building_id : this.state.building_data.building_id
+                                            building_data : this.state.building_data
                                         })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`ยอมรับ`}</Text>

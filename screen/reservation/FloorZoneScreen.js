@@ -21,6 +21,11 @@ import {
     primaryColor,
     secondaryColor
 } from '../../utils/contants'
+import {
+    openIndicator,
+    dismissIndicator,
+    setStateBuilding
+} from '../../actions'
 
 import styles from '../../style/style'
 
@@ -30,16 +35,7 @@ const DEVICE_HEIGHT = Dimensions.get('screen').height
 class FloorZoneScreen extends React.Component {
 
     state = {
-        zone: [
-            {
-                zone_id: 1,
-                zone_name: 'Zone A'
-            },
-            {
-                zone_id: 2,
-                zone_name: 'Zone B'
-            },
-        ]
+        building_data : []
     }
 
     onSelectFloor(index, value) {
@@ -81,15 +77,19 @@ class FloorZoneScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        // const{ building_data } = this.props.route.params
+        // await this.setState({building_data : building_data})
+        // console.log('building_data',building_data);
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
-
+        const{ building_data } = this.props.route.params
         const props = this.props.reducer
-        const floor = props.building[0].building_floor
-
+        let index = props.building.findIndex(p => p.building_id == building_data.building_id)
+        const floor = props.building[index].building_floor
+        const zone = props.building[index].building_zone
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -108,11 +108,11 @@ class FloorZoneScreen extends React.Component {
                     }} />
                 <ScrollView >
                     <View style={[styles.container]}>
-                        <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: 'https://th1-cdn.pgimgs.com/listing/6459894/UPHO.65593632.V800/The-Esse-at-Singha-Complex-Watthana-Thailand.jpg' }} />
+                        <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: props.building[index].building_img }} />
                         <View style={{ padding: 15 }}>
                             <View style={[styles.containerRow]}>
-                                <Text style={[styles.text16, styles.bold, { flex: 0.5, color: primaryColor }]}>{`SINGHA COMPLEX 1`}</Text>
-                                <TouchableOpacity style={{ flex: 0.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
+                                <Text style={[styles.text18, styles.bold, {alignSelf:'flex-start',  flex: 0.6, color: primaryColor }]}>{props.building[index].building_name}</Text>
+                                <TouchableOpacity style={{ flex: 0.4, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
                                     onPress={
                                         () => this.props.navigation.push('Plan')
                                     }>
@@ -121,7 +121,7 @@ class FloorZoneScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <View>
+                            <View >
                                 <Text style={[styles.text16]}>{`กรุณาเลือกชั้นที่ท่านต้องการ`}</Text>
                                 <RadioGroup
                                     size={20}
@@ -152,15 +152,16 @@ class FloorZoneScreen extends React.Component {
                                     size={20}
                                     thickness={2}
                                     color={primaryColor}
-                                    style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
+                                    style={{ flexDirection: 'row', justifyContent: 'space-around',  flexWrap: 'wrap' }}
                                     highlightColor='transparent'
                                     onSelect={(index, value) => this.onSelectFloor(index, value)} >
                                     {
-                                        this.state.zone.map((v, i) => {
+                                        zone.map((v, i) => {
                                             return (
                                                 <RadioButton
                                                     key={i}
                                                     value={v.zone_id}
+                                                    disabled={v.disabled}
                                                     color={primaryColor}
                                                     style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
                                                     <Text style={[styles.text14, { color: primaryColor }]}>{`${v.zone_name}`}</Text>
@@ -174,10 +175,22 @@ class FloorZoneScreen extends React.Component {
                             <View>
                                 <Text style={[styles.text16]}>{`ประเภทสินค้าที่ขาย`}</Text>
                                 <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
-                                    <Text style={[styles.text16, { color: 'white' }]}>{`อาหาร: อาหารญี่ปุ่น`}</Text>
+                                    <Text style={[styles.text16, { color: 'white' }]}>{ props.userInfo.product_type.type_name + ` : ` + props.userInfo.product_type.category_name}</Text>
                                 </View>
-                                <Text style={[styles.text12, { color: primaryColor, paddingLeft: 20 }]}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
+                                <Text style={[styles.text16, { paddingLeft: 20 }]}>{`สินค้าที่เลือก`}</Text>
+                                {
+                                    props.userInfo.product.map((v, i) => {
+                                        return (
+                                            <View key={i} style={{ paddingLeft: 40 }}>
+                                                <Text style={[styles.text14]}>{`${(i + 1)}. ${v.product_name}`}</Text>
+                                            </View>
+                                        )
+                                    })
+                                      
+                                }
+                                <Text style={[styles.text12, { color: primaryColor,paddingTop:5, paddingLeft: 20 }]}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
                             </View>
+                            
                             <View style={[styles.hr]}></View>
                             <View>
                                 <Text style={[styles.text16]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
@@ -204,7 +217,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    setStateBuilding
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FloorZoneScreen)
