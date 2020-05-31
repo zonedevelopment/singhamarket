@@ -35,11 +35,43 @@ const DEVICE_HEIGHT = Dimensions.get('screen').height
 class FloorZoneScreen extends React.Component {
 
     state = {
-        building_data : []
+        building_data : [],
+        index : 0,
+        floor : [],
+        zone : [],
+        floor_selectedValue : '',
+        floor_selectedIndex : null,
+        zone_selectedValue : '',
+        zone_selectedIndex : null,
     }
 
     onSelectFloor(index, value) {
+        this.props.openIndicator()
+        let zone = this.state.zone
+        this.state.zone.map((v,i)=>{
+            if(zone[i]['floor_id'] == value){
+                zone[i]['disabled'] = false
+            }else{
+                zone[i]['disabled'] = true
+            }
+        })
+        this.setState({
+            floor_selectedIndex : index,
+            floor_selectedValue : value,
+            zone_selectedIndex : null,
+            zone_selectedValue : '',
+            zone : zone,
+        })
+        this.props.dismissIndicator()
+    }
 
+    onSelectZone(index, value){
+        this.props.openIndicator()
+        this.setState({
+            zone_selectedIndex : index,
+            zone_selectedValue : value,
+        })
+        this.props.dismissIndicator()
     }
 
     ComponentLeft = () => {
@@ -78,18 +110,24 @@ class FloorZoneScreen extends React.Component {
     }
 
     async componentDidMount() {
-        // const{ building_data } = this.props.route.params
-        // await this.setState({building_data : building_data})
+        const{ building_data } = this.props.route.params
+        let index = this.props.reducer.building.findIndex(p => p.building_id == building_data.building_id)
+        await this.setState({
+            index : index,
+            floor : this.props.reducer.building[index].building_floor,
+            zone : this.props.reducer.building[index].building_zone,
+        })
+        console.log('floor',this.state.floor)
         // console.log('building_data',building_data);
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
-        const{ building_data } = this.props.route.params
+      //  const{ building_data } = this.props.route.params
         const props = this.props.reducer
-        let index = props.building.findIndex(p => p.building_id == building_data.building_id)
-        const floor = props.building[index].building_floor
-        const zone = props.building[index].building_zone
+        //let index = props.building.findIndex(p => p.building_id == building_data.building_id)
+        // const floor = props.building[index].building_floor
+        // const zone = props.building[index].building_zone
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -108,10 +146,10 @@ class FloorZoneScreen extends React.Component {
                     }} />
                 <ScrollView >
                     <View style={[styles.container]}>
-                        <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: props.building[index].building_img }} />
+                        <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: props.building[this.state.index].building_img }} />
                         <View style={{ padding: 15 }}>
                             <View style={[styles.containerRow]}>
-                                <Text style={[styles.text18, styles.bold, {alignSelf:'flex-start',  flex: 0.6, color: primaryColor }]}>{props.building[index].building_name}</Text>
+                                <Text style={[styles.text18, styles.bold, {alignSelf:'flex-start',  flex: 0.6, color: primaryColor }]}>{props.building[this.state.index].building_name}</Text>
                                 <TouchableOpacity style={{ flex: 0.4, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
                                     onPress={
                                         () => this.props.navigation.push('Plan')
@@ -126,12 +164,13 @@ class FloorZoneScreen extends React.Component {
                                 <RadioGroup
                                     size={20}
                                     thickness={2}
+                                    selectedIndex={this.state.floor_selectedIndex}
                                     color={primaryColor}
                                     style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
                                     highlightColor='transparent'
                                     onSelect={(index, value) => this.onSelectFloor(index, value)} >
                                     {
-                                        floor.map((v, i) => {
+                                        this.state.floor.map((v, i) => {
                                             return (
                                                 <RadioButton
                                                     key={i}
@@ -151,12 +190,13 @@ class FloorZoneScreen extends React.Component {
                                 <RadioGroup
                                     size={20}
                                     thickness={2}
+                                    selectedIndex={this.state.zone_selectedIndex}
                                     color={primaryColor}
                                     style={{ flexDirection: 'row', justifyContent: 'space-around',  flexWrap: 'wrap' }}
                                     highlightColor='transparent'
-                                    onSelect={(index, value) => this.onSelectFloor(index, value)} >
+                                    onSelect={(index, value) => this.onSelectZone(index, value)} >
                                     {
-                                        zone.map((v, i) => {
+                                        this.state.zone.map((v, i) => {
                                             return (
                                                 <RadioButton
                                                     key={i}
