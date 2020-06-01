@@ -8,7 +8,11 @@ import {
     CLEAR_DATE_SELECTED,
     SAVE_BANNER,
     SAVE_NEWS,
-    SAVE_BUILDING
+    SAVE_BUILDING,
+    SET_BUILDING_ID_SELECTED,
+    SET_FLOOR_ID_SELECTED,
+    SET_ZONE_ID_SELECTED,
+
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -19,6 +23,9 @@ const initialState = {
     indicator: false,
     userInfo: [],
     building: [],
+    reserverion_building_id : '',
+    reserverion_zone_id : '',
+    reserverion_floor_id : '',
     news: [],
     banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
     standardAccessories: [
@@ -124,6 +131,22 @@ export default (state = initialState, action) => {
                 ...state,
                 building : action.payload
             }
+        case SET_BUILDING_ID_SELECTED:
+            return {
+                ...state,
+                reserverion_building_id : action.payload
+            }
+        case SET_FLOOR_ID_SELECTED:
+            return {
+                ...state,
+                reserverion_floor_id : action.payload
+            }
+        case SET_ZONE_ID_SELECTED:
+            return {
+                ...state,
+                reserverion_zone_id : action.payload
+            }
+
         default:
             return state
     }

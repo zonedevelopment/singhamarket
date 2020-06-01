@@ -39,11 +39,11 @@ class BoothScreen extends React.Component {
     }
 
     async onSelectBooth(item) {
-        let dayItem = this.state.dayItem
-        dayItem.boothSelectID = item.booth_id
-        dayItem.boothSelectName = item.booth_name
+        // let dayItem = this.state.dayItem
+        // dayItem.boothSelectID = item.booth_id
+        // dayItem.boothSelectName = item.booth_name
         
-        alert(JSON.stringify(dayItem))
+        // alert(JSON.stringify(dayItem))
 
 
 
@@ -120,8 +120,8 @@ class BoothScreen extends React.Component {
     componentDidMount() {
         const props = this.props.reducer
         const daySelect = props.date_selected
-        const { day } = this.props.route.params
-        this.setState({ dayItem: day, dateSelected: daySelect})
+        // const { day } = this.props.route.params
+        // this.setState({ dayItem: day, dateSelected: daySelect})
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 

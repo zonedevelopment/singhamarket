@@ -4,6 +4,7 @@ import {
     Text,
     Image,
     FlatList,
+    Alert,
     ScrollView,
     Dimensions,
     BackHandler,
@@ -109,6 +110,7 @@ class CalendarScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.props.saveDateSelected('clear', '')
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -146,8 +148,19 @@ class CalendarScreen extends React.Component {
                     <TouchableOpacity style={[styles.mainButton, styles.center]}
                         onPress={
                             async () => {
-                                await this.props.saveDateSelected('save', this.state.selectDate)
-                                this.props.navigation.navigate('Dayselect')
+                                if(this.state.selectDate.length == 0){
+                                    await Alert.alert(
+                                        'คำเตือน!',
+                                        'กรุณาเลือกวันที่ท่านต้องการขายของ!'
+                                    );
+                                }else{
+                                    await this.props.saveDateSelected('save', this.state.selectDate)
+                                    ///this.props.navigation.navigate('Dayselect')
+                                    this.props.navigation.navigate('Booth',{
+                                        ActionType : 'CHECK_ALL'
+                                    })
+                                }
+                                
                             }
                         }>
                         <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>

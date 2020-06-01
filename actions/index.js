@@ -8,7 +8,10 @@ import {
     CLEAR_DATE_SELECTED,
     SAVE_BANNER,
     SAVE_NEWS,
-    SAVE_BUILDING
+    SAVE_BUILDING,
+    SET_BUILDING_ID_SELECTED,
+    SET_FLOOR_ID_SELECTED,
+    SET_ZONE_ID_SELECTED
 } from '../utils/contants'
 
 /**
@@ -132,6 +135,25 @@ export const setStateNews = (data) => ({
  */
 export const setStateBuilding = (data) => ({
     type: SAVE_BUILDING,
+    payload: data
+})
+/**
+* End
+*/
+
+/**
+ * Reservation
+ */
+export const setStateSelectedBuildingID = (data) => ({
+    type: SET_BUILDING_ID_SELECTED,
+    payload: data
+})
+export const setStateSelectedFloorID = (data) => ({
+    type: SET_FLOOR_ID_SELECTED,
+    payload: data
+})
+export const setStateSelectedZoneID = (data) => ({
+    type: SET_ZONE_ID_SELECTED,
     payload: data
 })
 /**

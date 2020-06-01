@@ -4,6 +4,7 @@ import {
     Text,
     Image,
     FlatList,
+    Alert,
     ScrollView,
     Dimensions,
     BackHandler,
@@ -24,7 +25,10 @@ import {
 import {
     openIndicator,
     dismissIndicator,
-    setStateBuilding
+    setStateBuilding,
+    setStateSelectedBuildingID,
+    setStateSelectedFloorID,
+    setStateSelectedZoneID
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -37,6 +41,7 @@ class FloorZoneScreen extends React.Component {
     state = {
         building_data : [],
         index : 0,
+        building_id : '',
         floor : [],
         zone : [],
         floor_selectedValue : '',
@@ -116,6 +121,7 @@ class FloorZoneScreen extends React.Component {
             index : index,
             floor : this.props.reducer.building[index].building_floor,
             zone : this.props.reducer.building[index].building_zone,
+            building_id : building_data.building_id
         })
         console.log('floor',this.state.floor)
         // console.log('building_data',building_data);
@@ -236,7 +242,20 @@ class FloorZoneScreen extends React.Component {
                                 <Text style={[styles.text16]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
                                 <TouchableOpacity style={[styles.mainButton2, { flexDirection: 'row', marginTop: 5, marginBottom: 5, alignItems: 'center', justifyContent: 'space-between', paddingLeft: 10, paddingRight: 5 }]}
                                     onPress={
-                                        () => this.props.navigation.navigate('Calendar')
+                                        async () => {
+                                            if(this.state.floor_selectedValue == '' || this.state.zone_selectedValue == ''){
+                                                await Alert.alert(
+                                                    'คำเตือน!',
+                                                    'กรุณาเลือกโซนที่ท่านต้องการขายของ!'
+                                                );
+                                            }else{
+                                                await this.props.setStateSelectedBuildingID(this.state.building_id)
+                                                await this.props.setStateSelectedFloorID(this.state.floor_selectedValue)
+                                                await this.props.setStateSelectedZoneID(this.state.zone_selectedValue)
+                                                this.props.navigation.navigate('Calendar')
+                                            }
+
+                                        }
                                     }>
                                     <Text style={[styles.text16, { color: 'white' }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
                                     <Icon name='chevron-right' size={12} color='white' />
@@ -259,7 +278,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    setStateBuilding
+    setStateBuilding,
+    setStateSelectedBuildingID,
+    setStateSelectedFloorID,
+    setStateSelectedZoneID
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FloorZoneScreen)

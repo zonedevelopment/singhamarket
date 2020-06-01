@@ -39,6 +39,12 @@ export const CLEAR_DATE_SELECTED  = 'CLEAR_DATE_SELECTED'
 export const SAVE_BANNER          = 'SAVE_BANNER'
 export const SAVE_NEWS            = 'SAVE_NEWS'
 export const SAVE_BUILDING        = 'SAVE_BUILDING'
+
+/// reservation
+export const SET_BUILDING_ID_SELECTED = 'SET_BUILDING_ID_SELECTED'
+export const SET_FLOOR_ID_SELECTED = 'SET_FLOOR_ID_SELECTED'
+export const SET_ZONE_ID_SELECTED = 'SET_ZONE_ID_SELECTED'
+
 /**
  * End
  */
