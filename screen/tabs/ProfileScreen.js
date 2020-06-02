@@ -102,7 +102,10 @@ class ProfileScreen extends React.Component {
                     <View style={[styles.container]}>
                         {
                             userInfo.partners_type == 1 ?
-                                <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                                <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
+                                onPress={
+                                    () => this.props.navigation.navigate('Personal')
+                                }>
                                     <Image source={ic_profile} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                                     <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลส่วนตัว`}</Text>
                                     <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
@@ -110,7 +113,10 @@ class ProfileScreen extends React.Component {
                                     </View>
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}>
+                                <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
+                                onPress={
+                                    () => this.props.navigation.navigate('Company')
+                                }>
                                     <Image source={ic_company} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                                     <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>
                                     <View style={{ flex: 0.2, alignItems: 'flex-end' }}>

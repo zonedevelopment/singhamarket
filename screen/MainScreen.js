@@ -55,6 +55,8 @@ import ConfirmReservscreen from './reservation/ConfirmReservScreen'
 /**
  * Account stack
  */
+import Companyscreen from './account/ProfileCompanyScreen'
+import Personalscreen from './account/ProfilePersonalScreen'
 import Historyscreen from './account/HistoryScreen'
 import Favoritescreen from './account/FavoriteScreen'
 import Supportscreen from './account/SupportScreen'
@@ -105,6 +107,8 @@ const Account = function AccStack() {
             <Stack.Screen name="History" component={Historyscreen} />
             <Stack.Screen name="Favorite" component={Favoritescreen} />
             <Stack.Screen name="Support" component={Supportscreen} />
+            <Stack.Screen name="Personal" component={Personalscreen} />
+            <Stack.Screen name="Company" component={Companyscreen} />
         </Stack.Navigator>
     )
 }
