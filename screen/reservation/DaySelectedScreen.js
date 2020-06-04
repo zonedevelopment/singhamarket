@@ -36,7 +36,8 @@ class DaySelectedScreen extends React.Component {
                     style={[styles.mainButton2, styles.containerRow, {justifyContent: 'space-between', alignItems: 'center', padding: 5}]}
                     onPress={
                         () => this.props.navigation.navigate('Booth', {
-                            day: item
+                            day: item.date,
+                            ActionType : 'Only'
                         })
                     }>
                     <Text style={{ color: 'white' }}>{`${item.boothSelectName == '' ? 'เลือกล็อคขายของ' : item.boothSelectName}`}</Text>

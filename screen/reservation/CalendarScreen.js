@@ -100,7 +100,8 @@ class CalendarScreen extends React.Component {
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
+            //this.props.navigation.pop();
+            this.props.navigation.goBack()
             return true;
         }
     };
@@ -155,12 +156,10 @@ class CalendarScreen extends React.Component {
                                     );
                                 }else{
                                     await this.props.saveDateSelected('save', this.state.selectDate)
-                                    ///this.props.navigation.navigate('Dayselect')
                                     this.props.navigation.navigate('Booth',{
                                         ActionType : 'CHECK_ALL'
                                     })
                                 }
-                                
                             }
                         }>
                         <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>

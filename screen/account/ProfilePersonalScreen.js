@@ -151,7 +151,7 @@ class ProfilePersonalScreen extends React.Component {
                             <Text style={[styles.text18, { color: primaryColor }]}>{`รหัสผ่าน`}</Text>
                             <TouchableOpacity style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}
                             onPress={()=>{
-                                alert('change password')
+                                this.props.navigation.navigate('ChangePassword')
                             }}
                             >
                                 <View style={[styles.containerRow]}>

@@ -123,7 +123,6 @@ class FloorZoneScreen extends React.Component {
             zone : this.props.reducer.building[index].building_zone,
             building_id : building_data.building_id
         })
-        console.log('floor',this.state.floor)
         // console.log('building_data',building_data);
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
@@ -242,19 +241,20 @@ class FloorZoneScreen extends React.Component {
                                 <Text style={[styles.text16]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
                                 <TouchableOpacity style={[styles.mainButton2, { flexDirection: 'row', marginTop: 5, marginBottom: 5, alignItems: 'center', justifyContent: 'space-between', paddingLeft: 10, paddingRight: 5 }]}
                                     onPress={
-                                        async () => {
+                                         () => {
                                             if(this.state.floor_selectedValue == '' || this.state.zone_selectedValue == ''){
-                                                await Alert.alert(
+                                                Alert.alert(
                                                     'คำเตือน!',
                                                     'กรุณาเลือกโซนที่ท่านต้องการขายของ!'
                                                 );
                                             }else{
-                                                await this.props.setStateSelectedBuildingID(this.state.building_id)
-                                                await this.props.setStateSelectedFloorID(this.state.floor_selectedValue)
-                                                await this.props.setStateSelectedZoneID(this.state.zone_selectedValue)
+                                                this.props.openIndicator()
+                                                this.props.setStateSelectedBuildingID(this.state.building_id)
+                                                this.props.setStateSelectedFloorID(this.state.floor_selectedValue)
+                                                this.props.setStateSelectedZoneID(this.state.zone_selectedValue)
+                                                this.props.dismissIndicator()
                                                 this.props.navigation.navigate('Calendar')
                                             }
-
                                         }
                                     }>
                                     <Text style={[styles.text16, { color: 'white' }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
