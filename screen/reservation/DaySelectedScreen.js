@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    Alert,
     FlatList,
     ScrollView,
     Dimensions,
@@ -21,6 +22,7 @@ import {
     secondaryColor
 } from '../../utils/contants'
 
+import {setStatePreviousScreen} from '../../actions'
 import styles from '../../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
@@ -35,10 +37,13 @@ class DaySelectedScreen extends React.Component {
                 <TouchableOpacity disabled={false}
                     style={[styles.mainButton2, styles.containerRow, {justifyContent: 'space-between', alignItems: 'center', padding: 5}]}
                     onPress={
-                        () => this.props.navigation.navigate('Booth', {
-                            day: item.date,
-                            ActionType : 'Only'
-                        })
+                        async () => {
+                            await this.props.setStatePreviousScreen('DaySelected')
+                            this.props.navigation.navigate('Booth', {
+                                day: item.date,
+                                ActionType : 'Only',
+                            })
+                        }
                     }>
                     <Text style={{ color: 'white' }}>{`${item.boothSelectName == '' ? 'เลือกล็อคขายของ' : item.boothSelectName}`}</Text>
                     <Icon name='chevron-right' size={12} color='white' />
@@ -116,6 +121,36 @@ class DaySelectedScreen extends React.Component {
                         keyExtractor={(item) => item}
                         renderItem={this._renderItem} />
                 </View>
+                <View style={[styles.positionBottom, styles.center, { padding: 10, bottom: 10, alignSelf: 'center' }]}>
+                    <TouchableOpacity style={[styles.mainButton, styles.center]}
+                        onPress={
+                            async () => {
+                                let validation = true
+                                daySelect.map((v,i)=>{
+                                    if(v.boothSelectID == ''){
+                                        validation = false
+                                    }
+                                })
+
+
+                                if(validation == false){
+                                    await Alert.alert(
+                                        'คำเตือน!',
+                                        'กรุณาเลือกบูธที่ต้องการขายของให้ครบ!'
+                                    );
+                                }else{
+                                    this.props.navigation.navigate('Accessories')
+                                    // await this.props.saveDateSelected('save', this.state.selectDate)
+                                    // await this.props.setStatePreviousScreen('Calendar')
+                                    // this.props.navigation.navigate('Booth',{
+                                    //     ActionType : 'CHECK_ALL',
+                                    // })
+                                }
+                            }
+                        }>
+                        <Text style={[styles.text18, { color: 'white' }]}>{`ขั้นตอนต่อไป`}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -126,7 +161,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    setStatePreviousScreen
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DaySelectedScreen)

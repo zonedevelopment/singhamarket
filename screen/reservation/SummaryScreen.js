@@ -23,9 +23,22 @@ import {
     emptyColor
 } from '../../utils/contants'
 
+import {
+    openIndicator,
+    dismissIndicator,
+} from '../../actions'
 import styles from '../../style/style'
 
 class SummaryScreen extends React.Component {
+
+    state = {
+        area_item : 0,
+        total_area : 0,
+        discount_price : 0,
+        total_other_service : 0,
+        vat : 0,
+        total_final_price : 0,
+    }
 
     ComponentLeft = () => {
         return (
@@ -63,7 +76,68 @@ class SummaryScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.log('arrCart',this.props.reducer.date_selected)
+        this.props.openIndicator()
+
+        this.props.dismissIndicator()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+
+    _renderItem = ({ item, index }) => {
+       
+        return (
+            <View>
+                <View style={[styles.containerRow]}>
+                    <View style={{ flex: 0.15 }}>
+                        <View style={[styles.center, { alignItems:'center',width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                            <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{item.boothSelectName}</Text>
+                        </View>
+                    </View>
+                    <View style={{ flex: 0.9 }}>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(item.date).format('LL')}</Text>
+                            <View style={[styles.containerRow]}>
+                                <TouchableOpacity>
+                                    <Text style={[styles.text16]}>{`แก้ไข`}</Text>
+                                </TouchableOpacity>
+                                <View style={{ width: 1, backgroundColor: grayColor, margin: 4 }}></View>
+                                <TouchableOpacity>
+                                    <Text style={[styles.text16]}>{`ลบ`}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
+                            <Text style={[styles.text14]}>{`500 บาท`}</Text>
+                        </View>
+                        {
+                            item.other_service.map((v,i)=>{
+                                return(
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                        <Text style={[styles.text14, { flex: 1 }]}>{v.service_name}</Text>
+                                        <View style={[styles.containerRow, { flex: 0.55, justifyContent: 'space-around', alignItems: 'center' }]}>
+                                            <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
+                                                <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
+                                            </TouchableOpacity>
+                                            <Text style={{ marginLeft: 6, marginRight: 6, textAlignVertical: 'center' }}>{v.qty}</Text>
+                                            <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
+                                                <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{v.total_price}</Text>
+                                    </View>
+                                )
+                            })
+                        }
+                    </View>
+                    
+                </View>
+                <View style={[styles.marginBetweenVertical]}></View>
+                <View style={[styles.hr]}></View> 
+            </View>
+            
+        )
     }
 
     render() {
@@ -89,18 +163,26 @@ class SummaryScreen extends React.Component {
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8, height: 80, justifyContent: 'center', paddingLeft: 10 }]}>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`SINGHA COMPLEX 1`}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{this.props.reducer.reserverion_building_name}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`FLOOR 1 / ZONE A`}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{this.props.reducer.reserverion_floor_name + ` / ` + this.props.reducer.reserverion_zone_name}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`อาหารญี่ปุ่น`}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{this.props.reducer.userInfo.product_type.category_name}</Text>
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
+
+                            <FlatList
+                                data={this.props.reducer.date_selected}
+                                keyExtractor={(item) => item.id}
+                                extraData={this.state}
+                                renderItem={this._renderItem} 
+                            />
+{/* 
                             <View style={[styles.containerRow]}>
                                 <View style={{ flex: 0.15 }}>
                                     <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
@@ -154,6 +236,9 @@ class SummaryScreen extends React.Component {
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.hr]}></View>
+
+
+
                             <View style={[styles.containerRow]}>
                                 <View style={{ flex: 0.15 }}>
                                     <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
@@ -206,6 +291,10 @@ class SummaryScreen extends React.Component {
                                 </View>
                             </View>
                             <View style={[styles.hr]}></View>
+                            
+                            
+                             */}
+                            
                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                 <Text style={[styles.text16, { textAlign: 'center' }]}>{`โค้ดส่วนลด`}</Text>
                                 <View style={[styles.shadow, styles.inputWithIcon, { width: '70%' }]}>
@@ -223,24 +312,24 @@ class SummaryScreen extends React.Component {
                             <View style={[styles.container]}>
                                 <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x 2`}</Text>
-                                    <Text style={[styles.text16]}>{`2,000 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.state.area_item}</Text>
+                                    <Text style={[styles.text16]}>{ this.state.total_area + ' บาท'}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`โค้ดส่วนลด`}</Text>
-                                    <Text style={[styles.text16]}>{`200 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{this.state.discount_price + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
-                                    <Text style={[styles.text16]}>{`3,600 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{this.state.total_other_service + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`นิติบุคคลหัก ณ ที่จ่าย 3 %`}</Text>
-                                    <Text style={[styles.text16]}>{`100 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{this.state.vat + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                                    <Text style={[styles.text16, styles.bold]}>{`5,500 บาท`}</Text>
+                                    <Text style={[styles.text16, styles.bold]}>{this.state.total_final_price + ` บาท`}</Text>
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
@@ -278,7 +367,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen)

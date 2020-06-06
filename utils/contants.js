@@ -44,7 +44,10 @@ export const SAVE_BUILDING        = 'SAVE_BUILDING'
 export const SET_BUILDING_ID_SELECTED = 'SET_BUILDING_ID_SELECTED'
 export const SET_FLOOR_ID_SELECTED = 'SET_FLOOR_ID_SELECTED'
 export const SET_ZONE_ID_SELECTED = 'SET_ZONE_ID_SELECTED'
-
+export const SET_BUILDING_NAME_SELECTED = 'SET_BUILDING_NAME_SELECTED'
+export const SET_FLOOR_NAME_SELECTED = 'SET_FLOOR_NAME_SELECTED'
+export const SET_ZONE_NAME_SELECTED = 'SET_ZONE_NAME_SELECTED'
+export const SET_PREVIOUS_SCREEN = 'SET_PREVIOUS_SCREEN'
 /**
  * End
  */
@@ -67,6 +70,7 @@ export const CHECK_REGISTER_URL       = '/singha/api/CheckRegister'
 export const GET_BUILDING_URL         = '/singha/api/GetBuilding'
 export const GET_BOOTH_URL            = '/singha/api/GetBooth'
 export const CHECK_BOOTH_URL          = '/singha/api/CheckBoothStatus'
+export const GET_ACCESSOIRES_URL      = '/singha/api/Accessory'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

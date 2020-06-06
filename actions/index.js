@@ -11,7 +11,11 @@ import {
     SAVE_BUILDING,
     SET_BUILDING_ID_SELECTED,
     SET_FLOOR_ID_SELECTED,
-    SET_ZONE_ID_SELECTED
+    SET_ZONE_ID_SELECTED,
+    SET_BUILDING_NAME_SELECTED,
+    SET_FLOOR_NAME_SELECTED,
+    SET_ZONE_NAME_SELECTED,
+    SET_PREVIOUS_SCREEN
 } from '../utils/contants'
 
 /**
@@ -154,6 +158,23 @@ export const setStateSelectedFloorID = (data) => ({
 })
 export const setStateSelectedZoneID = (data) => ({
     type: SET_ZONE_ID_SELECTED,
+    payload: data
+})
+export const setStateSelectedBuildingName = (data) => ({
+    type: SET_BUILDING_NAME_SELECTED,
+    payload: data
+})
+export const setStateSelectedFloorName = (data) => ({
+    type: SET_FLOOR_NAME_SELECTED,
+    payload: data
+})
+export const setStateSelectedZoneName = (data) => ({
+    type: SET_ZONE_NAME_SELECTED,
+    payload: data
+})
+
+export const setStatePreviousScreen = (data) => ({
+    type: SET_PREVIOUS_SCREEN,
     payload: data
 })
 /**

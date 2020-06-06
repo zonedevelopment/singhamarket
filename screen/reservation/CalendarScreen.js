@@ -24,7 +24,8 @@ import {
 } from '../../utils/contants'
 
 import {
-    saveDateSelected
+    saveDateSelected,
+    setStatePreviousScreen
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -156,8 +157,9 @@ class CalendarScreen extends React.Component {
                                     );
                                 }else{
                                     await this.props.saveDateSelected('save', this.state.selectDate)
+                                    await this.props.setStatePreviousScreen('Calendar')
                                     this.props.navigation.navigate('Booth',{
-                                        ActionType : 'CHECK_ALL'
+                                        ActionType : 'CHECK_ALL',
                                     })
                                 }
                             }
@@ -175,7 +177,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    saveDateSelected
+    saveDateSelected,
+    setStatePreviousScreen
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)

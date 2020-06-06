@@ -19,41 +19,90 @@ import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    HEADERFORMDATA,
+    BASE_URL,
+    GET_ACCESSOIRES_URL
 } from '../../utils/contants'
 
-import styles from '../../style/style'
+import {
+    openIndicator,
+    dismissIndicator,
+    saveDateSelected
+} from '../../actions'
 
+import styles from '../../style/style'
+import Hepler from '../../utils/Helper'
 import ic_image from '../../assets/image/icon_photo.png'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class AccessoriesScreen extends React.Component {
 
+    state = {
+        ListAccessoire : []
+    }
+
     _renderItem = ({ item, index }) => {
         return (
-            <View key={index} style={[styles.containerRow, { padding: 5, height: 55, borderWidth: 0.5, borderColor: grayColor, marginLeft: 5, marginRight: 5 }]}>
-                <View style={{ flex: 0.6, backgroundColor: 'white', justifyContent: 'center', padding: 5 }}>
-                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.name}`}</Text>
-                    <Text style={[styles.text12, { color: primaryColor }]}>{`${item.description}`}</Text>
+            <View key={index} style={[styles.containerRow, { padding: 5, /*height: '',*/ borderWidth: 0.5, borderColor: grayColor, marginLeft: 5, marginRight: 5 }]}>
+                <View style={{ flex: 0.6, backgroundColor: 'white', justifyContent: 'center', padding: 2 }}>
+                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.service_name}`}</Text>
+                    <Text style={[styles.text12, { color: grayColor }]}>{`(จุดละ ${item.service_price} บาท)`}</Text>
                 </View>
                 <View style={{ width: 1, backgroundColor: grayColor }}></View>
                 <View style={{ flex: 0.3, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', padding: 5 }}>
                     <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}>
-                        <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
+                        <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                         onPress={
+                            () => {
+                                this.DelItem(item.service_id);
+                            }
+                        }>
                             <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
                         </TouchableOpacity>
-                        <Text style={{ marginLeft: 8, marginRight: 8, textAlignVertical: 'center' }}>{`${item.selected}`}</Text>
-                        <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
+                        <Text style={{ marginLeft: 8, marginRight: 8, textAlignVertical: 'center' }}>{`${item.selected_qty}`}</Text>
+                        <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                         onPress={
+                            () => {
+                                this.plusItem(item.service_id);
+                            }
+                        }>
                             <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ width: 1, backgroundColor: grayColor }}></View>
                 <View style={{ flex: 0.25, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', padding: 5 }}>
-                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.price}`}</Text>
+                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.total_price}`}</Text>
                 </View>
             </View>
         )
+    }
+
+    plusItem = (service_id) => {
+        this.props.openIndicator()
+        let arr = this.state.ListAccessoire;
+        let index = arr.findIndex(k => k.service_id == service_id);
+        arr[index].selected_qty = arr[index].selected_qty + 1;
+        arr[index].total_price = parseFloat(arr[index].total_price) + parseFloat(arr[index].service_price)
+        this.setState({
+            ListAccessoire: arr
+        });
+        this.props.dismissIndicator()
+    }
+
+    DelItem = (service_id) => {
+        this.props.openIndicator()
+        let arr = this.state.ListAccessoire;
+        let index = arr.findIndex(k => k.service_id == service_id);
+        if (arr[index].selected_qty > 0) {
+            arr[index].selected_qty = arr[index].selected_qty - 1;
+            arr[index].total_price = parseFloat(arr[index].total_price) - parseFloat(arr[index].service_price)
+            this.setState({
+                ListAccessoire: arr
+            });
+        }
+        this.props.dismissIndicator()
     }
 
     ComponentLeft = () => {
@@ -92,7 +141,23 @@ class AccessoriesScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.LoadData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+
+    LoadData = () => {
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + GET_ACCESSOIRES_URL,null,HEADERFORMDATA,(results)=>{
+            console.log('GET_ACCESSOIRES_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.setState({ListAccessoire : results.data})
+                this.props.dismissIndicator()
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
     }
 
     render() {
@@ -159,8 +224,9 @@ class AccessoriesScreen extends React.Component {
                         </View>
                     </View>
                     <FlatList
-                        data={props.otherService}
-                        keyExtractor={(item) => item.id}
+                        data={this.state.ListAccessoire}
+                        keyExtractor={(item) => item.service_id}
+                        extraData={this.state}
                         renderItem={this._renderItem} />
                     <View>
                         <Text style={[styles.text12, styles.bold, { paddingLeft: 10 }]}>{`หมายเหตุ หากตรวจพบหน้างาน แล้วไม่ตรงตามที่ท่านระบุไว้\nคิดค่าปรับ 500 บาท + ค่าบริการจริง`}</Text>
@@ -169,13 +235,51 @@ class AccessoriesScreen extends React.Component {
                 <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
                         onPress={
-                            () => null
+                            () => {
+                                this.props.openIndicator()
+                                let arrCart = this.props.reducer.date_selected
+                                let arrAccessorie = []
+                                this.state.ListAccessoire.map((v,i)=>{
+                                    arrAccessorie.push({
+                                        service_id : v.service_id,
+                                        qty : 0,
+                                        service_price : v.service_price,
+                                        total_price : 0,
+                                        service_name : v.service_name
+                                    })
+                                })
+                                arrCart.map((v,i)=>{
+                                    arrCart[i]['other_service'] = arrAccessorie
+                                })
+                                this.props.saveDateSelected('save', arrCart)
+                                this.props.dismissIndicator()
+                                this.props.navigation.navigate('Summary')
+                            }
                         }>
                         <Text style={[styles.text14, { color: '#FFF' }]}>{`ไม่รับบริการเสริม`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                         onPress={
-                            () => this.props.navigation.navigate('Summary')
+                            () => {
+                                this.props.openIndicator()
+                                let arrCart = this.props.reducer.date_selected
+                                let arrAccessorie = []
+                                this.state.ListAccessoire.map((v,i)=>{
+                                    arrAccessorie.push({
+                                        service_id : v.service_id,
+                                        qty : v.selected_qty,
+                                        service_price : v.service_price,
+                                        total_price : v.total_price,
+                                        service_name : v.service_name
+                                    })
+                                })
+                                arrCart.map((v,i)=>{
+                                    arrCart[i]['other_service'] = arrAccessorie
+                                })
+                                this.props.saveDateSelected('save', arrCart)
+                                this.props.dismissIndicator()
+                                this.props.navigation.navigate('Summary')
+                            }
                         }>
                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ตกลง`}</Text>
                     </TouchableOpacity>
@@ -190,7 +294,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    saveDateSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccessoriesScreen)

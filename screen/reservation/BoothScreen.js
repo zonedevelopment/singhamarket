@@ -39,6 +39,7 @@ import {
     openIndicator,
     dismissIndicator,
     saveDateSelected,
+    setStatePreviousScreen
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
@@ -71,13 +72,15 @@ class BoothScreen extends React.Component {
                             if(vs.date == vr.date && vr.status == true){
                                 vs['boothSelectID'] = item.booth_detail_id
                                 vs['boothSelectName'] = item.booth_name
+                                vs['boothSelectPrice'] = item.booth_amount
                             }
                         })
                     })
-                    console.log('arrDaySelected',arrDaySelected)
-                    this.props.saveDateSelected(arrDaySelected)
+                    this.props.saveDateSelected('save', arrDaySelected)
                     this.props.dismissIndicator()
-                    this.props.navigation.navigate('Dayselect')
+                    this.props.navigation.navigate('Dayselect',{
+                        previous_screen : 'Booth'
+                    })
                 } else {
                     Alert.alert(results.message)
                     this.props.dismissIndicator()
@@ -88,9 +91,10 @@ class BoothScreen extends React.Component {
                 if(v.date == this.state.ddlSelectedDate){
                     v['boothSelectID'] = item.booth_detail_id
                     v['boothSelectName'] = item.booth_name
+                    vs['boothSelectPrice'] = item.booth_amount
                 }
             })
-            this.props.saveDateSelected(arrDaySelected)
+            this.props.saveDateSelected('save', arrDaySelected)
             this.props.navigation.navigate('Dayselect')
         }
     }
@@ -164,11 +168,15 @@ class BoothScreen extends React.Component {
     }
 
     componentDidMount() {
-        const { day,ActionType } = this.props.route.params
-        if(ActionType == 'Only'){
-            this.setSelectedDate(day)
-        }
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    componentWillReceiveProps(nextProps){
+        const { day} = nextProps.route.params
+        if(this.props.reducer.previous_screen == 'DaySelected'){
+            this.setSelectedDate(day)
+            this.props.setStatePreviousScreen('Booth')
+        }
     }
 
     setSelectedDate(itemValue){
@@ -299,6 +307,7 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     saveDateSelected,
+    setStatePreviousScreen
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoothScreen)

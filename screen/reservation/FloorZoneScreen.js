@@ -28,7 +28,10 @@ import {
     setStateBuilding,
     setStateSelectedBuildingID,
     setStateSelectedFloorID,
-    setStateSelectedZoneID
+    setStateSelectedZoneID,
+    setStateSelectedBuildingName,
+    setStateSelectedFloorName,
+    setStateSelectedZoneName,
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -42,6 +45,7 @@ class FloorZoneScreen extends React.Component {
         building_data : [],
         index : 0,
         building_id : '',
+        building_name : '',
         floor : [],
         zone : [],
         floor_selectedValue : '',
@@ -121,7 +125,8 @@ class FloorZoneScreen extends React.Component {
             index : index,
             floor : this.props.reducer.building[index].building_floor,
             zone : this.props.reducer.building[index].building_zone,
-            building_id : building_data.building_id
+            building_id : building_data.building_id,
+            building_name : building_data.building_name,
         })
         // console.log('building_data',building_data);
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
@@ -252,6 +257,11 @@ class FloorZoneScreen extends React.Component {
                                                 this.props.setStateSelectedBuildingID(this.state.building_id)
                                                 this.props.setStateSelectedFloorID(this.state.floor_selectedValue)
                                                 this.props.setStateSelectedZoneID(this.state.zone_selectedValue)
+
+                                                this.props.setStateSelectedBuildingName(this.state.building_name)
+                                                this.props.setStateSelectedFloorName(this.state.floor[this.state.floor_selectedIndex].floor_name)
+                                                this.props.setStateSelectedZoneName(this.state.zone[this.state.zone_selectedIndex].zone_name)
+
                                                 this.props.dismissIndicator()
                                                 this.props.navigation.navigate('Calendar')
                                             }
@@ -281,7 +291,10 @@ const mapDispatchToProps = {
     setStateBuilding,
     setStateSelectedBuildingID,
     setStateSelectedFloorID,
-    setStateSelectedZoneID
+    setStateSelectedZoneID,
+    setStateSelectedBuildingName,
+    setStateSelectedFloorName,
+    setStateSelectedZoneName,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FloorZoneScreen)

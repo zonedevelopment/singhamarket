@@ -12,6 +12,10 @@ import {
     SET_BUILDING_ID_SELECTED,
     SET_FLOOR_ID_SELECTED,
     SET_ZONE_ID_SELECTED,
+    SET_BUILDING_NAME_SELECTED,
+    SET_FLOOR_NAME_SELECTED,
+    SET_ZONE_NAME_SELECTED,
+    SET_PREVIOUS_SCREEN,
 
 } from '../utils/contants'
 
@@ -20,12 +24,16 @@ import ic_banking from '../assets/image/icon_paymeny.png'
 import styles from '../style/style'
 
 const initialState = {
+    previous_screen : '',
     indicator: false,
     userInfo: [],
     building: [],
     reserverion_building_id : '',
     reserverion_zone_id : '',
     reserverion_floor_id : '',
+    reserverion_building_name : '',
+    reserverion_zone_name : '',
+    reserverion_floor_name : '',
     news: [],
     banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
     standardAccessories: [
@@ -40,29 +48,7 @@ const initialState = {
             image: ''
         }
     ],
-    otherService: [
-        {
-            id: 1,
-            name: 'ไฟฟ้าและแสงสว่าง',
-            description: '(จุดละ 100 บาท)',
-            price: 100,
-            selected: 0
-        },
-        {
-            id: 2,
-            name: 'ไฟฟ้าไม่เกิน 8,000 วัตต์',
-            description: '(จุดละ 500 บาท)',
-            price: 500,
-            selected: 0
-        },
-        {
-            id: 3,
-            name: 'ไฟฟ้า 8,000 วัตต์ ขึ้นไป',
-            description: '(จุดละ 0 บาท)',
-            price: 0,
-            selected: 0
-        }
-    ],
+    otherService: [],
     paymentChannel: [
         {
             channel_id: 1,
@@ -146,7 +132,27 @@ export default (state = initialState, action) => {
                 ...state,
                 reserverion_zone_id : action.payload
             }
-
+        case SET_BUILDING_NAME_SELECTED:
+            return {
+                ...state,
+                reserverion_building_name : action.payload
+            }
+        case SET_FLOOR_NAME_SELECTED:
+            return {
+                ...state,
+                reserverion_floor_name : action.payload
+            }
+        case SET_ZONE_NAME_SELECTED:
+            return {
+                ...state,
+                reserverion_zone_name : action.payload
+            }
+        case SET_PREVIOUS_SCREEN:
+            return {
+                ...state,
+                previous_screen : action.payload
+            }
+        
         default:
             return state
     }
