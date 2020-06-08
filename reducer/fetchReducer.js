@@ -62,7 +62,9 @@ const initialState = {
         }
     ],
     product_type: [],
-    date_selected: []
+    date_selected: [],
+    personal_vat : 7,
+    company_vat : 3,
 }
 
 export default (state = initialState, action) => {

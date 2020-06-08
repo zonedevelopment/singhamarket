@@ -14,7 +14,6 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
-
 import {
     darkColor,
     grayColor,
@@ -26,6 +25,7 @@ import {
 import {
     openIndicator,
     dismissIndicator,
+    saveDateSelected
 } from '../../actions'
 import styles from '../../style/style'
 
@@ -76,13 +76,37 @@ class SummaryScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log('arrCart',this.props.reducer.date_selected)
-        this.props.openIndicator()
-
-        this.props.dismissIndicator()
+        
+        this.calculate()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
+    calculate(){
+        console.log('arrCart',this.props.reducer.date_selected)
+        this.props.openIndicator()
+        let total_area = 0
+        let total_service = 0
+        let vat = 0
+        this.props.reducer.date_selected.map((v,i)=>{
+            total_area += parseFloat(total_area) + parseFloat(v.boothSelectPrice)
+            v.other_service.map((vs,is)=>{
+                total_service += vs.qty * parseFloat(vs.service_price)
+            })
+        })
+        
+        if(this.props.reducer.userInfo.partners_type == 1){
+            vat = (parseFloat(total_area) + parseFloat(total_service)) * this.props.reducer.personal_vat / 100
+        }else{
+            vat = (parseFloat(total_area) + parseFloat(total_service)) * this.props.reducer.company_vat / 100
+        }
+        this.setState({
+            total_area : total_area,
+            total_other_service : total_service,
+            vat : vat,
+            total_final_price : parseFloat(total_area) + parseFloat(total_service) + parseFloat(vat)
+        })
+        this.props.dismissIndicator()
+    }
 
     _renderItem = ({ item, index }) => {
        
@@ -117,11 +141,17 @@ class SummaryScreen extends React.Component {
                                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                         <Text style={[styles.text14, { flex: 1 }]}>{v.service_name}</Text>
                                         <View style={[styles.containerRow, { flex: 0.55, justifyContent: 'space-around', alignItems: 'center' }]}>
-                                            <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
+                                            <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                            onPress={()=>{
+                                                this.DelItem(item.date,v.service_id)
+                                            }}>
                                                 <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
                                             </TouchableOpacity>
                                             <Text style={{ marginLeft: 6, marginRight: 6, textAlignVertical: 'center' }}>{v.qty}</Text>
-                                            <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
+                                            <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]} 
+                                            onPress={()=>{
+                                                this.PlusItem(item.date,v.service_id)
+                                            }}>
                                                 <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
                                             </TouchableOpacity>
                                         </View>
@@ -138,6 +168,30 @@ class SummaryScreen extends React.Component {
             </View>
             
         )
+    }
+
+
+    PlusItem (date,service_id) {
+        let arrBooth = this.props.reducer.date_selected
+        let indexBooth = arrBooth.findIndex(k => k.date == date)
+        let indexService = arrBooth[indexBooth]['other_service'].findIndex(k => k.service_id == service_id)
+        arrBooth[indexBooth]['other_service'][indexService].qty = arrBooth[indexBooth]['other_service'][indexService].qty + 1;
+        arrBooth[indexBooth]['other_service'][indexService].total_price = parseFloat(arrBooth[indexBooth]['other_service'][indexService].total_price) + parseFloat(arrBooth[indexBooth]['other_service'][indexService].service_price)
+        this.props.saveDateSelected('save',arrBooth)
+        this.calculate()
+    }
+
+    DelItem (date,service_id) {
+        let arrBooth = this.props.reducer.date_selected
+        let indexBooth = arrBooth.findIndex(k => k.date == date)
+        let arrService = arrBooth[indexBooth]['other_service']
+        let indexService = arrService.findIndex(k => k.service_id == service_id)
+        if (arrBooth[indexBooth]['other_service'][indexService].qty > 0) {
+            arrBooth[indexBooth]['other_service'][indexService].qty = arrBooth[indexBooth]['other_service'][indexService].qty - 1;
+            arrBooth[indexBooth]['other_service'][indexService].total_price = parseFloat(arrBooth[indexBooth]['other_service'][indexService].total_price) - parseFloat(arrBooth[indexBooth]['other_service'][indexService].service_price)
+            this.props.saveDateSelected('save',arrBooth)
+            this.calculate()
+        }
     }
 
     render() {
@@ -312,7 +366,7 @@ class SummaryScreen extends React.Component {
                             <View style={[styles.container]}>
                                 <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.state.area_item}</Text>
+                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.props.reducer.date_selected.length}</Text>
                                     <Text style={[styles.text16]}>{ this.state.total_area + ' บาท'}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
@@ -369,6 +423,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
+    saveDateSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen)

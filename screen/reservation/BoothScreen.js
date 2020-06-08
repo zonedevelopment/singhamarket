@@ -91,7 +91,7 @@ class BoothScreen extends React.Component {
                 if(v.date == this.state.ddlSelectedDate){
                     v['boothSelectID'] = item.booth_detail_id
                     v['boothSelectName'] = item.booth_name
-                    vs['boothSelectPrice'] = item.booth_amount
+                    v['boothSelectPrice'] = item.booth_amount
                 }
             })
             this.props.saveDateSelected('save', arrDaySelected)
