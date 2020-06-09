@@ -188,14 +188,12 @@ class ConfirmReservScreen extends React.Component {
                             </View>
                             <View style={[styles.hr]}></View>
 
-
                             <FlatList
                                 data={this.props.reducer.date_selected}
                                 keyExtractor={(item) => item.id}
                                 extraData={this.state}
                                 renderItem={this._renderItem} 
                             />
-
 
                             <View style={[styles.hr]}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
