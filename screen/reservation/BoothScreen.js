@@ -101,7 +101,7 @@ class BoothScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <View style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
+            <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
                 <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
                     <View style={{ width: 15, height: 15, borderRadius: 10, margin: 4, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
                     <Text style={[styles.text16, { color: primaryColor }]}>{`${item.booth_name}`}</Text>

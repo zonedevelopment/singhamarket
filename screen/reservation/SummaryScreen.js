@@ -120,7 +120,7 @@ class SummaryScreen extends React.Component {
     _renderItem = ({ item, index }) => {
 
         return (
-            <View>
+            <View key={index}>
                 <View style={[styles.containerRow]}>
                     <View style={{ flex: 0.15 }}>
                         <View style={[styles.center, { alignItems: 'center', width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
