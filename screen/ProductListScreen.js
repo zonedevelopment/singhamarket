@@ -122,7 +122,7 @@ class ProductListScreen extends React.Component {
 
     componentDidMount() {
         const { typeId, product,RegisType } = this.props.route.params
-        this.setState({ type_id: typeId, productList: product })
+        this.setState({ type_id: typeId, productList: product,RegisType:RegisType })
     }
 
     render() {
