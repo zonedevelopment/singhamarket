@@ -14,7 +14,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
-
+var numeral = require('numeral');
 import {
     darkColor,
     grayColor,
@@ -24,9 +24,25 @@ import {
     redColor
 } from '../../utils/contants'
 
+
+import {
+    openIndicator,
+    dismissIndicator,
+    saveDateSelected
+} from '../../actions'
+
 import styles from '../../style/style'
 
 class ConfirmReservScreen extends React.Component {
+
+    state = {
+        area_item : 0,
+        total_area : 0,
+        discount_price : 0,
+        total_other_service : 0,
+        vat : 0,
+        total_final_price : 0,
+    }
 
     ComponentLeft = () => {
         return (
@@ -64,7 +80,72 @@ class ConfirmReservScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.calculate()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    calculate(){
+        console.log('arrCart',this.props.reducer.date_selected)
+        this.props.openIndicator()
+        let total_area = 0
+        let total_service = 0
+        let vat = 0
+        this.props.reducer.date_selected.map((v,i)=>{
+            total_area += parseFloat(total_area) + parseFloat(v.boothSelectPrice)
+            v.other_service.map((vs,is)=>{
+                total_service += vs.qty * parseFloat(vs.service_price)
+            })
+        })
+        
+        if(this.props.reducer.userInfo.partners_type == 1){
+            vat = (parseFloat(total_area) + parseFloat(total_service)) * this.props.reducer.personal_vat / 100
+        }else{
+            vat = (parseFloat(total_area) + parseFloat(total_service)) * this.props.reducer.company_vat / 100
+        }
+        this.setState({
+            total_area : total_area,
+            total_other_service : total_service,
+            vat : vat,
+            total_final_price : parseFloat(total_area) + parseFloat(total_service) + parseFloat(vat)
+        })
+        this.props.dismissIndicator()
+    }
+
+
+    _renderItem ({ item, index }) {
+        return (
+            <View>
+                <View style={[styles.containerRow]}>
+                    <View style={{ flex: 0.15 }}>
+                        <View style={[styles.center, { alignItems:'center',width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                            <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{item.boothSelectName}</Text>
+                        </View>
+                    </View>
+                    <View style={{ flex: 0.9 }}>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(item.date).format('LL')}}</Text>
+                        </View>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
+                            <Text style={[styles.text14]}>{item.boothSelectPrice + ` บาท`}</Text>
+                        </View>
+                        {
+                             item.other_service.map((v,i)=>{
+                                return(
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                        <Text style={[styles.text14, { flex: 0.9 }]}>{v.service_name}</Text>
+                                        <Text style={[styles.text14, { flex: 0.15 }]}>{v.qty}</Text>
+                                        <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{numeral(v.total_price).format('0,0.00') + ` บาท`}</Text>
+                                    </View>
+                                )})
+                        }
+                      
+                    </View>
+                </View>
+                <View style={[styles.hr]}></View>
+            </View>
+
+        )
     }
 
     render() {
@@ -90,14 +171,14 @@ class ConfirmReservScreen extends React.Component {
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View style={[styles.container]}>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                    <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`SINGHA COMPLEX 1`}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{this.props.reducer.reserverion_building_name}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`FLOOR 1 / ZONE A`}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{this.props.reducer.reserverion_floor_name + ` / ` + this.props.reducer.reserverion_zone_name}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`ประเภทสินค้าที่ขาย`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`อาหารญี่ปุ่น`}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{this.props.reducer.userInfo.product_type.category_name}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`วันที่ทำรายการจอง`}</Text>
@@ -106,83 +187,39 @@ class ConfirmReservScreen extends React.Component {
                                 </View>
                             </View>
                             <View style={[styles.hr]}></View>
-                            <View style={[styles.containerRow]}>
-                                <View style={{ flex: 0.15 }}>
-                                    <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                        <Text style={[styles.text16, styles.bold]}>{`C01`}</Text>
-                                    </View>
-                                </View>
-                                <View style={{ flex: 0.9 }}>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text16]}>{`วันที่ขาย 27 มี.ค.`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
-                                        <Text style={[styles.text14]}>{`500 บาท`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text14, { flex: 0.9 }]}>{`ไฟฟ้าและแสงสว่าง`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.15 }]}>{`x 1`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{`500 บาท`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text14, { flex: 0.9 }]}>{`ไฟฟ้าไม่เกิน 8,000 วัตต์`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.15 }]}>{`x 2`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{`500 บาท`}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.hr]}></View>
-                            <View style={[styles.containerRow]}>
-                                <View style={{ flex: 0.15 }}>
-                                    <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                        <Text style={[styles.text16, styles.bold]}>{`C02`}</Text>
-                                    </View>
-                                </View>
-                                <View style={{ flex: 0.9 }}>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text16]}>{`วันที่ขาย 27 มี.ค.`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
-                                        <Text style={[styles.text14]}>{`500 บาท`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text14, { flex: 0.9 }]}>{`ไฟฟ้าและแสงสว่าง`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.15 }]}>{`x 2`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{`500 บาท`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                        <Text style={[styles.text14, { flex: 0.9 }]}>{`ไฟฟ้า 8,000 วัตต์ ขึ้นไป`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.15 }]}>{`x 2`}</Text>
-                                        <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{`500 บาท`}</Text>
-                                    </View>
-                                </View>
-                            </View>
+
+
+                            <FlatList
+                                data={this.props.reducer.date_selected}
+                                keyExtractor={(item) => item.id}
+                                extraData={this.state}
+                                renderItem={this._renderItem} 
+                            />
+
+
                             <View style={[styles.hr]}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.container]}>
                                 <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x 2`}</Text>
-                                    <Text style={[styles.text16]}>{`2,000 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.props.reducer.date_selected.length}</Text>
+                                    <Text style={[styles.text16]}>{ numeral(this.state.total_area).format('0,0.00') + ' บาท'}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`โค้ดส่วนลด`}</Text>
-                                    <Text style={[styles.text16]}>{`200 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.discount_price).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
-                                    <Text style={[styles.text16]}>{`3,600 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`นิติบุคคลหัก ณ ที่จ่าย 3 %`}</Text>
-                                    <Text style={[styles.text16]}>{`100 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                                    <Text style={[styles.text16, styles.bold]}>{`5,500 บาท`}</Text>
+                                    <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
@@ -222,7 +259,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    saveDateSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmReservScreen)

@@ -110,6 +110,13 @@ class SummaryScreen extends React.Component {
         props.dismissIndicator()
     }
 
+    CancelOrder(date){
+        let arrBooth = this.props.reducer.date_selected
+        arrBooth = arrBooth.filter(k => k.date !== date)
+        this.props.saveDateSelected('save',arrBooth)
+        this.calculate()
+    }
+
     _renderItem = ({ item, index }) => {
 
         return (
@@ -128,7 +135,9 @@ class SummaryScreen extends React.Component {
                                     <Text style={[styles.text16]}>{`แก้ไข`}</Text>
                                 </TouchableOpacity>
                                 <View style={{ width: 1, backgroundColor: grayColor, margin: 4 }}></View>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{
+                                    this.CancelOrder(item.date)
+                                }}>
                                     <Text style={[styles.text16]}>{`ลบ`}</Text>
                                 </TouchableOpacity>
                             </View>
