@@ -172,7 +172,7 @@ class BoothScreen extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        const { day} = nextProps.route.params
+        const { day } = nextProps.route.params
         if(this.props.reducer.previous_screen == 'DaySelected'){
             this.setSelectedDate(day)
             this.props.setStatePreviousScreen('Booth')
@@ -235,12 +235,11 @@ class BoothScreen extends React.Component {
                     <View style={[styles.marginBetweenVertical]}></View>
 
 
-                    <View style={[styles.shadow, styles.inputWithIcon, {borderRadius:10, alignSelf: 'center' }]}>
+                    <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                         <Picker
                             selectedValue={this.state.ddlSelectedDate}
                             style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedDate(itemValue)}
-                        >
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedDate(itemValue)} >
                             <Picker.Item label="กรุณาเลือกวันที่ขายของ" value="" />
                             {
                                 props.date_selected.map((v,i)=>{
