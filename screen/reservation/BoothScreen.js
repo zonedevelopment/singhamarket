@@ -101,7 +101,7 @@ class BoothScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         return (
-            <View style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
+            <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
                 <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
                     <View style={{ width: 15, height: 15, borderRadius: 10, margin: 4, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
                     <Text style={[styles.text16, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
@@ -172,7 +172,7 @@ class BoothScreen extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        const { day} = nextProps.route.params
+        const { day } = nextProps.route.params
         if(this.props.reducer.previous_screen == 'DaySelected'){
             this.setSelectedDate(day)
             this.props.setStatePreviousScreen('Booth')
@@ -191,6 +191,8 @@ class BoothScreen extends React.Component {
             formData.append('product_type_id',this.props.reducer.userInfo.product_type.type_id)
             formData.append('product_cate_id',this.props.reducer.userInfo.product_type.cate_id)
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
+                // alert(JSON.stringify(results))
+                // return
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
                     this.setState({listBooth : results.data})
@@ -235,12 +237,11 @@ class BoothScreen extends React.Component {
                     <View style={[styles.marginBetweenVertical]}></View>
 
 
-                    <View style={[styles.shadow, styles.inputWithIcon, {borderRadius:10, alignSelf: 'center' }]}>
+                    <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                         <Picker
                             selectedValue={this.state.ddlSelectedDate}
                             style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedDate(itemValue)}
-                        >
+                            onValueChange={(itemValue, itemIndex) => this.setSelectedDate(itemValue)} >
                             <Picker.Item label="กรุณาเลือกวันที่ขายของ" value="" />
                             {
                                 props.date_selected.map((v,i)=>{

@@ -182,7 +182,7 @@ class RegisterPersonScreen extends React.Component {
                     'บันทึกสำเร็จ!',
                     'สมัครสมาชิกเรียบร้อย',
                     [
-                        { text: 'ตกลง', onPress: () => this.props.navigation.pop() }
+                        { text: 'ตกลง', onPress: () => this.props.navigation.navigate('Login') }
                     ],
                     { cancelable: false }
                 );
