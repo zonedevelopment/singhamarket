@@ -153,7 +153,7 @@ class LoginScreen extends React.Component {
                                 blurOnSubmit={false}
                                 value={this.state.password}
                                 onChangeText={(text) => this.setState({ password: text })}
-                                onSubmitEditing={() => null} />
+                                onSubmitEditing={() => this.CheckLogin()} />
                         </View>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={{ width: '100%', alignItems: 'flex-end' }}>

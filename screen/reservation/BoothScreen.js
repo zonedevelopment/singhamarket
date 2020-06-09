@@ -191,6 +191,8 @@ class BoothScreen extends React.Component {
             formData.append('product_type_id',this.props.reducer.userInfo.product_type.type_id)
             formData.append('product_cate_id',this.props.reducer.userInfo.product_type.cate_id)
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
+                // alert(JSON.stringify(results))
+                // return
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
                     this.setState({listBooth : results.data})
