@@ -34,6 +34,7 @@ export const DISMISS_INDICATOR    = 'DISMISS_INDICATOR'
 export const SAVE_USERINFO        = 'SAVE_USERINFO'
 export const CLEAR_USERINFO       = 'CLEAR_USERINFO'
 
+
 export const SAVE_PRODUCT_TYPE    = 'SAVE_PRODUCT_TYPE'
 export const SET_DATE_SELECTED    = 'SET_DATE_SELECTED'
 export const CLEAR_DATE_SELECTED  = 'CLEAR_DATE_SELECTED'
@@ -49,6 +50,7 @@ export const SET_BUILDING_NAME_SELECTED = 'SET_BUILDING_NAME_SELECTED'
 export const SET_FLOOR_NAME_SELECTED = 'SET_FLOOR_NAME_SELECTED'
 export const SET_ZONE_NAME_SELECTED = 'SET_ZONE_NAME_SELECTED'
 export const SET_PREVIOUS_SCREEN = 'SET_PREVIOUS_SCREEN'
+export const SET_BOOKINGID_SELECTED = 'SET_BOOKINGID_SELECTED'
 /**
  * End
  */
@@ -73,6 +75,8 @@ export const GET_BOOTH_URL            = '/singha/api/GetBooth'
 export const CHECK_BOOTH_URL          = '/singha/api/CheckBoothStatus'
 export const GET_ACCESSOIRES_URL      = '/singha/api/Accessory'
 export const SUBMIT_BOOKING_URL      = '/singha/api/BookingSubmit'
+export const CHECK_DISCOUNT_URL       = '/singha/api/CheckDiscount'
+export const GET_CONFIRMRESERVATION_URL = '/singha/api/GetConfirmReservation'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

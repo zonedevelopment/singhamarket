@@ -16,6 +16,7 @@ import {
     SET_FLOOR_NAME_SELECTED,
     SET_ZONE_NAME_SELECTED,
     SET_PREVIOUS_SCREEN,
+    SET_BOOKINGID_SELECTED,
 
 } from '../utils/contants'
 
@@ -63,8 +64,10 @@ const initialState = {
     ],
     product_type: [],
     date_selected: [],
-    personal_vat : 7,
-    company_vat : 3,
+    personal_vat : 7, // ดึงจาก base
+    company_vat : 3, /// ดึงจาก base
+    booking_selected : [],
+    
 }
 
 export default (state = initialState, action) => {
@@ -154,7 +157,11 @@ export default (state = initialState, action) => {
                 ...state,
                 previous_screen : action.payload
             }
-        
+        case SET_BOOKINGID_SELECTED : 
+            return {
+                ...state,
+                booking_selected : action.payload
+            }
         default:
             return state
     }

@@ -21,14 +21,19 @@ import {
     primaryColor,
     secondaryColor,
     emptyColor,
-    redColor
+    redColor,
+    BASE_URL,
+    GET_CONFIRMRESERVATION_URL,
+    HEADERFORMDATA
 } from '../../utils/contants'
 
+import Hepler from '../../utils/Helper'
 
 import {
     openIndicator,
     dismissIndicator,
-    saveDateSelected
+    saveDateSelected,
+    setStateBookingSelected
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -42,6 +47,7 @@ class ConfirmReservScreen extends React.Component {
         total_other_service : 0,
         vat : 0,
         total_final_price : 0,
+        arrBooking:[],
     }
 
     ComponentLeft = () => {
@@ -80,8 +86,15 @@ class ConfirmReservScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.calculate()
+        //this.calculate()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+
+    GetData(){
+        let BookingID = this.props.reducer.booking_selected
+
+
     }
 
     calculate(){
@@ -259,7 +272,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    saveDateSelected
+    saveDateSelected,
+    setStateBookingSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmReservScreen)

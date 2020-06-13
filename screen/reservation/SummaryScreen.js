@@ -24,12 +24,15 @@ import {
     SUBMIT_BOOKING_URL,
     BASE_URL,
     HEADERFORMDATA,
+    CHECK_DISCOUNT_URL,
 } from '../../utils/contants'
 
 import {
     openIndicator,
     dismissIndicator,
-    saveDateSelected
+    saveDateSelected,
+    setStateBookingSelected
+
 } from '../../actions'
 import styles from '../../style/style'
 import Hepler from '../../utils/Helper'
@@ -43,6 +46,7 @@ class SummaryScreen extends React.Component {
         total_other_service: 0,
         vat: 0,
         total_final_price: 0,
+        discount_coupon : '',
     }
 
     ComponentLeft = () => {
@@ -139,6 +143,7 @@ class SummaryScreen extends React.Component {
             console.log('SUBMIT_BOOKING_URL',results)
             if (results.status == 'SUCCESS') {
                 this.props.saveDateSelected('save',[])
+                this.props.setStateBookingSelected([results.BookingID])
                 this.props.dismissIndicator()
                 this.props.navigation.navigate('ConfirmReserv')
             } else {
@@ -237,6 +242,24 @@ class SummaryScreen extends React.Component {
         }
     }
 
+    CheckDiscount () {
+        this.props.openIndicator()
+        let formData = new FormData();
+        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+        formData.append('booking_grand_total',this.state.total_final_price)
+        Hepler.post(BASE_URL + CHECK_DISCOUNT_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('CHECK_DISCOUNT_URL',results)
+            if (results.status == 'SUCCESS') {
+
+                this.props.dismissIndicator()
+            } else {
+                this.setState({discount_coupon:''})
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+    }
+
 
 
     render() {
@@ -283,13 +306,15 @@ class SummaryScreen extends React.Component {
                                 <Text style={[styles.text16, { textAlign: 'center' }]}>{`โค้ดส่วนลด`}</Text>
                                 <View style={[styles.shadow, styles.inputWithIcon, { width: '70%' }]}>
                                     <TextInput
-                                        ref={(input) => { this.username = input; }}
+                                        ref={(input) => { this.discount_coupon = input; }}
                                         style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                         placeholder='Enter code..'
                                         returnKeyType={'next'}
                                         blurOnSubmit={false}
-                                        onChangeText={(text) => null}
-                                        onSubmitEditing={() => null} />
+                                        onChangeText={(text) => this.setState({discount_coupon : text})}
+                                        onSubmitEditing={() => {
+                                            this.CheckDiscount()
+                                        }} />
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
@@ -353,7 +378,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    saveDateSelected
+    saveDateSelected,
+    setStateBookingSelected
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen)
