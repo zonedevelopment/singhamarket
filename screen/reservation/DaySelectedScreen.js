@@ -131,8 +131,6 @@ class DaySelectedScreen extends React.Component {
                                         validation = false
                                     }
                                 })
-
-
                                 if(validation == false){
                                     await Alert.alert(
                                         'คำเตือน!',

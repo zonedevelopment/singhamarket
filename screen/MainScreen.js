@@ -48,6 +48,7 @@ import Dayselectscreen from './reservation/DaySelectedScreen'
 import Accessoriesscreen from './reservation/AccessoriesScreen'
 import Summaryscreen from './reservation/SummaryScreen'
 import ConfirmReservscreen from './reservation/ConfirmReservScreen'
+import Editboothscreen from './reservation/EditBoothScreen'
 /**
  * End
  */
@@ -95,6 +96,7 @@ const Reserv = function MyStack() {
             <Stack.Screen name="Accessories" component={Accessoriesscreen} />
             <Stack.Screen name="Summary" component={Summaryscreen} />
             <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
+            <Stack.Screen name="EditBooth" component={Editboothscreen}/>
         </Stack.Navigator>
     );
 }

@@ -72,6 +72,7 @@ export const GET_BUILDING_URL         = '/singha/api/GetBuilding'
 export const GET_BOOTH_URL            = '/singha/api/GetBooth'
 export const CHECK_BOOTH_URL          = '/singha/api/CheckBoothStatus'
 export const GET_ACCESSOIRES_URL      = '/singha/api/Accessory'
+export const SUBMIT_BOOKING_URL      = '/singha/api/BookingSubmit'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

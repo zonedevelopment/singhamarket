@@ -5,6 +5,7 @@ import {
     Image,
     FlatList,
     TextInput,
+    Alert,
     Dimensions,
     BackHandler,
     ScrollView,
@@ -16,11 +17,13 @@ import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import {
-    darkColor,
     grayColor,
     primaryColor,
     secondaryColor,
-    emptyColor
+    emptyColor,
+    SUBMIT_BOOKING_URL,
+    BASE_URL,
+    HEADERFORMDATA,
 } from '../../utils/contants'
 
 import {
@@ -29,6 +32,7 @@ import {
     saveDateSelected
 } from '../../actions'
 import styles from '../../style/style'
+import Hepler from '../../utils/Helper'
 
 class SummaryScreen extends React.Component {
 
@@ -85,7 +89,7 @@ class SummaryScreen extends React.Component {
         // console.log('arrCart',this.props.reducer.date_selected)
         const props = this.props
         const reducer = props.reducer
-        props.openIndicator()
+        //props.openIndicator()
         let total_area = 0
         let total_service = 0
         let vat = 0
@@ -95,7 +99,6 @@ class SummaryScreen extends React.Component {
                 total_service += vs.qty * parseFloat(vs.service_price)
             })
         })
-
         if (reducer.userInfo.partners_type == 1) {
             vat = (parseFloat(total_area) + parseFloat(total_service)) * reducer.personal_vat / 100
         } else {
@@ -107,18 +110,45 @@ class SummaryScreen extends React.Component {
             vat: vat,
             total_final_price: parseFloat(total_area) + parseFloat(total_service) + parseFloat(vat)
         })
-        props.dismissIndicator()
+        //props.dismissIndicator()
     }
 
-    CancelOrder(date){
+    async CancelOrder(date){
         let arrBooth = this.props.reducer.date_selected
-        arrBooth = arrBooth.filter(k => k.date !== date)
-        this.props.saveDateSelected('save',arrBooth)
-        this.calculate()
+        if(arrBooth.length > 1){
+            arrBooth = arrBooth.filter(k => k.date !== date)
+            await this.props.saveDateSelected('save',arrBooth)
+            await this.calculate()
+        }else{
+            Alert.alert('ไม่สามารถยกเลิกวันจองน้อยกว่า 1 วันได้')
+        }
+    }
+
+
+
+    Submit = () => {
+        this.props.openIndicator()
+        let formData = new FormData();
+        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+        formData.append('marketname_id',this.props.reducer.reserverion_building_id)
+        formData.append('booking_total',this.state.total_area)
+        formData.append('booking_service_total',this.state.total_other_service)
+        formData.append('booking_grand_total',this.state.total_final_price)
+        formData.append('BookingItems',JSON.stringify(this.props.reducer.date_selected))
+        Hepler.post(BASE_URL + SUBMIT_BOOKING_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('SUBMIT_BOOKING_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.saveDateSelected('save',[])
+                this.props.dismissIndicator()
+                this.props.navigation.navigate('ConfirmReserv')
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
     }
 
     _renderItem = ({ item, index }) => {
-
         return (
             <View key={index}>
                 <View style={[styles.containerRow]}>
@@ -131,7 +161,11 @@ class SummaryScreen extends React.Component {
                         <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                             <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(item.date).format('LL')}</Text>
                             <View style={[styles.containerRow]}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{
+                                    this.props.navigation.navigate('EditBooth',{
+                                        day: item.date,
+                                    })
+                                }}>
                                     <Text style={[styles.text16]}>{`แก้ไข`}</Text>
                                 </TouchableOpacity>
                                 <View style={{ width: 1, backgroundColor: grayColor, margin: 4 }}></View>
@@ -172,27 +206,25 @@ class SummaryScreen extends React.Component {
                             })
                         }
                     </View>
-
                 </View>
                 <View style={[styles.marginBetweenVertical]}></View>
                 <View style={[styles.hr]}></View>
             </View>
-
         )
     }
 
 
-    PlusItem(date, service_id) {
+    async PlusItem(date, service_id) {
         let arrBooth = this.props.reducer.date_selected
         let indexBooth = arrBooth.findIndex(k => k.date == date)
         let indexService = arrBooth[indexBooth]['other_service'].findIndex(k => k.service_id == service_id)
         arrBooth[indexBooth]['other_service'][indexService].qty = arrBooth[indexBooth]['other_service'][indexService].qty + 1;
         arrBooth[indexBooth]['other_service'][indexService].total_price = parseFloat(arrBooth[indexBooth]['other_service'][indexService].total_price) + parseFloat(arrBooth[indexBooth]['other_service'][indexService].service_price)
-        this.props.saveDateSelected('save', arrBooth)
-        this.calculate()
+        await this.props.saveDateSelected('save', arrBooth)
+        await this.calculate()
     }
 
-    DelItem(date, service_id) {
+    async DelItem(date, service_id) {
         let arrBooth = this.props.reducer.date_selected
         let indexBooth = arrBooth.findIndex(k => k.date == date)
         let arrService = arrBooth[indexBooth]['other_service']
@@ -200,10 +232,12 @@ class SummaryScreen extends React.Component {
         if (arrBooth[indexBooth]['other_service'][indexService].qty > 0) {
             arrBooth[indexBooth]['other_service'][indexService].qty = arrBooth[indexBooth]['other_service'][indexService].qty - 1;
             arrBooth[indexBooth]['other_service'][indexService].total_price = parseFloat(arrBooth[indexBooth]['other_service'][indexService].total_price) - parseFloat(arrBooth[indexBooth]['other_service'][indexService].service_price)
-            this.props.saveDateSelected('save', arrBooth)
-            this.calculate()
+            await this.props.saveDateSelected('save', arrBooth)
+            await this.calculate()
         }
     }
+
+
 
     render() {
         return (
@@ -290,15 +324,15 @@ class SummaryScreen extends React.Component {
                             </View>
                             <View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
-                                    <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
+                                    {/* <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
                                         onPress={
                                             () => null
                                         }>
                                         <Text style={[styles.text14, { color: '#FFF' }]}>{`จองพื้นที่อื่นเพิ่ม`}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
+                                    </TouchableOpacity> */}
+                                    <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
-                                            () => this.props.navigation.navigate('ConfirmReserv')
+                                            () => this.Submit()
                                         }>
                                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ยืนยันการจอง`}</Text>
                                     </TouchableOpacity>

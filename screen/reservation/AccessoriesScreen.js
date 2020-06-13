@@ -238,17 +238,17 @@ class AccessoriesScreen extends React.Component {
                             () => {
                                 this.props.openIndicator()
                                 let arrCart = this.props.reducer.date_selected
-                                let arrAccessorie = []
-                                this.state.ListAccessoire.map((v,i)=>{
-                                    arrAccessorie.push({
-                                        service_id : v.service_id,
-                                        qty : 0,
-                                        service_price : v.service_price,
-                                        total_price : 0,
-                                        service_name : v.service_name
-                                    })
-                                })
                                 arrCart.map((v,i)=>{
+                                    let arrAccessorie = []
+                                    this.state.ListAccessoire.map((v,i)=>{
+                                        arrAccessorie.push({
+                                            service_id : v.service_id,
+                                            qty : 0,
+                                            service_price : v.service_price,
+                                            total_price : 0,
+                                            service_name : v.service_name
+                                        })
+                                    })
                                     arrCart[i]['other_service'] = arrAccessorie
                                 })
                                 this.props.saveDateSelected('save', arrCart)
