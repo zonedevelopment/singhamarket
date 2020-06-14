@@ -77,6 +77,7 @@ export const GET_ACCESSOIRES_URL      = '/singha/api/Accessory'
 export const SUBMIT_BOOKING_URL      = '/singha/api/BookingSubmit'
 export const CHECK_DISCOUNT_URL       = '/singha/api/CheckDiscount'
 export const GET_CONFIRMRESERVATION_URL = '/singha/api/GetConfirmReservation'
+export const GET_CART_URL             = '/singha/api/GetCart'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

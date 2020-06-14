@@ -15,20 +15,63 @@ import { connect } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
-
+var numeral = require('numeral')
 import {
     darkColor,
     grayColor,
     primaryColor,
     secondaryColor,
-    emptyColor
+    emptyColor,
+    BASE_URL,
+    GET_CART_URL,
+    HEADERFORMDATA
 } from '../../utils/contants'
+
+
+import Hepler from '../../utils/Helper'
+
+import {
+    openIndicator,
+    dismissIndicator,
+    setStateBookingSelected
+} from '../../actions'
+
 
 import styles from '../../style/style'
 
 class CartScreen extends React.Component {
 
-    _renderItem = () => {
+    state = {
+        arrBooking:[],
+        selectBooking : [],
+        area_item: 0,
+        total_area: 0,
+        discount_price: 0,
+        total_other_service: 0,
+        vat: 0,
+        total_final_price: 0,
+    }
+
+
+    LoadData(){
+        this.props.openIndicator()
+        let formData = new FormData();
+        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+        Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('GET_CART_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.setState({arrBooking:results.data})
+                this.props.dismissIndicator()
+            } else {
+                this.setState({arrBooking:[]})
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+    }
+
+
+    _renderItem = ({ item, index }) => {
         return (
             <View>
                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
@@ -36,66 +79,75 @@ class CartScreen extends React.Component {
                         <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                             <CheckBox
                                 title={`เลือก`}
-                                checked={false}
+                                checked={item.checked}
                                 textStyle={[styles.text14, { fontFamily: 'SinghaEstate-Regular', color: primaryColor }]}
-                                containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, borderColor: 'transparent', margin: -8, marginRight: -10, marginLeft: -10 }} />
+                                containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, borderColor: 'transparent', margin: -8, marginRight: -10, marginLeft: -10 }}
+                                onPress={
+                                    () => {
+                                        this.onChecked(item, item.checked);
+                                    }
+                                } />
                             <Text style={[styles.text12, { color: 'red' }]}>{`เหลือเวลาในการจอง 09:00 นาที`}</Text>
                         </View>
                     </View>
                     <View style={{ flex: 0.3 }}>
                         <View style={[styles.containerRow, { justifyContent: 'flex-end' }]}>
                             <TouchableOpacity>
-                                <Text style={[styles.text16]}>{`แก้ไข`}</Text>
-                            </TouchableOpacity>
-                            <View style={{ width: 1, backgroundColor: grayColor, margin: 4 }}></View>
-                            <TouchableOpacity>
-                                <Text style={[styles.text16]}>{`ลบ`}</Text>
+                                <Text style={[styles.text16]}>{`ยกเลิก`}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-                <View style={[styles.containerRow]}>
-                    <View style={{ flex: 0.15 }}>
-                        <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                            <Text style={[styles.text16, styles.bold]}>{`C01`}</Text>
-                        </View>
-                    </View>
-                    <View style={{ flex: 0.9 }}>
-                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                            <Text style={[styles.text16]}>{`วันที่ขาย 27 มี.ค.`}</Text>
-                        </View>
-                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                            <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
-                            <Text style={[styles.text14]}>{`500 บาท`}</Text>
-                        </View>
-                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                            <Text style={[styles.text14, { flex: 1 }]}>{`ไฟฟ้าและแสงสว่าง`}</Text>
-                            <View style={[styles.containerRow, { flex: 0.55, justifyContent: 'space-around', alignItems: 'center' }]}>
-                                <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
-                                    <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
-                                </TouchableOpacity>
-                                <Text style={{ marginLeft: 6, marginRight: 6, textAlignVertical: 'center' }}>{`0`}</Text>
-                                <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
-                                    <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
-                                </TouchableOpacity>
+                {
+                    item.Booking_Details.map((valueDetails,indexDetails)=>{
+                        return (
+                            <View>
+                                <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8,  justifyContent: 'center', paddingLeft: 10 }]}>
+                                    <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.name_market}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.floor_name + ` / ` + valueDetails.zone_name}</Text>
+                                    </View>
+                                    <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.product_type_name}</Text>
+                                    </View>
+                                </View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <View style={[styles.containerRow]}>
+                                    <View style={{ flex: 0.15 }}>
+                                        <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                                            <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{valueDetails.boothname}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ flex: 0.9 }}>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                            <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(valueDetails.booking_detail_date).format('LL')}</Text>
+                                        </View>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                            <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
+                                            <Text style={[styles.text14]}>{numeral(valueDetails.boothprice).format('0,0.00') + ` บาท`}</Text>
+                                        </View>
+                                        {
+                                            valueDetails.Service.map((vService,iService)=>{
+                                                return (
+                                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                        <Text style={[styles.text14]}>{vService.service_name + ' x' + vService.qty}</Text>
+                                                        <Text style={[styles.text14]}>{numeral(parseFloat(vService.service_item_price) * parseFloat(vService.qty)).format('0,0.00') + ` บาท`}</Text>
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </View>
+                                <View style={[styles.marginBetweenVertical]}></View>
                             </View>
-                            <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{`500 บาท`}</Text>
-                        </View>
-                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                            <Text style={[styles.text14, { flex: 1 }]}>{`ไฟฟ้าไม่เกิน 8,000 วัตต์`}</Text>
-                            <View style={[styles.containerRow, { flex: 0.55, justifyContent: 'space-around', alignItems: 'center', alignSelf: 'center' }]}>
-                                <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
-                                    <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
-                                </TouchableOpacity>
-                                <Text style={{ marginLeft: 6, marginRight: 6, textAlignVertical: 'center' }}>{`0`}</Text>
-                                <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}>
-                                    <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{`500 บาท`}</Text>
-                        </View>
-                    </View>
-                </View>
+                        )
+                    })
+                }
+
+            <View style={[styles.hr]}></View>
             </View>
         )
     }
@@ -135,9 +187,59 @@ class CartScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.props.setStateBookingSelected([])
+        await this.LoadData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
+
+    onChecked(item, checked) {
+        const props = this.props
+        const reducer = props.reducer
+        let arr = this.state.arrBooking;
+        let booking_id = item.booking_id;
+        let index = arr.findIndex(k => k.booking_id == booking_id);
+        arr[index].checked = checked == true ? false : true;
+
+        ///// calculate money
+        let {total_area,area_item,total_other_service,discount_price,total_final_price} = this.state
+        let vat = 0;
+        
+        if(checked == false){
+            total_area = parseFloat(total_area)  + parseFloat(item.booking_total)
+            discount_price = parseFloat(discount_price)  + parseFloat(item.booking_coupon)
+            total_other_service = parseFloat(total_other_service)  + parseFloat(item.booking_service_total)
+            total_final_price = parseFloat(total_final_price) + parseFloat(item.booking_grand_total)
+        }else{
+            total_area = parseFloat(total_area)  - parseFloat(item.booking_total)
+            discount_price = parseFloat(discount_price)  - parseFloat(item.booking_coupon)
+            total_other_service = parseFloat(total_other_service)  - parseFloat(item.booking_service_total)
+            total_final_price = parseFloat(total_final_price) - parseFloat(item.booking_grand_total)
+        }
+        this.setState({
+            arrBooking: arr,
+            total_area: total_area,
+            area_item : area_item,
+            total_other_service: total_other_service,
+            discount_price : discount_price,
+            vat: vat,
+            total_final_price: total_final_price
+        })
+
+        if (checked == false) {
+            this.setState({
+                selectBooking: this.state.selectBooking.concat([booking_id])
+            })
+        } else {
+            this.setState({
+                selectBooking: this.state.selectBooking.filter(function (values) {
+                    return values !== booking_id
+                })
+            });
+        }
+    }
+
+
 
     render() {
         return (
@@ -159,7 +261,7 @@ class CartScreen extends React.Component {
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <ScrollView>
                         <View style={[styles.panelWhite, styles.shadow]}>
-                            <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8, height: 80, justifyContent: 'center', paddingLeft: 10 }]}>
+                            {/* <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8, height: 80, justifyContent: 'center', paddingLeft: 10 }]}>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`SINGHA COMPLEX 1`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
@@ -172,51 +274,56 @@ class CartScreen extends React.Component {
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.marginBetweenVertical]}></View> */}
                             {
-                                this._renderItem()
+                                this.state.arrBooking.length > 0 ?
+                                <FlatList
+                                    data={this.state.arrBooking}
+                                    keyExtractor={(item) => item.booking_id}
+                                    extraData={this.state}
+                                    renderItem={this._renderItem} 
+                                />
+                                : 
+                                <View><Text style={[styles.text16, styles.bold]}>{`ไม่มีรายการในตะกร้าสินค้า!`}</Text></View>
                             }
+                            
                             <View style={[styles.hr]}></View>
-                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                <Text style={[styles.text16, { textAlign: 'center' }]}>{`โค้ดส่วนลด`}</Text>
-                                <View style={[styles.shadow, styles.inputWithIcon, { width: '70%' }]}>
-                                    <TextInput
-                                        ref={(input) => { this.username = input; }}
-                                        style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                        placeholder='Enter code..'
-                                        returnKeyType={'next'}
-                                        blurOnSubmit={false}
-                                        onChangeText={(text) => null}
-                                        onSubmitEditing={() => null} />
-                                </View>
-                            </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.container]}>
                                 <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x 2`}</Text>
-                                    <Text style={[styles.text16]}>{`2,000 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.props.reducer.date_selected.length}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.total_area).format('0,0.00') + ' บาท'}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`โค้ดส่วนลด`}</Text>
-                                    <Text style={[styles.text16]}>{`200 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.discount_price).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
-                                    <Text style={[styles.text16]}>{`3,600 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`นิติบุคคลหัก ณ ที่จ่าย 3 %`}</Text>
-                                    <Text style={[styles.text16]}>{`100 บาท`}</Text>
+                                    <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                                    <Text style={[styles.text16, styles.bold]}>{`5,500 บาท`}</Text>
+                                    <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                 </View>
+                            </View>
+                            <View style={[styles.container]}>
                                 <View style={[styles.container, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                     <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
-                                            () => null
+                                            async () => {
+                                                if(this.state.selectBooking.length == 0){
+                                                    alert('กรุณาเลือกรายการมากกว่า 1 รายการ!')
+                                                }else{
+                                                    await this.props.setStateBookingSelected(this.state.selectBooking)
+                                                    this.props.navigation.navigate('ConfirmReserv')
+                                                }
+                                            }
                                         }>
                                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ดำเนินการต่อ`}</Text>
                                     </TouchableOpacity>
@@ -235,7 +342,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    setStateBookingSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartScreen)

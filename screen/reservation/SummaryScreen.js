@@ -143,7 +143,7 @@ class SummaryScreen extends React.Component {
             console.log('SUBMIT_BOOKING_URL',results)
             if (results.status == 'SUCCESS') {
                 this.props.saveDateSelected('save',[])
-                this.props.setStateBookingSelected([results.BookingID])
+                this.props.setStateBookingSelected([results.BookingID,3])
                 this.props.dismissIndicator()
                 this.props.navigation.navigate('ConfirmReserv')
             } else {

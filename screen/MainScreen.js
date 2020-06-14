@@ -95,7 +95,7 @@ const Reserv = function MyStack() {
             <Stack.Screen name="Dayselect" component={Dayselectscreen} />
             <Stack.Screen name="Accessories" component={Accessoriesscreen} />
             <Stack.Screen name="Summary" component={Summaryscreen} />
-            <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
+            {/* <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} /> */}
             <Stack.Screen name="EditBooth" component={Editboothscreen}/>
         </Stack.Navigator>
     );
