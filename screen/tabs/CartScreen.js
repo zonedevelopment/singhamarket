@@ -33,7 +33,8 @@ import Hepler from '../../utils/Helper'
 import {
     openIndicator,
     dismissIndicator,
-    setStateBookingSelected
+    setStateBookingSelected,
+    setStateMyCart
 } from '../../actions'
 
 
@@ -61,6 +62,7 @@ class CartScreen extends React.Component {
             console.log('GET_CART_URL',results)
             if (results.status == 'SUCCESS') {
                 this.setState({arrBooking:results.data})
+                this.props.setStateMyCart(results.data)
                 this.props.dismissIndicator()
             } else {
                 this.setState({arrBooking:[]})
@@ -189,7 +191,7 @@ class CartScreen extends React.Component {
 
     async componentDidMount() {
         await this.props.setStateBookingSelected([])
-        await this.LoadData()
+        this.LoadData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -202,20 +204,28 @@ class CartScreen extends React.Component {
         arr[index].checked = checked == true ? false : true;
 
         ///// calculate money
-        let {total_area,area_item,total_other_service,discount_price,total_final_price} = this.state
+        let {total_area,area_item,total_other_service,discount_price} = this.state
         let vat = 0;
-        
+        let total_final_price = 0;
         if(checked == false){
             total_area = parseFloat(total_area)  + parseFloat(item.booking_total)
             discount_price = parseFloat(discount_price)  + parseFloat(item.booking_coupon)
             total_other_service = parseFloat(total_other_service)  + parseFloat(item.booking_service_total)
-            total_final_price = parseFloat(total_final_price) + parseFloat(item.booking_grand_total)
+            //total_final_price = parseFloat(total_final_price) + parseFloat(item.booking_grand_total)
         }else{
             total_area = parseFloat(total_area)  - parseFloat(item.booking_total)
             discount_price = parseFloat(discount_price)  - parseFloat(item.booking_coupon)
             total_other_service = parseFloat(total_other_service)  - parseFloat(item.booking_service_total)
-            total_final_price = parseFloat(total_final_price) - parseFloat(item.booking_grand_total)
+            //total_final_price = parseFloat(total_final_price) - parseFloat(item.booking_grand_total)
         }
+
+        if (reducer.userInfo.partners_type == 1) {
+            vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.personal_vat / 100
+        } else {
+            vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
+        }
+
+        total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
         this.setState({
             arrBooking: arr,
             total_area: total_area,
@@ -284,7 +294,7 @@ class CartScreen extends React.Component {
                                     renderItem={this._renderItem} 
                                 />
                                 : 
-                                <View><Text style={[styles.text16, styles.bold]}>{`ไม่มีรายการในตะกร้าสินค้า!`}</Text></View>
+                                <View><Text style={[styles.text16, styles.bold,{textAlign:'center',color:styles.primaryColor}]}>{`ไม่มีรายการในตะกร้าสินค้า!`}</Text></View>
                             }
                             
                             <View style={[styles.hr]}></View>
@@ -344,7 +354,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    setStateBookingSelected
+    setStateBookingSelected,
+    setStateMyCart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartScreen)

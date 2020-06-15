@@ -131,19 +131,21 @@ class SummaryScreen extends React.Component {
 
 
     Submit = () => {
+        this.props.setStateBookingSelected([])
         this.props.openIndicator()
+        let total_final_price = parseFloat(this.state.total_area) + parseFloat(this.state.total_other_service)
         let formData = new FormData();
         formData.append('partners_id',this.props.reducer.userInfo.partners_id)
         formData.append('marketname_id',this.props.reducer.reserverion_building_id)
         formData.append('booking_total',this.state.total_area)
         formData.append('booking_service_total',this.state.total_other_service)
-        formData.append('booking_grand_total',this.state.total_final_price)
+        formData.append('booking_grand_total',total_final_price)
         formData.append('BookingItems',JSON.stringify(this.props.reducer.date_selected))
         Hepler.post(BASE_URL + SUBMIT_BOOKING_URL,formData,HEADERFORMDATA,(results) => {
             console.log('SUBMIT_BOOKING_URL',results)
             if (results.status == 'SUCCESS') {
                 this.props.saveDateSelected('save',[])
-                this.props.setStateBookingSelected([results.BookingID,3])
+                this.props.setStateBookingSelected([results.BookingID])
                 this.props.dismissIndicator()
                 this.props.navigation.navigate('ConfirmReserv')
             } else {

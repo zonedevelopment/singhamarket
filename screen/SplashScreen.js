@@ -16,6 +16,7 @@ import {
     BANNER_URL,
     NEWS_URL,
     HEADERFORMDATA,
+    GET_CART_URL,
 } from '../utils/contants'
 
 import Hepler from '../utils/Helper'
@@ -23,7 +24,8 @@ import StorageServies from '../utils/StorageServies'
 import {
     setStateBanner,
     saveUserInfo,
-    setStateNews
+    setStateNews,
+    setStateMyCart
 } from '../actions'
 
 
@@ -61,7 +63,8 @@ class SplashScreen extends React.Component {
                 if (results.status == 'SUCCESS') {
                     StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
                     this.props.saveUserInfo(results.data)
-                    this.props.navigation.navigate('Main')
+                    this.GetMyCart(results.data.partners_id)
+                   
                 } else {
                     Alert.alert(results.message)
                 }
@@ -73,6 +76,24 @@ class SplashScreen extends React.Component {
         //     this.props.navigation.replace('Choice')
         // }, 2500)
     }
+
+
+    GetMyCart (partners_id) {
+        let formData = new FormData();
+        formData.append('partners_id',partners_id)
+        Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('GET_CART_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.setStateMyCart(results.data)
+                this.props.navigation.navigate('Main')
+            } else {
+                this.props.setStateMyCart([])
+                this.props.navigation.navigate('Main')
+                Alert.alert(results.message)
+            }
+        })
+    }
+
 
     render() {
         return(
@@ -90,7 +111,8 @@ const mapStateToProps = (state) => ({
   const mapDispatchToProps = {
     setStateBanner,
     setStateNews,
-    saveUserInfo
+    saveUserInfo,
+    setStateMyCart
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

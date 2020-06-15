@@ -96,6 +96,8 @@ class ConfirmReservScreen extends React.Component {
 
     GetData(){
         let BookingID = this.props.reducer.booking_selected
+        const props = this.props
+        const reducer = props.reducer
         let formData = new FormData();
         formData.append('partners_id',this.props.reducer.userInfo.partners_id)
         formData.append('booking_id',JSON.stringify(BookingID))
@@ -103,6 +105,39 @@ class ConfirmReservScreen extends React.Component {
         Hepler.post(BASE_URL+GET_CONFIRMRESERVATION_URL,formData,HEADERFORMDATA,(results)=>{
             console.log('GET_CONFIRMRESERVATION_URL',results)
             if (results.status == 'SUCCESS') {
+                let total_area = 0
+                let area_item = 0
+                let total_other_service = 0
+                let discount_price = 0
+                let vat = 0
+                let total_final_price = 0
+                results.data.map((vBooking,iBooking)=>{
+                    console.log('vBooking',vBooking)
+                    total_area += parseFloat(vBooking.booking_total)
+                    area_item += vBooking.Booking_Details.length
+                    discount_price += parseFloat(vBooking.booking_coupon)
+                    total_other_service += parseFloat(vBooking.booking_service_total)
+
+                    console.log('total_area',total_area)
+                    console.log('area_item',area_item)
+                    console.log('discount_price',discount_price)
+                    console.log('total_other_service',total_other_service)
+                })
+                if (reducer.userInfo.partners_type == 1) {
+                    vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.personal_vat / 100
+                } else {
+                    vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
+                }
+                total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+                this.setState({
+                    total_area: total_area,
+                    area_item : area_item,
+                    total_other_service: total_other_service,
+                    discount_price : discount_price,
+                    vat: vat,
+                    total_final_price: total_final_price,
+                    arrBooking : results.data
+                })
                 this.props.dismissIndicator()
             } else {
                 Alert.alert(results.message)
@@ -111,41 +146,65 @@ class ConfirmReservScreen extends React.Component {
         })
     }
 
-    // _renderItem ({ item, index }) {
-    //     return (
-    //         <View>
-    //             <View style={[styles.containerRow]}>
-    //                 <View style={{ flex: 0.15 }}>
-    //                     <View style={[styles.center, { alignItems:'center',width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-    //                         <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{item.boothSelectName}</Text>
-    //                     </View>
-    //                 </View>
-    //                 <View style={{ flex: 0.9 }}>
-    //                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-    //                         <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(item.date).format('LL')}}</Text>
-    //                     </View>
-    //                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-    //                         <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
-    //                         <Text style={[styles.text14]}>{item.boothSelectPrice + ` บาท`}</Text>
-    //                     </View>
-    //                     {
-    //                          item.other_service.map((v,i)=>{
-    //                             return(
-    //                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-    //                                     <Text style={[styles.text14, { flex: 0.9 }]}>{v.service_name}</Text>
-    //                                     <Text style={[styles.text14, { flex: 0.15 }]}>{v.qty}</Text>
-    //                                     <Text style={[styles.text14, { flex: 0.5, textAlign: 'right' }]}>{numeral(v.total_price).format('0,0.00') + ` บาท`}</Text>
-    //                                 </View>
-    //                             )})
-    //                     }
-                      
-    //                 </View>
-    //             </View>
-    //             <View style={[styles.hr]}></View>
-    //         </View>
 
-    //     )
-    // }
+
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <View>
+                {
+                    item.Booking_Details.map((valueDetails,indexDetails)=>{
+                        return (
+                            <View>
+                                <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8,  justifyContent: 'center', paddingLeft: 10 }]}>
+                                    <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.name_market}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.floor_name + ` / ` + valueDetails.zone_name}</Text>
+                                    </View>
+                                    <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.product_type_name}</Text>
+                                    </View>
+                                </View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <View style={[styles.containerRow]}>
+                                    <View style={{ flex: 0.15 }}>
+                                        <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                                            <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{valueDetails.boothname}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ flex: 0.9 }}>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                            <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(valueDetails.booking_detail_date).format('LL')}</Text>
+                                        </View>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                            <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
+                                            <Text style={[styles.text14]}>{numeral(valueDetails.boothprice).format('0,0.00') + ` บาท`}</Text>
+                                        </View>
+                                        {
+                                            valueDetails.Service.map((vService,iService)=>{
+                                                return (
+                                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                        <Text style={[styles.text14]}>{vService.service_name + ' x' + vService.qty}</Text>
+                                                        <Text style={[styles.text14]}>{numeral(parseFloat(vService.service_item_price) * parseFloat(vService.qty)).format('0,0.00') + ` บาท`}</Text>
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                            </View>
+                        )
+                    })
+                }
+                <View style={[styles.hr]}></View>
+                
+            </View>
+        )
+    }
 
     render() {
         return (
@@ -169,7 +228,7 @@ class ConfirmReservScreen extends React.Component {
                     <ScrollView>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View style={[styles.container]}>
-                                <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                {/* <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{this.props.reducer.reserverion_building_name}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{` : `}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{this.props.reducer.reserverion_floor_name + ` / ` + this.props.reducer.reserverion_zone_name}</Text>
@@ -178,7 +237,7 @@ class ConfirmReservScreen extends React.Component {
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`ประเภทสินค้าที่ขาย`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{` : `}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{this.props.reducer.userInfo.product_type.category_name}</Text>
-                                </View>
+                                </View> */}
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{`วันที่ทำรายการจอง`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: primaryColor }]}>{` : `}</Text>
@@ -187,12 +246,12 @@ class ConfirmReservScreen extends React.Component {
                             </View>
                             <View style={[styles.hr]}></View>
 
-                            {/* <FlatList
-                                data={this.props.reducer.date_selected}
-                                keyExtractor={(item) => item.id}
+                            <FlatList
+                                data={this.state.arrBooking}
+                                keyExtractor={(item) => item.booking_id}
                                 extraData={this.state}
                                 renderItem={this._renderItem} 
-                            /> */}
+                            />
 
                             <View style={[styles.hr]}></View>
                             <View style={[styles.marginBetweenVertical]}></View>

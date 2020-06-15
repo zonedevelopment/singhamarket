@@ -16,7 +16,8 @@ import {
     SET_FLOOR_NAME_SELECTED,
     SET_ZONE_NAME_SELECTED,
     SET_PREVIOUS_SCREEN,
-    SET_BOOKINGID_SELECTED
+    SET_BOOKINGID_SELECTED,
+    SET_MY_CART
 } from '../utils/contants'
 
 /**
@@ -182,6 +183,13 @@ export const setStatePreviousScreen = (data) => ({
 
 export const setStateBookingSelected = (data) => ({
     type: SET_BOOKINGID_SELECTED,
+    payload: data
+})
+
+
+
+export const setStateMyCart = (data) => ({
+    type: SET_MY_CART,
     payload: data
 })
 /**

@@ -51,6 +51,10 @@ export const SET_FLOOR_NAME_SELECTED = 'SET_FLOOR_NAME_SELECTED'
 export const SET_ZONE_NAME_SELECTED = 'SET_ZONE_NAME_SELECTED'
 export const SET_PREVIOUS_SCREEN = 'SET_PREVIOUS_SCREEN'
 export const SET_BOOKINGID_SELECTED = 'SET_BOOKINGID_SELECTED'
+
+
+///// count nontification
+export const SET_MY_CART = 'SET_MY_CART'
 /**
  * End
  */

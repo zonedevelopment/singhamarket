@@ -194,7 +194,7 @@ const tabMain = function MainTab() {
                                     <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
                             }
                             <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
+                                <Text style={{ color: 'white', fontSize: 10 }}>{'1'}</Text>
                             </View>
                         </View>
                     ),

@@ -17,7 +17,7 @@ import {
     SET_ZONE_NAME_SELECTED,
     SET_PREVIOUS_SCREEN,
     SET_BOOKINGID_SELECTED,
-
+    SET_MY_CART,
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -67,6 +67,7 @@ const initialState = {
     personal_vat : 7, // ดึงจาก base
     company_vat : 3, /// ดึงจาก base
     booking_selected : [],
+    mycart : [], /// arr ตะกร้าสินค้า
     
 }
 
@@ -162,6 +163,13 @@ export default (state = initialState, action) => {
                 ...state,
                 booking_selected : action.payload
             }
+        case SET_MY_CART : 
+            return {
+                ...state,
+                mycart : action.payload
+            }
+
+            
         default:
             return state
     }
