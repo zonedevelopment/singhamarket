@@ -37,8 +37,6 @@ class ProfilePersonalScreen extends React.Component {
 
     state = {
         privacyAgree : false,
-
-
     }
 
     ComponentLeft = () => {
