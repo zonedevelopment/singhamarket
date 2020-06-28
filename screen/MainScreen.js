@@ -96,7 +96,7 @@ const Reserv = function MyStack() {
             <Stack.Screen name="Accessories" component={Accessoriesscreen} />
             <Stack.Screen name="Summary" component={Summaryscreen} />
             {/* <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} /> */}
-            <Stack.Screen name="EditBooth" component={Editboothscreen}/>
+            <Stack.Screen name="EditBooth" component={Editboothscreen} />
         </Stack.Navigator>
     );
 }
@@ -129,9 +129,35 @@ const Home = function AccStack() {
     )
 }
 
+function IconWithBadge({ badgeCount, focused }) {
+    return (
+        <View>
+            {
+                focused ?
+                    <Image source={ic_cart_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                    :
+                    <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+            }
+            {
+                badgeCount > 0 ?
+                    <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
+                        <Text style={{ color: 'white', fontSize: 10 }}>{`${badgeCount}`}</Text>
+                    </View>
+                    :
+                    null
+            }
+        </View>
 
+    );
+}
+
+function CartIconWithBadge(props) {
+    return <IconWithBadge {...props} badgeCount={item.length} />;
+}
+
+// const props = this.props
 const Tab = createBottomTabNavigator()
-const tabMain = function MainTab() {
+const tabMain = (countItem) => {
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -185,8 +211,9 @@ const tabMain = function MainTab() {
                 component={Cartscreen}
                 options={{
                     tabBarLabel: 'รถเข็น',
-                    tabBarIcon: ({ focused, color }) => (
+                    tabBarIcon: ({ focused, color, screenProps }) => (
                         <View>
+                            {/* <CartIconWithBadge focused={focused} /> */}
                             {
                                 focused ?
                                     <Image source={ic_cart_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
@@ -194,7 +221,7 @@ const tabMain = function MainTab() {
                                     <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
                             }
                             <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                                <Text style={{ color: 'white', fontSize: 10 }}>{'1'}</Text>
+                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
                             </View>
                         </View>
                     ),

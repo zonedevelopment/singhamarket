@@ -68,7 +68,6 @@ const initialState = {
     company_vat : 3, /// ดึงจาก base
     booking_selected : [],
     mycart : [], /// arr ตะกร้าสินค้า
-    
 }
 
 export default (state = initialState, action) => {

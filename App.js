@@ -58,7 +58,7 @@ import NewsDetailsScreen from './screen/NewsDetailsScreen'
 import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
 
 const Stack = createStackNavigator();
-function MyStack() {
+function MyStack({cartItem}) {
   return (
     <Stack.Navigator
       headerMode='none'
@@ -66,7 +66,7 @@ function MyStack() {
       <Stack.Screen name="Splash" component={Splashscreen} />
       <Stack.Screen name="Choice" component={Choicescreen} />
       <Stack.Screen name="Login" component={Loginscreen} />
-      <Stack.Screen name="Main" component={Mainscreen} />
+      <Stack.Screen name="Main" component={Mainscreen} countItem={0} />
       <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
       <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
       <Stack.Screen name="Registercompany" component={RegisterCompanyscreen} />
@@ -89,7 +89,7 @@ class App extends React.Component {
 
     return (
       <NavigationContainer>
-        <MyStack />
+        <MyStack cartItem={props.mycart.length} />
         {
           props.indicator ?
             <View style={[styles.loadingIndicator]}>
