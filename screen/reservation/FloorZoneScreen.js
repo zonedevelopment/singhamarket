@@ -162,7 +162,20 @@ class FloorZoneScreen extends React.Component {
                                 <Text style={[styles.text18, styles.bold, {alignSelf:'flex-start',  flex: 0.6, color: primaryColor }]}>{props.building[this.state.index].building_name}</Text>
                                 <TouchableOpacity style={{ flex: 0.4, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
                                     onPress={
-                                        () => this.props.navigation.push('Plan')
+                                        () => {
+                                            if(this.state.floor_selectedValue == '' || this.state.zone_selectedValue == ''){
+                                                Alert.alert(
+                                                    'คำเตือน!',
+                                                    'กรุณาเลือกโซนที่ท่านต้องการขายของ!'
+                                                );
+                                            }else{
+                                                this.props.navigation.push('Plan',{
+                                                    building_id : this.state.building_id,
+                                                    floor_id : this.state.floor_selectedValue,
+                                                    zone_id : this.state.zone_selectedValue,
+                                                })
+                                            }
+                                        }
                                     }>
                                     <Image source={ic_plan} style={{ width: 15, height: 15, resizeMode: 'contain' }} />
                                     <Text style={[styles.text14, { color: primaryColor, marginLeft: 2 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>

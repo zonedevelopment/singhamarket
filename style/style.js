@@ -251,7 +251,21 @@ const styles = StyleSheet.create({
         width: 50,
         height: 20,
         borderRadius: 10
-    }
+    },
+    row: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    btn: {
+        flexDirection: 'row',
+        height: 33,
+        width: 35,
+        padding: 2,
+        borderWidth: 0.5,
+        borderRadius: 6,
+    },
 })
 
 export default styles;
