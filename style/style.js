@@ -260,9 +260,10 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row',
-        height: 33,
+        height: 35,
         width: 35,
         padding: 2,
+        borderColor: '#ccc',
         borderWidth: 0.5,
         borderRadius: 6,
     },

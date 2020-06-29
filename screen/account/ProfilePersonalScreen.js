@@ -2,6 +2,7 @@ import React from 'react'
 import {
     View,
     Text,
+    Alert,
     Image,
     FlatList,
     TextInput,
@@ -36,7 +37,21 @@ import Hepler from '../../utils/Helper'
 class ProfilePersonalScreen extends React.Component {
 
     state = {
-        privacyAgree : false,
+        phoneNumber: '',
+        lineid: '',
+        email: '',
+        privacyAgree: false,
+    }
+
+    onUpdateProfile() {
+        if (this.state.privacyAgree) {
+
+        } else {
+            Alert.alert(
+                'คำเตือน!',
+                'กรุณายอมรับข้อตกลงและเงื่อนไขในการจองตลาด'
+            );
+        }
     }
 
     ComponentLeft = () => {
@@ -75,6 +90,12 @@ class ProfilePersonalScreen extends React.Component {
     }
 
     componentDidMount() {
+        const props = this.props.reducer
+        this.setState({
+            phoneNumber: props.userInfo.phone,
+            lineid: props.userInfo.lineid,
+            email: props.userInfo.email
+        })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -102,67 +123,85 @@ class ProfilePersonalScreen extends React.Component {
                         keyboardShouldPersistTaps="always">
                         <View /* style={[styles.panelWhite]}*/>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลส่วนตัว`}</Text>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' ,backgroundColor:'#eee'}]}>
-                                <Text style={[styles.text16, {color: primaryColor}]}>{'ชื่อ-นามสกุล : ' + props.userInfo.name_customer}</Text>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                                <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อ-นามสกุล : ' + props.userInfo.name_customer}</Text>
                             </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' ,backgroundColor:'#eee'}]}>
-                                <Text style={[styles.text16, {color: primaryColor}]}>{'เลขประจำตัวประชาชน : ' + props.userInfo.citizenid}</Text>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                                <Text style={[styles.text16, { color: primaryColor }]}>{'เลขประจำตัวประชาชน : ' + props.userInfo.citizenid}</Text>
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'เบอร์โทรศัพท์ : ' + props.userInfo.phone}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.phone = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.phoneNumber}
+                                        onChangeText={(text) => this.setState({ phoneNumber: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
+                                <Icon name='edit' size={20} color={primaryColor} />
+                                {/* <TouchableOpacity style={[styles.inputWithIcon, { width: '100%', paddingLeft: 0, alignItems: 'center', flex: 0.1 }]}
+                                    onPress={() => {
 
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                    }} >
+                                    <Icon name='edit' size={20} color={primaryColor} />
+                                </TouchableOpacity> */}
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'Line ID : ' + props.userInfo.lineid}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    {/* <Text style={[styles.text16, {color: primaryColor}]}>{'Line ID : ' + props.userInfo.lineid}</Text> */}
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'Line ID : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.line = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        onChangeText={(text) => this.setState({ lineid: text })}
+                                        returnKeyType={'next'}
+                                        value={this.state.lineid} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-                                            
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
+                                {/* <TouchableOpacity style={[styles.inputWithIcon, { width: '100%', paddingLeft: 0, alignItems: 'center', flex: 0.1 }]}
+                                    onPress={() => {
+
+                                    }}>
+                                    <Icon name='edit' size={20} color={primaryColor} />
+                                </TouchableOpacity> */}
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'อีเมล : ' + props.userInfo.email}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    {/* <Text style={[styles.text16, {color: primaryColor}]}>{'อีเมล : ' + props.userInfo.email}</Text> */}
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'อีเมล : '}</Text>
+                                    <TextInput
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.email}
+                                        onChangeText={(text) => this.setState({ email: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-                                            
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
+                                {/* <TouchableOpacity style={[styles.inputWithIcon, { width: '100%', paddingLeft: 0, alignItems: 'center', flex: 0.1 }]}
+                                    onPress={() => {
+
+                                    }}>
+                                    <Icon name='edit' size={20} color={primaryColor} />
+                                </TouchableOpacity> */}
                             </View>
 
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text18, { color: primaryColor }]}>{`รหัสผ่าน`}</Text>
                             <TouchableOpacity style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}
-                            onPress={()=>{
-                                this.props.navigation.navigate('ChangePassword')
-                            }}
-                            >
+                                onPress={() => {
+                                    this.props.navigation.navigate('ChangePassword')
+                                }}>
                                 <View style={[styles.containerRow]}>
-                                    <Text style={[styles.text16, {color: 'white',flex:0.9}]}>{'เปลี่ยนรหัสผ่าน'}</Text>
-                                    <View style={{alignItems:'center',flex:0.1}}>
-                                        <Icon  name='chevron-right' size={20} color='white' />
+                                    <Text style={[styles.text16, { color: 'white', flex: 0.9 }]}>{'เปลี่ยนรหัสผ่าน'}</Text>
+                                    <View style={{ alignItems: 'center', flex: 0.1 }}>
+                                        <Icon name='chevron-right' size={20} color='white' />
                                     </View>
                                 </View>
                             </TouchableOpacity>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text18, { color: primaryColor }]}>{`ประเภทสินค้าที่นำมาขาย`}</Text>
                             <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
-                                <Text style={[styles.text16, { color: 'white' }]}>{ props.userInfo.product_type.type_name + ` : ` + props.userInfo.product_type.category_name}</Text>
+                                <Text style={[styles.text16, { color: 'white' }]}>{props.userInfo.product_type.type_name + ` : ` + props.userInfo.product_type.category_name}</Text>
                             </View>
                             <Text style={[styles.text16, { paddingLeft: 20 }]}>{`สินค้าที่เลือก`}</Text>
                             {
@@ -174,18 +213,18 @@ class ProfilePersonalScreen extends React.Component {
                                     )
                                 })
                             }
-                            <Text style={[styles.text12, { color: primaryColor,paddingTop:5, paddingLeft: 20 }]}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
+                            <Text style={[styles.text12, { color: primaryColor, paddingTop: 5, paddingLeft: 20 }]}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.hr]}></View>
-                            <Text style={[styles.text14, {textDecorationLine : 'underline', color: primaryColor }]}>{`ข้อตกลงและเงื่อนไขในการจองตลาด`}</Text>
+                            <Text style={[styles.text14, { textDecorationLine: 'underline', color: primaryColor }]}>{`ข้อตกลงและเงื่อนไขในการจองตลาด`}</Text>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}>
                                 <CheckBox
                                     center
                                     containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
                                     size={22}
                                     checked={this.state.privacyAgree}
-                                    onPress={() => this.onCheckPrivacy(!this.state.privacyAgree)} />
-                                <Text style={[styles.text14, {textDecorationLine : 'underline', flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
+                                    onPress={() => this.setState({ privacyAgree: !this.state.privacyAgree })} />
+                                <Text style={[styles.text14, { textDecorationLine: 'underline', flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
                             </View>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
@@ -197,14 +236,13 @@ class ProfilePersonalScreen extends React.Component {
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
                                         () => {
-                                            
+                                            this.onUpdateProfile()
                                         }
                                     }>
                                     <Text style={[styles.text16, { color: '#FFF' }]}>{`บันทึกการแก้ไข`}</Text>
                                 </TouchableOpacity>
                             </View>
-                            <Text style={[styles.text14, {textDecorationLine : 'underline', color: primaryColor }]}>{`ยกเลิกการสมัครสมาชิก`}</Text>
-                           
+                            <Text style={[styles.text14, { textDecorationLine: 'underline', color: primaryColor }]}>{`ยกเลิกการสมัครสมาชิก`}</Text>
                         </View>
                     </ScrollView>
                 </View>

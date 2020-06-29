@@ -249,8 +249,6 @@ class CartScreen extends React.Component {
         }
     }
 
-
-
     render() {
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
