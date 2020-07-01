@@ -23,16 +23,23 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
-    redColor
+    redColor,
+    BASE_URL,
+    UPDATE_PROFILE_PERSONAL,
+    HEADERFORMDATA,
+    KEY_LOGIN,
+    LOGIN_URL
 } from '../../utils/contants'
 
 import styles from '../../style/style'
 import {
     openIndicator,
     dismissIndicator,
-    saveProductType
+    saveUserInfo,
+
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import StorageServies from '../../utils/StorageServies'
 
 class ProfilePersonalScreen extends React.Component {
 
@@ -45,7 +52,29 @@ class ProfilePersonalScreen extends React.Component {
 
     onUpdateProfile() {
         if (this.state.privacyAgree) {
-
+            const props = this.props.reducer
+            let formData = new FormData();
+            formData.append('phone',this.state.phoneNumber)
+            formData.append('lineid',this.state.lineid)
+            formData.append('email',this.state.email)
+            formData.append('partners_id',props.userInfo.partners_id)
+            this.props.openIndicator()
+            Hepler.post(BASE_URL + UPDATE_PROFILE_PERSONAL,formData,HEADERFORMDATA,(results)=>{
+                console.log('UPDATE_PROFILE_PERSONAL',results)
+                if (results.status == 'SUCCESS') {
+                    this.props.dismissIndicator()
+                    Alert.alert(  
+                        '',  
+                        results.message,  
+                        [  
+                            {text: 'OK', onPress: () => this.RefreshLogin()},  
+                        ]  
+                    ); 
+                } else {
+                    Alert.alert(results.message)
+                    this.props.dismissIndicator()
+                }
+            })
         } else {
             Alert.alert(
                 'คำเตือน!',
@@ -53,6 +82,25 @@ class ProfilePersonalScreen extends React.Component {
             );
         }
     }
+
+
+    async RefreshLogin () {
+        let LOGIN = await StorageServies.get(KEY_LOGIN)
+        LOGIN = JSON.parse(LOGIN)
+        let formData = new FormData();
+        formData.append('USERNAME', LOGIN.username)
+        formData.append('PASSWORD', LOGIN.password_text)
+        Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('LOGIN_URL',results)
+            if (results.status == 'SUCCESS') {
+                StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                this.props.saveUserInfo(results.data)
+            } else {
+                Alert.alert(results.message)
+            }
+        })
+    }
+
 
     ComponentLeft = () => {
         return (
@@ -256,7 +304,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePersonalScreen)
