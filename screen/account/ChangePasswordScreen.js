@@ -5,6 +5,7 @@ import {
     Image,
     FlatList,
     TextInput,
+    Alert,
     Dimensions,
     BackHandler,
     ScrollView,
@@ -22,23 +23,30 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
-    redColor
+    redColor,
+    BASE_URL,
+    CHANGE_PASSWORD_URL,
+    HEADERFORMDATA,
+    KEY_LOGIN,
+    LOGIN_URL
 } from '../../utils/contants'
 
 import styles from '../../style/style'
 import {
     openIndicator,
     dismissIndicator,
-    saveProductType
+    saveUserInfo,
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import StorageServies from '../../utils/StorageServies'
 
 class ChangePasswordScreen extends React.Component {
 
     state = {
-        privacyAgree : false,
-
-
+        passwordText : '',
+        passwordOld : '',
+        passwordNew : '',
+        passwordNewConfirm : '',
     }
 
     ComponentLeft = () => {
@@ -76,9 +84,73 @@ class ChangePasswordScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        let LOGIN = await StorageServies.get(KEY_LOGIN)
+        LOGIN = JSON.parse(LOGIN)
+        this.setState({
+            passwordText :  LOGIN.password_text
+        })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
+
+    ChangePassword () {
+        if(this.state.passwordOld.trim() == '' || this.state.passwordNew.trim() == '' || this.state.passwordNewConfirm.trim() == ''){
+            Alert.alert('กรุณากรอกข้อมูลให้ครบ!')
+            return false;
+        }else{
+            if(this.state.passwordText != this.state.passwordOld.trim()){
+                alert(this.state.passwordText)
+                Alert.alert('รหัสผ่านเดิมไม่ถูกต้อง!')
+                return false;
+            }
+            if(this.state.passwordNew.trim() != this.state.passwordNewConfirm.trim()){
+                Alert.alert('รหัสผ่านใหม่ยืนยันไม่ตรงกัน!')
+                return false;
+            }
+            const props = this.props.reducer
+            let formData = new FormData();
+            formData.append('password',this.state.passwordNew)
+            formData.append('partners_id',props.userInfo.partners_id)
+            this.props.openIndicator()
+            Hepler.post(BASE_URL + CHANGE_PASSWORD_URL,formData,HEADERFORMDATA,(results)=>{
+                console.log('UPDATE_PROFILE_PERSONAL',results)
+                if (results.status == 'SUCCESS') {
+                    this.props.dismissIndicator()
+                    Alert.alert(  
+                        '',  
+                        results.message,  
+                        [  
+                            {text: 'OK', onPress: () => this.RefreshLogin()},
+                        ]
+                    );
+                } else {
+                    Alert.alert(results.message)
+                    this.props.dismissIndicator()
+                }
+            })
+        }
+
+    }
+
+    
+    async RefreshLogin () {
+        let LOGIN = await StorageServies.get(KEY_LOGIN)
+        LOGIN = JSON.parse(LOGIN)
+        let formData = new FormData();
+        formData.append('USERNAME', LOGIN.username)
+        formData.append('PASSWORD', this.state.passwordNew)
+        Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('LOGIN_URL',results)
+            if (results.status == 'SUCCESS') {
+                StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                this.props.saveUserInfo(results.data)
+                this.handleBack()
+            } else {
+                Alert.alert(results.message)
+            }
+        })
+    }
+
 
     render() {
         const props = this.props.reducer
@@ -136,7 +208,7 @@ class ChangePasswordScreen extends React.Component {
                             style={[styles.mainButton  , styles.center]}
                                 onPress={
                                     () => {
-                                        alert('save')
+                                        this.ChangePassword()
                                     }
                                 }>
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`บันทึกการแก้ไข`}</Text>
@@ -154,7 +226,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordScreen)
