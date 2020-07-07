@@ -5,6 +5,7 @@ import {
     Image,
     FlatList,
     TextInput,
+    Alert,
     Dimensions,
     ScrollView,
     BackHandler,
@@ -21,12 +22,58 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
-    redColor
+    redColor,
+    CONTACT_SUPPORT_URL,
+    BASE_URL,
+    HEADERFORMDATA
 } from '../../utils/contants'
 
 import styles from '../../style/style'
+import {
+    openIndicator,
+    dismissIndicator,
+} from '../../actions'
+import Hepler from '../../utils/Helper'
 
 class SupportScreen extends React.Component {
+
+    state = {
+        name : '',
+        phone : '',
+        email : '',
+        detail : '',
+    }
+
+
+    SubmitData () {
+        const props = this.props.reducer
+        let formData = new FormData();
+        formData.append('name',this.state.name)
+        formData.append('phone',this.state.phone)
+        formData.append('email',this.state.email)
+        formData.append('details',this.state.detail)
+        formData.append('partners_id',props.userInfo.partners_id)
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + CONTACT_SUPPORT_URL,formData,HEADERFORMDATA,(results)=>{
+            console.log('CONTACT_SUPPORT_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.dismissIndicator()
+                this.setState({
+                    name : '',
+                    phone : '',
+                    email : '',
+                    detail : '',
+                })
+                Alert.alert(  
+                    '',  
+                    results.message
+                ); 
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+    }
 
 
     ComponentLeft = () => {
@@ -108,6 +155,7 @@ class SupportScreen extends React.Component {
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                 placeholder='ชื่อ - นามสกุล'
                                 returnKeyType={'next'}
+                                value={this.state.name}
                                 blurOnSubmit={false}
                                 onChangeText={(text) => this.setState({ name: text })}
                                 onSubmitEditing={() => this.phone.focus()} />
@@ -117,6 +165,8 @@ class SupportScreen extends React.Component {
                                 ref={(input) => { this.phone = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                 placeholder='เบอร์โทรศัพท์'
+                                value={this.state.phone}
+                                keyboardType={'number-pad'}
                                 returnKeyType={'next'}
                                 blurOnSubmit={false}
                                 onChangeText={(text) => this.setState({ phone: text })}
@@ -128,6 +178,7 @@ class SupportScreen extends React.Component {
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                 placeholder='อีเมล'
                                 returnKeyType={'next'}
+                                value={this.state.email}
                                 blurOnSubmit={false}
                                 onChangeText={(text) => this.setState({ email: text })}
                                 onSubmitEditing={() => this.detail.focus()} />
@@ -139,6 +190,7 @@ class SupportScreen extends React.Component {
                                 placeholder='รายละเอียด'
                                 returnKeyType={'done'}
                                 multiline={true}
+                                value={this.state.detail}
                                 numberOfLines={3}
                                 blurOnSubmit={false}
                                 onChangeText={(text) => this.setState({ detail: text })} />
@@ -153,7 +205,7 @@ class SupportScreen extends React.Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.twoButtonRound, styles.center, { alignSelf: 'center', backgroundColor: secondaryColor }]}
                                 onPress={
-                                    () => null
+                                    () => this.SubmitData()
                                 }>
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`ยืนยัน`}</Text>
                             </TouchableOpacity>
@@ -170,7 +222,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SupportScreen)

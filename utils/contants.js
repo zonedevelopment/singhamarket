@@ -86,7 +86,10 @@ export const GET_CONFIRMRESERVATION_URL = '/singha/api/GetConfirmReservation'
 export const GET_CART_URL             = '/singha/api/GetCart'
 export const GET_PLAN_URL             = '/singha/api/GetPlan'
 export const UPDATE_PROFILE_PERSONAL  = '/singha/api/UpdateProfilePersonal'
+export const UPDATE_PROFILE_COMPANY  = '/singha/api/UpdateProfileCompany'
 export const CHANGE_PASSWORD_URL      = '/singha/api/ChangePassword'
+export const CONTACT_SUPPORT_URL      = '/singha/api/SupportSubmit'
+export const GET_HISTORY_URL      = '/singha/api/GetHistory'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

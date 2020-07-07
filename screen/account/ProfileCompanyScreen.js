@@ -6,6 +6,7 @@ import {
     FlatList,
     Dimensions,
     BackHandler,
+    Alert,
     TextInput,
     ScrollView,
     TouchableOpacity
@@ -22,22 +23,42 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
-    redColor
+    redColor,
+    BASE_URL,
+    UPDATE_PROFILE_COMPANY,
+    HEADERFORMDATA,
+    KEY_LOGIN,
+    LOGIN_URL
 } from '../../utils/contants'
 
 import styles from '../../style/style'
 import {
     openIndicator,
     dismissIndicator,
-    saveProductType
+    saveUserInfo,
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import StorageServies from '../../utils/StorageServies'
 
 
 class ProfileCompanyScreen extends React.Component {
 
     state = {
-        privacyAgree : false,
+        address : '',
+        branch_code : '',
+        branch_name : '',
+        name : '',
+        citizenid : '',
+        phone : '',
+        lineid : '',
+        email : '',
+        receiptname : '',
+        receiptphone : '',
+        receiptofficename : '',
+        receiptofficephone : '',
+        receiptemail : '',
+        accountname : '',
+        accountphone : '',
     }
 
     ComponentLeft = () => {
@@ -76,7 +97,82 @@ class ProfileCompanyScreen extends React.Component {
     }
 
     componentDidMount() {
+        const props = this.props.reducer
+        this.setState({
+            address : props.userInfo.address,
+            branch_code : props.userInfo.branch_code,
+            branch_name : props.userInfo.branch_name,
+            name : props.userInfo.name,
+            citizenid : props.userInfo.citizenid,
+            phone : props.userInfo.phone,
+            lineid : props.userInfo.lineid,
+            email : props.userInfo.email,
+            receiptname : props.userInfo.receiptname,
+            receiptphone : props.userInfo.receiptphone,
+            receiptofficename : props.userInfo.receiptofficename,
+            receiptofficephone : props.userInfo.receiptofficephone,
+            receiptemail : props.userInfo.receiptemail,
+            accountname : props.userInfo.accountname,
+            accountphone : props.userInfo.accountphone,
+
+        })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    onUpdateProfile () {
+        const props = this.props.reducer
+        let formData = new FormData();
+        formData.append('address',this.state.address)
+        formData.append('branch_code',this.state.branch_code)
+        formData.append('branch_name',this.state.branch_name)
+        formData.append('name',this.state.name)
+        formData.append('citizenid',this.state.citizenid)
+        formData.append('phone',this.state.phone)
+        formData.append('lineid',this.state.lineid)
+        formData.append('email',this.state.email)
+        formData.append('receiptname',this.state.receiptname)
+        formData.append('receiptphone',this.state.receiptphone)
+        formData.append('receiptofficename',this.state.receiptofficename)
+        formData.append('receiptofficephone',this.state.receiptofficephone)
+        formData.append('receiptemail',this.state.receiptemail)
+        formData.append('accountname',this.state.accountname)
+        formData.append('accountphone',this.state.accountphone)
+
+        formData.append('partners_id',props.userInfo.partners_id)
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + UPDATE_PROFILE_COMPANY,formData,HEADERFORMDATA,(results)=>{
+            console.log('UPDATE_PROFILE_PERSONAL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.dismissIndicator()
+                Alert.alert(  
+                    '',  
+                    results.message,  
+                    [  
+                        {text: 'OK', onPress: () => this.RefreshLogin()},  
+                    ]  
+                ); 
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+    }
+
+    async RefreshLogin () {
+        let LOGIN = await StorageServies.get(KEY_LOGIN)
+        LOGIN = JSON.parse(LOGIN)
+        let formData = new FormData();
+        formData.append('USERNAME', LOGIN.username)
+        formData.append('PASSWORD', LOGIN.password_text)
+        Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('LOGIN_URL',results)
+            if (results.status == 'SUCCESS') {
+                StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                this.props.saveUserInfo(results.data)
+            } else {
+                Alert.alert(results.message)
+            }
+        })
     }
 
     render() {
@@ -109,8 +205,21 @@ class ProfileCompanyScreen extends React.Component {
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' ,backgroundColor:'#eee'}]}>
                                 <Text style={[styles.text16, {color: primaryColor}]}>{'เลขประจำตัวเสียภาษีอากร : ' + props.userInfo.numbertax}</Text>
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.TextAreaWithIcon, { alignSelf: 'center',flex:0.9}]}>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.TextAreaWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor,textAlignVertical: 'top', padding:10,justifyContent: "flex-start",alignSelf: 'flex-start' }]}>{'ที่อยู่ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.address = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' ,textAlignVertical: 'top', padding:10,justifyContent: "flex-start",alignSelf: 'flex-start'}]}
+                                        returnKeyType={'done'}
+                                        numberOfLines={3}
+                                        multiline={true}
+                                        value={this.state.address}
+                                        onChangeText={(text) => this.setState({ address: text })} />
+                                </View>
+                                <Icon name='edit' size={20} color={primaryColor} />
+                               
+                                {/* <View style={[styles.shadow, styles.TextAreaWithIcon, { alignSelf: 'center',flex:0.9}]}>
                                     <Text style={[styles.text16, {color: primaryColor,width: '100%', height: '100%',textAlignVertical: 'top', padding:10,justifyContent: "flex-start",alignSelf: 'flex-start'}]}>
                                         {'ที่อยู่ : ' + props.userInfo.address}
                                     </Text>
@@ -121,96 +230,96 @@ class ProfileCompanyScreen extends React.Component {
                                     }}
                                 >
                                     <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'รหัสสาขา : ' + props.userInfo.branch_code}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'รหัสสาขา : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.branch_code = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.branch_code}
+                                        onChangeText={(text) => this.setState({ branch_code: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'ชื่อสาขา : ' + props.userInfo.branch_name}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อสาขา : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.branch_name = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.branch_name}
+                                        onChangeText={(text) => this.setState({ branch_name: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
 
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลผู้มาติดต่อ`}</Text>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'ชื่อ-นามสกุล : ' + props.userInfo.name}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อ-นามสกุล : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.name = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.name}
+                                        onChangeText={(text) => this.setState({ name: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
                             
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'เลขบัตรประชาชน : ' + props.userInfo.citizenid}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เลขบัตรประชาชน : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.citizenid = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.citizenid}
+                                        onChangeText={(text) => this.setState({ citizenid: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'เบอร์โทรศัพท์ : ' + props.userInfo.phone}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.phone = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.phone}
+                                        onChangeText={(text) => this.setState({ phone: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'Line ID : ' + props.userInfo.lineid}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'Line ID : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.lineid = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.lineid}
+                                        onChangeText={(text) => this.setState({ lineid: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
 
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'อีเมล์ : ' + props.userInfo.email}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'อีเมล์ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.email = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.email}
+                                        onChangeText={(text) => this.setState({ email: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
 
 
@@ -218,67 +327,67 @@ class ProfileCompanyScreen extends React.Component {
 
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลเพื่อออกใบเสร็จรับเงิน`}</Text>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{props.userInfo.receiptname}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{''}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.receiptname = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.receiptname}
+                                        onChangeText={(text) => this.setState({ receiptname: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
                             
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'เบอร์โทรศัพท์ : ' + props.userInfo.receiptphone}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์'}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.receiptphone = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.receiptphone}
+                                        onChangeText={(text) => this.setState({ receiptphone: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'สำนักงาน : ' + props.userInfo.receiptofficename}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'สำนักงาน : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.receiptofficename = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.receiptofficename}
+                                        onChangeText={(text) => this.setState({ receiptofficename: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'เบอร์โทรศัพท์ : ' + props.userInfo.receiptofficephone}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.receiptofficephone = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.receiptofficephone}
+                                        onChangeText={(text) => this.setState({ receiptofficephone: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
 
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'อีเมล์ : ' + props.userInfo.receiptemail}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'อีเมล์ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.receiptemail = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.receiptemail}
+                                        onChangeText={(text) => this.setState({ receiptemail: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
 
 
@@ -286,30 +395,30 @@ class ProfileCompanyScreen extends React.Component {
 
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลเจ้าหน้าที่บัญชี`}</Text>
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'ชื่อ-นามสกุล : ' + props.userInfo.accountname}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อ-นามสกุล : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.accountname = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.accountname}
+                                        onChangeText={(text) => this.setState({ accountname: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
                             
-                            <View style={[styles.containerRow]}>
-                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center',flex:0.9}]}>
-                                    <Text style={[styles.text16, {color: primaryColor}]}>{'เบอร์โทรศัพท์ : ' + props.userInfo.accountphone}</Text>
+                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
+                                <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.9 }]}>
+                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์ : '}</Text>
+                                    <TextInput
+                                        ref={(input) => { this.accountphone = input; }}
+                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
+                                        returnKeyType={'next'}
+                                        value={this.state.accountphone}
+                                        onChangeText={(text) => this.setState({ accountphone: text })} />
                                 </View>
-                                <TouchableOpacity style={[styles.inputWithIcon, {width:'100%',paddingLeft:0,alignItems:'center',flex:0.1}]}
-                                    onPress={()=>{
-
-                                    }}
-                                >
-                                    <Icon  name='edit' size={20} color={primaryColor} />
-                                </TouchableOpacity>
+                                <Icon name='edit' size={20} color={primaryColor} />
                             </View>
 
                             
@@ -358,7 +467,7 @@ class ProfileCompanyScreen extends React.Component {
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
                                         () => {
-                                            
+                                            this.onUpdateProfile()
                                         }
                                     }>
                                     <Text style={[styles.text16, { color: '#FFF' }]}>{`บันทึกการแก้ไข`}</Text>
@@ -379,7 +488,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompanyScreen)
