@@ -5,6 +5,7 @@ import {
     Image,
     FlatList,
     Dimensions,
+    Alert,
     BackHandler,
     TouchableOpacity
 } from 'react-native'
@@ -149,20 +150,22 @@ class FavoriteScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, { padding: 10 }]}>
-                    <Text style={[styles.text22, { color: primaryColor }]}>{`รายการบูธที่สนใจ`}</Text>
-                    {
-                        this.state.ListData.length > 0 ?
-                            <FlatList
-                            style={{ marginTop: 5, paddingBottom: 60 }}
-                            data={this.state.ListData}
-                            extraData={this.state}
-                            keyExtractor={(item) => item.interested_id}
-                            renderItem={this._renderItem} />
-                        :
-                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
-                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
-                            </View>
-                    }
+                <Text style={[styles.text22, { color: primaryColor }]}>{`รายการบูธที่สนใจ`}</Text>
+                <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
+                <View style={[styles.marginBetweenVertical]}></View>
+                {
+                    this.state.ListData.length > 0 ?
+                        <FlatList
+                        style={{ marginTop: 5, paddingBottom: 60 }}
+                        data={this.state.ListData}
+                        extraData={this.state}
+                        keyExtractor={(item) => item.interested_id}
+                        renderItem={this._renderItem} />
+                    :
+                        <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
+                            <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
+                        </View>
+                }
                 </View>
             </View>
         )
@@ -174,7 +177,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoriteScreen)
