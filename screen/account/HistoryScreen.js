@@ -27,7 +27,8 @@ import {
     secondaryColor,
     BASE_URL,
     GET_HISTORY_URL,
-    HEADERFORMDATA
+    HEADERFORMDATA,
+    CHECK_IN_HISTORY_URL
 } from '../../utils/contants'
 
 import {
@@ -79,35 +80,47 @@ class HistoryScreen extends React.Component {
         this._hideDateTimePicker();
     };
 
-    _renderItem = () => {
+    _renderItem = ({ item, index }) => {
+        const props = this.props.reducer
         return (
             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
                 <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
                     onPress={
-                        () => this.props.navigation.navigate('Historydetail')
+                        () => this.props.navigation.navigate('Historydetail',{
+                            data : item,
+                            service : item.Service
+                        })
                     }>
                     <View style={[styles.containerRow]}>
                         <View style={{ flex: 0.15 }}>
-                            <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                <Text style={[styles.text16, styles.bold]}>{`C02`}</Text>
+                        <View style={[styles.center, { alignItems: 'center', width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                            <Text style={[styles.text16, styles.bold, { textAlign: 'center' }]}>{item.boothname}</Text>
                             </View>
                         </View>
                         <View style={{ flex: 0.8 }}>
-                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`วันที่ขาย 27 มี.ค.`}</Text>
-                            <Text style={[styles.text14]}>{`SINGHA COMPLEX 1`}</Text>
-                            <Text style={[styles.text14]}>{`ขนมไทย,ขนมหวาน`}</Text>
+                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`วันที่ขาย ` + moment(item.booking_detail_date).format('LL')}</Text>
+                            <Text style={[styles.text14]}>{item.market_name}</Text>
+                            <Text style={[styles.text14]}>{
+                                props.userInfo.product.map((v, i) => {
+                                    return i < (props.userInfo.product.length - 1) ? (v.product_name + ', ') : v.product_name
+                                })
+                            }</Text>
                         </View>
                     </View>
                     <Icon name='chevron-right' size={16} color='gray' />
                 </TouchableOpacity>
-                <View style={{ margin: 5 }}>
-                    <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
-                        onPress={
-                            () => null
-                        }>
-                        <Text style={[styles.text18, { color: '#FFF' }]}>{`เช็คอินเข้าขายของ`}</Text>
-                    </TouchableOpacity>
-                </View>
+                {
+                    item.check_in_status == 'N' ? 
+                        <View style={{ margin: 5 }}>
+                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
+                                onPress={
+                                    () => this.CheckIn(item)
+                                }>
+                                <Text style={[styles.text18, { color: '#FFF' }]}>{`เช็คอินเข้าขายของ`}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    : null
+                }
             </View>
         )
     }
@@ -147,7 +160,33 @@ class HistoryScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.SearchData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    CheckIn(item){
+        const props = this.props.reducer
+        let formData = new FormData();
+        formData.append('booking_detail_id',item.booking_detail_id)
+        formData.append('partners_id',props.userInfo.partners_id)
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + CHECK_IN_HISTORY_URL,formData,HEADERFORMDATA,(results)=>{
+            console.log('GET_HISTORY_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.dismissIndicator()
+                Alert.alert(  
+                    '',  
+                    results.message,  
+                    [  
+                        {text: 'OK', onPress: () => this.SearchData()},  
+                    ]  
+                ); 
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+
     }
 
     SearchData () {
@@ -247,11 +286,20 @@ class HistoryScreen extends React.Component {
                         </TouchableOpacity>
                     </View> */}
 
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}></View>
+                    <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     {
-                        this._renderItem()
+                        this.state.ListData.length > 0 ?
+                            <FlatList
+                            style={{ marginTop: 5, paddingBottom: 60 }}
+                            data={this.state.ListData}
+                            extraData={this.state}
+                            keyExtractor={(item) => item.booking_detail_id}
+                            renderItem={this._renderItem} />
+                        :
+                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
+                            </View>
                     }
                 </View>
                 <DateTimePicker

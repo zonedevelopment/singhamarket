@@ -31,38 +31,20 @@ import {
 
 import styles from '../style/style'
 
+
+import {
+    openIndicator,
+    dismissIndicator,
+} from '../actions'
+import Hepler from '../utils/Helper'
+
 const DEVICE_WIDTH = Dimensions.get('screen').width
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class HistoryDetailScreen extends React.Component {
 
-    _renderItem = () => {
-        return (
-            <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
-                <View style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}>
-                    <View style={[styles.containerRow]}>
-                        <View style={{ flex: 0.15 }}>
-                            <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                <Text style={[styles.text16, styles.bold]}>{`C02`}</Text>
-                            </View>
-                        </View>
-                        <View style={{ flex: 0.8 }}>
-                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`วันที่ขาย 27 มี.ค.`}</Text>
-                            <Text style={[styles.text14]}>{`SINGHA COMPLEX 1`}</Text>
-                            <Text style={[styles.text14]}>{`ขนมไทย,ขนมหวาน`}</Text>
-                        </View>
-                    </View>
-                    <Icon name='chevron-right' size={16} color='gray' />
-                </View>
-                <View style={{ margin: 5 }}>
-                    <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
-                        onPress={
-                            () => null
-                        }>
-                        <Text style={[styles.text18, { color: '#FFF' }]}>{`เช็คอินเข้าขายของ`}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
+    state = {
+        data : [],
+        service : [],
     }
 
     ComponentLeft = () => {
@@ -100,11 +82,14 @@ class HistoryDetailScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        const { data,service } = this.props.route.params
+        await this.setState({ data : data,service:service })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
+        const props = this.props.reducer
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -123,31 +108,41 @@ class HistoryDetailScreen extends React.Component {
                     }} />
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.marginBetweenVertical]}></View>
-                    <Text style={[styles.text20, { color: primaryColor }]}>{`วันที่ขายของ`}</Text>
+                    <Text style={[styles.text20, { color: primaryColor }]}>{`วันที่ขายของ ` + moment(this.state.data.booking_detail_date).format('LL')}</Text>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.hr]}></View>
                     <View style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between', padding: 10 }]}>
                         <View style={[styles.containerRow]}>
                             <View style={{ flex: 0.2 }}>
                                 <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                    <Text style={[styles.text16, styles.bold]}>{`C02`}</Text>
+                                    <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{this.state.data.boothname}</Text>
                                 </View>
                             </View>
                             <View style={{ flex: 0.8 }}>
-                                <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`วันที่ขาย 27 มี.ค.`}</Text>
-                                <Text style={[styles.text14]}>{`สถานที่ SINGHA COMPLEX 1`}</Text>
-                                <Text style={[styles.text14]}>{`บูธ C02`}</Text>
+                                <Text style={[styles.text14]}>{`สถานที่ ` + this.state.data.market_name}</Text>
+                                <Text style={[styles.text14]}>{`บูธ ` + this.state.data.boothname}</Text>
                             </View>
                         </View>
                     </View>
                     <View style={{ padding: 5 }}>
                         <Text style={[styles.text16, styles.bold]}>{`รายการสินค้าที่ขาย`}</Text>
-                        <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ขนมไทย, ขนมหวาน`}</Text>
+                        <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- `} 
+                        {
+                            props.userInfo.product.map((v, i) => {
+                                return i < (props.userInfo.product.length - 1) ? (v.product_name + ', ') : v.product_name
+                            })
+                        }
+                        </Text>
                     </View>
                     <View style={{ padding: 5 }}>
                         <Text style={[styles.text16, styles.bold]}>{`บริการเสริม`}</Text>
-                        <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ไฟฟ้าและแสงสว่าง x2`}</Text>
-                        <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ไฟฟ้าไม่เกิน 8,000 วัตต์`}</Text>
+                        {
+                            this.state.service.map((v, i) => {
+                                return (<Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ` + v.service_name}</Text>)
+                            })
+                        }
+                        {/* <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ไฟฟ้าและแสงสว่าง x2`}</Text>
+                        <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ไฟฟ้าไม่เกิน 8,000 วัตต์`}</Text> */}
                     </View>
                 </View>
                 <View style={{ position: 'absolute', bottom: 5, alignSelf: 'center', padding: 10 }}>
@@ -168,7 +163,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryDetailScreen)

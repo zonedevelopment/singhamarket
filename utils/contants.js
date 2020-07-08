@@ -90,6 +90,7 @@ export const UPDATE_PROFILE_COMPANY  = '/singha/api/UpdateProfileCompany'
 export const CHANGE_PASSWORD_URL      = '/singha/api/ChangePassword'
 export const CONTACT_SUPPORT_URL      = '/singha/api/SupportSubmit'
 export const GET_HISTORY_URL      = '/singha/api/GetHistory'
+export const CHECK_IN_HISTORY_URL      = '/singha/api/CheckInHistory'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'
