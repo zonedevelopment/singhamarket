@@ -19,14 +19,30 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
-    redColor
+    redColor,
+    BASE_URL,
+    GET_FAVERITE_URL,
+    HEADERFORMDATA
 } from '../../utils/contants'
 
 import styles from '../../style/style'
+import {
+    openIndicator,
+    dismissIndicator,
+} from '../../actions'
+import Hepler from '../../utils/Helper'
 
 class FavoriteScreen extends React.Component {
 
-    _renderItem = () => {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            ListData : [],
+        };
+    }
+
+    _renderItem = ({item,index}) => {
         return (
             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
                 <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
@@ -92,7 +108,27 @@ class FavoriteScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.LoadData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    LoadData () {
+        const props = this.props.reducer
+        let formData = new FormData();
+        formData.append('partners_id',props.userInfo.partners_id)
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + GET_FAVERITE_URL,formData,HEADERFORMDATA,(results)=>{
+            console.log('GET_FAVERITE_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    ListData : results.data
+                })
+                this.props.dismissIndicator()
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
     }
 
     render() {
@@ -115,7 +151,17 @@ class FavoriteScreen extends React.Component {
                 <View style={[styles.container, { padding: 10 }]}>
                     <Text style={[styles.text22, { color: primaryColor }]}>{`รายการบูธที่สนใจ`}</Text>
                     {
-                        this._renderItem()
+                        this.state.ListData.length > 0 ?
+                            <FlatList
+                            style={{ marginTop: 5, paddingBottom: 60 }}
+                            data={this.state.ListData}
+                            extraData={this.state}
+                            keyExtractor={(item) => item.interested_id}
+                            renderItem={this._renderItem} />
+                        :
+                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
+                            </View>
                     }
                 </View>
             </View>
