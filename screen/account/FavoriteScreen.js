@@ -48,19 +48,19 @@ class FavoriteScreen extends React.Component {
             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
                 <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
                     onPress={
-                        () => null
+                        () => this.onCancel(item)
                     }>
                     <View style={[styles.containerRow]}>
                         <View style={{ flex: 0.15 }}>
                             <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                <Text style={[styles.text16, styles.bold]}>{`C02`}</Text>
+                                <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{item.boothname}</Text>
                             </View>
                         </View>
                         <View style={{ flex: 0.8 }}>
-                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`SINGHA COMPLEX 1`}</Text>
-                            <Text style={[styles.text14]}>{`บูธ C02`}</Text>
-                            <Text style={[styles.text14]}>{`วันที่ 31 มีนาคม`}</Text>
-                            <Text style={[styles.text14, { color: redColor}]}>{`เหลือเวลาในการจอง 04:00 นาที`}</Text>
+                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{item.market_name}</Text>
+                            <Text style={[styles.text14]}>{`บูธ ` + item.boothname}</Text>
+                            <Text style={[styles.text14]}>{`วันที่ ` + moment(item.booking_detail_date).format('LL')}</Text>
+                            <Text style={[styles.text14, { color: redColor}]}>{`เหลือเวลาในการจอง 10:00 นาที`}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -111,6 +111,10 @@ class FavoriteScreen extends React.Component {
     componentDidMount() {
         this.LoadData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    onCancel(item){
+        
     }
 
     LoadData () {

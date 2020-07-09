@@ -236,6 +236,12 @@ const styles = StyleSheet.create({
         borderRadius: 100/2,
         backgroundColor: pendingColor
     },
+    circleGray: {
+        width: 25,
+        height: 25,
+        borderRadius: 100/2,
+        backgroundColor: grayColor,
+    },
     circleRed: {
         width: 25,
         height: 25,

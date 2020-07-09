@@ -29,7 +29,8 @@ import {
     HEADERFORMDATA,
     BASE_URL,
     GET_BOOTH_URL,
-    CHECK_BOOTH_URL
+    CHECK_BOOTH_URL,
+    SUBMIT_FAVERITE_URL
 } from '../../utils/contants'
 
 import styles from '../../style/style'
@@ -118,8 +119,10 @@ class BoothScreen extends React.Component {
                             </TouchableOpacity>
                             :
                             item.booth_status_id == "2" ?
-                                <TouchableOpacity style={[styles.circleYellow, styles.center, { flex: 0.25 }]}>
-                                    <Text style={[styles.text14, { color: primaryColor }]}>{`แจ้งเตือน`}</Text>
+                                <TouchableOpacity style={[ item.interest_status == 'No' ? styles.circleYellow : styles.circleGray, styles.center, { flex: 0.25 }]}onPress={
+                                    () => this.onReciveInterested(item)
+                                }>
+                                    <Text style={[styles.text14, { color:item.interest_status == 'No' ?  primaryColor : '#FFF' }]}>{ `แจ้งเตือน`}</Text>
                                 </TouchableOpacity>
                                 :
                                 <View style={[styles.circleRed, styles.center, { flex: 0.25 }]}>
@@ -179,20 +182,48 @@ class BoothScreen extends React.Component {
         }
     }
 
+    onReciveInterested(itemValue){
+        if(itemValue.interest_status == 'No'){
+            const props = this.props.reducer
+            let formData = new FormData();
+            formData.append('booking_detail_id',itemValue.booking_detail_id)
+            formData.append('partners_id',props.userInfo.partners_id)
+            this.props.openIndicator()
+            Hepler.post(BASE_URL + SUBMIT_FAVERITE_URL,formData,HEADERFORMDATA,(results)=>{
+                console.log('SUBMIT_FAVERITE_URL',results)
+                if (results.status == 'SUCCESS') {
+                    this.props.dismissIndicator()
+                    Alert.alert(  
+                        '',  
+                        results.message,  
+                        [  
+                            {text: 'OK', onPress: () => this.setSelectedDate(this.state.ddlSelectedDate)},  
+                        ]  
+                    ); 
+                } else {  
+                    Alert.alert(results.message)
+                    this.props.dismissIndicator()
+                }
+            })
+        }else{
+            Alert.alert(`ท่านกดรับการแจ้งเตือนไปแล้ว!`)
+        }
+
+    }
+
     setSelectedDate(itemValue){
         if(itemValue != ''){
             this.setState({ddlSelectedDate : itemValue})
             this.props.openIndicator()
             let formData = new FormData();
             formData.append('building_id',this.props.reducer.reserverion_building_id)
+            formData.append('partners_id',this.props.reducer.userInfo.partners_id)
             formData.append('floor_id',this.props.reducer.reserverion_floor_id)
             formData.append('zone_id',this.props.reducer.reserverion_zone_id)
             formData.append('date',itemValue)
             formData.append('product_type_id',this.props.reducer.userInfo.product_type.type_id)
             formData.append('product_cate_id',this.props.reducer.userInfo.product_type.cate_id)
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
-                // alert(JSON.stringify(results))
-                // return
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
                     this.setState({listBooth : results.data})
