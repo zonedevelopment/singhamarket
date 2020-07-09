@@ -93,6 +93,7 @@ export const GET_HISTORY_URL          = '/singha/api/GetHistory'
 export const CHECK_IN_HISTORY_URL     = '/singha/api/CheckInHistory'
 export const GET_FAVERITE_URL         = '/singha/api/GetFaveriteBooth'
 export const SUBMIT_FAVERITE_URL      = '/singha/api/SubmitFaveriteBooth'
+export const CANCEL_FAVERITE_URL      = '/singha/api/CancelFaveriteBooth'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

@@ -23,7 +23,8 @@ import {
     redColor,
     BASE_URL,
     GET_FAVERITE_URL,
-    HEADERFORMDATA
+    HEADERFORMDATA,
+    CANCEL_FAVERITE_URL
 } from '../../utils/contants'
 
 import styles from '../../style/style'
@@ -48,7 +49,7 @@ class FavoriteScreen extends React.Component {
             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
                 <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
                     onPress={
-                        () => this.onCancel(item)
+                        () => {}
                     }>
                     <View style={[styles.containerRow]}>
                         <View style={{ flex: 0.15 }}>
@@ -65,7 +66,9 @@ class FavoriteScreen extends React.Component {
                     </View>
                 </TouchableOpacity>
                 <View style={{ position: 'absolute', top: 5, right: 5}}>
-                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, borderRadius: 15, backgroundColor: grayColor}]}>
+                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, borderRadius: 15, backgroundColor: grayColor}]}onPress={
+                        () => this.onCancel(item)
+                    }>
                         <Icon name={'times'} size={15} color={'white'} />
                     </TouchableOpacity>
                 </View>
@@ -114,7 +117,29 @@ class FavoriteScreen extends React.Component {
     }
 
     onCancel(item){
-        
+
+        const props = this.props.reducer
+        let formData = new FormData();
+        formData.append('partners_id',props.userInfo.partners_id)
+        formData.append('interested_id',item.interested_id)
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + CANCEL_FAVERITE_URL,formData,HEADERFORMDATA,(results)=>{
+            console.log('CANCEL_FAVERITE_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.dismissIndicator()
+                Alert.alert(  
+                    '',  
+                    results.message,  
+                    [  
+                        {text: 'OK', onPress: () => this.LoadData()},  
+                    ]  
+                ); 
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+
     }
 
     LoadData () {
