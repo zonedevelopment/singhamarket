@@ -87,7 +87,7 @@ const Reserv = function MyStack() {
             headerMode='none'
             initialRouteName='Building'>
             <Stack.Screen name="Building" component={Reservscreen} />
-            <Stack.Screen name="Condition" component={Condition} />
+            {/* <Stack.Screen name="Condition" component={Condition} /> */}
             <Stack.Screen name="Floorzone" component={Floorzone} />
             <Stack.Screen name="Plan" component={Planscreen} />
             <Stack.Screen name="Calendar" component={Calendarscreen} />

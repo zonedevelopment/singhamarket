@@ -42,7 +42,7 @@ class ReservationScreen extends React.Component {
                 </View>
                 <TouchableOpacity style={[styles.mainButton, styles.center]}
                     onPress={
-                        () => this.props.navigation.navigate('Condition',{
+                        () => this.props.navigation.navigate('Floorzone',{
                             building_data : item
                         })
                     }>

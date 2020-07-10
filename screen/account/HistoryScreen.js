@@ -47,9 +47,9 @@ class HistoryScreen extends React.Component {
         super(props);
         this.state = {
             DateStartSelectValue : moment().format('YYYY-MM-DD'),
-            DateStartSelectText : moment().format('LL'),
+            DateStartSelectText : moment().format('ll'),
             DateEndSelectValue : moment().format('YYYY-MM-DD'),
-            DateEndSelectText : moment().format('LL'),
+            DateEndSelectText : moment().format('ll'),
             isDateTimePickerVisible : false,
             ActiveDateType : '',
             ListData : [],
@@ -69,12 +69,12 @@ class HistoryScreen extends React.Component {
         if(this.state.ActiveDateType == 'Start'){
             this.setState({ 
                 DateStartSelectValue: moment(date).format('YYYY-MM-DD'),
-                DateStartSelectText: moment(date).format('LL') 
+                DateStartSelectText: moment(date).format('ll') 
             });
         }else{
             this.setState({ 
                 DateEndSelectValue: moment(date).format('YYYY-MM-DD'),
-                DateEndSelectText: moment(date).format('LL') 
+                DateEndSelectText: moment(date).format('ll') 
             });
         }
         this._hideDateTimePicker();
@@ -257,7 +257,7 @@ class HistoryScreen extends React.Component {
 
                     </View>
                     <View style={[styles.containerRow, {  paddingLeft:10, alignItems: 'center'}]}>
-                        <TouchableOpacity style={[styles.twoButton, styles.center, { width:'100%', backgroundColor: grayColor }]} 
+                        <TouchableOpacity style={[styles.mainButtonDisabled, styles.center, { width:'100%', backgroundColor: grayColor }]} 
                             onPress={() => { 
                                 this.SearchData();
                             }}>
