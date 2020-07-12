@@ -53,24 +53,20 @@ class CalendarScreen extends React.Component {
         if (this.state._markedDates[_selectedDay]) {
             selected = !this.state._markedDates[_selectedDay].selected
         }
-
         const updatedMarkedDates = { ...this.state._markedDates, ...{ [_selectedDay]: { selected, selectedColor: primaryColor } } }
         this.setState({ _markedDates: updatedMarkedDates })
-        if (this.state.selectDate == '') {
-            this.state.selectDate.push({ date: _selectedDay, boothSelectID: '', boothSelectName: '' });
-        } else {
-            if (this.state.selectDate.includes({ date: _selectedDay, boothSelectID: '', boothSelectName: '' })) {
-                this.state.selectDate.filter((v, i) => {
-                    if (v.date === _selectedDay) {
-                        this.state.selectDate.splice(i, 1);
-                    }
-                })
-            } else {
-                this.state.selectDate.push({ date: _selectedDay, boothSelectID: '', boothSelectName: '' });
-            }
+        let selectDate = this.state.selectDate
+        if(selected === true){ /// เลือกวัน
+            selectDate.push({ date: _selectedDay, boothSelectID: '', boothSelectName: '' });
+        }else{////ยกเลิกวัน
+            selectDate.filter((v, i) => {
+                console.log(v.date + ' === ' + _selectedDay)
+                if (v.date === _selectedDay) {
+                    selectDate.splice(i, 1);
+                }
+            })
         }
-
-        let sortDate = this.state.selectDate.sort((a, b) =>
+        let sortDate = selectDate.sort((a, b) =>
             a.date.split('-').reverse().join().localeCompare(b.date.split('-').reverse().join()));
         this.setState({ selectDate: sortDate })
     }
