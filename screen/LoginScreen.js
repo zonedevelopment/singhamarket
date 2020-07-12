@@ -109,26 +109,29 @@ class LoginScreen extends React.Component {
     }
 
     CheckAuditAdminLogin() {
-        let userName = this.state.username
-        let passWord = this.state.password
-        if(userName.trim() == '' || passWord.trim() == ''){
-            return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
-        }else{
-            // this.props.openIndicator()
-            // let formData = new FormData();
-            // formData.append('USERNAME', userName.trim())
-            // formData.append('PASSWORD', passWord.trim())
-            // Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
-            //     this.props.dismissIndicator()
-            //     if (results.status == 'SUCCESS') {
-            //         StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
-            //         this.props.saveUserInfo(results.data)
-            //         this.props.navigation.navigate('Main')
-            //     } else {
-            //         Alert.alert(results.message)
-            //     }
-            // })
-        }
+
+        this.props.navigation.navigate('AuditMain')
+
+        // let userName = this.state.username
+        // let passWord = this.state.password
+        // if(userName.trim() == '' || passWord.trim() == ''){
+        //     return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
+        // }else{
+        //     // this.props.openIndicator()
+        //     // let formData = new FormData();
+        //     // formData.append('USERNAME', userName.trim())
+        //     // formData.append('PASSWORD', passWord.trim())
+        //     // Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+        //     //     this.props.dismissIndicator()
+        //     //     if (results.status == 'SUCCESS') {
+        //     //         StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+        //     //         this.props.saveUserInfo(results.data)
+        //     //         this.props.navigation.navigate('Main')
+        //     //     } else {
+        //     //         Alert.alert(results.message)
+        //     //     }
+        //     // })
+        // }
     }
 
     render() {

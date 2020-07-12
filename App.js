@@ -43,6 +43,8 @@ const customTextProps = {
 setCustomText(customTextProps);
 setCustomTextInput(customTextProps);
 
+
+//////// user
 import Splashscreen from './screen/SplashScreen'
 import Choicescreen from './screen/ChoiceScreen'
 import Loginscreen from './screen/LoginScreen'
@@ -56,6 +58,10 @@ import Productscreen from './screen/ProductListScreen'
 import Historydetailscreen from './screen/HistoryDetailScreen'
 import NewsDetailsScreen from './screen/NewsDetailsScreen'
 import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
+
+
+////////// audit
+import AuditMainscreen from './audit/MainScreen'
 
 const Stack = createStackNavigator();
 function MyStack({cartItem}) {
@@ -75,8 +81,10 @@ function MyStack({cartItem}) {
       <Stack.Screen name="Productlist" component={Productscreen} />
       <Stack.Screen name="Historydetail" component={Historydetailscreen} />
       <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
-
       <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
+
+      <Stack.Screen name="AuditMain" component={AuditMainscreen}/>
+
     </Stack.Navigator>
   );
 }
