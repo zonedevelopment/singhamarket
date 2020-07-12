@@ -28,6 +28,8 @@ import styles from '../style/style'
  * Main tab
  */
 import Homescreen from './tab/HomeScreen'
+import Reservscreen from './tab/ReservationScreen'
+
 /**
  * End
  */
@@ -56,6 +58,16 @@ const Home = function AccStack() {
             <Stack.Screen name="Home" component={Homescreen} />
         </Stack.Navigator>
     )
+}
+
+const Reserv = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Building'>
+            <Stack.Screen name="Building" component={Reservscreen} />
+        </Stack.Navigator>
+    );
 }
 
 function IconWithBadge({ badgeCount, focused }) {
@@ -122,7 +134,7 @@ const tabMain = (countItem) => {
 
             <Tab.Screen
                 name="Reserv"
-                component={Home}
+                component={Reserv}
                 options={{
                     tabBarLabel: 'จองพื้นที่',
                     tabBarIcon: ({ focused, color }) => (
