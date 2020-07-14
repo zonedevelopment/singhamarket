@@ -4,6 +4,7 @@ import {
     Text,
     FlatList,
     Dimensions,
+    ScrollView,
     BackHandler,
     TouchableOpacity
 } from 'react-native'
@@ -12,6 +13,7 @@ import { NavigationBar } from 'navigationbar-react-native'
 import { connect } from 'react-redux'
 import Carousel from 'react-native-banner-carousel'
 import Image from 'react-native-fast-image'
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import {
     darkColor,
     grayColor,
@@ -19,7 +21,7 @@ import {
     secondaryColor,
     KEY_LOGIN
 } from '../../utils/contants'
-
+import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import styles from '../../style/style'
 import StorageServies from '../../utils/StorageServies'
 import {
@@ -31,6 +33,14 @@ import Hepler from '../../utils/Helper'
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class HomeScreen extends React.Component {
 
+    state = {
+        floor_selectedIndex : 0,
+        floor: []
+    }
+
+    onSelectFloor(index, value) {
+
+    }
     
     ComponentLeft = () => {
         return (
@@ -95,7 +105,89 @@ class HomeScreen extends React.Component {
                     <View style={[styles.container,styles.panelWhite, styles.shadow,{alignItems: 'center'}]}>
                         <Text style={[styles.text22, { color: primaryColor,paddingTop:20 }]}>{`เลือกสถานที่ที่ท่านต้องการตรวจ`}</Text>
                         <Text style={[styles.text16, { color: primaryColor}]}>{`กรุณาเลือกตึกและชั้นที่ท่านต้องการตรวจสอบ`}</Text>
+                        <ScrollView
+                            contentContainerStyle={{ flexGrow: 1, padding: 8 }}
+                            keyboardShouldPersistTaps="always">
+                            <TouchableOpacity
+                                style={[styles.mainButton2, styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 20 }]}
+                                onPress={
+                                    () => {
+                                       
+                                    }
+                                }>
+                                <Text style={{ color: 'white' }}>{`กรุณาเลือกตึก`}</Text>
+                                <Icon name='chevron-right' size={12} color='white' />
+                            </TouchableOpacity>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <TouchableOpacity
+                                style={[styles.mainButton2, styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 20 }]}
+                                onPress={
+                                    () => {
+                                       
+                                    }
+                                }>
+                                <Text style={{ color: 'white' }}>{`กรุณาเลือกประเภทตลาด`}</Text>
+                                <Icon name='chevron-right' size={12} color='white' />
+                            </TouchableOpacity>
+                            <View style={[styles.marginBetweenVertical]}></View>
 
+                            <View style={[styles.container]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`เลือกชั้นทั้ต้องการ`}</Text>
+                                <RadioGroup
+                                    size={20}
+                                    thickness={2}
+                                    selectedIndex={this.state.floor_selectedIndex}
+                                    color={primaryColor}
+                                    style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
+                                    highlightColor='transparent'
+                                    onSelect={(index, value) => this.onSelectFloor(index, value)} >
+                                    {
+                                        // this.state.floor.map((v, i) => {
+                                        //     return (
+                                        //         <RadioButton
+                                        //             key={i}
+                                        //             value={v.floor_id}
+                                        //             color={primaryColor}
+                                        //             style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        //             <Text style={[styles.text16, { color: primaryColor }]}>{`${v.floor_name}`}</Text>
+                                        //         </RadioButton>
+                                        //     )
+                                        // })
+
+                                    }
+                                    <RadioButton
+                                        key={0}
+                                        value={1}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 1`}</Text>
+                                    </RadioButton>
+                                    <RadioButton
+                                        key={1}
+                                        value={2}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 2`}</Text>
+                                    </RadioButton>
+                                    <RadioButton
+                                        key={3}
+                                        value={4}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 3`}</Text>
+                                    </RadioButton>
+                                    <RadioButton
+                                        key={3}
+                                        value={4}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 4`}</Text>
+                                    </RadioButton>
+                                </RadioGroup>
+                            </View>
+
+                            
+                        </ScrollView>
 
                         
                     </View>
