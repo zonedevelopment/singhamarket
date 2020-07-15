@@ -28,6 +28,7 @@ import styles from '../style/style'
  * Main tab
  */
 import Homescreen from './tab/HomeScreen'
+import Homedetailsscreen from './HomeDetailsScreen'
 import Reservscreen from './tab/ReservationScreen'
 
 /**
@@ -56,6 +57,7 @@ const Home = function AccStack() {
             headerMode='none'
             initialRouteName='Home'>
             <Stack.Screen name="Home" component={Homescreen} />
+            <Stack.Screen name="HomeDetails" component={Homedetailsscreen} />
         </Stack.Navigator>
     )
 }

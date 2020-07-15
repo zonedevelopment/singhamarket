@@ -130,8 +130,7 @@ class HomeScreen extends React.Component {
                                 <Icon name='chevron-right' size={12} color='white' />
                             </TouchableOpacity>
                             <View style={[styles.marginBetweenVertical]}></View>
-
-                            <View style={[styles.container]}>
+                            <View >
                                 <Text style={[styles.text18, { color: primaryColor }]}>{`เลือกชั้นทั้ต้องการ`}</Text>
                                 <RadioGroup
                                     size={20}
@@ -141,20 +140,6 @@ class HomeScreen extends React.Component {
                                     style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
                                     highlightColor='transparent'
                                     onSelect={(index, value) => this.onSelectFloor(index, value)} >
-                                    {
-                                        // this.state.floor.map((v, i) => {
-                                        //     return (
-                                        //         <RadioButton
-                                        //             key={i}
-                                        //             value={v.floor_id}
-                                        //             color={primaryColor}
-                                        //             style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                        //             <Text style={[styles.text16, { color: primaryColor }]}>{`${v.floor_name}`}</Text>
-                                        //         </RadioButton>
-                                        //     )
-                                        // })
-
-                                    }
                                     <RadioButton
                                         key={0}
                                         value={1}
@@ -185,7 +170,58 @@ class HomeScreen extends React.Component {
                                     </RadioButton>
                                 </RadioGroup>
                             </View>
+                            <View style={[styles.hr]}></View>
+                            <View >
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`เลือกโซนต้องการ`}</Text>
+                                <RadioGroup
+                                    size={20}
+                                    thickness={2}
+                                    selectedIndex={this.state.floor_selectedIndex}
+                                    color={primaryColor}
+                                    style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
+                                    highlightColor='transparent'
+                                    onSelect={(index, value) => this.onSelectFloor(index, value)} >
+                                    <RadioButton
+                                        key={0}
+                                        value={1}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Zone A`}</Text>
+                                    </RadioButton>
+                                    <RadioButton
+                                        key={1}
+                                        value={2}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Zone B`}</Text>
+                                    </RadioButton>
+                                    <RadioButton
+                                        key={3}
+                                        value={4}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Zone C`}</Text>
+                                    </RadioButton>
+                                    <RadioButton
+                                        key={3}
+                                        value={4}
+                                        color={primaryColor}
+                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                        <Text style={[styles.text16, { color: primaryColor }]}>{`Zone D`}</Text>
+                                    </RadioButton>
+                                </RadioGroup>
+                            </View>
 
+                            <View>
+                                <TouchableOpacity style={[styles.mainButton, {flexDirection: 'row', marginTop: 5, marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}
+                                    onPress={
+                                         () => {
+                                            this.props.navigation.navigate('HomeDetails')
+                                        }
+                                    }>
+                                    <Text style={[styles.text16, { textAlign:'center', color: 'white' }]}>{`ยืนยัน`}</Text>
+                                </TouchableOpacity>
+                            </View>
                             
                         </ScrollView>
 
