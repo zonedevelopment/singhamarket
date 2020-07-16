@@ -24,9 +24,11 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
+    greenColor,
     BASE_URL,
     PRODUCT_CATEGORY_URL,
-    HEADERFORMDATA
+    HEADERFORMDATA,
+    alpaGreen
 } from '../utils/contants'
 
 import styles from '../style/style'
@@ -43,7 +45,48 @@ const DEVICE_HEIGHT = Dimensions.get('screen').height
 class HomeDetailsScreen extends React.Component {
 
     state = {
-        ListData : [],
+        ListData : [
+            {
+                date : '27 มีนาคม ',
+                totalBooth : 30,
+                totalBooking : 30,
+                totalEmpty : 0,
+                totalWating : 0,
+                status : 'gray'
+            },
+            {
+                date : '28 มีนาคม ',
+                totalBooth : 30,
+                totalBooking : 30,
+                totalEmpty : 0,
+                totalWating : 0,
+                status : 'gray'
+            },
+            {
+                date : '29 มีนาคม ',
+                totalBooth : 30,
+                totalBooking : 20,
+                totalEmpty : 1,
+                totalWating : 9,
+                status : 'green'
+            },
+            {
+                date : '30 มีนาคม ',
+                totalBooth : 30,
+                totalBooking : 20,
+                totalEmpty : 1,
+                totalWating : 9,
+                status : 'green'
+            },
+            {
+                date : '31 มีนาคม ',
+                totalBooth : 30,
+                totalBooking : 30,
+                totalEmpty : 0,
+                totalWating : 0,
+                status : 'gray'
+            },
+        ],
     }
 
     ComponentLeft = () => {
@@ -91,45 +134,64 @@ class HomeDetailsScreen extends React.Component {
 
     _renderItem = ({ item, index }) => {
         const props = this.props.reducer
+        let bgColor = item.status == 'gray' ? '#eee' : '#dbebed'
+        let color = item.status == 'gray' ? grayColor : greenColor
         return (
-            <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
-                <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
-                    onPress={
-                        () => this.props.navigation.navigate('Historydetail',{
-                            data : item,
-                            service : item.Service
-                        })
-                    }>
-                    <View style={[styles.containerRow]}>
-                        <View style={{ flex: 0.15 }}>
-                        <View style={[styles.center, { alignItems: 'center', width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                            <Text style={[styles.text16, styles.bold, { textAlign: 'center' }]}>{item.boothname}</Text>
-                            </View>
+            <View style={{ borderBottomWidth: 0.3, borderBottomColor: '#eee' , padding: 10 }}>
+                <View style={{ marginBottom: 5 ,marginTop: 5 ,padding:10,borderRadius:10,backgroundColor:bgColor }}>
+                    <View style={{flex: 1, flexDirection: 'row',marginBottom:5}}>
+                        <View style={{flex: 1,flexDirection:'row'}}>
+                            <View style={{ width: 20,height: 20,borderRadius:50,backgroundColor: color}}></View>
+                            <Text style={{paddingLeft:5,fontWeight:'bold',fontSize:14}}>{item.date}</Text>
                         </View>
-                        <View style={{ flex: 0.8 }}>
-                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`วันที่ขาย ` + moment(item.booking_detail_date).format('LL')}</Text>
-                            <Text style={[styles.text14]}>{item.market_name}</Text>
-                            <Text style={[styles.text14]}>{
-                                props.userInfo.product.map((v, i) => {
-                                    return i < (props.userInfo.product.length - 1) ? (v.product_name + ', ') : v.product_name
-                                })
-                            }</Text>
+                        <View >
+                            <Text style={{
+                                textAlign: 'right',
+                                borderRadius:5,
+                                color:'#FFF',
+                                padding:2,
+                                paddingLeft:5,
+                                paddingRight:5,
+                                fontSize:14,
+                                backgroundColor:color
+                                }}>
+                                    จำนวนบูธ {item.totalBooth}
+                            </Text>
                         </View>
                     </View>
-                    <Icon name='chevron-right' size={16} color='gray' />
-                </TouchableOpacity>
-                {
-                    item.check_in_status == 'N' ? 
-                        <View style={{ margin: 5 }}>
-                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
+                    <View style={{flex: 1, padding:20,backgroundColor:'#FFF',borderRadius:15,flexDirection: 'row'}}>
+                        <View style={{flex: 1,textAlign: 'left'}}>
+                            <Text style={[styles.TextFlexList,{color:color}]}>{item.totalBooking}</Text>
+                            <Text style={[styles.TextFlexList]}>จองแล้ว</Text>
+                        </View>
+                        <View style={{flex: 1,textAlign: 'center'}}>
+                            <Text style={[styles.TextFlexList,{color:color}]}>
+                                {item.totalEmpty}
+                            </Text>
+                            <Text style={[styles.TextFlexList]} >ว่าง</Text>
+                        </View>
+                        <View style={{flex: 1,textAlign: 'right'}}>
+                            <Text style={[styles.TextFlexList,{color:color}]}>{item.totalWating}</Text>
+                            <Text style={[styles.TextFlexList]}>รอชำระเงิน</Text>
+                        </View>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View style={{flex: 1}}>
+              
+                        </View>
+                        <View style={{flex: 1,marginTop:5}}>
+                            <TouchableOpacity 
                                 onPress={
-                                    () => this.CheckIn(item)
+                                    () => {
+                                        this.props.navigation.push('HomeBoothReport');
+                                    }
                                 }>
-                                <Text style={[styles.text18, { color: '#FFF' }]}>{`เช็คอินเข้าขายของ`}</Text>
+                                <Text style={[styles.text14,{textAlign: 'right'}]}>ดูรายละเอียด</Text>
                             </TouchableOpacity>
                         </View>
-                    : null
-                }
+                    </View>
+                </View>
+               
             </View>
         )
     }

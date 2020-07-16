@@ -15,6 +15,7 @@ export const reservColor        = '#efa693'
 export const alpaGreen          = '#f2fff6'
 export const alpaYellow         = '#fffbf0'
 export const alpaRed            = '#fff6f5'
+export const greenColor         = '#4ec084'
  /**
   * End
   */

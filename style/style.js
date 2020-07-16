@@ -273,6 +273,11 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 6,
     },
+    TextFlexList : {
+        textAlign: 'center' ,
+        // fontWeight: 'bold',
+         fontSize: 18,
+    },
 })
 
 export default styles;
