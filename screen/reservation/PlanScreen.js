@@ -94,8 +94,8 @@ class PlanScreen extends React.Component {
         this.props.openIndicator()
         let formData = new FormData();
         formData.append('building_id',building_id)
-        formData.append('floor_id',building_id)
-        formData.append('zone_id',building_id)
+        formData.append('floor_id',floor_id)
+        formData.append('zone_id',zone_id)
         Hepler.post(BASE_URL + GET_PLAN_URL,formData,HEADERFORMDATA,(results) => {
             console.log('GET_PLAN_URL',results)
             if (results.status == 'SUCCESS') {
