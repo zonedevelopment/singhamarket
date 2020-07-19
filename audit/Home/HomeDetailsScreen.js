@@ -29,16 +29,16 @@ import {
     PRODUCT_CATEGORY_URL,
     HEADERFORMDATA,
     alpaGreen
-} from '../utils/contants'
+} from '../../utils/contants'
 
-import styles from '../style/style'
+import styles from '../../style/style'
 
 
 import {
     openIndicator,
     dismissIndicator,
-} from '../actions'
-import Hepler from '../utils/Helper'
+} from '../../actions'
+import Hepler from '../../utils/Helper'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 const DEVICE_HEIGHT = Dimensions.get('screen').height

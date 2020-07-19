@@ -28,9 +28,13 @@ import styles from '../style/style'
  * Main tab
  */
 import Homescreen from './tab/HomeScreen'
-import Homedetailsscreen from './HomeDetailsScreen'
-import Homeboothreportscreem from './HomeBoothReportScreen'
+import Homedetailsscreen from './Home/HomeDetailsScreen'
+import Homeboothreportscreen from './Home/HomeBoothReportScreen'
+import Homeboothreportdetailsscreen from './Home/HomeBoothReportDetailsScreen'
+
+
 import Reservscreen from './tab/ReservationScreen'
+import Customerscreen from './tab/CustomerScreen'
 
 /**
  * End
@@ -59,7 +63,8 @@ const Home = function AccStack() {
             initialRouteName='Home'>
             <Stack.Screen name="Home" component={Homescreen} />
             <Stack.Screen name="HomeDetails" component={Homedetailsscreen} />
-            <Stack.Screen name="HomeBoothReport" component={Homeboothreportscreem} />
+            <Stack.Screen name="HomeBoothReport" component={Homeboothreportscreen} />
+            <Stack.Screen name="HomeBoothReportDetails" component={Homeboothreportdetailsscreen} />
         </Stack.Navigator>
     )
 }
@@ -73,6 +78,17 @@ const Reserv = function MyStack() {
         </Stack.Navigator>
     );
 }
+
+const Customer = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Building'>
+            <Stack.Screen name="MainAuditCustomer" component={Customerscreen} />
+        </Stack.Navigator>
+    );
+}
+
 
 function IconWithBadge({ badgeCount, focused }) {
     return (
@@ -192,8 +208,8 @@ const tabMain = (countItem) => {
                     ),
                 }} />
             <Tab.Screen
-                name="Customer"
-                component={Home}
+                name="AuditCustomer"
+                component={Customer}
                 options={{
                     tabBarLabel: 'รายชื่อลูกค้า',
                     tabBarIcon: ({ focused, color }) => (

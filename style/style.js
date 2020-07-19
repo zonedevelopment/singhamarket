@@ -132,6 +132,12 @@ const styles = StyleSheet.create({
         backgroundColor: primaryColor,
         borderRadius: COMPONENT_HIGHT / 2
     },
+    mainButtonRound: {
+        height: COMPONENT_HIGHT,
+        width: (DEVICE_WIDTH / 2) - 30,
+        backgroundColor: darkColor,
+        borderRadius: COMPONENT_HIGHT / 2
+    },
     twoButton: {
         height: COMPONENT_HIGHT,
         width: (DEVICE_WIDTH / 2) - 30,
