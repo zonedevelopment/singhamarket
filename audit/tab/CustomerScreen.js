@@ -92,30 +92,20 @@ class CustomerScreen extends React.Component {
     
     _renderListItem = ({ item }) => {
         return (
-            <View style={{width:'90%',alignSelf: 'center' }}>
+            <TouchableOpacity style={{width:'90%',alignSelf: 'center' }} 
+            onPress={()=>{
+                this.props.navigation.navigate('AuditCustomerDetails')
+            }}>
                 <View style={{ flexDirection: 'row',paddingTop:10,paddingBottom:10}}>
                     <View style={{flex: 0.9}} >
                         <Text >{item.MemberName}</Text>
                     </View>
-                    <View style={{flex: 0.1}} >
-                        <TouchableOpacity
-                            onPress={() => {
-                                // this.props.navigation.push('AdminUserDetail',{
-                                //     MemberID : item.MemberID,
-                                //     MemberName : item.MemberName,
-                                //     Tel : item.Tel,
-                                //     LineID : item.LineID,
-                                // });
-                            }}
-                        >
-                            <Text style={{textAlign: 'right', alignSelf: 'stretch'}}>
-                                {'>'}
-                            </Text>
-                        </TouchableOpacity>
+                    <View style={{flex: 0.1,alignItems: 'center', justifyContent: 'center'}} >
+                        <Icon name='chevron-right' size={15} color={primaryColor} style={{textAlign: 'right'}}/>
                     </View>
                 </View>
                 <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1,}} /> 
-            </View>
+            </TouchableOpacity>
         )
     }
 

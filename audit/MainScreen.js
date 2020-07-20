@@ -35,6 +35,8 @@ import Homeboothreportdetailsscreen from './Home/HomeBoothReportDetailsScreen'
 
 import Reservscreen from './tab/ReservationScreen'
 import Customerscreen from './tab/CustomerScreen'
+import Customerdetailsscreen from './Customer/CustomerDetailsScreen'
+import Customerhistorydetailsscreen from './Customer/CustomerHistoryDetailsScreen'
 
 /**
  * End
@@ -85,6 +87,8 @@ const Customer = function MyStack() {
             headerMode='none'
             initialRouteName='Building'>
             <Stack.Screen name="MainAuditCustomer" component={Customerscreen} />
+            <Stack.Screen name="AuditCustomerDetails" component={Customerdetailsscreen} />
+            <Stack.Screen name="AuditHistoryDetails" component={Customerhistorydetailsscreen} />
         </Stack.Navigator>
     );
 }
