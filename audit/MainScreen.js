@@ -38,6 +38,11 @@ import Customerscreen from './tab/CustomerScreen'
 import Customerdetailsscreen from './Customer/CustomerDetailsScreen'
 import Customerhistorydetailsscreen from './Customer/CustomerHistoryDetailsScreen'
 
+import Verifyscreen from './tab/VerifyScreen'
+import Listverifyscreen from './Verify/ListVerifyScreen'
+
+import Notificationscreen from './tab/NotificationScreen'
+
 /**
  * End
  */
@@ -81,6 +86,19 @@ const Reserv = function MyStack() {
     );
 }
 
+const Verify = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Verify'>
+            <Stack.Screen name="Verify" component={Verifyscreen} />
+            <Stack.Screen name="ListVerify" component={Listverifyscreen} />
+        </Stack.Navigator>
+    );
+}
+
+
+
 const Customer = function MyStack() {
     return (
         <Stack.Navigator
@@ -92,6 +110,18 @@ const Customer = function MyStack() {
         </Stack.Navigator>
     );
 }
+
+const Notification = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='AuditNotification'>
+            <Stack.Screen name="AuditNotification" component={Notificationscreen} />
+        </Stack.Navigator>
+    );
+}
+
+
 
 
 function IconWithBadge({ badgeCount, focused }) {
@@ -174,7 +204,7 @@ const tabMain = (countItem) => {
                 }} />
             <Tab.Screen
                 name="Verify"
-                component={Home}
+                component={Verify}
                 options={{
                     tabBarLabel: 'ตรวจสอบล็อค',
                     tabBarIcon: ({ focused, color, screenProps }) => (
@@ -194,7 +224,7 @@ const tabMain = (countItem) => {
                 }} />
             <Tab.Screen
                 name="Noti"
-                component={Home}
+                component={Notification}
                 options={{
                     tabBarLabel: 'แจ้งเตือน',
                     tabBarIcon: ({ focused, color }) => (
