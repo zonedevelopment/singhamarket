@@ -130,7 +130,7 @@ class PlanScreen extends React.Component {
                 style={[styles.btn, {
                     justifyContent: 'center', alignItems: 'center',
                     borderColor: 'transparent',
-                    backgroundColor: data.boothName == "" ? 'transparent' : data.boothName == "Booth6" ? pendingColor : data.boothName == "Booth0" ? reservColor : emptyColor  ,
+                    backgroundColor: data.boothName == "" ? 'transparent' : data.status == 2 ? pendingColor : data.status == 3 ? reservColor : emptyColor  ,
                 }]}>
                 <Text style={{ flex: 1, flexWrap: 'wrap', textAlign: 'center' ,color:'white',fontSize:12}}>
                     {data.boothName}

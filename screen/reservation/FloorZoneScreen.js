@@ -163,10 +163,10 @@ class FloorZoneScreen extends React.Component {
                                 <TouchableOpacity style={{ flex: 0.4, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
                                     onPress={
                                         () => {
-                                            if(this.state.floor_selectedValue == '' || this.state.zone_selectedValue == ''){
+                                            if(this.state.floor_selectedValue == ''){
                                                 Alert.alert(
                                                     'คำเตือน!',
-                                                    'กรุณาเลือกโซนที่ท่านต้องการขายของ!'
+                                                    'กรุณาเลือกชั้นที่ท่านต้องการดูแผนผัง'
                                                 );
                                             }else{
                                                 this.props.navigation.push('Plan',{
