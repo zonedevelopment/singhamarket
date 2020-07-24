@@ -214,12 +214,31 @@ class ListVerifyScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, { padding: 10 }]}>
-             
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow]}>
-                        <Text style={[styles.text20, { color: primaryColor }]}>{`ตลาด Singha Complex 1`}</Text>
-                        <Text style={[styles.text20, { color: 'yellow' }]}>{`จำนวน 50 ร้านค้า`}</Text>
+                        <Text style={[styles.text14, { color: primaryColor }]}>{`วันที่ 27 มีนาคม 2563`}</Text>
                     </View>
+                    <View style={[styles.containerRow]}>
+                        <Text style={[styles.text18, { color: primaryColor }]}>{`ตลาด Singha Complex 1`}</Text>
+                        <Text style={[styles.text18, { color: '#D4AC0D' }]}>{` จำนวน 50 ร้านค้า`}</Text>
+                    </View>
+                    {/* <View style={{flex: 1, padding:20,backgroundColor:'#FFF',borderRadius:15,flexDirection: 'row'}}>
+                        <View style={{flex: 1,textAlign: 'left'}}>
+                            <Text style={[styles.TextFlexList,{color:color}]}>{item.totalBooking}</Text>
+                            <Text style={[styles.TextFlexList]}>จองแล้ว</Text>
+                        </View>
+                        <View style={{flex: 1,textAlign: 'center'}}>
+                            <Text style={[styles.TextFlexList,{color:color}]}>
+                                {item.totalEmpty}
+                            </Text>
+                            <Text style={[styles.TextFlexList]} >ว่าง</Text>
+                        </View>
+                        <View style={{flex: 1,textAlign: 'right'}}>
+                            <Text style={[styles.TextFlexList,{color:color}]}>{item.totalWating}</Text>
+                            <Text style={[styles.TextFlexList]}>รอชำระเงิน</Text>
+                        </View>
+                    </View> */}
+                    
 
                     
                 </View>
