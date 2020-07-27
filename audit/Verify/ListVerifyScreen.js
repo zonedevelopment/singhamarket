@@ -150,9 +150,7 @@ class ListVerifyScreen extends React.Component {
             <TouchableOpacity  style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}
             onPress={()=>{
                 {
-                    if(item.booth_status_id == 3){
-                       // this.props.navigation.navigate('HomeBoothReportDetails')
-                    }
+                    this.props.navigation.navigate('VerifyBooth')
                 }
             }}>
                 <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>

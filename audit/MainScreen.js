@@ -40,6 +40,7 @@ import Customerhistorydetailsscreen from './Customer/CustomerHistoryDetailsScree
 
 import Verifyscreen from './tab/VerifyScreen'
 import Listverifyscreen from './Verify/ListVerifyScreen'
+import Verifyboothscreen from './Verify/VerifyBoothScreen'
 
 import Notificationscreen from './tab/NotificationScreen'
 
@@ -93,6 +94,7 @@ const Verify = function MyStack() {
             initialRouteName='Verify'>
             <Stack.Screen name="Verify" component={Verifyscreen} />
             <Stack.Screen name="ListVerify" component={Listverifyscreen} />
+            <Stack.Screen name="VerifyBooth" component={Verifyboothscreen} />
         </Stack.Navigator>
     );
 }
