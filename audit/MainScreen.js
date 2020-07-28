@@ -41,6 +41,7 @@ import Customerhistorydetailsscreen from './Customer/CustomerHistoryDetailsScree
 import Verifyscreen from './tab/VerifyScreen'
 import Listverifyscreen from './Verify/ListVerifyScreen'
 import Verifyboothscreen from './Verify/VerifyBoothScreen'
+import Successscreen from './Verify/SuccessScreen'
 
 import Notificationscreen from './tab/NotificationScreen'
 
@@ -81,8 +82,8 @@ const Reserv = function MyStack() {
     return (
         <Stack.Navigator
             headerMode='none'
-            initialRouteName='Building'>
-            <Stack.Screen name="Building" component={Reservscreen} />
+            initialRouteName='ReservHome'>
+            <Stack.Screen name="ReservHome" component={Reservscreen} />
         </Stack.Navigator>
     );
 }
@@ -95,6 +96,7 @@ const Verify = function MyStack() {
             <Stack.Screen name="Verify" component={Verifyscreen} />
             <Stack.Screen name="ListVerify" component={Listverifyscreen} />
             <Stack.Screen name="VerifyBooth" component={Verifyboothscreen} />
+            <Stack.Screen name="AuditSuccess" component={Successscreen} />
         </Stack.Navigator>
     );
 }

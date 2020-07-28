@@ -294,9 +294,9 @@ class ListVerifyScreen extends React.Component {
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow,{alignItems: 'center',flex:1,marginBottom:20 }]}>
                         <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor,flex:1 }]}
-                            // onPress={
-                            //     () => this.handleBack()
-                            // }
+                            onPress={
+                                () => this.props.navigation.navigate('AuditSuccess')
+                            }
                             >
                             <Text style={[styles.text18, { color: '#FFF' }]}>{`เสร็จสิ้น`}</Text>
                         </TouchableOpacity>

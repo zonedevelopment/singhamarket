@@ -53,6 +53,8 @@ class VerifyBoothScreen extends React.Component {
         CHK_FAIL : false,
         DisabledTxtChkFail : false,
         TxtChkFail : "",
+        DisabledRadioboxCharge:false,
+        RadioSelected:false,
     }
 
     ComponentLeft = () => {
@@ -127,6 +129,14 @@ class VerifyBoothScreen extends React.Component {
                 </View>
             </TouchableOpacity>
         )
+    }
+
+    
+
+    onSelectCharge(index, value){
+        this.setState({
+            RadioSelected : index,
+        })
     }
 
     render() {
@@ -262,7 +272,7 @@ class VerifyBoothScreen extends React.Component {
                     <CheckBox
                         title={'ผ่านการประเมิน'}
                         textStyle={{fontSize:16}}
-                        containerStyle={{backgroundColor:'white',borderWidth:0,padding:10,margin:0}}
+                        containerStyle={{backgroundColor:'white',borderWidth:0,padding:5,margin:0}}
                         checked={this.state.CHK_SUCCESS}
                         onPress={
                             () => {
@@ -278,7 +288,7 @@ class VerifyBoothScreen extends React.Component {
                     <CheckBox
                         title={'ทำผิดกฏ'}
                         textStyle={{fontSize:16}}
-                        containerStyle={{backgroundColor:'white',borderWidth:0,padding:10,margin:0}}
+                        containerStyle={{backgroundColor:'white',borderWidth:0,padding:5,margin:0}}
                         checked={this.state.CHK_FAIL}
                         onPress={
                             () => {
@@ -296,6 +306,108 @@ class VerifyBoothScreen extends React.Component {
                         <Text style={{marginTop: 0,fontSize: 16,padding: 10}}>
                             {'บริการเสริม'}
                         </Text>
+                        <View style={{padding:10}}>
+                            <View style={[styles.containerRow, { paddingTop:5, height: 50 }]}>
+                                <View style={{ flex: 0.4, backgroundColor: primaryColor, justifyContent: 'center',  padding: 5 }}>
+                                    <Text style={[styles.text16, { color: 'white' }]}>{`รายการ`}</Text>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: 'white' }}></View>
+                                <View style={{ flex: 0.3, backgroundColor: primaryColor, justifyContent: 'center', padding: 5 }}>
+                                    <Text style={[styles.text16, { color: 'white' }]}>{`จำนวน/จุด`}</Text>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: 'white' }}></View>
+                                <View style={{ flex: 0.3, backgroundColor: primaryColor, justifyContent: 'center', padding: 5 }}>
+                                    <Text style={[styles.text16, { color: 'white' }]}>{`ราคา/บาท`}</Text>
+                                </View>
+                            </View>
+                            <View  style={[styles.containerRow, { borderWidth:0.5,borderColor:'#ddd',backgroundColor:'white', height: 50}]}>
+                                <View style={[styles.containerRow, { flex: 0.4, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
+                                    <Text style={[styles.text14, { color: primaryColor }]}>{`ไฟฟ้าและแสงสว่าง`}</Text>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: '#ddd' }}></View>
+                                <View style={[styles.containerRow, { flex: 0.3, justifyContent: 'space-around',alignContent:'center',alignItems: 'center', padding: 5 }]}>
+                                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                    onPress={
+                                        () => {
+                                           // this.DelItem(item.service_id);
+                                        }
+                                    }>
+                                        <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ marginLeft: 8, marginRight: 8, textAlignVertical: 'center' }}>{`0`}</Text>
+                                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                    onPress={
+                                        () => {
+                                          //  this.plusItem(item.service_id);
+                                        }
+                                    }>
+                                        <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: '#ddd' }}></View>
+                                <View style={[styles.containerRow, { flex: 0.3, justifyContent: 'flex-start',alignContent:'center',alignItems: 'center', padding: 5 }]}>
+                                    <Text style={[styles.text14, { color: primaryColor}]}>{'1300'}</Text>
+                                </View>
+                            </View>
+                            <View  style={[styles.containerRow, { borderWidth:0.5,borderColor:'#ddd',backgroundColor:'white', height: 50}]}>
+                                <View style={[styles.containerRow, { flex: 0.4, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
+                                    <Text style={[styles.text14, { color: primaryColor }]}>{`ไฟฟ้าและแสงสว่าง`}</Text>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: '#ddd' }}></View>
+                                <View style={[styles.containerRow, { flex: 0.3, justifyContent: 'space-around',alignContent:'center',alignItems: 'center', padding: 5 }]}>
+                                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                    onPress={
+                                        () => {
+                                           // this.DelItem(item.service_id);
+                                        }
+                                    }>
+                                        <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ marginLeft: 8, marginRight: 8, textAlignVertical: 'center' }}>{`0`}</Text>
+                                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                    onPress={
+                                        () => {
+                                          //  this.plusItem(item.service_id);
+                                        }
+                                    }>
+                                        <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: '#ddd' }}></View>
+                                <View style={[styles.containerRow, { flex: 0.3, justifyContent: 'flex-start',alignContent:'center',alignItems: 'center', padding: 5 }]}>
+                                    <Text style={[styles.text14, { color: primaryColor}]}>{'1300'}</Text>
+                                </View>
+                            </View>
+                            <View  style={[styles.containerRow, { borderWidth:0.5,borderColor:'#ddd',backgroundColor:'white', height: 50}]}>
+                                <View style={[styles.containerRow, { flex: 0.4, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
+                                    <Text style={[styles.text14, { color: primaryColor }]}>{`ไฟฟ้าและแสงสว่าง`}</Text>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: '#ddd' }}></View>
+                                <View style={[styles.containerRow, { flex: 0.3, justifyContent: 'space-around',alignContent:'center',alignItems: 'center', padding: 5 }]}>
+                                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                    onPress={
+                                        () => {
+                                           // this.DelItem(item.service_id);
+                                        }
+                                    }>
+                                        <Text style={[styles.text14, { color: 'white' }]}>{`-`}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ marginLeft: 8, marginRight: 8, textAlignVertical: 'center' }}>{`0`}</Text>
+                                    <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
+                                    onPress={
+                                        () => {
+                                          //  this.plusItem(item.service_id);
+                                        }
+                                    }>
+                                        <Text style={[styles.text14, { color: 'white' }]}>{`+`}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width: 1, backgroundColor: '#ddd' }}></View>
+                                <View style={[styles.containerRow, { flex: 0.3, justifyContent: 'flex-start',alignContent:'center',alignItems: 'center', padding: 5 }]}>
+                                    <Text style={[styles.text14, { color: primaryColor}]}>{'1300'}</Text>
+                                </View>
+                            </View>
+                        </View>
 
 
                         <Text style={{marginTop: 0,fontSize: 16,padding: 10}}>{'ความเสียหาย'}</Text>
@@ -311,6 +423,29 @@ class VerifyBoothScreen extends React.Component {
                             numberOfLines={7}
                             style={{ textAlignVertical: 'top',borderColor:"#e3e3e3",borderWidth:1,fontSize:14,backgroundColor:"#FFFFFF",height:100}}/>
                         </View>
+
+                        <RadioGroup
+                            size={24}
+                            thickness={2}
+                            color='gray'
+                            style={{display: 'flex', flexDirection: 'row',paddingBottom:10 }}
+                            activeColor={primaryColor}
+                            selectedIndex={this.state.RadioSelected}
+                            onSelect = {(index, value) => this.onSelectCharge(index, value)}
+                            >
+                                <RadioButton
+                                    disabled={this.state.DisabledRadioboxCharge}
+                                    value={false}
+                                    color={primaryColor} >
+                                    <Text>{'ไม่มีค่าใช้จ่าย'}</Text>
+                                </RadioButton>
+                                <RadioButton
+                                    disabled={this.state.DisabledRadioboxCharge}
+                                    value={true}
+                                    color={primaryColor} >
+                                    <Text>{'มีค่าใช้จ่าย'}</Text>
+                                </RadioButton>
+                            </RadioGroup>
 
                     </View>
 
@@ -355,13 +490,47 @@ class VerifyBoothScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
+                    <View style={[styles.hr]}></View>
+                    <View style={{ padding: 0, margin: 10 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18, alignSelf: 'flex-start' }}>จำนวนเงินลูกค้าที่ต้องชำระเพิ่ม</Text>
+                        <View style={{ flexDirection: 'row', margin: 6 }}>
+                            <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 16, alignSelf: 'flex-start' }}>ค่าปรับ</Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 16, alignSelf: 'flex-end' }}>{'500'} บ.</Text>
+                            </View>
+                        </View>
+                        
+
+                  
+                        <View style={{ flexDirection: 'row', margin: 6 }}>
+                            <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 16, alignSelf: 'flex-start' }}>ไฟฟ้าแสงสว่าง</Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 16, alignSelf: 'flex-end' }}>200 บ.</Text>
+                            </View>
+                        </View>
+
+
+                        <View style={{ flexDirection: 'row', margin: 6 }}>
+                            <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                                <Text style={{  fontWeight: 'bold', fontSize: 18, alignSelf: 'flex-start' }}>ยอดที่ต้องชำระ</Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <Text style={{  fontWeight: 'bold', fontSize: 18, alignSelf: 'flex-end' }}>{'700'} บ.</Text>
+                            </View>
+                        </View>
+                    </View>
+
                     <View style={[styles.containerRow,{alignItems: 'center',flex:1,marginBottom:20 }]}>
                         <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor,flex:1 }]}
-                            // onPress={
-                            //     () => this.handleBack()
-                            // }
+                            onPress={
+                                () => this.handleBack()
+                            }
                             >
-                            <Text style={[styles.text18, { color: '#FFF' }]}>{`เสร็จสิ้น`}</Text>
+                            <Text style={[styles.text18, { color: '#FFF' }]}>{`บันทึกผลการประเมิน`}</Text>
                         </TouchableOpacity>
                     </View>
 
