@@ -214,7 +214,11 @@ class ReservationScreen extends React.Component {
                             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
-                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}>
+                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}
+                                onPress={()=>{
+                                    this.props.navigation.navigate('ReservCalendarAudit')
+                                }}
+                            >
                                 <Text style={[styles.text16, { color: 'white' }]}>{'กรุณาเลือกวันที่และบูธขายของ'}</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />

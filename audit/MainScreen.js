@@ -45,6 +45,9 @@ import Successscreen from './Verify/SuccessScreen'
 
 import Notificationscreen from './tab/NotificationScreen'
 
+import Calendarscreen from './reservation/CalendarScreen'
+import Boothscreen from './reservation/BoothScreen'
+
 /**
  * End
  */
@@ -84,6 +87,8 @@ const Reserv = function MyStack() {
             headerMode='none'
             initialRouteName='ReservHome'>
             <Stack.Screen name="ReservHome" component={Reservscreen} />
+            <Stack.Screen name="ReservCalendarAudit" component={Calendarscreen} />
+            <Stack.Screen name="ReservBoothAudit" component={Boothscreen} />
         </Stack.Navigator>
     );
 }
