@@ -120,7 +120,13 @@ class FloorZoneScreen extends React.Component {
 
     async componentDidMount() {
         const{ building_data } = this.props.route.params
+        let floor_selected;
+        let floor_valueSelected;
         let index = this.props.reducer.building.findIndex(p => p.building_id == building_data.building_id)
+        if (this.props.reducer.building[index].building_floor.length == 1) {
+            this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
+        }
+
         await this.setState({
             index : index,
             floor : this.props.reducer.building[index].building_floor,
