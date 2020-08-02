@@ -56,14 +56,16 @@ class FloorZoneScreen extends React.Component {
 
     onSelectFloor(index, value) {
         this.props.openIndicator()
-        let zone = this.state.zone
-        this.state.zone.map((v,i)=>{
-            if(zone[i]['floor_id'] == value){
-                zone[i]['disabled'] = false
-            }else{
-                zone[i]['disabled'] = true
-            }
-        })
+        let zone = this.props.reducer.building[this.state.index].building_zone
+        // this.state.zone.map((v,i)=>{
+        //     if(zone[i]['floor_id'] == value){
+        //         zone[i]['disabled'] = false
+        //     }else{
+        //         zone[i]['disabled'] = true
+        //     }
+        // })
+        zone = zone.filter(x => x.floor_id == value)
+        console.log('zone',zone)
         this.setState({
             floor_selectedIndex : index,
             floor_selectedValue : value,
@@ -120,21 +122,17 @@ class FloorZoneScreen extends React.Component {
 
     async componentDidMount() {
         const{ building_data } = this.props.route.params
-        let floor_selected;
-        let floor_valueSelected;
         let index = this.props.reducer.building.findIndex(p => p.building_id == building_data.building_id)
-        if (this.props.reducer.building[index].building_floor.length == 1) {
-            this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
-        }
-
         await this.setState({
             index : index,
             floor : this.props.reducer.building[index].building_floor,
-            zone : this.props.reducer.building[index].building_zone,
+            //zone : this.props.reducer.building[index].building_zone,
             building_id : building_data.building_id,
             building_name : building_data.building_name,
         })
-        // console.log('building_data',building_data);
+        // if (this.props.reducer.building[index].building_floor.length == 1) {
+        //     this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
+        // }
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -230,7 +228,7 @@ class FloorZoneScreen extends React.Component {
                                                 <RadioButton
                                                     key={i}
                                                     value={v.zone_id}
-                                                    disabled={v.disabled}
+                                                    //disabled={v.disabled}
                                                     color={primaryColor}
                                                     style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
                                                     <Text style={[styles.text14, { color: primaryColor }]}>{`${v.zone_name}`}</Text>

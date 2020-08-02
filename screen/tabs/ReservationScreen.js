@@ -134,6 +134,7 @@ class ReservationScreen extends React.Component {
                         <FlatList
                             style={{ marginTop: 5 }}
                             data={building}
+                            refreshing={true}
                             keyExtractor={(item) => item.building_id}
                             renderItem={this._renderItem} />
                     </View>

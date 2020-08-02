@@ -19,17 +19,20 @@ import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    BASE_URL,
+    GET_AGREEMENT_REGISTER,
+    HEADERFORMDATA
 } from '../utils/contants'
+
+import {
+    openIndicator,
+    dismissIndicator,
+} from '../actions'
+import Hepler from '../utils/Helper'
 
 import styles from '../style/style'
 
-const htmlContent = `
-    <h1>This HTML snippet is now rendered with native components !</h1>
-    <h2>Enjoy a webview-free and blazing fast application</h2>
-    <img src="https://i.imgur.com/dHLmxfO.jpg?2" />
-    <em style="textAlign: center;">Look at how happy this native cat is</em>
-`;
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class RegisterConditionScreen extends React.Component {
@@ -38,6 +41,7 @@ class RegisterConditionScreen extends React.Component {
         type: 1,
         licenseAgree: false,
         privacyAgree: false,
+        htmlContent : '',
     }
 
     ComponentLeft = () => {
@@ -76,6 +80,7 @@ class RegisterConditionScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.LoadAgreement(1)
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -85,6 +90,32 @@ class RegisterConditionScreen extends React.Component {
 
     onCheckPrivacy(value) {
         this.setState({ privacyAgree: value })
+    }
+
+
+    LoadAgreement (type) {
+        this.props.openIndicator()
+        let formData = new FormData();
+        formData.append('partners_type_id', type)
+        Hepler.post(BASE_URL + GET_AGREEMENT_REGISTER,formData,HEADERFORMDATA,(results) => {
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    htmlContent : results.data,
+                    type: type,
+                    licenseAgree: false,
+                    privacyAgree: false,
+                })
+            } else {
+                Alert.alert(results.message)
+                this.setState({
+                    htmlContent : '',
+                    type: type,
+                    licenseAgree: false,
+                    privacyAgree: false,
+                })
+            }
+        })
     }
 
     render() {
@@ -111,27 +142,19 @@ class RegisterConditionScreen extends React.Component {
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? secondaryColor : grayColor }]}
                                     onPress={
-                                        () => this.setState({ 
-                                            type: 1,
-                                            licenseAgree: false,
-                                            privacyAgree: false,
-                                         })
+                                        () =>  this.LoadAgreement(1)
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`บุคคลธรรมดา`}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? grayColor : secondaryColor }]}
                                     onPress={
-                                        () => this.setState({ 
-                                            type: 2 , 
-                                            licenseAgree: false,
-                                            privacyAgree: false,
-                                        })
+                                        () => this.LoadAgreement(2)
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`นิติบุคคล`}</Text>
                                 </TouchableOpacity>
                             </View>
                             <View>
-                                <HTML html={htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
+                                <HTML html={this.state.htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             {
@@ -197,7 +220,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterConditionScreen)

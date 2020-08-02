@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "862740865331",
+    "firebase_url": "https://singhamarket-5f84d.firebaseio.com",
+    "project_id": "singhamarket-5f84d",
+    "storage_bucket": "singhamarket-5f84d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862740865331:android:ba3462fd730ef82cab5e46",
+        "android_client_info": {
+          "package_name": "th.co.zoneidea.singhamarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862740865331-30l65flp1788qhfhcnv0lsb50m2orl2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcbktDLsSVBMs1AoFOytL1yoiV-OMuHOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862740865331-30l65flp1788qhfhcnv0lsb50m2orl2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,12 +6,13 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   StatusBar,
   YellowBox,
+  Alert,
   Platform,
   ActivityIndicator
 } from 'react-native';
@@ -62,6 +63,7 @@ import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
 
 ////////// audit
 import AuditMainscreen from './audit/MainScreen'
+import messaging from '@react-native-firebase/messaging'
 
 const Stack = createStackNavigator();
 function MyStack({cartItem}) {
@@ -89,7 +91,23 @@ function MyStack({cartItem}) {
   );
 }
 
+async function requestUserPermission() {
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    console.log('Authorization status:', authStatus);
+  }
+}
+
 class App extends React.Component {
+
+
+  componentDidMount() {
+    requestUserPermission()
+  } 
 
   render() {
 

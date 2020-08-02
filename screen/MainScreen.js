@@ -171,7 +171,7 @@ const tabMain = (countItem) => {
                     justifyContent: 'center',
                     backgroundColor: primaryColor,
                     borderTopLeftRadius: 20,
-                    borderTopRightRadius: 20
+                    borderTopRightRadius: 20,
                 }
             }}>
             <Tab.Screen
@@ -266,7 +266,8 @@ const tabMain = (countItem) => {
 }
 
 const mapStateToProps = (state) => ({
-    reducer: state.fetchReducer
+    reducer: state.fetchReducer,
+
 })
 
 const mapDispatchToProps = {
