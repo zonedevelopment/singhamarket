@@ -63,7 +63,8 @@ import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
 
 ////////// audit
 import AuditMainscreen from './audit/MainScreen'
-//import messaging from '@react-native-firebase/messaging'
+
+
 import { fcmService} from './utils/FCMService'
 import {localNotificationService} from './utils/LocalNotificaionService'
 
@@ -93,119 +94,129 @@ function MyStack({cartItem}) {
     );
 }
 
-// async function requestUserPermission() {
-//   const authStatus = await messaging().requestPermission();
-//   const enabled =
-//     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-//     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-//   if (enabled) {
-//     console.log('Authorization status:', authStatus);
-//     let tokenfcm = await messaging().getToken();
-//     console.log('token',tokenfcm)
-//   }
-// }
 
-
-
-export default function App () {
+// export default function App () {
     
-    useEffect (() => {
-        fcmService.registerAppWithFCM()
-        fcmService.register(onRegister,onNotificaion,onOpenNotification)
-        localNotificationService.configuere(onOpenNotification)
+//     useEffect (() => {
+//         fcmService.registerAppWithFCM()
+//         fcmService.register(onRegister,onNotificaion,onOpenNotification)
+//         localNotificationService.configuere(onOpenNotification)
 
-        function onRegister (token) {
-            console.log('[App] onRegister',token)
-        }
+//         function onRegister (token) {
+//             console.log('[App] onRegister',token)
+//         }
 
-        function onNotificaion (notify) {
-            console.log('[App] onNotificaion',notify)
-            const option = {
-                soundName : 'default',
-                playSound : true,
-            }
-            localNotificationService.showNotificaion(
-                0,
-                notify.title,
-                notify.body,
-                notify,
-                option
-            )
-        }
+//         function onNotificaion (notify) {
+//             console.log('[App] onNotificaion',notify)
+//             const option = {
+//                 soundName : 'default',
+//                 playSound : true,
+//             }
+//             localNotificationService.showNotificaion(
+//                 0,
+//                 notify.title,
+//                 notify.body,
+//                 notify,
+//                 option
+//             )
+//         }
 
-        function onOpenNotification (notify){
-            console.log('[App] onOpenNotification',notify)
-            alert('Open Notification : ' + notify.body)
-        }
+//         function onOpenNotification (notify){
+//             console.log('[App] onOpenNotification',notify)
+//             alert('Open Notification : ' + notify.body)
+//         }
 
-        return () => {
-            console.log('[APP] unregister')
-            fcmService.unRegister()
-            localNotificationService.unregister()
-        }
-    }, [])
-
-    return (
-      <NavigationContainer>
-        <MyStack />
-        {/* {
-          props.indicator ?
-            <View style={[styles.loadingIndicator]}>
-              <ActivityIndicator color={secondaryColor} />
-            </View>
-            :
-            null
-        } */}
-      </NavigationContainer>
-    )
-
-}
-
-
-
-
-// class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       token : ''
-//     }
-//   }
-
-//   componentDidMount() {
-//     fcmService.registerAppWithFCM()
-//     fcmService.register(onRegister,onNotificaion,onOpenNotification)
-//     localNotificationService.configuere(openNotification)
-//    // requestUserPermission()
-//   } 
-
-
-//   render() {
-
-//     const props = this.props.reducer
+//         return () => {
+//             console.log('[APP] unregister')
+//             fcmService.unRegister()
+//             localNotificationService.unregister()
+//         }
+//     }, [])
 
 //     return (
 //       <NavigationContainer>
-//         <MyStack cartItem={props.mycart.length} />
-//         {
+//         <MyStack />
+//         {/* {
 //           props.indicator ?
 //             <View style={[styles.loadingIndicator]}>
 //               <ActivityIndicator color={secondaryColor} />
 //             </View>
 //             :
 //             null
-//         }
+//         } */}
 //       </NavigationContainer>
 //     )
-//   }
-// };
-
-// const mapStateToProps = (state) => ({
-//   reducer: state.fetchReducer
-// })
-
-// const mapDispatchToProps = {
 
 // }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(App)
+
+
+
+class App extends React.Component {
+
+  componentDidMount() {
+    fcmService.registerAppWithFCM()
+    fcmService.register(onRegister,onNotificaion,onOpenNotification)
+    localNotificationService.configuere(onOpenNotification)
+
+    function onRegister (token) {
+        console.log('[App] onRegister',token)
+    }
+
+    function onNotificaion (notify) {
+        console.log('[App] onNotificaion',notify)
+        const option = {
+            soundName : 'default',
+            playSound : true,
+        }
+        localNotificationService.showNotificaion(
+            0,
+            notify.title,
+            notify.body,
+            notify,
+            option
+        )
+    }
+
+    function onOpenNotification (notify){
+        console.log('[App] onOpenNotification',notify)
+        alert('Open Notification : ' + notify.body)
+    }
+
+    return () => {
+        console.log('[APP] unregister')
+        fcmService.unRegister()
+        localNotificationService.unregister()
+    }
+  } 
+
+
+  render() {
+
+    const props = this.props.reducer
+
+    return (
+      <NavigationContainer>
+        <MyStack cartItem={props.mycart.length} />
+        {
+          props.indicator ?
+            <View style={[styles.loadingIndicator]}>
+              <ActivityIndicator color={secondaryColor} />
+            </View>
+            :
+            null
+        }
+      </NavigationContainer>
+    )
+  }
+};
+
+const mapStateToProps = (state) => ({
+  reducer: state.fetchReducer
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
