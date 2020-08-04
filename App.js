@@ -6,15 +6,15 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect }from 'react';
 import {
-  View,
-  Text,
-  StatusBar,
-  YellowBox,
-  Alert,
-  Platform,
-  ActivityIndicator
+    View,
+    Text,
+    StatusBar,
+    YellowBox,
+    Alert,
+    Platform,
+    ActivityIndicator
 } from 'react-native';
 require('moment/locale/th.js');
 console.disableYellowBox = true
@@ -24,22 +24,22 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import styles from './style/style'
 import {
-  secondaryColor
+secondaryColor
 } from './utils/contants';
 
 import {
-  setCustomView,
-  setCustomTextInput,
-  setCustomText,
-  setCustomImage,
-  setCustomTouchableOpacity,
+    setCustomView,
+    setCustomTextInput,
+    setCustomText,
+    setCustomImage,
+    setCustomTouchableOpacity,
 } from 'react-native-global-props'
 
 const customTextProps = {
-  style: {
-    fontSize: 18,
-    fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Regular' : 'SinghaEstate-Regular',
-  }
+    style: {
+        fontSize: 18,
+        fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Regular' : 'SinghaEstate-Regular',
+    }
 };
 setCustomText(customTextProps);
 setCustomTextInput(customTextProps);
@@ -63,78 +63,149 @@ import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
 
 ////////// audit
 import AuditMainscreen from './audit/MainScreen'
-import messaging from '@react-native-firebase/messaging'
+//import messaging from '@react-native-firebase/messaging'
+import { fcmService} from './utils/FCMService'
+import {localNotificationService} from './utils/LocalNotificaionService'
 
 const Stack = createStackNavigator();
 function MyStack({cartItem}) {
-  return (
-    <Stack.Navigator
-      headerMode='none'
-      initialRouteName='Splash'>
-      <Stack.Screen name="Splash" component={Splashscreen} />
-      <Stack.Screen name="Choice" component={Choicescreen} />
-      <Stack.Screen name="Login" component={Loginscreen} />
-      <Stack.Screen name="Main" component={Mainscreen} countItem={0} />
-      <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
-      <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
-      <Stack.Screen name="Registercompany" component={RegisterCompanyscreen} />
-      <Stack.Screen name="Registercondition" component={Registerconditionsreen} />
-      <Stack.Screen name="Categoryscreen" component={Categoryscreen} />
-      <Stack.Screen name="Productlist" component={Productscreen} />
-      <Stack.Screen name="Historydetail" component={Historydetailscreen} />
-      <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
-      <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
+    return (
+        <Stack.Navigator
+        headerMode='none'
+        initialRouteName='Splash'>
+        <Stack.Screen name="Splash" component={Splashscreen} />
+        <Stack.Screen name="Choice" component={Choicescreen} />
+        <Stack.Screen name="Login" component={Loginscreen} />
+        <Stack.Screen name="Main" component={Mainscreen} countItem={0} />
+        <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
+        <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
+        <Stack.Screen name="Registercompany" component={RegisterCompanyscreen} />
+        <Stack.Screen name="Registercondition" component={Registerconditionsreen} />
+        <Stack.Screen name="Categoryscreen" component={Categoryscreen} />
+        <Stack.Screen name="Productlist" component={Productscreen} />
+        <Stack.Screen name="Historydetail" component={Historydetailscreen} />
+        <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
+        <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
 
-      <Stack.Screen name="AuditMain" component={AuditMainscreen}/>
+        <Stack.Screen name="AuditMain" component={AuditMainscreen}/>
 
-    </Stack.Navigator>
-  );
+        </Stack.Navigator>
+    );
 }
 
-async function requestUserPermission() {
-  const authStatus = await messaging().requestPermission();
-  const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+// async function requestUserPermission() {
+//   const authStatus = await messaging().requestPermission();
+//   const enabled =
+//     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+//     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+//   if (enabled) {
+//     console.log('Authorization status:', authStatus);
+//     let tokenfcm = await messaging().getToken();
+//     console.log('token',tokenfcm)
+//   }
+// }
 
-  if (enabled) {
-    console.log('Authorization status:', authStatus);
-  }
-}
-
-class App extends React.Component {
 
 
-  componentDidMount() {
-    requestUserPermission()
-  } 
+export default function App () {
+    
+    useEffect (() => {
+        fcmService.registerAppWithFCM()
+        fcmService.register(onRegister,onNotificaion,onOpenNotification)
+        localNotificationService.configuere(onOpenNotification)
 
-  render() {
+        function onRegister (token) {
+            console.log('[App] onRegister',token)
+        }
 
-    const props = this.props.reducer
+        function onNotificaion (notify) {
+            console.log('[App] onNotificaion',notify)
+            const option = {
+                soundName : 'default',
+                playSound : true,
+            }
+            localNotificationService.showNotificaion(
+                0,
+                notify.title,
+                notify.body,
+                notify,
+                option
+            )
+        }
+
+        function onOpenNotification (notify){
+            console.log('[App] onOpenNotification',notify)
+            alert('Open Notification : ' + notify.body)
+        }
+
+        return () => {
+            console.log('[APP] unregister')
+            fcmService.unRegister()
+            localNotificationService.unregister()
+        }
+    }, [])
 
     return (
       <NavigationContainer>
-        <MyStack cartItem={props.mycart.length} />
-        {
+        <MyStack />
+        {/* {
           props.indicator ?
             <View style={[styles.loadingIndicator]}>
               <ActivityIndicator color={secondaryColor} />
             </View>
             :
             null
-        }
+        } */}
       </NavigationContainer>
     )
-  }
-};
-
-const mapStateToProps = (state) => ({
-  reducer: state.fetchReducer
-})
-
-const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+
+
+
+// class App extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       token : ''
+//     }
+//   }
+
+//   componentDidMount() {
+//     fcmService.registerAppWithFCM()
+//     fcmService.register(onRegister,onNotificaion,onOpenNotification)
+//     localNotificationService.configuere(openNotification)
+//    // requestUserPermission()
+//   } 
+
+
+//   render() {
+
+//     const props = this.props.reducer
+
+//     return (
+//       <NavigationContainer>
+//         <MyStack cartItem={props.mycart.length} />
+//         {
+//           props.indicator ?
+//             <View style={[styles.loadingIndicator]}>
+//               <ActivityIndicator color={secondaryColor} />
+//             </View>
+//             :
+//             null
+//         }
+//       </NavigationContainer>
+//     )
+//   }
+// };
+
+// const mapStateToProps = (state) => ({
+//   reducer: state.fetchReducer
+// })
+
+// const mapDispatchToProps = {
+
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App)
