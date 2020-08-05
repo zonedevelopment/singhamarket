@@ -1,5 +1,6 @@
 import {
     OPEN_INDICATOR,
+    SET_TOKEN,
     DISMISS_INDICATOR,
     SAVE_USERINFO,
     CLEAR_USERINFO,
@@ -68,10 +69,16 @@ const initialState = {
     company_vat : 3, /// ดึงจาก base
     booking_selected : [],
     mycart : [], /// arr ตะกร้าสินค้า
+    token : '',
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case SET_TOKEN:
+            return {
+                ...state,
+                token : action.payload
+            }
         case OPEN_INDICATOR:
             return {
                 ...state,

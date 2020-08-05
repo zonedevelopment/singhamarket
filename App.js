@@ -35,6 +35,10 @@ import {
     setCustomTouchableOpacity,
 } from 'react-native-global-props'
 
+import {
+  setToken
+} from './actions'
+
 const customTextProps = {
     style: {
         fontSize: 18,
@@ -154,69 +158,70 @@ function MyStack({cartItem}) {
 
 class App extends React.Component {
 
-  componentDidMount() {
-    fcmService.registerAppWithFCM()
-    fcmService.register(onRegister,onNotificaion,onOpenNotification)
-    localNotificationService.configuere(onOpenNotification)
+    componentDidMount() {
+        const props = this.props
+        fcmService.registerAppWithFCM()
+        fcmService.register(onRegister,onNotificaion,onOpenNotification)
+        localNotificationService.configuere(onOpenNotification)
 
-    function onRegister (token) {
-        console.log('[App] onRegister',token)
-    }
-
-    function onNotificaion (notify) {
-        console.log('[App] onNotificaion',notify)
-        const option = {
-            soundName : 'default',
-            playSound : true,
+        function onRegister (token) {
+            console.log('[App] onRegister',token)
+            props.setToken(token)
+            fcmService.UpdateToken(token)
         }
-        localNotificationService.showNotificaion(
-            0,
-            notify.title,
-            notify.body,
-            notify,
-            option
+
+        function onNotificaion (notify) {
+            console.log('[App] onNotificaion',notify)
+            const option = {
+                soundName : 'default',
+                playSound : true,
+            }
+            localNotificationService.showNotificaion(
+                0,
+                notify.title,
+                notify.body,
+                notify,
+                option
+            )
+        }
+
+        function onOpenNotification (notify){
+            console.log('[App] onOpenNotification',notify)
+            //alert('Open Notification : ' + notify.body)
+        }
+
+        return () => {
+            console.log('[APP] unregister')
+            fcmService.unRegister()
+            localNotificationService.unregister()
+        }
+    } 
+
+
+    render() {
+        const props = this.props.reducer
+        return (
+        <NavigationContainer>
+            <MyStack cartItem={props.mycart.length} />
+            {
+            props.indicator ?
+                <View style={[styles.loadingIndicator]}>
+                <ActivityIndicator color={secondaryColor} />
+                </View>
+                :
+                null
+            }
+        </NavigationContainer>
         )
     }
-
-    function onOpenNotification (notify){
-        console.log('[App] onOpenNotification',notify)
-        alert('Open Notification : ' + notify.body)
-    }
-
-    return () => {
-        console.log('[APP] unregister')
-        fcmService.unRegister()
-        localNotificationService.unregister()
-    }
-  } 
-
-
-  render() {
-
-    const props = this.props.reducer
-
-    return (
-      <NavigationContainer>
-        <MyStack cartItem={props.mycart.length} />
-        {
-          props.indicator ?
-            <View style={[styles.loadingIndicator]}>
-              <ActivityIndicator color={secondaryColor} />
-            </View>
-            :
-            null
-        }
-      </NavigationContainer>
-    )
-  }
 };
 
 const mapStateToProps = (state) => ({
-  reducer: state.fetchReducer
+    reducer: state.fetchReducer
 })
 
 const mapDispatchToProps = {
-
+    setToken
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

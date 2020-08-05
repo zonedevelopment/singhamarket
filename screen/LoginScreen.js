@@ -23,6 +23,7 @@ import {
     KEY_LOGIN,
     BASE_URL,
     HEADERFORMDATA,
+    RegisterFCMToken,
     LOGIN_URL,
 } from '../utils/contants'
 import Hepler from '../utils/Helper'
@@ -81,6 +82,7 @@ class LoginScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.log('token',this.props.reducer.token)
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -88,6 +90,7 @@ class LoginScreen extends React.Component {
     CheckLogin() {
         let userName = this.state.username
         let passWord = this.state.password
+        let token = this.props.reducer.token
         if(userName.trim() == '' || passWord.trim() == ''){
             return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
         }else{
@@ -98,8 +101,18 @@ class LoginScreen extends React.Component {
             Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
                 this.props.dismissIndicator()
                 if (results.status == 'SUCCESS') {
+
                     StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
                     this.props.saveUserInfo(results.data)
+
+                    /// update token
+                    let formData = new FormData();
+                    formData.append('token', token)
+                    formData.append('partners_id', results.data.partners_id)
+                    Hepler.post(BASE_URL + RegisterFCMToken,formData,HEADERFORMDATA,(results) => {
+                        console.log('RegisterFCMToken',results)
+                    })
+
                     this.props.navigation.navigate('Main')
                 } else {
                     Alert.alert(results.message)

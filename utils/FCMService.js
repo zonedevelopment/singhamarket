@@ -1,6 +1,8 @@
 import messaging from '@react-native-firebase/messaging'
 import {Platform} from 'react-native'
-
+import Helper from './Helper'
+import {BASE_URL,HEADERFORMDATA,RegisterFCMToken,KEY_LOGIN } from './contants'
+import StorageServies from './StorageServies'
 class FCMService {
     register = (onRegister,onNotificaion,onOpenNotification) => {
         this.checkPermission(onRegister);
@@ -95,6 +97,20 @@ class FCMService {
 
     unRegister = () => {
         this.messageListener()
+    }
+
+
+    UpdateToken = async (token) => {
+        let LOGIN = await StorageServies.get(KEY_LOGIN)
+        if(LOGIN != null){
+            LOGIN = JSON.parse(LOGIN)
+            let formData = new FormData();
+            formData.append('token', token)
+            formData.append('partners_id', LOGIN.partners_id)
+            Helper.post(BASE_URL + RegisterFCMToken,formData,HEADERFORMDATA,(results) => {
+                console.log('RegisterFCMToken',results)
+            })
+        }
     }
 }
 

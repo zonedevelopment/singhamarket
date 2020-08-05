@@ -1,5 +1,6 @@
 import {
     OPEN_INDICATOR,
+    SET_TOKEN,
     DISMISS_INDICATOR,
     SAVE_USERINFO,
     CLEAR_USERINFO,
@@ -40,6 +41,11 @@ export const openIndicator = (data) => ({
 
 export const dismissIndicator = (data) => ({
     type: DISMISS_INDICATOR
+})
+
+export const setToken = (data) => ({
+    type : SET_TOKEN,
+    payload: data
 })
 /**
  * End

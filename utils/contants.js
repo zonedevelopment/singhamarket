@@ -36,7 +36,7 @@ export const OPEN_INDICATOR       = 'OPEN_INDICATOR'
 export const DISMISS_INDICATOR    = 'DISMISS_INDICATOR'
 export const SAVE_USERINFO        = 'SAVE_USERINFO'
 export const CLEAR_USERINFO       = 'CLEAR_USERINFO'
-
+export const SET_TOKEN                = 'SET_TOKEN'
 
 export const SAVE_PRODUCT_TYPE    = 'SAVE_PRODUCT_TYPE'
 export const SET_DATE_SELECTED    = 'SET_DATE_SELECTED'
@@ -96,6 +96,7 @@ export const CHECK_IN_HISTORY_URL     = '/singha/api/CheckInHistory'
 export const GET_FAVERITE_URL         = '/singha/api/GetFaveriteBooth'
 export const SUBMIT_FAVERITE_URL      = '/singha/api/SubmitFaveriteBooth'
 export const CANCEL_FAVERITE_URL      = '/singha/api/CancelFaveriteBooth'
+export const RegisterFCMToken         = '/singha/api/RegisterFCMToken'
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'
