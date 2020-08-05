@@ -26,6 +26,8 @@ import ic_banking from '../assets/image/icon_paymeny.png'
 import styles from '../style/style'
 
 const initialState = {
+    UserItemCartCount : 2,
+    UserItemNotifyCount : 3,
     previous_screen : '',
     indicator: false,
     userInfo: [],

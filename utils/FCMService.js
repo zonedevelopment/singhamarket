@@ -57,7 +57,7 @@ class FCMService {
         })
     }
 
-
+ 
     createNotificationListener = (onRegister,onNotificaion,onOpenNotification) => {
         messaging().onNotificationOpenedApp(remoteMessage => {
             console.log('[FCMService] onNotificationOpenedApp Notification cause app to open')

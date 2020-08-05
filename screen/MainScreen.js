@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import TabIcon from '../components/TabIcon'
 
 import {
     darkColor,
@@ -66,18 +67,6 @@ import Changepasswordscreen from './account/ChangePasswordScreen'
  * End
  */
 
-import ic_home_active from '../assets/image/icon_home_gold.png'
-import ic_store_active from '../assets/image/icon_market_gold.png'
-import ic_cart_active from '../assets/image/icon_cart_gold.png'
-import ic_bell_active from '../assets/image/icon_noti_gold.png'
-import ic_profile_active from '../assets/image/icon_user_gold.png'
-
-import ic_home_inactive from '../assets/image/icon_home.png'
-import ic_store_inactive from '../assets/image/icon_market.png'
-import ic_cart_inactive from '../assets/image/icon_cart.png'
-import ic_bell_inactive from '../assets/image/icon_noti.png'
-import ic_profile_inactive from '../assets/image/icon_user.png'
-
 import NewsDetailsScreen from './NewsDetailsScreen'
 
 const Stack = createStackNavigator();
@@ -129,35 +118,9 @@ const Home = function AccStack() {
     )
 }
 
-function IconWithBadge({ badgeCount, focused }) {
-    return (
-        <View>
-            {
-                focused ?
-                    <Image source={ic_cart_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                    :
-                    <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-            }
-            {
-                badgeCount > 0 ?
-                    <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                        <Text style={{ color: 'white', fontSize: 10 }}>{`${badgeCount}`}</Text>
-                    </View>
-                    :
-                    null
-            }
-        </View>
-
-    );
-}
-
-function CartIconWithBadge(props) {
-    return <IconWithBadge {...props} badgeCount={item.length} />;
-}
-
-// const props = this.props
 const Tab = createBottomTabNavigator()
-const tabMain = (countItem) => {
+const tabMain = () => {
+    let Role = 'User'
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -180,14 +143,7 @@ const tabMain = (countItem) => {
                 options={{
                     tabBarLabel: 'หน้าแรก',
                     tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {
-                                focused ?
-                                    <Image source={ic_home_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                                    :
-                                    <Image source={ic_home_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                            }
-                        </View>
+                        <TabIcon focused={focused} Controller={'Home'} Role={Role} />
                     ),
                 }} />
             <Tab.Screen
@@ -196,15 +152,8 @@ const tabMain = (countItem) => {
                 options={{
                     tabBarLabel: 'จองพื้นที่',
                     tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {
-                                focused ?
-                                    <Image source={ic_store_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                                    :
-                                    <Image source={ic_store_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                            }
-                        </View>
-                    ),
+                        <TabIcon focused={focused} Controller={'Reserv'} Role={Role} />
+                    ),  
                 }} />
             <Tab.Screen
                 name="Cart"
@@ -212,18 +161,7 @@ const tabMain = (countItem) => {
                 options={{
                     tabBarLabel: 'รถเข็น',
                     tabBarIcon: ({ focused, color, screenProps }) => (
-                        <View>
-                            {/* <CartIconWithBadge focused={focused} /> */}
-                            {
-                                focused ?
-                                    <Image source={ic_cart_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                                    :
-                                    <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                            }
-                            <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
-                            </View>
-                        </View>
+                        <TabIcon focused={focused} Controller={'Cart'} Role={Role} />
                     ),
                 }} />
             <Tab.Screen
@@ -232,17 +170,7 @@ const tabMain = (countItem) => {
                 options={{
                     tabBarLabel: 'แจ้งเตือน',
                     tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {
-                                focused ?
-                                    <Image source={ic_bell_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                                    :
-                                    <Image source={ic_bell_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                            }
-                            <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
-                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
-                            </View>
-                        </View>
+                        <TabIcon focused={focused} Controller={'Noti'} Role={Role} />
                     ),
                 }} />
             <Tab.Screen
@@ -251,14 +179,7 @@ const tabMain = (countItem) => {
                 options={{
                     tabBarLabel: 'บัญชีของฉัน',
                     tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {
-                                focused ?
-                                    <Image source={ic_profile_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                                    :
-                                    <Image source={ic_profile_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
-                            }
-                        </View>
+                        <TabIcon focused={focused} Controller={'Profile'} Role={Role} />
                     ),
                 }} />
         </Tab.Navigator>

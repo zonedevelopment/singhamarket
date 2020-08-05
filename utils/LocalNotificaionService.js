@@ -72,6 +72,7 @@ class LocalNotificaionService {
             soundName : option.soundName || 'default',
             userInteraction : false,
         })
+
     }
 
     buildAndroidNotification = (id,title,message,data = {},option = {}) => {

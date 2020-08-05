@@ -202,11 +202,11 @@ class App extends React.Component {
         const props = this.props.reducer
         return (
         <NavigationContainer>
-            <MyStack cartItem={props.mycart.length} />
+            <MyStack />
             {
             props.indicator ?
                 <View style={[styles.loadingIndicator]}>
-                <ActivityIndicator color={secondaryColor} />
+                    <ActivityIndicator color={secondaryColor} />
                 </View>
                 :
                 null
