@@ -75,6 +75,12 @@ class FCMService {
             }
         })
 
+        // Register background handler
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+            console.log('[FCMService] setBackgroundMessageHandler Message handled in the background!', remoteMessage);
+        });
+  
+
         this.messageListener = messaging().onMessage( async remoteMessage => {
             console.log('[FCMService] New FCM Message arrived',remoteMessage)
             if(remoteMessage){

@@ -73,7 +73,7 @@ import { fcmService} from './utils/FCMService'
 import {localNotificationService} from './utils/LocalNotificaionService'
 
 const Stack = createStackNavigator();
-function MyStack({cartItem}) {
+function MyStack() {
     return (
         <Stack.Navigator
         headerMode='none'
@@ -81,7 +81,7 @@ function MyStack({cartItem}) {
         <Stack.Screen name="Splash" component={Splashscreen} />
         <Stack.Screen name="Choice" component={Choicescreen} />
         <Stack.Screen name="Login" component={Loginscreen} />
-        <Stack.Screen name="Main" component={Mainscreen} countItem={0} />
+        <Stack.Screen name="Main" component={Mainscreen}  />
         <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
         <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
         <Stack.Screen name="Registercompany" component={RegisterCompanyscreen} />
@@ -188,7 +188,6 @@ class App extends React.Component {
         function onOpenNotification (notify){
             console.log('[App] onOpenNotification',notify)
             //alert('Open Notification : ' + notify.body)
-            
         }
 
         return () => {
