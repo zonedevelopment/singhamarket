@@ -19,6 +19,9 @@ import {
     SET_PREVIOUS_SCREEN,
     SET_BOOKINGID_SELECTED,
     SET_MY_CART,
+    SET_USER_CART_ITEM,
+    SET_USER_NOTIFY_ITEM,
+
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -26,8 +29,8 @@ import ic_banking from '../assets/image/icon_paymeny.png'
 import styles from '../style/style'
 
 const initialState = {
-    UserItemCartCount : 2,
-    UserItemNotifyCount : 3,
+    UserItemCartCount : 0,
+    UserItemNotifyCount : 0,
     previous_screen : '',
     indicator: false,
     userInfo: [],
@@ -40,18 +43,7 @@ const initialState = {
     reserverion_floor_name : '',
     news: [],
     banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
-    standardAccessories: [
-        {
-            id: 1,
-            name: 'โต๊ะพับเอนกประสงค์ 1 ตัว',
-            image: ''
-        },
-        {
-            id: 2,
-            name: 'เก้าอื้ 2 ตัว',
-            image: ''
-        }
-    ],
+    standardAccessories: [],
     otherService: [],
     paymentChannel: [
         {
@@ -176,8 +168,16 @@ export default (state = initialState, action) => {
                 ...state,
                 mycart : action.payload
             }
-
-            
+        case SET_USER_CART_ITEM : 
+            return {
+                ...state,
+                UserItemCartCount : action.payload
+            }
+        case SET_USER_NOTIFY_ITEM : 
+            return {
+                ...state,
+                UserItemNotifyCount : action.payload
+            }
         default:
             return state
     }

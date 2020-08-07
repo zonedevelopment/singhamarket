@@ -188,6 +188,7 @@ class App extends React.Component {
         function onOpenNotification (notify){
             console.log('[App] onOpenNotification',notify)
             //alert('Open Notification : ' + notify.body)
+            
         }
 
         return () => {

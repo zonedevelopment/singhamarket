@@ -25,7 +25,9 @@ import {
     setStateBanner,
     saveUserInfo,
     setStateNews,
-    setStateMyCart
+    setStateMyCart,
+    setUserCountCartItem,
+    setUserCountNotifyItem
 } from '../actions'
 
 
@@ -85,9 +87,11 @@ class SplashScreen extends React.Component {
             console.log('GET_CART_URL',results)
             if (results.status == 'SUCCESS') {
                 this.props.setStateMyCart(results.data)
+                this.props.setUserCountCartItem(results.data.length)
                 this.props.navigation.navigate('Main')
             } else {
                 this.props.setStateMyCart([])
+                this.props.setUserCountCartItem(0)
                 this.props.navigation.navigate('Main')
                 Alert.alert(results.message)
             }
@@ -112,7 +116,9 @@ const mapStateToProps = (state) => ({
     setStateBanner,
     setStateNews,
     saveUserInfo,
-    setStateMyCart
+    setStateMyCart,
+    setUserCountCartItem,
+    setUserCountNotifyItem
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

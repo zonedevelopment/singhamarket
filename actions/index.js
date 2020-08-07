@@ -18,7 +18,9 @@ import {
     SET_ZONE_NAME_SELECTED,
     SET_PREVIOUS_SCREEN,
     SET_BOOKINGID_SELECTED,
-    SET_MY_CART
+    SET_MY_CART,
+    SET_USER_CART_ITEM,
+    SET_USER_NOTIFY_ITEM
 } from '../utils/contants'
 
 /**
@@ -196,6 +198,17 @@ export const setStateBookingSelected = (data) => ({
 
 export const setStateMyCart = (data) => ({
     type: SET_MY_CART,
+    payload: data
+})
+
+
+export const setUserCountCartItem = (data) => ({
+    type: SET_USER_CART_ITEM,
+    payload: data
+})
+
+export const setUserCountNotifyItem = (data) => ({
+    type: SET_USER_NOTIFY_ITEM,
     payload: data
 })
 /**
