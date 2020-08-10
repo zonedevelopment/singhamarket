@@ -34,6 +34,8 @@ import Homeboothreportdetailsscreen from './Home/HomeBoothReportDetailsScreen'
 
 
 import Reservscreen from './tab/ReservationScreen'
+import Listcustometscreen from './reservation/ListCustomerScreen'
+
 import Customerscreen from './tab/CustomerScreen'
 import Customerdetailsscreen from './Customer/CustomerDetailsScreen'
 import Customerhistorydetailsscreen from './Customer/CustomerHistoryDetailsScreen'
@@ -87,6 +89,7 @@ const Reserv = function MyStack() {
             headerMode='none'
             initialRouteName='ReservHome'>
             <Stack.Screen name="ReservHome" component={Reservscreen} />
+            <Stack.Screen name="ReservListCustomer" component={Listcustometscreen} />
             <Stack.Screen name="ReservCalendarAudit" component={Calendarscreen} />
             <Stack.Screen name="ReservBoothAudit" component={Boothscreen} />
         </Stack.Navigator>

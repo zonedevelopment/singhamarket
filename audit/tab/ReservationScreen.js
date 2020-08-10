@@ -110,7 +110,10 @@ class ReservationScreen extends React.Component {
                             <Text style={[styles.text18, { color: primaryColor }]}>{`จองพื้นที่ตลาด`}</Text>
                             <View style={[styles.hr,{width:'100%'}]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`เลือกรายชื่อลูกค้าที่ต้องการจองพื้นที่`}</Text>
-                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}>
+                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}
+                            onPress={()=>{
+                                this.props.navigation.navigate('ReservListCustomer')
+                            }}>
                                 <Text style={[styles.text16, { color: 'white' }]}>{'รายชื่อลูกค้า'}</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />
