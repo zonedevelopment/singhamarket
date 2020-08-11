@@ -47,7 +47,7 @@ export const SAVE_BANNER          = 'SAVE_BANNER'
 export const SAVE_NEWS            = 'SAVE_NEWS'
 export const SAVE_BUILDING        = 'SAVE_BUILDING'
 
-/// reservation
+/// reservation user
 export const SET_BUILDING_ID_SELECTED = 'SET_BUILDING_ID_SELECTED'
 export const SET_FLOOR_ID_SELECTED = 'SET_FLOOR_ID_SELECTED'
 export const SET_ZONE_ID_SELECTED = 'SET_ZONE_ID_SELECTED'
@@ -57,6 +57,9 @@ export const SET_ZONE_NAME_SELECTED = 'SET_ZONE_NAME_SELECTED'
 export const SET_PREVIOUS_SCREEN = 'SET_PREVIOUS_SCREEN'
 export const SET_BOOKINGID_SELECTED = 'SET_BOOKINGID_SELECTED'
 
+/// reservation audit
+export const SET_AUDIT_RESERV_PARTNERS = 'SET_AUDIT_RESERV_PARTNERS'
+export const SET_AUDIT_RESERV_BUILDING = 'SET_AUDIT_RESERV_BUILDING'
 
 ///// count nontification
 export const SET_MY_CART = 'SET_MY_CART'
@@ -100,6 +103,10 @@ export const SUBMIT_FAVERITE_URL      = '/singha/api/SubmitFaveriteBooth'
 export const CANCEL_FAVERITE_URL      = '/singha/api/CancelFaveriteBooth'
 export const RegisterFCMToken         = '/singha/api/RegisterFCMToken'
 export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
+
+
+
+
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

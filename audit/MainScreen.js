@@ -35,6 +35,7 @@ import Homeboothreportdetailsscreen from './Home/HomeBoothReportDetailsScreen'
 
 import Reservscreen from './tab/ReservationScreen'
 import Listcustometscreen from './reservation/ListCustomerScreen'
+import Listbuildingscreen from './reservation/ListBuildingScreen';
 
 import Customerscreen from './tab/CustomerScreen'
 import Customerdetailsscreen from './Customer/CustomerDetailsScreen'
@@ -49,6 +50,7 @@ import Notificationscreen from './tab/NotificationScreen'
 
 import Calendarscreen from './reservation/CalendarScreen'
 import Boothscreen from './reservation/BoothScreen'
+
 
 /**
  * End
@@ -90,6 +92,7 @@ const Reserv = function MyStack() {
             initialRouteName='ReservHome'>
             <Stack.Screen name="ReservHome" component={Reservscreen} />
             <Stack.Screen name="ReservListCustomer" component={Listcustometscreen} />
+            <Stack.Screen name="ReservListBuilding" component={Listbuildingscreen} />
             <Stack.Screen name="ReservCalendarAudit" component={Calendarscreen} />
             <Stack.Screen name="ReservBoothAudit" component={Boothscreen} />
         </Stack.Navigator>

@@ -21,6 +21,8 @@ import {
     SET_MY_CART,
     SET_USER_CART_ITEM,
     SET_USER_NOTIFY_ITEM,
+    SET_AUDIT_RESERV_PARTNERS,
+    SET_AUDIT_RESERV_BUILDING,
 
 } from '../utils/contants'
 
@@ -64,6 +66,9 @@ const initialState = {
     booking_selected : [],
     mycart : [], /// arr ตะกร้าสินค้า
     token : '',
+    
+    audit_reserv_partners : [],
+    audit_reserv_building : [],
 }
 
 export default (state = initialState, action) => {
@@ -177,6 +182,18 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 UserItemNotifyCount : action.payload
+            }
+
+        
+        case SET_AUDIT_RESERV_PARTNERS :
+            return {
+                ...state,
+                audit_reserv_partners : action.payload
+            }
+        case SET_AUDIT_RESERV_BUILDING : 
+            return {
+                ...state,
+                audit_reserv_building : action.payload
             }
         default:
             return state

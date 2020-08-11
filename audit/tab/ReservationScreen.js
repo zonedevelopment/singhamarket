@@ -29,8 +29,11 @@ import StorageServies from '../../utils/StorageServies'
 import {
     openIndicator,
     dismissIndicator,
+    setAuditReservPartners,
+    setAuditReservBuilding
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import componentRightSignOut from '../../components/ComponentRightSignOut'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class ReservationScreen extends React.Component {
@@ -42,7 +45,7 @@ class ReservationScreen extends React.Component {
     
     ComponentLeft = () => {
         return (
-            <View style={{ padding: 10 }}>
+            <View style={{ padding: 10,flex:0.2}}>
 
             </View>
         );
@@ -50,16 +53,17 @@ class ReservationScreen extends React.Component {
 
     ComponentCenter = () => {
         return (
-            <View style={[styles.center]}>
-                <Text style={[styles.text18, { color: 'white'}]}>{`จองพื้นที่ตลาด`}</Text>
+            <View style={[styles.center],{flex:0.6}}>
+                <Text style={[styles.text18, { color: 'white',textAlign:'center'}]}>{`จองพื้นที่ตลาด`}</Text>
             </View>
         );
     }
 
     ComponentRight = () => {
         return (
-            <View style={{ padding: 10 }}>
-
+            <View style={{ padding: 10,alignItems:'center',flex:0.2}}>
+                <Icon name='sign-out' size={20} color='white' />
+                <Text style={{fontSize:8,color:'white'}}>{'Logout'}</Text>
             </View>
         );
     }
@@ -76,6 +80,7 @@ class ReservationScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.props.setAuditReservPartners([])
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -85,7 +90,7 @@ class ReservationScreen extends React.Component {
     }
 
     render() {
-        const props = this.props
+        const props = this.props.reducer
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -114,7 +119,9 @@ class ReservationScreen extends React.Component {
                             onPress={()=>{
                                 this.props.navigation.navigate('ReservListCustomer')
                             }}>
-                                <Text style={[styles.text16, { color: 'white' }]}>{'รายชื่อลูกค้า'}</Text>
+                                <Text style={[styles.text16, { color: 'white' }]}>{
+                                    props.audit_reserv_partners.length == 0 ? 'กรุณาเลือกรายชื่อลูกค้า' : props.audit_reserv_partners.name_customer
+                                }</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />
                                 </View>
@@ -122,18 +129,22 @@ class ReservationScreen extends React.Component {
                             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`เลือกตลาดที่ต้องการขายของ`}</Text>
-                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}>
-                                <Text style={[styles.text16, { color: 'white' }]}>{'เลือกตลาด'}</Text>
+                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}
+                            onPress={ () => 
+                                this.props.navigation.navigate('ReservListBuilding') 
+                            }>
+                                <Text style={[styles.text16, { color: 'white' }]}>{
+                                props.audit_reserv_building.length == 0 ? 'เลือกตลาด' : props.audit_reserv_building.building_name}</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}>
+                            {/* <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}>
                                 <Text style={[styles.text16, { color: 'white' }]}>{'เลือกประเภทตลาด'}</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`กรุณาเลือกชั้น`}</Text>
@@ -242,6 +253,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
+    setAuditReservPartners,
+    setAuditReservBuilding
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReservationScreen)

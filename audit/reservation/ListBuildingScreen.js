@@ -20,7 +20,7 @@ import {
     grayColor,
     primaryColor,
     secondaryColor,
-    GET_CUSTOMER_URL,
+    GET_BUILDING_URL,
     BASE_URL,
     HEADERFORMDATA,
     KEY_LOGIN
@@ -31,14 +31,13 @@ import StorageServies from '../../utils/StorageServies'
 import {
     openIndicator,
     dismissIndicator,
-    setAuditReservPartners,
+    setAuditReservBuilding
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
-class ListCustomerScreen extends React.Component {
+class ListBuildingScreen extends React.Component {
     state = {
-        keySearch:'',
         ListData: []
     }
 
@@ -54,7 +53,7 @@ class ListCustomerScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center]}>
-                <Text style={[styles.text18, { color: 'white'}]}>{`รายชื่อลูกค้า`}</Text>
+                <Text style={[styles.text18, { color: 'white'}]}>{`เลือกตลาด`}</Text>
             </View>
         );
     }
@@ -86,17 +85,18 @@ class ListCustomerScreen extends React.Component {
 
     LoadData () {
         this.props.openIndicator()
-        Hepler.post(BASE_URL + GET_CUSTOMER_URL,null,HEADERFORMDATA,(results) => {
-            this.props.dismissIndicator()
-            if (results.status == 'SUCCESS') {
+        Hepler.post(BASE_URL + GET_BUILDING_URL,null,HEADERFORMDATA,(results) => {
+            console.log('GET_BUILDING_URL',results)
+            if(results.status == 'SUCCESS'){
                 this.setState({
                     ListData : results.data
                 })
-                //Alert.alert(results.message)
-            } else {
-                Alert.alert(results.message)
-                this.setState({ListData : []})
+            }else{
+                this.setState({
+                    ListData : []
+                })
             }
+            this.props.dismissIndicator()
         })
     }
 
@@ -105,12 +105,12 @@ class ListCustomerScreen extends React.Component {
         return (
             <TouchableOpacity style={{width:'90%',alignSelf: 'center' }} 
             onPress={ async()=>{
-                await this.props.setAuditReservPartners(item)
+                await this.props.setAuditReservBuilding(item)
                 this.props.navigation.goBack()
             }}>
                 <View style={{ flexDirection: 'row',paddingTop:10,paddingBottom:10}}>
                     <View style={{flex: 0.9}} >
-                        <Text >{item.name_customer}</Text>
+                        <Text >{item.building_name}</Text>
                     </View>
                     <View style={{flex: 0.1,alignItems: 'center', justifyContent: 'center'}} >
                         <Icon name='chevron-right' size={15} color={primaryColor} style={{textAlign: 'right'}}/>
@@ -123,7 +123,7 @@ class ListCustomerScreen extends React.Component {
 
 
     render() {
-        const props = this.props
+        const props = this.props.reducer
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -142,26 +142,7 @@ class ListCustomerScreen extends React.Component {
                     }} />
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.containerRow,{width: '90%', marginLeft: 10}]}>
-                        <Text style={[styles.text20, { color: primaryColor }]}>{`รายชื่อลูกค้า`}</Text>
-                    </View>
-                    <View style={[styles.hr]}></View>
-                    <View style={[styles.containerRow]}>
-                        <View style={[styles.shadow, styles.inputWithIcon,styles.containerRow, { flex:1, alignSelf: 'center', backgroundColor: grayColor,justifyContent: 'space-between'}]}>
-                            <TextInput
-                                ref={(input) => { this.keySearch = input; }}
-                                style={{flex:0.9, width: '100%', height: '100%', alignSelf: 'flex-start', color: '#FFF' }}
-                                placeholder='ค้นหารายชื่อลูกค้า...'
-                                placeholderTextColor = "#FFF"
-                                underlineColorAndroid='transparent'
-                                returnKeyType={'next'}
-                                blurOnSubmit={false}
-                                onChangeText={(text) => this.setState({ keySearch: text })}
-                                //onSubmitEditing={() => this.idcard.focus()} 
-                            />
-                            <View style={{flex:0.1}}>
-                                <Icon  name='search' size={20} color={'#FFF'} />
-                            </View>
-                        </View>
+                        <Text style={[styles.text20, { color: primaryColor }]}>{`เลือกตลาดที่ต้องการขาย`}</Text>
                     </View>
                     <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, width:'90%',alignSelf: 'center',}} /> 
                     {
@@ -169,7 +150,7 @@ class ListCustomerScreen extends React.Component {
                             <FlatList
                                 data={this.state.ListData}
                                 extraData={this.state}
-                                keyExtractor={(item) => item.partners_id}
+                                keyExtractor={(item) => item.building_id}
                                 renderItem={this._renderListItem}
                             />
                         :
@@ -190,7 +171,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    setAuditReservPartners
+    setAuditReservBuilding,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListCustomerScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ListBuildingScreen)

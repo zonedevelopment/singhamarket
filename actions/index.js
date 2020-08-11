@@ -20,7 +20,9 @@ import {
     SET_BOOKINGID_SELECTED,
     SET_MY_CART,
     SET_USER_CART_ITEM,
-    SET_USER_NOTIFY_ITEM
+    SET_USER_NOTIFY_ITEM,
+    SET_AUDIT_RESERV_PARTNERS,
+    SET_AUDIT_RESERV_BUILDING,
 } from '../utils/contants'
 
 /**
@@ -216,3 +218,19 @@ export const setUserCountNotifyItem = (data) => ({
 */
 
 
+
+/**
+ * AUDIT RESERVATION
+ */
+export const setAuditReservPartners = (data) => ({
+    type: SET_AUDIT_RESERV_PARTNERS,
+    payload: data
+})
+export const setAuditReservBuilding = (data) => ({
+    type: SET_AUDIT_RESERV_BUILDING,
+    payload: data
+})
+
+ /**
+* End
+*/
