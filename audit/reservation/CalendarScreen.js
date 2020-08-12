@@ -25,7 +25,8 @@ import {
 
 import {
     saveDateSelected,
-    setStatePreviousScreen
+    setStatePreviousScreen,
+    setAuditReservDate
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -152,7 +153,7 @@ class CalendarScreen extends React.Component {
                                         'กรุณาเลือกวันที่ท่านต้องการขายของ!'
                                     );
                                 }else{
-                                    await this.props.saveDateSelected('save', this.state.selectDate)
+                                    await this.props.setAuditReservDate(this.state.selectDate)
                                     await this.props.setStatePreviousScreen('CalendarAudit')
                                     this.props.navigation.navigate('ReservBoothAudit',{
                                         ActionType : 'CHECK_ALL',
@@ -174,7 +175,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     saveDateSelected,
-    setStatePreviousScreen
+    setStatePreviousScreen,
+    setAuditReservDate
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)

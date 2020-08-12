@@ -23,6 +23,9 @@ import {
     SET_USER_NOTIFY_ITEM,
     SET_AUDIT_RESERV_PARTNERS,
     SET_AUDIT_RESERV_BUILDING,
+    SET_AUDIT_RESERV_FLOOR,
+    SET_AUDIT_RESERV_ZONE,
+    SET_AUDIT_RESERV_DATE
 } from '../utils/contants'
 
 /**
@@ -228,6 +231,18 @@ export const setAuditReservPartners = (data) => ({
 })
 export const setAuditReservBuilding = (data) => ({
     type: SET_AUDIT_RESERV_BUILDING,
+    payload: data
+})
+export const setAuditReservFloor = (data) => ({
+    type: SET_AUDIT_RESERV_FLOOR,
+    payload: data
+})
+export const setAuditReservZone = (data) => ({
+    type: SET_AUDIT_RESERV_ZONE,
+    payload: data
+})
+export const setAuditReservDate = (data) => ({
+    type: SET_AUDIT_RESERV_DATE,
     payload: data
 })
 

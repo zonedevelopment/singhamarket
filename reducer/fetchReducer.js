@@ -23,7 +23,9 @@ import {
     SET_USER_NOTIFY_ITEM,
     SET_AUDIT_RESERV_PARTNERS,
     SET_AUDIT_RESERV_BUILDING,
-
+    SET_AUDIT_RESERV_FLOOR,
+    SET_AUDIT_RESERV_ZONE,
+    SET_AUDIT_RESERV_DATE
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -69,6 +71,19 @@ const initialState = {
     
     audit_reserv_partners : [],
     audit_reserv_building : [],
+    audit_reserv_floor : {
+        selectedValue : '',
+        selectedIndex : null,
+        selectedName : '',
+    },
+    audit_reserv_zone : {
+        selectedValue : '',
+        selectedIndex : null,
+        selectedName : '',
+    },
+    audit_reserv_date : {
+        
+    },
 }
 
 export default (state = initialState, action) => {
@@ -195,6 +210,22 @@ export default (state = initialState, action) => {
                 ...state,
                 audit_reserv_building : action.payload
             }
+        case SET_AUDIT_RESERV_FLOOR : 
+            return {
+                ...state,
+                audit_reserv_floor : action.payload
+            }
+        case SET_AUDIT_RESERV_ZONE : 
+            return {
+                ...state,
+                audit_reserv_zone : action.payload
+            }
+        case SET_AUDIT_RESERV_DATE : 
+            return {
+                ...state,
+                audit_reserv_date : action.payload
+            }
+
         default:
             return state
     }

@@ -6,6 +6,7 @@ import {
     Dimensions,
     ScrollView,
     Picker,
+    Alert,
     BackHandler,
     TouchableOpacity
 } from 'react-native'
@@ -30,7 +31,9 @@ import {
     openIndicator,
     dismissIndicator,
     setAuditReservPartners,
-    setAuditReservBuilding
+    setAuditReservBuilding,
+    setAuditReservFloor,
+    setAuditReservZone
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 import componentRightSignOut from '../../components/ComponentRightSignOut'
@@ -39,8 +42,10 @@ const DEVICE_WIDTH = Dimensions.get('screen').width
 class ReservationScreen extends React.Component {
 
     state = {
-        floor_selectedIndex : 0,
-        floor: []
+        floor_selectedValue : '',
+        floor_selectedIndex : null,
+        zone_selectedValue : '',
+        zone_selectedIndex : null,
     }
     
     ComponentLeft = () => {
@@ -85,12 +90,35 @@ class ReservationScreen extends React.Component {
     }
 
     
-    onSelectFloor(index, value) {
+    onSelectZone(index, value){
+        this.props.openIndicator()
+        this.props.setAuditReservZone({
+            selectedValue : value,
+            selectedIndex : index,
+            selectedName : this.props.reducer.audit_reserv_building.building_zone[index].zone_name,
+        })
+        this.props.dismissIndicator()
+    }
 
+    onSelectFloor(index, value) {
+        this.props.openIndicator()
+        this.props.setAuditReservFloor({
+            selectedValue : value,
+            selectedIndex : index,
+            selectedName : this.props.reducer.audit_reserv_building.building_floor[index].floor_name,
+        })
+        this.props.setAuditReservZone({
+            selectedValue : '',
+            selectedIndex : null,
+            selectedName : '',
+        })
+        this.props.dismissIndicator()
     }
 
     render() {
         const props = this.props.reducer
+        console.log('audit_reserv_building',props.audit_reserv_building)
+        console.log('length',Object.keys(props.audit_reserv_building).length)
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -120,7 +148,7 @@ class ReservationScreen extends React.Component {
                                 this.props.navigation.navigate('ReservListCustomer')
                             }}>
                                 <Text style={[styles.text16, { color: 'white' }]}>{
-                                    props.audit_reserv_partners.length == 0 ? 'กรุณาเลือกรายชื่อลูกค้า' : props.audit_reserv_partners.name_customer
+                                    Object.keys(props.audit_reserv_partners).length == 0 ? 'กรุณาเลือกรายชื่อลูกค้า' : props.audit_reserv_partners.name_customer
                                 }</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />
@@ -130,11 +158,11 @@ class ReservationScreen extends React.Component {
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`เลือกตลาดที่ต้องการขายของ`}</Text>
                             <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}
-                            onPress={ () => 
+                            onPress={  () => {
                                 this.props.navigation.navigate('ReservListBuilding') 
-                            }>
+                            }}>
                                 <Text style={[styles.text16, { color: 'white' }]}>{
-                                props.audit_reserv_building.length == 0 ? 'เลือกตลาด' : props.audit_reserv_building.building_name}</Text>
+                                Object.keys(props.audit_reserv_building).length == 0 ? 'เลือกตลาด' : props.audit_reserv_building.building_name}</Text>
                                 <View style={{paddingRight:10}}>
                                     <Icon name='chevron-right' size={16} color='white' />
                                 </View>
@@ -151,86 +179,93 @@ class ReservationScreen extends React.Component {
                             <RadioGroup
                                 size={20}
                                 thickness={2}
-                                selectedIndex={this.state.floor_selectedIndex}
+                                selectedIndex={props.audit_reserv_floor.selectedIndex}
                                 color={primaryColor}
                                 style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
                                 highlightColor='transparent'
                                 onSelect={(index, value) => this.onSelectFloor(index, value)} >
-                                <RadioButton
-                                    key={0}
-                                    value={1}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 1`}</Text>
-                                </RadioButton>
-                                <RadioButton
-                                    key={1}
-                                    value={2}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 2`}</Text>
-                                </RadioButton>
-                                <RadioButton
-                                    key={3}
-                                    value={4}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 3`}</Text>
-                                </RadioButton>
-                                <RadioButton
-                                    key={3}
-                                    value={4}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Floor 4`}</Text>
-                                </RadioButton>
+                                    {
+                                        Object.keys(props.audit_reserv_building).length > 0 ?
+                                            props.audit_reserv_building.building_floor.map((v, i) => {
+                                                return (
+                                                    <RadioButton
+                                                        key={i}
+                                                        value={v.floor_id}
+                                                        color={primaryColor}
+                                                        style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                                        <Text style={[styles.text16, { color: primaryColor }]}>{`${v.floor_name}`}</Text>
+                                                    </RadioButton>
+                                                )
+                                            })
+                                        : null
+                                    }
                             </RadioGroup>
+                            {
+                                Object.keys(props.audit_reserv_building).length == 0 ?
+                                    <View style={[styles.center]}><Text style={{textAlign:'center'}}>{'กรุณาเลือกตลาด!'}</Text></View>
+                                : null
+                            }
                             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`กรุณาเลือกโซน`}</Text>
                             <RadioGroup
                                 size={20}
                                 thickness={2}
-                                selectedIndex={this.state.floor_selectedIndex}
+                                selectedIndex={props.audit_reserv_zone.selectedIndex}
                                 color={primaryColor}
                                 style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
                                 highlightColor='transparent'
-                                onSelect={(index, value) => this.onSelectFloor(index, value)} >
-                                <RadioButton
-                                    key={0}
-                                    value={1}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Zone A`}</Text>
-                                </RadioButton>
-                                <RadioButton
-                                    key={1}
-                                    value={2}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Zone B`}</Text>
-                                </RadioButton>
-                                <RadioButton
-                                    key={3}
-                                    value={4}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Zone C`}</Text>
-                                </RadioButton>
-                                <RadioButton
-                                    key={3}
-                                    value={4}
-                                    color={primaryColor}
-                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{`Zone D`}</Text>
-                                </RadioButton>
+                                onSelect={(index, value) => this.onSelectZone(index, value)} >
+                                {
+                                    Object.keys(props.audit_reserv_building).length > 0 ?
+                                        props.audit_reserv_building.building_zone.map((v, i) => {
+                                            return (
+                                                <RadioButton
+                                                    key={i}
+                                                    value={v.zone_id}
+                                                    //disabled={v.disabled}
+                                                    color={primaryColor}
+                                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                                    <Text style={[styles.text14, { color: primaryColor }]}>{`${v.zone_name}`}</Text>
+                                                </RadioButton>
+                                            )
+                                        })
+                                    : null
+                                }
                             </RadioGroup>
+                            {
+                                Object.keys(props.audit_reserv_building).length == 0 ?
+                                    <View style={[styles.center]}><Text style={{textAlign:'center'}}>{'กรุณาเลือกตลาด!'}</Text></View>
+                                : null
+                            }
                             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text16, { color: primaryColor }]}>{`กรุณาเลือกวันที่และบูธที่ต้องการขายของ`}</Text>
                             <TouchableOpacity style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: primaryColor }]}
                                 onPress={()=>{
-                                    this.props.navigation.navigate('ReservCalendarAudit')
+                                    if(Object.keys(props.audit_reserv_partners).length == 0){
+                                        Alert.alert(
+                                            'คำเตือน!',
+                                            'กรุณาเลือกลูกค้าที่ต้องการจองพื้นที่!'
+                                        );
+                                    }else if(Object.keys(props.audit_reserv_building).length == 0){
+                                        Alert.alert(
+                                            'คำเตือน!',
+                                            'กรุณาเลือกตลาดที่ต้องการขายของ!'
+                                        );
+                                    }else if(props.audit_reserv_floor.selectedValue == ''){
+                                        Alert.alert(
+                                            'คำเตือน!',
+                                            'กรุณาเลือกชั้นที่ท่านต้องการขายของ!'
+                                        );
+                                    }else if (props.audit_reserv_zone.selectedValue == ''){
+                                        Alert.alert(
+                                            'คำเตือน!',
+                                            'กรุณาเลือกโซนที่ท่านต้องการขายของ!'
+                                        );
+                                    }else{
+                                        this.props.navigation.navigate('ReservCalendarAudit')
+                                    }
                                 }}
                             >
                                 <Text style={[styles.text16, { color: 'white' }]}>{'กรุณาเลือกวันที่และบูธขายของ'}</Text>
@@ -254,7 +289,9 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     setAuditReservPartners,
-    setAuditReservBuilding
+    setAuditReservBuilding,
+    setAuditReservFloor,
+    setAuditReservZone
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReservationScreen)

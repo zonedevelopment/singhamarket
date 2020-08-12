@@ -271,7 +271,7 @@ class BoothScreen extends React.Component {
                             onValueChange={(itemValue, itemIndex) => this.setSelectedDate(itemValue)} >
                             <Picker.Item label="กรุณาเลือกวันที่ขายของ" value="" />
                             {
-                                props.date_selected.map((v,i)=>{
+                                props.audit_reserv_date.map((v,i)=>{
                                     return (
                                         <Picker.Item label={moment(v.date).format('LL')} value={v.date} />
                                     )

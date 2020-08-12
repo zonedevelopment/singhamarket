@@ -31,7 +31,9 @@ import StorageServies from '../../utils/StorageServies'
 import {
     openIndicator,
     dismissIndicator,
-    setAuditReservBuilding
+    setAuditReservBuilding,
+    setAuditReservFloor,
+    setAuditReservZone
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 
@@ -105,7 +107,19 @@ class ListBuildingScreen extends React.Component {
         return (
             <TouchableOpacity style={{width:'90%',alignSelf: 'center' }} 
             onPress={ async()=>{
+                this.props.openIndicator()
+                await  this.props.setAuditReservFloor({
+                    selectedValue : '',
+                    selectedIndex : null,
+                    selectedName : '',
+                })
+                await this.props.setAuditReservZone({
+                    selectedValue : '',
+                    selectedIndex : null,
+                    selectedName : '',
+                })
                 await this.props.setAuditReservBuilding(item)
+                this.props.dismissIndicator()
                 this.props.navigation.goBack()
             }}>
                 <View style={{ flexDirection: 'row',paddingTop:10,paddingBottom:10}}>
@@ -172,6 +186,8 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     setAuditReservBuilding,
+    setAuditReservFloor,
+    setAuditReservZone
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListBuildingScreen)
