@@ -39,7 +39,7 @@ import ic_plan from '../../assets/image/icon_plan_gold.png'
 import {
     openIndicator,
     dismissIndicator,
-    saveDateSelected,
+    setAuditReservDate,
     setStatePreviousScreen
 } from '../../actions'
 import Hepler from '../../utils/Helper'
@@ -55,7 +55,7 @@ class BoothScreen extends React.Component {
 
     async onSelectBooth(item) {
         let { ActionType } = this.props.route.params
-        let arrDaySelected = this.props.reducer.date_selected
+        let arrDaySelected = this.props.reducer.audit_reserv_date
         if(ActionType == 'CHECK_ALL'){
             this.props.openIndicator()
             let arrDate = []
@@ -77,9 +77,9 @@ class BoothScreen extends React.Component {
                             }
                         })
                     })
-                    this.props.saveDateSelected('save', arrDaySelected)
+                    this.props.setAuditReservDate(arrDaySelected)
                     this.props.dismissIndicator()
-                    this.props.navigation.navigate('Dayselect',{
+                    this.props.navigation.navigate('ReservDaySelectedAudit',{
                         previous_screen : 'Booth'
                     })
                 } else {
@@ -95,14 +95,14 @@ class BoothScreen extends React.Component {
                     v['boothSelectPrice'] = item.booth_amount
                 }
             })
-            this.props.saveDateSelected('save', arrDaySelected)
-            this.props.navigation.navigate('Dayselect')
+            this.props.setAuditReservDate(arrDaySelected)
+            this.props.navigation.navigate('ReservDaySelectedAudit')
         }
     }
 
     _renderItem = ({ item, index }) => {
         return (
-            <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
+            <View key={index} style={[styles.containerRow, { padding: 5, /*height: 50, */margin: -4 }]}>
                 <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
                     <View style={{ width: 15, height: 15, borderRadius: 10, margin: 4, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
                     <Text style={[styles.text16, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
@@ -112,9 +112,9 @@ class BoothScreen extends React.Component {
                     {
                         item.booth_status_id == "1" ?
                             <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
-                                // onPress={
-                                //     () => this.onSelectBooth(item)
-                                // }
+                                onPress={
+                                    () => this.onSelectBooth(item)
+                                }
                                 >
                                 <Text style={[styles.text14, { color: primaryColor }]}>{`ว่าง`}</Text>
                             </TouchableOpacity>
@@ -215,28 +215,28 @@ class BoothScreen extends React.Component {
     }
 
     setSelectedDate(itemValue){
-        // if(itemValue != ''){
-        //     this.setState({ddlSelectedDate : itemValue})
-        //     this.props.openIndicator()
-        //     let formData = new FormData();
-        //     formData.append('building_id',this.props.reducer.reserverion_building_id)
-        //     formData.append('partners_id',this.props.reducer.userInfo.partners_id)
-        //     formData.append('floor_id',this.props.reducer.reserverion_floor_id)
-        //     formData.append('zone_id',this.props.reducer.reserverion_zone_id)
-        //     formData.append('date',itemValue)
-        //     formData.append('product_type_id',this.props.reducer.userInfo.product_type.type_id)
-        //     formData.append('product_cate_id',this.props.reducer.userInfo.product_type.cate_id)
-        //     Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
-        //         console.log('GET_BOOTH_URL',results)
-        //         if (results.status == 'SUCCESS') {
-        //             this.setState({listBooth : results.data})
-        //             this.props.dismissIndicator()
-        //         } else {
-        //             Alert.alert(results.message)
-        //             this.props.dismissIndicator()
-        //         }
-        //     })
-        // }
+        if(itemValue != ''){
+            this.setState({ddlSelectedDate : itemValue})
+            this.props.openIndicator()
+            let formData = new FormData();
+            formData.append('building_id',this.props.reducer.audit_reserv_building.building_id)
+            formData.append('partners_id',this.props.reducer.audit_reserv_partners.partners_id)
+            formData.append('floor_id',this.props.reducer.audit_reserv_floor.selectedValue)
+            formData.append('zone_id',this.props.reducer.audit_reserv_zone.selectedValue)
+            formData.append('date',itemValue)
+            formData.append('product_type_id',this.props.reducer.audit_reserv_partners.product_type.type_id)
+            formData.append('product_cate_id',this.props.reducer.audit_reserv_partners.product_type.cate_id)
+            Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
+                console.log('GET_BOOTH_URL',results)
+                if (results.status == 'SUCCESS') {
+                    this.setState({listBooth : results.data})
+                    this.props.dismissIndicator()
+                } else {
+                    Alert.alert(results.message)
+                    this.props.dismissIndicator()
+                }
+            })
+        }
     }
 
     render() {
@@ -317,7 +317,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    saveDateSelected,
+    setAuditReservDate,
     setStatePreviousScreen
 }
 

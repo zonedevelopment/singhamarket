@@ -50,6 +50,15 @@ import Notificationscreen from './tab/NotificationScreen'
 
 import Calendarscreen from './reservation/CalendarScreen'
 import Boothscreen from './reservation/BoothScreen'
+import Dayselectedscreen from './reservation/DaySelectedScreen'
+import Accessoriesscreen from './reservation/AccessoriesScreen'
+import Summaryscreen from './reservation/SummaryScreen'
+import Editboothscreen from './reservation/EditBoothScreen'
+import Bookingsuccessscreen from './reservation/BookingSuccessScreen'
+
+
+
+
 
 
 /**
@@ -95,6 +104,12 @@ const Reserv = function MyStack() {
             <Stack.Screen name="ReservListBuilding" component={Listbuildingscreen} />
             <Stack.Screen name="ReservCalendarAudit" component={Calendarscreen} />
             <Stack.Screen name="ReservBoothAudit" component={Boothscreen} />
+            <Stack.Screen name="ReservDaySelectedAudit" component={Dayselectedscreen} />
+            <Stack.Screen name="ReservAccessoriesAudit" component={Accessoriesscreen} />
+            <Stack.Screen name="ReservSummaryAudit" component={Summaryscreen} />
+            <Stack.Screen name="ReservEditBoothAudit" component={Editboothscreen} />
+            <Stack.Screen name="ReservSuccessAudit" component={Bookingsuccessscreen} />
+            
         </Stack.Navigator>
     );
 }

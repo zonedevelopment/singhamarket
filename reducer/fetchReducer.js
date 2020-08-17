@@ -81,9 +81,7 @@ const initialState = {
         selectedIndex : null,
         selectedName : '',
     },
-    audit_reserv_date : {
-        
-    },
+    audit_reserv_date : [],
 }
 
 export default (state = initialState, action) => {

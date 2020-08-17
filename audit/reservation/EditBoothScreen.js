@@ -38,7 +38,7 @@ import ic_plan from '../../assets/image/icon_plan_gold.png'
 import {
     openIndicator,
     dismissIndicator,
-    saveDateSelected,
+    setAuditReservDate,
     setStatePreviousScreen
 } from '../../actions'
 import Hepler from '../../utils/Helper'
@@ -54,7 +54,7 @@ class EditBoothScreen extends React.Component {
 
     async onSelectBooth(item) {
         let { day } = this.props.route.params
-        let arrDaySelected = this.props.reducer.date_selected
+        let arrDaySelected = this.props.reducer.audit_reserv_date
         arrDaySelected.map((v,i) => {
             if(v.date == day){
                 v['boothSelectID'] = item.booth_detail_id
@@ -62,13 +62,14 @@ class EditBoothScreen extends React.Component {
                 v['boothSelectPrice'] = item.booth_amount
             }
         })
-        this.props.saveDateSelected('save', arrDaySelected)
-        this.props.navigation.navigate('Summary')
+        this.props.setStatePreviousScreen('ReservEditBoothAudit')
+        this.props.setAuditReservDate(arrDaySelected)
+        this.props.navigation.navigate('ReservSummaryAudit')
     }
 
     _renderItem = ({ item, index }) => {
         return (
-            <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
+            <View key={index} style={[styles.containerRow, { padding: 5,  margin: -4 }]}>
                 <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
                     <View style={{ width: 15, height: 15, borderRadius: 10, margin: 4, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
                     <Text style={[styles.text16, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
@@ -153,13 +154,13 @@ class EditBoothScreen extends React.Component {
             this.setState({ddlSelectedDate : itemValue})
             this.props.openIndicator()
             let formData = new FormData();
-            formData.append('building_id',this.props.reducer.reserverion_building_id)
-            formData.append('floor_id',this.props.reducer.reserverion_floor_id)
-            formData.append('partners_id',this.props.reducer.userInfo.partners_id)
-            formData.append('zone_id',this.props.reducer.reserverion_zone_id)
+            formData.append('building_id',this.props.reducer.audit_reserv_building.building_id)
+            formData.append('partners_id',this.props.reducer.audit_reserv_partners.partners_id)
+            formData.append('floor_id',this.props.reducer.audit_reserv_floor.selectedValue)
+            formData.append('zone_id',this.props.reducer.audit_reserv_zone.selectedValue)
             formData.append('date',itemValue)
-            formData.append('product_type_id',this.props.reducer.userInfo.product_type.type_id)
-            formData.append('product_cate_id',this.props.reducer.userInfo.product_type.cate_id)
+            formData.append('product_type_id',this.props.reducer.audit_reserv_partners.product_type.type_id)
+            formData.append('product_cate_id',this.props.reducer.audit_reserv_partners.product_type.cate_id)
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
@@ -195,13 +196,13 @@ class EditBoothScreen extends React.Component {
                 <View style={[styles.container, { padding: 15 }]}>
                     <View style={[styles.containerRow]}>
                         <Text style={[styles.text18, styles.bold, { flex: 0.6, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
-                        <TouchableOpacity style={[styles.containerRow, { flex: 0.4, alignItems: 'center', justifyContent: 'flex-end' }]}
+                        {/* <TouchableOpacity style={[styles.containerRow, { flex: 0.4, alignItems: 'center', justifyContent: 'flex-end' }]}
                             onPress={
                                 () => this.props.navigation.push('Plan')
                             }>
                             <Image source={ic_plan} style={{ width: 15, height: 15, resizeMode: 'contain' }} />
                             <Text style={[styles.text14, { color: primaryColor, marginLeft: 2 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
 
@@ -218,24 +219,7 @@ class EditBoothScreen extends React.Component {
                         </Picker>
                     </View>
 
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={{ padding: 10, height: 45, backgroundColor: '#f3f3f3' }}>
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                            <View style={[styles.circleGreen]}></View>
-                            <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`ว่าง`}</Text>
-                            <View style={[styles.circleYellow]}></View>
-                            <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`รอชำระเงิน`}</Text>
-                            <View style={[styles.circleRed]}></View>
-                            <Text style={[styles.text16, { marginLeft: 5 }]}>{`จองแล้ว`}</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={[styles.containerRow]}>
-                        <View style={[styles.smallStatusButton, styles.center, { flex:0.2,backgroundColor: pendingColor }]}>
-                            <Text style={[{ fontSize: 10, color: 'white' }]}>{`แจ้งเตือน`}</Text>
-                        </View>
-                        <Text style={[styles.text14, { flex:0.8,color: primaryColor, marginLeft: 4 }]}>{`ท่านสามารถกดแจ้งเตือนที่บูธสีเหลือง เพื่อรับการแจ้งเตือนเมื่อบูธนี้ว่าง`}</Text>
-                    </View>
+                 
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow, { padding: 5, height: 55 }]}>
                         <View style={{ flex: 0.25, backgroundColor: primaryColor, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
@@ -272,7 +256,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    saveDateSelected,
+    setAuditReservDate,
     setStatePreviousScreen
 }
 
