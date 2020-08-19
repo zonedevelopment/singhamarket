@@ -174,6 +174,16 @@ class BoothScreen extends React.Component {
     }
 
     componentDidMount() {
+        let firstdateSelected = '';
+        const props = this.props.reducer
+        props.audit_reserv_date.map((v,i)=>{
+            if (i == 0) {
+                firstdateSelected = v.date
+                this.setState({ ddlSelectedDate: v.date })
+            }
+        })
+        
+        this.setSelectedDate(firstdateSelected)
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -224,8 +234,8 @@ class BoothScreen extends React.Component {
             formData.append('floor_id',this.props.reducer.audit_reserv_floor.selectedValue)
             formData.append('zone_id',this.props.reducer.audit_reserv_zone.selectedValue)
             formData.append('date',itemValue)
-            formData.append('product_type_id',this.props.reducer.audit_reserv_partners.product_type.type_id)
-            formData.append('product_cate_id',this.props.reducer.audit_reserv_partners.product_type.cate_id)
+            formData.append('product_type_id', this.props.reducer.audit_reserv_partners.product_type ? this.props.reducer.audit_reserv_partners.product_type.type_id : '')
+            formData.append('product_cate_id', this.props.reducer.audit_reserv_partners.product_type ? this.props.reducer.audit_reserv_partners.product_type.cate_id : '')
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
