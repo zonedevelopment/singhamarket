@@ -130,9 +130,10 @@ class FloorZoneScreen extends React.Component {
             building_id : building_data.building_id,
             building_name : building_data.building_name,
         })
-        // if (this.props.reducer.building[index].building_floor.length == 1) {
-        //     this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
-        // }
+
+        if (this.props.reducer.building[index].building_floor.length == 1) {
+            this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
+        }
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 

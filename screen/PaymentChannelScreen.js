@@ -19,13 +19,26 @@ import {
     darkColor,
     grayColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    AUTHORIZE
 } from '../utils/contants'
 
 import styles from '../style/style'
+import Helper from '../utils/Helper'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class PaymentChannelScreen extends React.Component {
+
+    gatewayAuthorize = () => {
+        Helper.get(AUTHORIZE + '?apikey=' + '&apisecret=' + '&resourceOwnerId=' + '&requestUId=' + '&response-channel=mobile&endState=mobile_app&accept-language=TH&endState=mobile_app&applicationId=', (results) => {
+            let status = results.status
+            let data   = results.data
+            let callbackUrl = ""
+            if (status.code == 1000) {
+                callbackUrl = data.callbackUrl
+            }
+        })
+    }
 
     _renderItem = ({ item, index }) => {
         return (

@@ -107,7 +107,22 @@ export const RegisterFCMToken         = '/singha/api/RegisterFCMToken'
 export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
 
 
+/**
+ * SCB Open API
+ */
+export const OAUTHTOKEN               = 'OAUTHTOKEN'
+export const AUTHORIZE                = 'https://api-sandbox.partners.scb/partners/sandbox/v2/oauth/authorize'
+export const TOKEN                    = 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token'
 
+export const OAUTHTOKENHEADER = {
+  'content-type': 'application/json',
+  'resourceOwnerId': '',
+  'requestUId': '',
+  'accept-language': 'TH'
+}
+/**
+ * End
+ */
 
 
 export const HEADERFORMDATA = {

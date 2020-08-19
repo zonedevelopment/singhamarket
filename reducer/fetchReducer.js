@@ -25,7 +25,8 @@ import {
     SET_AUDIT_RESERV_BUILDING,
     SET_AUDIT_RESERV_FLOOR,
     SET_AUDIT_RESERV_ZONE,
-    SET_AUDIT_RESERV_DATE
+    SET_AUDIT_RESERV_DATE,
+    OAUTHTOKEN
 } from '../utils/contants'
 
 import ic_credit_card from '../assets/image/icon_creditcard.png'
@@ -82,6 +83,7 @@ const initialState = {
         selectedName : '',
     },
     audit_reserv_date : [],
+    oauthtoken: []
 }
 
 export default (state = initialState, action) => {
@@ -223,7 +225,11 @@ export default (state = initialState, action) => {
                 ...state,
                 audit_reserv_date : action.payload
             }
-
+        case OAUTHTOKEN:
+            return {
+                ...state,
+                oauthtoken: action.payload
+            }
         default:
             return state
     }

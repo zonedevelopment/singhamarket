@@ -8,6 +8,7 @@ import {
     ScrollView,
     Dimensions,
     BackHandler,
+    ImageBackground,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -37,6 +38,8 @@ import {
 import Hepler from '../../utils/Helper'
 
 import styles from '../../style/style'
+
+import plan1 from '../../assets/image/plan_plaza1.jpg'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 const DEVICE_WIDTH = Dimensions.get('screen').width
@@ -128,11 +131,15 @@ class PlanScreen extends React.Component {
         const element = (data, index) => (
             <View
                 style={[styles.btn, {
+                    height: data.boothName == "" ? 2 : 30,
+                    // width: 28,
+                    // borderRadius: 0,
+                    // marginRight: 0.5,
                     justifyContent: 'center', alignItems: 'center',
                     borderColor: 'transparent',
                     backgroundColor: data.boothName == "" ? 'transparent' : data.status == 2 ? pendingColor : data.status == 3 ? reservColor : emptyColor  ,
                 }]}>
-                <Text style={{ flex: 1, flexWrap: 'wrap', textAlign: 'center' ,color:'white',fontSize:12}}>
+                <Text style={{ flex: 1, flexWrap: 'wrap', textAlign: 'center' ,color:'white',fontSize:6}}>
                     {data.boothName}
                 </Text>
             </View>
@@ -160,6 +167,7 @@ class PlanScreen extends React.Component {
                 <ScrollView>
                       <ScrollView style={{ width: DEVICE_WIDTH }} horizontal={true}  alwaysBounceVertical={true} showsHorizontalScrollIndicator={true}>
                         <View style={{ padding: 5 }}>
+                            <ImageBackground source={plan1} resizeMode={'stretch'} style={{ position: 'absolute', width: '98%', height: '90%', marginLeft: -5, marginTop: 15}} />
                             <Table  borderStyle={{borderWidth: 1}} borderStyle={{ borderColor: 'transparent' }}>
                                 {
                                     this.state.listData.map((rowData, index) => (

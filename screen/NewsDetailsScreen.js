@@ -130,12 +130,12 @@ class NewsDetailsScreen extends React.Component {
                     }} />
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <ScrollView>
-                        <View style={{marginTop : 10}}>
+                        <View>
                             <Lightbox activeProps={{
                                 resizeMode: 'contain',
                                 flex: 1,
                                 width: null,
-                            }} >
+                            }}>
                                 <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: this.state.news_details.news_thumbs }} />
                             </Lightbox>
                         </View>

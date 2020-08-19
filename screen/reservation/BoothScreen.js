@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import Lightbox from 'react-native-lightbox'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import {
@@ -51,6 +52,8 @@ class BoothScreen extends React.Component {
         dateSelected: [],
         ddlSelectedDate : '',
         listBooth : [],
+        seeImage: false,
+        imageURL: ''
     }
 
     async onSelectBooth(item) {
@@ -101,14 +104,31 @@ class BoothScreen extends React.Component {
     }
 
     _renderItem = ({ item, index }) => {
+        let see = false
         return (
             <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
-                <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'flex-start', alignItems: 'center', padding: 5 }]}>
-                    <View style={{ width: 15, height: 15, borderRadius: 10, margin: 4, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
-                    <Text style={[styles.text16, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
+                <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                    <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
+                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
+                    {
+                        item.booth_detail_image != "" ?
+                            <Lightbox activeProps={{ resizeMode: 'contain', flex: 1 }}
+                                onOpen={() => see = true}
+                                willClose={() => see = false }>
+                                {
+                                    see ?
+                                        <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: item.booth_detail_image }} />
+                                        :
+                                        <Icon name='picture-o' size={18} />
+                                }
+                                
+                            </Lightbox>
+                            :
+                            <Icon name='picture-o' size={18} />
+                    }
                 </View>
                 <View style={[styles.containerRow, { flex: 0.75, backgroundColor: item.booking_status_background_color, alignItems: 'center', padding: 5 }]}>
-                    <Text style={[styles.text16, { flex: 0.75, color: primaryColor, alignSelf: 'flex-start', paddingLeft: 5 }]}>{item.product_cate_name}</Text>
+                    <Text style={[styles.text14, { flex: 0.8, color: primaryColor, paddingLeft: 5, alignItems: 'center', justifyContent: 'flex-start' }]}>{item.product_cate_name}</Text>
                     {
                         item.booth_status_id == "1" ?
                             <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
@@ -171,6 +191,15 @@ class BoothScreen extends React.Component {
     }
 
     componentDidMount() {
+        let firstdateSelected = '';
+        const props = this.props.reducer
+        props.date_selected.map((v,i)=>{
+            if (i == 0) {
+                firstdateSelected = v.date
+                this.setState({ ddlSelectedDate: v.date })
+            }
+        })
+        this.setSelectedDate(firstdateSelected)
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -266,8 +295,6 @@ class BoothScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
-
-
                     <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                         <Picker
                             selectedValue={this.state.ddlSelectedDate}
@@ -324,7 +351,6 @@ class BoothScreen extends React.Component {
                                 <Text style={[styles.text16,{textAlign:'center',color:primaryColor}]}>{'ไม่พบข้อมูล'}</Text>
                             </View>
                     }
-                    
                 </View>
             </View>
         )

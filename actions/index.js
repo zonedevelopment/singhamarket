@@ -25,8 +25,13 @@ import {
     SET_AUDIT_RESERV_BUILDING,
     SET_AUDIT_RESERV_FLOOR,
     SET_AUDIT_RESERV_ZONE,
-    SET_AUDIT_RESERV_DATE
+    SET_AUDIT_RESERV_DATE,
+    TOKEN,
+    OAUTHTOKEN,
+    OAUTHTOKENHEADER
 } from '../utils/contants'
+
+import Helper from '../utils/Helper'
 
 /**
  * 
@@ -249,3 +254,33 @@ export const setAuditReservDate = (data) => ({
  /**
 * End
 */
+
+/**
+ * SCB Open API
+ */
+export function generateOauthToken() {
+    return (dispatch) => {
+        let data = {
+            'applicationKey': '',
+            'applicationSecret': '',
+            'authCode': '',
+        }
+        Helper.post(TOKEN, data, OAUTHTOKENHEADER, (results) => {
+            let status = results.status
+            let data   = results.data
+            if (status.code == 1000) {
+                dispatch(setStateOauthToken(data))
+            }
+        })
+        
+    }
+}
+
+export const setStateOauthToken = (data) => ({
+    type: OAUTHTOKEN,
+    payload: data
+})
+
+/**
+ * End
+ */
