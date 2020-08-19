@@ -17,6 +17,8 @@ import {
     NEWS_URL,
     HEADERFORMDATA,
     GET_CART_URL,
+    KEY_ROLE,
+    SYSTEMLOGIN_URL,
 } from '../utils/contants'
 
 import Hepler from '../utils/Helper'
@@ -55,22 +57,43 @@ class SplashScreen extends React.Component {
 
         //// check Login
         let LOGIN = await StorageServies.get(KEY_LOGIN)
+        let ROLE = await StorageServies.get(KEY_ROLE)
         if(LOGIN != null){
             LOGIN = JSON.parse(LOGIN)
-            let formData = new FormData();
-            formData.append('USERNAME', LOGIN.username)
-            formData.append('PASSWORD', LOGIN.password_text)
-            Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
-                console.log('LOGIN_URL',results)
-                if (results.status == 'SUCCESS') {
-                    StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
-                    this.props.saveUserInfo(results.data)
-                    this.GetMyCart(results.data.partners_id)
-                   
-                } else {
-                    Alert.alert(results.message)
-                }
-            })
+            if(ROLE == 'USER'){
+                let formData = new FormData();
+                formData.append('USERNAME', LOGIN.username)
+                formData.append('PASSWORD', LOGIN.password_text)
+                Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
+                    console.log('LOGIN_URL',results)
+                    if (results.status == 'SUCCESS') {
+                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                        this.props.saveUserInfo(results.data)
+                        this.GetMyCart(results.data.partners_id)
+                    
+                    } else {
+                        Alert.alert(results.message)
+                    }
+                })
+            }
+            if(ROLE == 'AUDIT'){
+                let formData = new FormData();
+                formData.append('USERNAME', LOGIN.username)
+                formData.append('PASSWORD', LOGIN.password)
+                Hepler.post(BASE_URL + SYSTEMLOGIN_URL,formData,HEADERFORMDATA,(results) => {
+                    console.log('SYSTEMLOGIN_URL',results)
+                    if (results.status == 'SUCCESS') {
+                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                        this.props.saveUserInfo(results.data)
+                        this.props.navigation.navigate('AuditMain')
+                    } else {
+                        Alert.alert(results.message)
+                    }
+                })
+            }
+
+          
+
         }else{
             this.props.navigation.replace('Choice')
         }

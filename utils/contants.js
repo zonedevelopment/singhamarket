@@ -24,7 +24,7 @@ export const greenColor         = '#4ec084'
  * Constants AsyncStorage
  */
 export const KEY_LOGIN = 'KEY_LOGIN';
-
+export const KEY_ROLE = 'KEY_ROLE';
   /**
   * End
   */
@@ -105,6 +105,7 @@ export const SUBMIT_FAVERITE_URL      = '/singha/api/SubmitFaveriteBooth'
 export const CANCEL_FAVERITE_URL      = '/singha/api/CancelFaveriteBooth'
 export const RegisterFCMToken         = '/singha/api/RegisterFCMToken'
 export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
+export const SYSTEMLOGIN_URL          = '/singha/api/SystemLogin'
 
 
 /**

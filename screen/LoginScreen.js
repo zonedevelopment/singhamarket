@@ -25,6 +25,8 @@ import {
     HEADERFORMDATA,
     RegisterFCMToken,
     LOGIN_URL,
+    SYSTEMLOGIN_URL,
+    KEY_ROLE,
 } from '../utils/contants'
 import Hepler from '../utils/Helper'
 import {
@@ -101,7 +103,7 @@ class LoginScreen extends React.Component {
             Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
                 this.props.dismissIndicator()
                 if (results.status == 'SUCCESS') {
-
+                    StorageServies.set(KEY_ROLE,'USER')
                     StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
                     this.props.saveUserInfo(results.data)
 
@@ -122,29 +124,33 @@ class LoginScreen extends React.Component {
     }
 
     CheckAuditAdminLogin() {
-
-        this.props.navigation.navigate('AuditMain')
-
-        // let userName = this.state.username
-        // let passWord = this.state.password
-        // if(userName.trim() == '' || passWord.trim() == ''){
-        //     return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
-        // }else{
-        //     // this.props.openIndicator()
-        //     // let formData = new FormData();
-        //     // formData.append('USERNAME', userName.trim())
-        //     // formData.append('PASSWORD', passWord.trim())
-        //     // Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
-        //     //     this.props.dismissIndicator()
-        //     //     if (results.status == 'SUCCESS') {
-        //     //         StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
-        //     //         this.props.saveUserInfo(results.data)
-        //     //         this.props.navigation.navigate('Main')
-        //     //     } else {
-        //     //         Alert.alert(results.message)
-        //     //     }
-        //     // })
-        // }
+        let userName = this.state.username
+        let passWord = this.state.password
+        if(userName.trim() == '' || passWord.trim() == ''){
+            return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
+        }else{
+            this.props.openIndicator()
+            let formData = new FormData();
+            formData.append('USERNAME', userName.trim())
+            formData.append('PASSWORD', passWord.trim())
+            Hepler.post(BASE_URL + SYSTEMLOGIN_URL,formData,HEADERFORMDATA,(results) => {
+                console.log('SYSTEMLOGIN_URL',results)
+                this.props.dismissIndicator()
+                if (results.status == 'SUCCESS') {
+                    if(results.data[0]['role'] == 'AUDIT'){
+                        StorageServies.set(KEY_ROLE,results.data[0]['role'])
+                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                        this.props.saveUserInfo(results.data)
+                        this.props.navigation.navigate('AuditMain')
+                    }else{
+                        alert('login admin')
+                    }
+                   
+                } else {
+                    Alert.alert(results.message)
+                }
+            })
+        }
     }
 
     render() {
