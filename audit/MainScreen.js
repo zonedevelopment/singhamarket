@@ -23,6 +23,7 @@ import {
 } from '../utils/contants'
 
 import styles from '../style/style'
+import TabIcon from '../components/TabIcon'
 
 /**
  * Main tab
@@ -55,26 +56,21 @@ import Accessoriesscreen from './reservation/AccessoriesScreen'
 import Summaryscreen from './reservation/SummaryScreen'
 import Editboothscreen from './reservation/EditBoothScreen'
 import Bookingsuccessscreen from './reservation/BookingSuccessScreen'
-
-
-
-
-
-
 /**
  * End
  */
 
-
 import ic_home_active from '../assets/image/icon_home_gold.png'
 import ic_store_active from '../assets/image/icon_market_gold.png'
 import ic_cart_active from '../assets/image/icon_cart_gold.png'
+import ic_plan_active from '../assets/image/icon_plan_gold.png'
 import ic_bell_active from '../assets/image/icon_noti_gold.png'
 import ic_profile_active from '../assets/image/icon_user_gold.png'
 
 import ic_home_inactive from '../assets/image/icon_home.png'
 import ic_store_inactive from '../assets/image/icon_market.png'
 import ic_cart_inactive from '../assets/image/icon_cart.png'
+import ic_plan_inactive from '../assets/image/icon_plan.png'
 import ic_bell_inactive from '../assets/image/icon_noti.png'
 import ic_profile_inactive from '../assets/image/icon_user.png'
 
@@ -183,6 +179,7 @@ function CartIconWithBadge(props) {
 // const props = this.props
 const Tab = createBottomTabNavigator()
 const tabMain = (countItem) => {
+    let Role = 'Audit'
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -242,13 +239,13 @@ const tabMain = (countItem) => {
                             {/* <CartIconWithBadge focused={focused} /> */}
                             {
                                 focused ?
-                                    <Image source={ic_cart_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    <Image source={ic_plan_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
                                     :
-                                    <Image source={ic_cart_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    <Image source={ic_plan_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
                             }
-                            <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
+                            {/* <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
                                 <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
-                            </View>
+                            </View> */}
                         </View>
                     ),
                 }} />
@@ -259,7 +256,8 @@ const tabMain = (countItem) => {
                     tabBarLabel: 'แจ้งเตือน',
                     tabBarIcon: ({ focused, color }) => (
                         <View>
-                            {
+                            <TabIcon focused={focused} Controller={'Noti'} Role={Role} />
+                            {/* {
                                 focused ?
                                     <Image source={ic_bell_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
                                     :
@@ -267,7 +265,7 @@ const tabMain = (countItem) => {
                             }
                             <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
                                 <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
-                            </View>
+                            </View> */}
                         </View>
                     ),
                 }} />

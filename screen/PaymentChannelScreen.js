@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    Linking,
     FlatList,
     ScrollView,
     Dimensions,
@@ -20,8 +21,18 @@ import {
     grayColor,
     primaryColor,
     secondaryColor,
-    AUTHORIZE
+    AUTHORIZE,
+    TOKEN,
+    OAUTHTOKENHEADER,
+    APIKEY,
+    APISECRET,
+    AUTHORIZEHEADER,
+    QRCODECREATE
 } from '../utils/contants'
+
+import {
+    generateOauthToken
+} from '../actions'
 
 import styles from '../style/style'
 import Helper from '../utils/Helper'
@@ -30,19 +41,67 @@ const DEVICE_HEIGHT = Dimensions.get('screen').height
 class PaymentChannelScreen extends React.Component {
 
     gatewayAuthorize = () => {
-        Helper.get(AUTHORIZE + '?apikey=' + '&apisecret=' + '&resourceOwnerId=' + '&requestUId=' + '&response-channel=mobile&endState=mobile_app&accept-language=TH&endState=mobile_app&applicationId=', (results) => {
+        Helper.getSCBApi(AUTHORIZE, {headers: AUTHORIZEHEADER}, (results) => {
+            console.log(results)
             let status = results.status
             let data   = results.data
             let callbackUrl = ""
             if (status.code == 1000) {
-                callbackUrl = data.callbackUrl
+                // callbackUrl = data.callbackUrl
+                Linking.openURL(data.callbackUrl);
             }
+        })
+    }
+
+    getOauthToken = async () => {
+        // let data = {
+        //     "applicationKey" : APIKEY,
+        //     "applicationSecret" : APISECRET
+        // }
+
+        // Helper.post(TOKEN, JSON.stringify(data), OAUTHTOKENHEADER, (results) => {
+        //     console.log(results)
+        // })
+        await this.props.generateOauthToken()
+        console.log(this.props.reducer.oauthtoken)
+
+        let CREATEQRHEADER = {
+            'content-type': 'application/json',
+            'resourceOwnerId': APIKEY,
+            'authorization': 'Bearer ' + this.props.reducer.oauthtoken.accessToken,
+            'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
+            'accept-language': 'TH'
+        }
+
+        console.log(CREATEQRHEADER)
+
+        let data = {
+            "qrType": "PP",
+            "ppType": "227843582030123",
+            "ppId": "227843582030123",
+            "amount": 1.00,
+            "ref1": "REFERENCE1",
+            "ref2": "REFERENCE2",
+            "ref3": "SPM"
+        }
+
+        await Helper.post(QRCODECREATE, JSON.stringify(data), CREATEQRHEADER, (results) => {
+            console.log(results)
         })
     }
 
     _renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity key={index} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}>
+            <TouchableOpacity key={index} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
+                onPress={() => {
+                    this.getOauthToken()
+                        // if (index == 1) {
+                        //     this.getOauthToken()
+                        // } else {
+                        //     this.gatewayAuthorize()
+                        // }
+                    }
+                }>
                 <Image source={item.channel_icon} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                 <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`${item.channel_name}`}</Text>
                 <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
@@ -137,7 +196,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    generateOauthToken
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentChannelScreen)

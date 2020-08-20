@@ -9,18 +9,18 @@ import {
     BackHandler,
     TouchableOpacity
 } from 'react-native'
-import moment from 'moment'
-import { NavigationBar } from 'navigationbar-react-native'
 import { connect } from 'react-redux'
-import Carousel from 'react-native-banner-carousel'
-import Image from 'react-native-fast-image'
-import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
+import { NavigationBar } from 'navigationbar-react-native'
+import SearchInput, { createFilter } from 'react-native-search-filter'
 import {
     darkColor,
     grayColor,
     primaryColor,
     secondaryColor,
-    KEY_LOGIN
+    KEY_LOGIN,
+    GET_CUSTOMER_URL,
+    BASE_URL,
+    HEADERFORMDATA,
 } from '../../utils/contants'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import styles from '../../style/style'
@@ -35,19 +35,8 @@ import Hepler from '../../utils/Helper'
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class CustomerScreen extends React.Component {
     state = {
-        ListData: [
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-            {MemberID : 1,MemberName : 'CustomerName'},
-        ]
+        keySearch: '',
+        ListData: []
     }
 
     
@@ -92,19 +81,36 @@ class CustomerScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.LoadData();
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
+    LoadData () {
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + GET_CUSTOMER_URL,null,HEADERFORMDATA,(results) => {
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    ListData : results.data
+                })
+                //Alert.alert(results.message)
+            } else {
+                Alert.alert(results.message)
+                this.setState({ListData : []})
+            }
+        })
+    }
     
     _renderListItem = ({ item }) => {
         return (
             <TouchableOpacity style={{width:'90%',alignSelf: 'center' }} 
-            onPress={()=>{
-                this.props.navigation.navigate('AuditCustomerDetails')
+            onPress={ async()=>{
+                // await this.props.setAuditReservPartners(item)
+                // this.props.navigation.goBack()
             }}>
                 <View style={{ flexDirection: 'row',paddingTop:10,paddingBottom:10}}>
                     <View style={{flex: 0.9}} >
-                        <Text >{item.MemberName}</Text>
+                        <Text >{item.name_customer}</Text>
                     </View>
                     <View style={{flex: 0.1,alignItems: 'center', justifyContent: 'center'}} >
                         <Icon name='chevron-right' size={15} color={primaryColor} style={{textAlign: 'right'}}/>
@@ -115,9 +121,9 @@ class CustomerScreen extends React.Component {
         )
     }
 
-
     render() {
         const props = this.props
+        const filter = this.state.ListData.filter(createFilter(this.state.keySearch, ['name_customer', 'name', 'lastname']))
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -158,13 +164,19 @@ class CustomerScreen extends React.Component {
                         </View>
                     </View>
                     <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, width:'90%',alignSelf: 'center',}} /> 
-                    <FlatList
-                        data={this.state.ListData}
-                        extraData={this.state}
-                        keyExtractor={(item) => item.MemberID}
-                        renderItem={this._renderListItem}
-                    />
-
+                    {
+                        this.state.ListData.length > 0 ?
+                            <FlatList
+                                data={filter}
+                                extraData={this.state}
+                                keyExtractor={(item) => item.partners_id}
+                                renderItem={this._renderListItem}
+                            />
+                        :
+                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' ,paddingTop:20}]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
+                            </View>
+                    }
                 </View>
             </View>
         )

@@ -9,12 +9,9 @@ import {
     BackHandler,
     TouchableOpacity
 } from 'react-native'
-import moment from 'moment'
-import { NavigationBar } from 'navigationbar-react-native'
 import { connect } from 'react-redux'
-import Carousel from 'react-native-banner-carousel'
-import Image from 'react-native-fast-image'
-import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
+import { NavigationBar } from 'navigationbar-react-native'
+import SearchInput, { createFilter } from 'react-native-search-filter'
 import {
     darkColor,
     grayColor,
@@ -121,9 +118,9 @@ class ListCustomerScreen extends React.Component {
         )
     }
 
-
     render() {
         const props = this.props
+        const filter = this.state.ListData.filter(createFilter(this.state.keySearch, ['name_customer', 'name', 'lastname']))
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -167,7 +164,7 @@ class ListCustomerScreen extends React.Component {
                     {
                         this.state.ListData.length > 0 ?
                             <FlatList
-                                data={this.state.ListData}
+                                data={filter}
                                 extraData={this.state}
                                 keyExtractor={(item) => item.partners_id}
                                 renderItem={this._renderListItem}

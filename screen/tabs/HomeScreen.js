@@ -89,7 +89,7 @@ class HomeScreen extends React.Component {
                     <FlatList
                         style={{ marginTop: 5 }}
                         data={news}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.news_id}
                         renderItem={this._renderItem}
                         numColumns={2} />
                 </View>

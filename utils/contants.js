@@ -114,13 +114,27 @@ export const SYSTEMLOGIN_URL          = '/singha/api/SystemLogin'
 export const OAUTHTOKEN               = 'OAUTHTOKEN'
 export const AUTHORIZE                = 'https://api-sandbox.partners.scb/partners/sandbox/v2/oauth/authorize'
 export const TOKEN                    = 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token'
+export const QRCODECREATE             = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create'
+
+export const AUTHORIZEHEADER = {
+  'apikey': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
+  'apisecret': 'abe9a0dd09bb482fa27be9eabe452efe',
+  'resourceOwnerId': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
+  'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
+  'response-channel': 'mobile',
+  'endState': 'mobile_app',
+  'accept-language': 'TH'
+}
 
 export const OAUTHTOKENHEADER = {
   'content-type': 'application/json',
-  'resourceOwnerId': '',
-  'requestUId': '',
+  'resourceOwnerId': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
+  'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
   'accept-language': 'TH'
 }
+
+export const APIKEY                   = 'l75d40fdc697664d2c8d0736bdfe4b57e7'
+export const APISECRET                = 'abe9a0dd09bb482fa27be9eabe452efe'
 /**
  * End
  */

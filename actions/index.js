@@ -28,7 +28,9 @@ import {
     SET_AUDIT_RESERV_DATE,
     TOKEN,
     OAUTHTOKEN,
-    OAUTHTOKENHEADER
+    OAUTHTOKENHEADER,
+    APIKEY,
+    APISECRET
 } from '../utils/contants'
 
 import Helper from '../utils/Helper'
@@ -261,11 +263,10 @@ export const setAuditReservDate = (data) => ({
 export function generateOauthToken() {
     return (dispatch) => {
         let data = {
-            'applicationKey': '',
-            'applicationSecret': '',
-            'authCode': '',
+            'applicationKey': APIKEY,
+            'applicationSecret': APISECRET
         }
-        Helper.post(TOKEN, data, OAUTHTOKENHEADER, (results) => {
+        Helper.post(TOKEN, JSON.stringify(data), OAUTHTOKENHEADER, (results) => {
             let status = results.status
             let data   = results.data
             if (status.code == 1000) {

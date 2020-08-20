@@ -73,6 +73,14 @@ const TabIcon = (props) => {
                 IconInActive = ic_profile_inactive
                 break;
         }
+    } else if (props.Role == 'Audit') {
+        switch(props.Controller) {
+            case 'Noti':
+                ItemCount = 0
+                IconActive = ic_bell_active
+                IconInActive = ic_bell_inactive
+                break;
+        }
     }
 
     return (

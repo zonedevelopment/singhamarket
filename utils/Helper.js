@@ -1,9 +1,17 @@
 import axios from 'axios'
 
 const httpServices = {
-    get:function (url, callback) {
+    get:function (url, header, callback) {
         // console.log(Connection.BaseURL+url);
-        axios.get(url).then(function (response) {
+        axios.get(url, header).then(function (response) {
+            callback(response.data);
+        }).catch(function (error) {
+            callback(error);
+        });
+    },
+    getSCBApi:function (url, header, callback) {
+        // console.log(Connection.BaseURL+url);
+        axios.get(url, header).then(function (response) {
             callback(response.data);
         }).catch(function (error) {
             callback(error);
