@@ -58,7 +58,7 @@ const initialState = {
         },
         {
             channel_id: 2,
-            channel_name: 'iBanking / Mobile Banking',
+            channel_name: 'คิวอาร์โค้ดพร้อมเพย์ / Mobile Banking',
             channel_icon: ic_banking
         }
     ],

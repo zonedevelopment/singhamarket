@@ -131,7 +131,7 @@ class PlanScreen extends React.Component {
         const element = (data, index) => (
             <View
                 style={[styles.btn, {
-                    height: data.boothName == "" ? 2 : 30,
+                    height: data.boothName == "" ? 10 : 30,
                     // width: 28,
                     // borderRadius: 0,
                     // marginRight: 0.5,

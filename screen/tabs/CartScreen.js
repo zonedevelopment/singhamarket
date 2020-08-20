@@ -57,8 +57,8 @@ class CartScreen extends React.Component {
     LoadData(){
         this.props.openIndicator()
         let formData = new FormData();
-        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
-        Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
+        formData.append('partners_id', this.props.reducer.userInfo.partners_id)
+        Hepler.post(BASE_URL + GET_CART_URL, formData,HEADERFORMDATA,(results) => {
             console.log('GET_CART_URL',results)
             if (results.status == 'SUCCESS') {
                 this.setState({arrBooking:results.data})
@@ -189,9 +189,11 @@ class CartScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    async componentDidMount() {
-        await this.props.setStateBookingSelected([])
-        this.LoadData()
+    componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            this.LoadData()
+            this.props.setStateBookingSelected([])
+        });
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -267,78 +269,64 @@ class CartScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
                 <View style={[styles.container, { alignItems: 'center' }]}>
-                    <ScrollView>
-                        <View style={[styles.panelWhite, styles.shadow]}>
-                            {/* <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8, height: 80, justifyContent: 'center', paddingLeft: 10 }]}>
-                                <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`SINGHA COMPLEX 1`}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`FLOOR 1 / ZONE A`}</Text>
-                                </View>
-                                <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`อาหารญี่ปุ่น`}</Text>
-                                </View>
-                            </View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.marginBetweenVertical]}></View> */}
-                            {
-                                this.state.arrBooking.length > 0 ?
+                {
+                    this.state.arrBooking.length > 0 ?
+                        <ScrollView>
+                            <View style={[styles.panelWhite, styles.shadow]}>
                                 <FlatList
                                     data={this.state.arrBooking}
                                     keyExtractor={(item) => item.booking_id}
                                     extraData={this.state}
-                                    renderItem={this._renderItem} 
-                                />
-                                : 
-                                <View><Text style={[styles.text16, styles.bold,{textAlign:'center',color:styles.primaryColor}]}>{`ไม่มีรายการในตะกร้าสินค้า!`}</Text></View>
-                            }
-                            
-                            <View style={[styles.hr]}></View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.container]}>
-                                <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.props.reducer.date_selected.length}</Text>
-                                    <Text style={[styles.text16]}>{numeral(this.state.total_area).format('0,0.00') + ' บาท'}</Text>
+                                    renderItem={this._renderItem}/>
+                                <View style={[styles.hr]}></View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <View style={[styles.container]}>
+                                    <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                        <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.props.reducer.date_selected.length}</Text>
+                                        <Text style={[styles.text16]}>{numeral(this.state.total_area).format('0,0.00') + ' บาท'}</Text>
+                                    </View>
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                        <Text style={[styles.text16]}>{`โค้ดส่วนลด`}</Text>
+                                        <Text style={[styles.text16]}>{numeral(this.state.discount_price).format('0,0.00') + ` บาท`}</Text>
+                                    </View>
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                        <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
+                                        <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
+                                    </View>
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                        <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
+                                        <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
+                                    </View>
+                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                        <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
+                                        <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
+                                    </View>
                                 </View>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`โค้ดส่วนลด`}</Text>
-                                    <Text style={[styles.text16]}>{numeral(this.state.discount_price).format('0,0.00') + ` บาท`}</Text>
-                                </View>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
-                                    <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
-                                </View>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
-                                    <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
-                                </View>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                                    <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
-                                </View>
-                            </View>
-                            <View style={[styles.container]}>
-                                <View style={[styles.container, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
-                                    <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
-                                        onPress={
-                                            async () => {
-                                                if(this.state.selectBooking.length == 0){
-                                                    alert('กรุณาเลือกรายการมากกว่า 1 รายการ!')
-                                                }else{
-                                                    await this.props.setStateBookingSelected(this.state.selectBooking)
-                                                    this.props.navigation.navigate('ConfirmReserv')
+                                <View style={[styles.container]}>
+                                    <View style={[styles.container, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
+                                        <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
+                                            onPress={
+                                                async () => {
+                                                    if(this.state.selectBooking.length == 0){
+                                                        alert('กรุณาเลือกรายการมากกว่า 1 รายการ!')
+                                                    }else{
+                                                        await this.props.setStateBookingSelected(this.state.selectBooking)
+                                                        this.props.navigation.navigate('ConfirmReserv')
+                                                    }
                                                 }
-                                            }
-                                        }>
-                                        <Text style={[styles.text18, { color: '#FFF' }]}>{`ดำเนินการต่อ`}</Text>
-                                    </TouchableOpacity>
+                                            }>
+                                            <Text style={[styles.text18, { color: '#FFF' }]}>{`ดำเนินการต่อ`}</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
+                        </ScrollView>
+                        : 
+                        <View style={[styles.container, styles.center]}>
+                            <Text style={[styles.text16, styles.bold,{textAlign:'center',color:styles.primaryColor}]}>{`ไม่มีรายการในตะกร้าสินค้า!`}</Text>
                         </View>
-                    </ScrollView>
+                    }
                 </View>
             </View>
         )
