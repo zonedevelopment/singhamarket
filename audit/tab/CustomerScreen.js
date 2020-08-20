@@ -28,6 +28,7 @@ import StorageServies from '../../utils/StorageServies'
 import {
     openIndicator,
     dismissIndicator,
+    saveUserInfo
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 
@@ -68,9 +69,14 @@ class CustomerScreen extends React.Component {
 
     ComponentRight = () => {
         return (
-            <View style={{ padding: 10 }}>
-
-            </View>
+            <TouchableOpacity style={{ padding: 10,alignItems:'center',flex:0.2}} onPress={ async () => {
+                await StorageServies.clear()
+                await this.props.saveUserInfo([])
+                this.props.navigation.navigate('Choice')
+            }}>
+                <Icon name='sign-out' size={20} color='white' />
+                <Text style={{fontSize:8,color:'white'}}>{'Logout'}</Text>
+            </TouchableOpacity>
         );
     }
 
@@ -172,6 +178,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
+    saveUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerScreen)

@@ -317,7 +317,7 @@ class SummaryScreen extends React.Component {
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{this.props.reducer.audit_reserv_partners.product_type.category_name}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{this.props.reducer.audit_reserv_partners.product_type ? this.props.reducer.audit_reserv_partners.product_type.category_name : ''}</Text>
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>

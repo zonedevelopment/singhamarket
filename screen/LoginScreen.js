@@ -137,8 +137,8 @@ class LoginScreen extends React.Component {
                 console.log('SYSTEMLOGIN_URL',results)
                 this.props.dismissIndicator()
                 if (results.status == 'SUCCESS') {
-                    if(results.data[0]['role'] == 'AUDIT'){
-                        StorageServies.set(KEY_ROLE,results.data[0]['role'])
+                    if(results.data.role == 'AUDIT'){
+                        StorageServies.set(KEY_ROLE,results.data.role)
                         StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
                         this.props.saveUserInfo(results.data)
                         this.props.navigation.navigate('AuditMain')
