@@ -91,6 +91,22 @@ class SplashScreen extends React.Component {
                     }
                 })
             }
+            
+            if(ROLE == 'ADMIN'){
+                let formData = new FormData();
+                formData.append('USERNAME', LOGIN.username)
+                formData.append('PASSWORD', LOGIN.password)
+                Hepler.post(BASE_URL + SYSTEMLOGIN_URL,formData,HEADERFORMDATA,(results) => {
+                    console.log('SYSTEMLOGIN_URL',results)
+                    if (results.status == 'SUCCESS') {
+                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                        this.props.saveUserInfo(results.data)
+                        this.props.navigation.navigate('AdminMain')
+                    } else {
+                        Alert.alert(results.message)
+                    }
+                })
+            }
 
           
 

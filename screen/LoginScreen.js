@@ -45,7 +45,16 @@ class LoginScreen extends React.Component {
 
     state = {
         username: '',
-        password: ''
+        password: '',
+        Icon : 'eye-slash',
+        showPassword : true,
+    }
+
+    _changeIcon = () => {
+        this.setState(prevState => ({
+            Icon : prevState.Icon === 'eye' ? 'eye-slash' : 'eye',
+            showPassword : !prevState.showPassword
+        }))
     }
 
     ComponentLeft = () => {
@@ -143,7 +152,10 @@ class LoginScreen extends React.Component {
                         this.props.saveUserInfo(results.data)
                         this.props.navigation.navigate('AuditMain')
                     }else{
-                        alert('login admin')
+                        StorageServies.set(KEY_ROLE,results.data.role)
+                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                        this.props.saveUserInfo(results.data)
+                        this.props.navigation.navigate('AdminMain')
                     }
                    
                 } else {
@@ -191,15 +203,19 @@ class LoginScreen extends React.Component {
                             <Image source={ic_lock} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
                             <TextInput
                                 ref={(input) => { this.password = input; }}
-                                style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                style={{ width: '80%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                 placeholder='รหัสผ่าน'
                                 returnKeyType={'done'}
-                                secureTextEntry={true}
+                                secureTextEntry={this.state.showPassword}
                                 blurOnSubmit={false}
                                 value={this.state.password}
                                 onChangeText={(text) => this.setState({ password: text })}
                                 onSubmitEditing={() => this.CheckLogin()} />
+                            <TouchableOpacity style={{right:10}} onPress={() => {this._changeIcon()}}>
+                                <Icon name={this.state.Icon} size={20} color={primaryColor} />
+                            </TouchableOpacity>
                         </View>
+
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={{ width: '100%', alignItems: 'flex-end' }}>
                             <TouchableOpacity>

@@ -68,6 +68,9 @@ import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
 ////////// audit
 import AuditMainscreen from './audit/MainScreen'
 
+////////// audit
+import AdminMainscreen from './admin/MainScreen'
+
 
 import { fcmService} from './utils/FCMService'
 import {localNotificationService} from './utils/LocalNotificaionService'
@@ -93,7 +96,7 @@ function MyStack() {
         <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
 
         <Stack.Screen name="AuditMain" component={AuditMainscreen}/>
-
+        <Stack.Screen name="AdminMain" component={AdminMainscreen}/>
         </Stack.Navigator>
     );
 }
