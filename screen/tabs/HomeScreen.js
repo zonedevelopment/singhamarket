@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
 
     renderPage(value, index) {
         return (
-            <View key={index}>
+            <View key={index} >
                 <TouchableOpacity style={{ backgroundColor: 'transparent' }}
                     onPress={
                         () => {

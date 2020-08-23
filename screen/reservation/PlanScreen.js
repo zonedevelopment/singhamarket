@@ -40,7 +40,7 @@ import Hepler from '../../utils/Helper'
 import styles from '../../style/style'
 
 import plan1 from '../../assets/image/plan_plaza1.jpg'
-
+import Gallery from 'react-native-image-gallery';
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class PlanScreen extends React.Component {
@@ -58,7 +58,8 @@ class PlanScreen extends React.Component {
             ['a', 'b', 'c', 'd'],
             ['1', '2', '3', '4'],
             ['a', 'b', 'c', 'f']
-          ]
+        ],
+        plan_image : ''
     }
 
     ComponentLeft = () => {
@@ -72,7 +73,7 @@ class PlanScreen extends React.Component {
     ComponentCenter = () => {
         return (
             <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[styles.text18, { color: 'white' }]}>{`จองพื้นที่ร้านค้า`}</Text>
+                <Text style={[styles.text18, { color: 'white' }]}>{`รูปภาพ`}</Text>
             </View>
         );
     }
@@ -93,28 +94,28 @@ class PlanScreen extends React.Component {
     };
 
     LoadData(){
-        const{ building_id,floor_id,zone_id } = this.props.route.params
-        this.props.openIndicator()
-        let formData = new FormData();
-        formData.append('building_id',building_id)
-        formData.append('floor_id',floor_id)
-        formData.append('zone_id',zone_id)
-        Hepler.post(BASE_URL + GET_PLAN_URL,formData,HEADERFORMDATA,(results) => {
-            console.log('GET_PLAN_URL',results)
-            if (results.status == 'SUCCESS') {
-                this.setState({
-                    listData : results.data,
-                })
-                this.props.dismissIndicator()
-            } else {
-                this.setState({
-                    x : 0,
-                    y : 0,
-                    listData : [],
-                })
-                this.props.dismissIndicator()
-            }
-        })
+        // const{ building_id,floor_id,zone_id } = this.props.route.params
+        // this.props.openIndicator()
+        // let formData = new FormData();
+        // formData.append('building_id',building_id)
+        // formData.append('floor_id',floor_id)
+        // formData.append('zone_id',zone_id)
+        // Hepler.post(BASE_URL + GET_PLAN_URL,formData,HEADERFORMDATA,(results) => {
+        //     console.log('GET_PLAN_URL',results)
+        //     if (results.status == 'SUCCESS') {
+        //         this.setState({
+        //             listData : results.data,
+        //         })
+        //         this.props.dismissIndicator()
+        //     } else {
+        //         this.setState({
+        //             x : 0,
+        //             y : 0,
+        //             listData : [],
+        //         })
+        //         this.props.dismissIndicator()
+        //     }
+        // })
     }
 
     componentWillUnmount() {
@@ -122,31 +123,15 @@ class PlanScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.LoadData()
+        const{ plan_image} = this.props.route.params
+        //console.log('building',this.props.reducer.building)
+
+        
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
-
-        const element = (data, index) => (
-            <View
-                style={[styles.btn, {
-                    height: data.boothName == "" ? 10 : 30,
-                    // width: 28,
-                    // borderRadius: 0,
-                    // marginRight: 0.5,
-                    justifyContent: 'center', alignItems: 'center',
-                    borderColor: 'transparent',
-                    backgroundColor: data.boothName == "" ? 'transparent' : data.status == 2 ? pendingColor : data.status == 3 ? reservColor : emptyColor  ,
-                }]}>
-                <Text style={{ flex: 1, flexWrap: 'wrap', textAlign: 'center' ,color:'white',fontSize:6}}>
-                    {data.boothName}
-                </Text>
-            </View>
-        );
-
-
-
+        const{ plan_image} = this.props.route.params
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -164,11 +149,17 @@ class PlanScreen extends React.Component {
                         shadowOpacity: 0,
                     }} />
 
-                <ScrollView>
-                      <ScrollView style={{ width: DEVICE_WIDTH }} horizontal={true}  alwaysBounceVertical={true} showsHorizontalScrollIndicator={true}>
-                        <View style={{ padding: 5 }}>
-                            <ImageBackground source={plan1} resizeMode={'stretch'} style={{ position: 'absolute', width: '98%', height: '90%', marginLeft: -5, marginTop: 15}} />
-                            <Table  borderStyle={{borderWidth: 1}} borderStyle={{ borderColor: 'transparent' }}>
+                {/* <ScrollView> */}
+                      {/* <ScrollView style={{ width: DEVICE_WIDTH }} horizontal={true}  alwaysBounceVertical={true} showsHorizontalScrollIndicator={true}> */}
+                        {/* <View style={{ top: 0,marginTop:0 }}> */}
+                            <Gallery
+                                initialPage={0}
+                                images={[
+                                    { source: { uri: plan_image} }
+                                ]}
+                            />
+                           
+                            {/* <Table  borderStyle={{borderWidth: 1}} borderStyle={{ borderColor: 'transparent' }}>
                                 {
                                     this.state.listData.map((rowData, index) => (
                                         <TableWrapper  key={index} style={styles.row}>
@@ -180,11 +171,11 @@ class PlanScreen extends React.Component {
                                         </TableWrapper>
                                     ))
                                 }
-                            </Table>
-                        </View>
-                    </ScrollView>
+                            </Table> */}
+                        {/* </View> */}
+                    {/* </ScrollView> */}
            
-                </ScrollView>
+                {/* </ScrollView> */}
               
             </View>
         )

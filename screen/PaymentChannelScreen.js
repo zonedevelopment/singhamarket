@@ -2,6 +2,7 @@ import React from 'react'
 import {
     View,
     Text,
+    Alert,
     Image,
     Linking,
     FlatList,
@@ -15,7 +16,7 @@ import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
-
+var numeral = require('numeral');
 import {
     darkColor,
     grayColor,
@@ -27,7 +28,10 @@ import {
     APIKEY,
     APISECRET,
     AUTHORIZEHEADER,
-    QRCODECREATE
+    QRCODECREATE,
+    CREATE_TRANSACTION_URL,
+    BASE_URL,
+    HEADERFORMDATA
 } from '../utils/contants'
 
 import {
@@ -44,7 +48,9 @@ class PaymentChannelScreen extends React.Component {
 
     state = {
         qrBase64: '',
-        errMessage: ''
+        errMessage: '',
+        booking_id : [],
+        amount : 0,
     }
 
     gatewayAuthorize = () => {
@@ -60,38 +66,69 @@ class PaymentChannelScreen extends React.Component {
         })
     }
 
-    generateQRcode = async () => {
-        await this.props.openIndicator()
-        await this.props.generateOauthToken()
-        console.log(this.props.reducer.oauthtoken)
 
+    CreateTransaction = () => {
+        this.props.openIndicator()
+        let that = this;
+        let formData = new FormData();
+        formData.append('amount',that.state.amount)
+        formData.append('partners_id',that.props.reducer.userInfo.partners_id)
+        formData.append('booking_id',JSON.stringify(that.state.booking_id))
+        console.log('formData',formData)
+        Helper.post(BASE_URL + CREATE_TRANSACTION_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('CREATE_TRANSACTION_URL',results)
+            if (results.status == 'SUCCESS') {
+                let TransID = results.TransID;
+                that.generateQRcode({
+                    "qrType": "PP",
+                    "ppType": "BILLERID",
+                    "ppId": "227843582030123",
+                    "amount": numeral(that.state.amount).format('0.00'),
+                    "ref1": TransID,
+                    "ref2": TransID,
+                    "ref3": "GFD"
+                });
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        });
+    }
+
+
+
+    generateQRcode = (data) => {
+        this.props.generateOauthToken()
+        console.log(this.props.reducer.oauthtoken)
         let CREATEQRHEADER = {
             'content-type': 'application/json',
             'resourceOwnerId': APIKEY,
             'authorization': 'Bearer ' + this.props.reducer.oauthtoken.accessToken,
             'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
-            'accept-language': 'TH'
+            'accept-language': 'EN'
         }
 
-        let data = {
-            "qrType": "PP",
-            "ppType": "BILLERID",
-            "ppId": "227843582030123",
-            "amount": 1.00,
-            "ref1": "SPM202008000001",
-            "ref2": "SPM202008000001",
-            "ref3": "SPM"
-        }
-
-        await Helper.post(QRCODECREATE, JSON.stringify(data), CREATEQRHEADER, (results) => {
+        // let data = {
+        //     "qrType": "PP",
+        //     "ppType": "BILLERID",
+        //     "ppId": "227843582030123",
+        //     "amount": total_final_price,
+        //     "ref1": "SPM202008000001",
+        //     "ref2": "SPM202008000001",
+        //     "ref3": "SPM"
+        // }
+        console.log(data)
+        let that = this;
+        Helper.post(QRCODECREATE, JSON.stringify(data), CREATEQRHEADER, (results) => {
             console.log(results)
             let res = results.status
-            this.props.dismissIndicator()
+            that.props.dismissIndicator()
             if (res.code == 1000) {
                 let data = results.data
-                this.setState({ qrBase64: data.qrImage })
+                that.setState({ qrBase64: data.qrImage })
             } else {
-                this.setState({ errMessage: res.description })
+                Alert.alert(res.description)
+                that.setState({ errMessage: res.description })
             }
         })
     }
@@ -151,7 +188,13 @@ class PaymentChannelScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
+    async componentDidMount () {
+        const{ total_final_price,booking_id} = this.props.route.params
+        await this.setState({
+            amount : total_final_price,
+            booking_id : booking_id
+        })
+        await this.props.generateOauthToken()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -159,6 +202,7 @@ class PaymentChannelScreen extends React.Component {
 
         const props = this.props.reducer
         const channel = props.paymentChannel
+        const{ total_final_price,booking_id} = this.props.route.params
 
         return (
             <View style={[styles.container, { backgroundColor: primaryColor }]}>
@@ -190,7 +234,8 @@ class PaymentChannelScreen extends React.Component {
                                     <TouchableOpacity key={i} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
                                         onPress={() => {
                                                 if (i == 1) {
-                                                    this.generateQRcode()
+                                                    //this.generateQRcode()
+                                                    this.CreateTransaction()
                                                 } else {
                                                     this.gatewayAuthorize()
                                                 }
@@ -220,12 +265,18 @@ class PaymentChannelScreen extends React.Component {
                                 :
                                 null
                         }
+                
+                        <View>
+                            <Text style={{textAlign : 'center' , fontSize : 16,color:'red'}}>{
+                                    this.state.errMessage != '' ? this.state.errMessage : ''
+                            }</Text>
+                        </View>
                         
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 15 }]}>
                         <Text style={[styles.text16, styles.bold, { flex: 0.6, color: 'white' }]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{`5,500 บาท`}</Text>
+                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{ numeral(total_final_price).format('0,0.00') + ` บาท`}</Text>
                     </View>
                 </View>
             </View>

@@ -27,12 +27,15 @@ import {
     LOGIN_URL,
     SYSTEMLOGIN_URL,
     KEY_ROLE,
+    GET_CART_URL
 } from '../utils/contants'
 import Hepler from '../utils/Helper'
 import {
     openIndicator,
     dismissIndicator,
     saveUserInfo,
+    setStateMyCart,
+    setUserCountCartItem
 } from '../actions'
 import StorageServies from '../utils/StorageServies'
 
@@ -110,7 +113,7 @@ class LoginScreen extends React.Component {
             formData.append('USERNAME', userName.trim())
             formData.append('PASSWORD', passWord.trim())
             Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
-                this.props.dismissIndicator()
+                
                 if (results.status == 'SUCCESS') {
                     StorageServies.set(KEY_ROLE,'USER')
                     StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
@@ -123,9 +126,10 @@ class LoginScreen extends React.Component {
                     Hepler.post(BASE_URL + RegisterFCMToken,formData,HEADERFORMDATA,(results) => {
                         console.log('RegisterFCMToken',results)
                     })
-
-                    this.props.navigation.navigate('Main')
+                    this.GetMyCart(results.data.partners_id)
+                    //this.props.navigation.navigate('Main')
                 } else {
+                    this.props.dismissIndicator()
                     Alert.alert(results.message)
                 }
             })
@@ -163,6 +167,26 @@ class LoginScreen extends React.Component {
                 }
             })
         }
+    }
+
+
+    GetMyCart (partners_id) {
+        let formData = new FormData();
+        formData.append('partners_id',partners_id)
+        Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('GET_CART_URL',results)
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.props.setStateMyCart(results.data)
+                this.props.setUserCountCartItem(results.data.length)
+                this.props.navigation.navigate('Main')
+            } else {
+                this.props.setStateMyCart([])
+                this.props.setUserCountCartItem(0)
+                //this.props.navigation.navigate('Main')
+                Alert.alert(results.message)
+            }
+        })
     }
 
     render() {
@@ -260,6 +284,8 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     saveUserInfo,
+    setStateMyCart,
+    setUserCountCartItem
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

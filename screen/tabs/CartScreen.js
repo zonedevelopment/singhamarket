@@ -34,6 +34,7 @@ import {
     openIndicator,
     dismissIndicator,
     setStateBookingSelected,
+    setUserCountCartItem,
     setStateMyCart
 } from '../../actions'
 
@@ -56,16 +57,29 @@ class CartScreen extends React.Component {
 
     LoadData(){
         this.props.openIndicator()
+        //this.props.setStateMyCart([])
         let formData = new FormData();
         formData.append('partners_id', this.props.reducer.userInfo.partners_id)
         Hepler.post(BASE_URL + GET_CART_URL, formData,HEADERFORMDATA,(results) => {
             console.log('GET_CART_URL',results)
             if (results.status == 'SUCCESS') {
-                this.setState({arrBooking:results.data})
+                this.setState({
+                    arrBooking:results.data,
+                    selectBooking : [],
+                    area_item: 0,
+                    total_area: 0,
+                    discount_price: 0,
+                    total_other_service: 0,
+                    vat: 0,
+                    total_final_price: 0,
+                })
                 this.props.setStateMyCart(results.data)
+                this.props.setUserCountCartItem(results.data.length)
                 this.props.dismissIndicator()
             } else {
                 this.setState({arrBooking:[]})
+                this.props.setStateMyCart([])
+                this.props.setUserCountCartItem(0)
                 Alert.alert(results.message)
                 this.props.dismissIndicator()
             }
@@ -89,7 +103,7 @@ class CartScreen extends React.Component {
                                         this.onChecked(item, item.checked);
                                     }
                                 } />
-                            <Text style={[styles.text12, { color: 'red' }]}>{`เหลือเวลาในการจอง 09:00 นาที`}</Text>
+                            <Text style={[styles.text12, { color: 'red' }]}>{`เหลือเวลาในการจองอีก ` + item.Timelate + ` นาที`}</Text>
                         </View>
                     </View>
                     <View style={{ flex: 0.3 }}>
@@ -341,7 +355,8 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     setStateBookingSelected,
-    setStateMyCart
+    setStateMyCart,
+    setUserCountCartItem
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartScreen)

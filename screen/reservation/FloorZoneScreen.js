@@ -46,6 +46,7 @@ class FloorZoneScreen extends React.Component {
         index : 0,
         building_id : '',
         building_name : '',
+        plan_image : '',
         floor : [],
         zone : [],
         floor_selectedValue : '',
@@ -57,6 +58,7 @@ class FloorZoneScreen extends React.Component {
     onSelectFloor(index, value) {
         this.props.openIndicator()
         let zone = this.props.reducer.building[this.state.index].building_zone
+        let floor_image = this.props.reducer.building[this.state.index].building_floor[index].floor_image
         // this.state.zone.map((v,i)=>{
         //     if(zone[i]['floor_id'] == value){
         //         zone[i]['disabled'] = false
@@ -72,6 +74,7 @@ class FloorZoneScreen extends React.Component {
             zone_selectedIndex : null,
             zone_selectedValue : '',
             zone : zone,
+            plan_image : floor_image
         })
         this.props.dismissIndicator()
     }
@@ -175,9 +178,10 @@ class FloorZoneScreen extends React.Component {
                                                 );
                                             }else{
                                                 this.props.navigation.push('Plan',{
-                                                    building_id : this.state.building_id,
-                                                    floor_id : this.state.floor_selectedValue,
-                                                    zone_id : this.state.zone_selectedValue,
+                                                    // building_id : this.state.building_id,
+                                                    // floor_id : this.state.floor_selectedValue,
+                                                    // zone_id : this.state.zone_selectedValue,
+                                                    plan_image : this.state.plan_image
                                                 })
                                             }
                                         }
@@ -189,55 +193,71 @@ class FloorZoneScreen extends React.Component {
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View >
                                 <Text style={[styles.text16]}>{`กรุณาเลือกชั้นที่ท่านต้องการ`}</Text>
-                                <RadioGroup
-                                    size={20}
-                                    thickness={2}
-                                    selectedIndex={this.state.floor_selectedIndex}
-                                    color={primaryColor}
-                                    style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
-                                    highlightColor='transparent'
-                                    onSelect={(index, value) => this.onSelectFloor(index, value)} >
-                                    {
-                                        this.state.floor.map((v, i) => {
-                                            return (
-                                                <RadioButton
-                                                    key={i}
-                                                    value={v.floor_id}
-                                                    color={primaryColor}
-                                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                                    <Text style={[styles.text16, { color: primaryColor }]}>{`${v.floor_name}`}</Text>
-                                                </RadioButton>
-                                            )
-                                        })
-                                    }
-                                </RadioGroup>
+                                {
+                                    this.state.floor.length ?
+                                        <RadioGroup
+                                            size={20}
+                                            thickness={2}
+                                            selectedIndex={this.state.floor_selectedIndex}
+                                            color={primaryColor}
+                                            style={{ flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap' }}
+                                            highlightColor='transparent'
+                                            onSelect={(index, value) => this.onSelectFloor(index, value)} >
+                                            {
+                                                this.state.floor.map((v, i) => {
+                                                    return (
+                                                        <RadioButton
+                                                            key={i}
+                                                            value={v.floor_id}
+                                                            color={primaryColor}
+                                                            style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                                            <Text style={[styles.text16, { color: primaryColor }]}>{`${v.floor_name}`}</Text>
+                                                        </RadioButton>
+                                                    )
+                                                })
+                                            }
+                                        </RadioGroup>
+                                    :
+                                    <View>
+                                        <Text style={{textAlign:'center',fontSize:16, color: primaryColor}}>{'ไม่พบข้อมูลชั้น!'}</Text>
+                                    </View>
+                                }
+                                
                             </View>
                             <View style={[styles.hr]}></View>
                             <View>
                                 <Text style={[styles.text16]}>{`กรุณาเลือกโซน`}</Text>
-                                <RadioGroup
-                                    size={20}
-                                    thickness={2}
-                                    selectedIndex={this.state.zone_selectedIndex}
-                                    color={primaryColor}
-                                    style={{ flexDirection: 'row', justifyContent: 'space-around',  flexWrap: 'wrap' }}
-                                    highlightColor='transparent'
-                                    onSelect={(index, value) => this.onSelectZone(index, value)} >
-                                    {
-                                        this.state.zone.map((v, i) => {
-                                            return (
-                                                <RadioButton
-                                                    key={i}
-                                                    value={v.zone_id}
-                                                    //disabled={v.disabled}
-                                                    color={primaryColor}
-                                                    style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
-                                                    <Text style={[styles.text14, { color: primaryColor }]}>{`${v.zone_name}`}</Text>
-                                                </RadioButton>
-                                            )
-                                        })
-                                    }
-                                </RadioGroup>
+                                {
+                                     this.state.zone.length > 0 ?
+                                        <RadioGroup
+                                            size={20}
+                                            thickness={2}
+                                            selectedIndex={this.state.zone_selectedIndex}
+                                            color={primaryColor}
+                                            style={{ flexDirection: 'row', justifyContent: 'space-around',  flexWrap: 'wrap' }}
+                                            highlightColor='transparent'
+                                            onSelect={(index, value) => this.onSelectZone(index, value)} >
+                                            {
+                                                this.state.zone.map((v, i) => {
+                                                    return (
+                                                        <RadioButton
+                                                            key={i}
+                                                            value={v.zone_id}
+                                                            //disabled={v.disabled}
+                                                            color={primaryColor}
+                                                            style={{ alignItems: 'center', flex: 0.5, marginRight: 25 }} >
+                                                            <Text style={[styles.text14, { color: primaryColor }]}>{`${v.zone_name}`}</Text>
+                                                        </RadioButton>
+                                                    )
+                                                })
+                                            }
+                                        </RadioGroup>
+                                     :
+                                        <View>
+                                            <Text style={{textAlign:'center',fontSize:16, color: primaryColor}}>{'ไม่พบข้อมูลโซน!'}</Text>
+                                        </View>
+                                }
+                                
                             </View>
                             <View style={[styles.hr]}></View>
                             <View>

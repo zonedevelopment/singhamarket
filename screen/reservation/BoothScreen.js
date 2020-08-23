@@ -112,17 +112,24 @@ class BoothScreen extends React.Component {
                     <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
                     {
                         item.booth_detail_image != "" ?
-                            <Lightbox activeProps={{ resizeMode: 'contain', flex: 1 }}
-                                onOpen={() => see = true}
-                                willClose={() => see = false }>
-                                {
-                                    see ?
-                                        <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: item.booth_detail_image }} />
-                                        :
-                                        <Icon name='picture-o' size={18} />
-                                }
+                            // <Lightbox activeProps={{ resizeMode: 'contain', flex: 1 }}
+                            //     onOpen={() => see = true}
+                            //     willClose={() => see = false }>
+                            //     {
+                            //         see ?
+                            //             <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: item.booth_detail_image }} />
+                            //             :
+                            //             <Icon name='picture-o' size={18} />
+                            //     }
                                 
-                            </Lightbox>
+                            // </Lightbox>
+                            <TouchableOpacity onPress={()=>{
+                                this.props.navigation.push('Plan',{
+                                    plan_image : item.booth_detail_image
+                                })
+                            }}>
+                                <Icon name='picture-o' size={18} />
+                            </TouchableOpacity>
                             :
                             <Icon name='picture-o' size={18} />
                     }

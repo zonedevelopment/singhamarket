@@ -108,6 +108,9 @@ export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
 export const SYSTEMLOGIN_URL          = '/singha/api/SystemLogin'
 
 
+export const CREATE_TRANSACTION_URL   = '/singha/api/CreateTransactionPayment'
+
+
 /**
  * SCB Open API
  */
@@ -115,6 +118,7 @@ export const OAUTHTOKEN               = 'OAUTHTOKEN'
 export const AUTHORIZE                = 'https://api-sandbox.partners.scb/partners/sandbox/v2/oauth/authorize'
 export const TOKEN                    = 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token'
 export const QRCODECREATE             = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create'
+export const PAYMENTTRANSACTION       = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/billpayment/transactions/'
 
 export const AUTHORIZEHEADER = {
   'apikey': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
@@ -123,14 +127,14 @@ export const AUTHORIZEHEADER = {
   'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
   'response-channel': 'mobile',
   'endState': 'mobile_app',
-  'accept-language': 'TH'
+  'accept-language': 'EN'
 }
 
 export const OAUTHTOKENHEADER = {
   'content-type': 'application/json',
   'resourceOwnerId': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
   'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
-  'accept-language': 'TH'
+  'accept-language': 'EN'
 }
 
 export const APIKEY                   = 'l75d40fdc697664d2c8d0736bdfe4b57e7'

@@ -49,6 +49,7 @@ class ConfirmReservScreen extends React.Component {
         vat : 0,
         total_final_price : 0,
         arrBooking:[],
+        Timeout : '',
     }
 
     ComponentLeft = () => {
@@ -136,7 +137,8 @@ class ConfirmReservScreen extends React.Component {
                     discount_price : discount_price,
                     vat: vat,
                     total_final_price: total_final_price,
-                    arrBooking : results.data
+                    arrBooking : results.data,
+                    Timeout : results.Timeout
                 })
                 this.props.dismissIndicator()
             } else {
@@ -280,7 +282,7 @@ class ConfirmReservScreen extends React.Component {
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.mainButton, styles.center, { backgroundColor: redColor }]}>
-                                <Text style={[styles.text18, { color: '#FFF' }]}>{`โปรดชำระเงินก่อน 11.00 น.`}</Text>
+                                <Text style={[styles.text18, { color: '#FFF' }]}>{`โปรดชำระเงินก่อน ` + this.state.Timeout + ` น.`}</Text>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View>
@@ -296,7 +298,10 @@ class ConfirmReservScreen extends React.Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
-                                            () => this.props.navigation.navigate('Paymentchannel')
+                                            () => this.props.navigation.navigate('Paymentchannel',{
+                                                total_final_price : this.state.total_final_price,
+                                                booking_id : this.props.reducer.booking_selected,
+                                            })
                                         }>
                                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ชำระเงิน`}</Text>
                                     </TouchableOpacity>

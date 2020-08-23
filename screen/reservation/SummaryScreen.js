@@ -103,16 +103,16 @@ class SummaryScreen extends React.Component {
                 total_service += vs.qty * parseFloat(vs.service_price)
             })
         })
-        if (reducer.userInfo.partners_type == 1) {
-            vat = (parseFloat(total_area) + parseFloat(total_service)) * reducer.personal_vat / 100
-        } else {
-            vat = (parseFloat(total_area) + parseFloat(total_service)) * reducer.company_vat / 100
-        }
+        // if (reducer.userInfo.partners_type == 1) {
+        //     vat = (parseFloat(total_area) + parseFloat(total_service)) * reducer.personal_vat / 100
+        // } else {
+        //     vat = (parseFloat(total_area) + parseFloat(total_service)) * reducer.company_vat / 100
+        // }
         this.setState({
             total_area: total_area,
             total_other_service: total_service,
-            vat: vat,
-            total_final_price: parseFloat(total_area) + parseFloat(total_service) + parseFloat(vat)
+            //vat: vat,
+            total_final_price: parseFloat(total_area) + parseFloat(total_service)// + parseFloat(vat)
         })
         //props.dismissIndicator()
     }
@@ -335,12 +335,12 @@ class SummaryScreen extends React.Component {
                                     <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
                                     <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
                                 </View>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                {/* <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
                                     <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
-                                </View>
+                                </View> */}
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
+                                    <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ`}</Text>
                                     <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                             </View>
