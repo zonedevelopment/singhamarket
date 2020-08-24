@@ -72,7 +72,7 @@ export const SET_MY_CART = 'SET_MY_CART'
 /**
  * API
  */
-export const BASE_URL                 = 'http://benz.ots.co.th'
+export const BASE_URL                 = 'https://benz.ots.co.th'
 export const LOGIN_URL                = '/singha/api/Login'
 export const BANNER_URL               = '/singha/api/Banner'
 export const NEWS_URL                 = '/singha/api/News'
@@ -106,6 +106,7 @@ export const CANCEL_FAVERITE_URL      = '/singha/api/CancelFaveriteBooth'
 export const RegisterFCMToken         = '/singha/api/RegisterFCMToken'
 export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
 export const SYSTEMLOGIN_URL          = '/singha/api/SystemLogin'
+export const GET_NOTIFICATION_URL     = '/singha/api/GetNotification'
 
 
 export const CREATE_TRANSACTION_URL   = '/singha/api/CreateTransactionPayment'

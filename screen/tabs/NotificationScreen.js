@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    Alert,
     FlatList,
     Dimensions,
     BackHandler,
@@ -18,14 +19,27 @@ import {
     grayColor,
     emptyColor,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    BASE_URL,
+    GET_NOTIFICATION_URL,
+    HEADERFORMDATA
 } from '../../utils/contants'
+import Hepler from '../../utils/Helper'
+
+import {
+    openIndicator,
+    dismissIndicator,
+} from '../../actions'
 
 import styles from '../../style/style'
 
 class NotificationScreen extends React.Component {
 
-    _renderItem = () => {
+    state = {
+        ListData : []
+    }
+
+    _renderItem = ({ item }) => {
         return (
             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
                 <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
@@ -34,14 +48,14 @@ class NotificationScreen extends React.Component {
                     }>
                     <View style={[styles.containerRow]}>
                         <View style={{ flex: 0.15 }}>
-                            <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                <Text style={[styles.text16, styles.bold]}>{`C02`}</Text>
+                            <View style={[styles.center, { width: 40, height: 40, backgroundColor: item.background_color, borderRadius: 10 }]}>
+                                <Text style={[styles.text16, styles.bold]}>{item.key_name}</Text>
                             </View>
                         </View>
                         <View style={{ flex: 0.8 }}>
-                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{`เลขที่จอง 001082018`}</Text>
-                            <Text style={[styles.text14, { color: 'red'}]}>{`ร้านค้าของท่านทำการละเมิดกฎ กรุณาชำระค่าปรับ`}</Text>
-                            <Text style={[styles.text14]}>{`14-06-2018 14:00:00`}</Text>
+                            <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{item.title}</Text>
+                            <Text style={[styles.text14, { color: 'red'}]}>{item.body}</Text>
+                            <Text style={[styles.text14]}>{moment(item.create_at).format('LLL')}</Text>
                         </View>
                     </View>
                     <Icon name='chevron-right' size={16} color='gray' />
@@ -81,11 +95,34 @@ class NotificationScreen extends React.Component {
         }
     };
 
+    LoadData = () => {
+        this.props.openIndicator()
+        let formData = new FormData();
+        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+        Hepler.post(BASE_URL + GET_NOTIFICATION_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('GET_NOTIFICATION_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    ListData : results.data
+                })
+                this.props.dismissIndicator()
+            } else {
+                this.setState({
+                    ListData : []
+                })
+                this.props.dismissIndicator()
+                //Alert.alert(results.message)
+            }
+        })
+
+    }
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
     componentDidMount() {
+        this.LoadData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -108,7 +145,17 @@ class NotificationScreen extends React.Component {
                     }} />
                 <View style={[styles.container, { padding: 10 }]}>
                     {
-                        this._renderItem()
+                        this.state.ListData.length > 0 ?
+                            <FlatList
+                            data={this.state.ListData}
+                            extraData={this.state}
+                            keyExtractor={(item) => item.notification_id}
+                            renderItem={this._renderItem}
+                            />
+                        :
+                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' ,paddingTop:20}]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบข้อมูลการแจ้งเตือน`}</Text>
+                            </View>
                     }
                 </View>
             </View>
@@ -121,7 +168,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

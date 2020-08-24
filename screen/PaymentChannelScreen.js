@@ -85,7 +85,7 @@ class PaymentChannelScreen extends React.Component {
                     "ppId": "227843582030123",
                     "amount": numeral(that.state.amount).format('0.00'),
                     "ref1": TransID,
-                    "ref2": TransID,
+                    "ref2": that.props.reducer.userInfo.partners_id,
                     "ref3": "GFD"
                 });
             } else {

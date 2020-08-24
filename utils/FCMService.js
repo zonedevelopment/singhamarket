@@ -91,6 +91,7 @@ class FCMService {
                     notification = remoteMessage.notification
                 }
                 onNotificaion(notification)
+
             }
         })
 

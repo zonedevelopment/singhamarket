@@ -175,6 +175,7 @@ class App extends React.Component {
 
         function onNotificaion (notify) {
             console.log('[App] onNotificaion',notify)
+            console.log('[App] clickAction ',notify.android.clickAction)
             const option = {
                 soundName : 'default',
                 playSound : true,
@@ -186,6 +187,11 @@ class App extends React.Component {
                 notify,
                 option
             )
+            
+            let action = notify.android.clickAction
+            if(action != ""){ //// navigation in app
+                //this.props.navig
+            }
         }
 
         function onOpenNotification (notify){
