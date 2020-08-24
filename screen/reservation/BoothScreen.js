@@ -53,7 +53,8 @@ class BoothScreen extends React.Component {
         ddlSelectedDate : '',
         listBooth : [],
         seeImage: false,
-        imageURL: ''
+        imageURL: '',
+        isFetching: false,
     }
 
     async onSelectBooth(item) {
@@ -112,17 +113,6 @@ class BoothScreen extends React.Component {
                     <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
                     {
                         item.booth_detail_image != "" ?
-                            // <Lightbox activeProps={{ resizeMode: 'contain', flex: 1 }}
-                            //     onOpen={() => see = true}
-                            //     willClose={() => see = false }>
-                            //     {
-                            //         see ?
-                            //             <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: item.booth_detail_image }} />
-                            //             :
-                            //             <Icon name='picture-o' size={18} />
-                            //     }
-                                
-                            // </Lightbox>
                             <TouchableOpacity onPress={()=>{
                                 this.props.navigation.push('Plan',{
                                     plan_image : item.booth_detail_image
@@ -262,14 +252,28 @@ class BoothScreen extends React.Component {
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
-                    this.setState({listBooth : results.data})
+                    this.setState({
+                        listBooth : results.data,
+                        isFetching: false
+                    })
                     this.props.dismissIndicator()
                 } else {
+                    this.setState({
+                        isFetching: false
+                    })
                     Alert.alert(results.message)
                     this.props.dismissIndicator()
                 }
             })
         }
+    }
+
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.setSelectedDate(this.state.ddlSelectedDate)
+        })
     }
 
     render() {
@@ -351,6 +355,8 @@ class BoothScreen extends React.Component {
                             <FlatList
                                 data={this.state.listBooth}
                                 extraData={this.state}
+                                onRefresh={() => this.onRefresh()}
+                                refreshing={this.state.isFetching}
                                 keyExtractor={(item) => item.booth_detail_id}
                                 renderItem={this._renderItem} />
                         :

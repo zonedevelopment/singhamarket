@@ -5,6 +5,7 @@ import {
     Image,
     Alert,
     FlatList,
+    ScrollView,
     Dimensions,
     BackHandler,
     TouchableOpacity
@@ -36,7 +37,8 @@ import styles from '../../style/style'
 class NotificationScreen extends React.Component {
 
     state = {
-        ListData : []
+        ListData : [],
+        isFetching: false,
     }
 
     _renderItem = ({ item }) => {
@@ -95,6 +97,14 @@ class NotificationScreen extends React.Component {
         }
     };
 
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
+    }
+
     LoadData = () => {
         this.props.openIndicator()
         let formData = new FormData();
@@ -103,12 +113,14 @@ class NotificationScreen extends React.Component {
             console.log('GET_NOTIFICATION_URL',results)
             if (results.status == 'SUCCESS') {
                 this.setState({
-                    ListData : results.data
+                    ListData : results.data,
+                    isFetching: false
                 })
                 this.props.dismissIndicator()
             } else {
                 this.setState({
-                    ListData : []
+                    ListData : [],
+                    isFetching: false
                 })
                 this.props.dismissIndicator()
                 //Alert.alert(results.message)
@@ -147,10 +159,12 @@ class NotificationScreen extends React.Component {
                     {
                         this.state.ListData.length > 0 ?
                             <FlatList
-                            data={this.state.ListData}
-                            extraData={this.state}
-                            keyExtractor={(item) => item.notification_id}
-                            renderItem={this._renderItem}
+                                data={this.state.ListData}
+                                extraData={this.state}
+                                onRefresh={() => this.onRefresh()}
+                                refreshing={this.state.isFetching}
+                                keyExtractor={(item) => item.notification_id}
+                                renderItem={this._renderItem}
                             />
                         :
                             <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' ,paddingTop:20}]}>

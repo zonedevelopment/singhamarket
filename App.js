@@ -63,6 +63,7 @@ import Productscreen from './screen/ProductListScreen'
 import Historydetailscreen from './screen/HistoryDetailScreen'
 import NewsDetailsScreen from './screen/NewsDetailsScreen'
 import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
+import Paymentdirectpayscreen from './screen/PaymentDirectPayScreen'
 
 
 ////////// audit
@@ -94,69 +95,13 @@ function MyStack() {
         <Stack.Screen name="Historydetail" component={Historydetailscreen} />
         <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
         <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
+        <Stack.Screen name="PaymentDirect" component={Paymentdirectpayscreen} />
 
         <Stack.Screen name="AuditMain" component={AuditMainscreen}/>
         <Stack.Screen name="AdminMain" component={AdminMainscreen}/>
         </Stack.Navigator>
     );
 }
-
-
-// export default function App () {
-    
-//     useEffect (() => {
-//         fcmService.registerAppWithFCM()
-//         fcmService.register(onRegister,onNotificaion,onOpenNotification)
-//         localNotificationService.configuere(onOpenNotification)
-
-//         function onRegister (token) {
-//             console.log('[App] onRegister',token)
-//         }
-
-//         function onNotificaion (notify) {
-//             console.log('[App] onNotificaion',notify)
-//             const option = {
-//                 soundName : 'default',
-//                 playSound : true,
-//             }
-//             localNotificationService.showNotificaion(
-//                 0,
-//                 notify.title,
-//                 notify.body,
-//                 notify,
-//                 option
-//             )
-//         }
-
-//         function onOpenNotification (notify){
-//             console.log('[App] onOpenNotification',notify)
-//             alert('Open Notification : ' + notify.body)
-//         }
-
-//         return () => {
-//             console.log('[APP] unregister')
-//             fcmService.unRegister()
-//             localNotificationService.unregister()
-//         }
-//     }, [])
-
-//     return (
-//       <NavigationContainer>
-//         <MyStack />
-//         {/* {
-//           props.indicator ?
-//             <View style={[styles.loadingIndicator]}>
-//               <ActivityIndicator color={secondaryColor} />
-//             </View>
-//             :
-//             null
-//         } */}
-//       </NavigationContainer>
-//     )
-
-// }
-
-
 
 
 class App extends React.Component {

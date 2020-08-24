@@ -30,6 +30,10 @@ import styles from '../../style/style'
 
 class ReservationScreen extends React.Component {
 
+    state = {
+        isFetching : false,
+    }
+
     _renderItem = ({ item, index }) => {
         return (
             <View key={item.building_id} style={[styles.container, styles.panelWhite, { /*height: 170,*/ margin: 5 }]}>
@@ -101,9 +105,21 @@ class ReservationScreen extends React.Component {
             }else{
                 this.props.setStateBuilding([])
             }
+            this.setState({
+                isFetching: false
+            })
             this.props.dismissIndicator()
         })
     }
+
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
+    }
+
 
     render() {
 
@@ -134,7 +150,8 @@ class ReservationScreen extends React.Component {
                         <FlatList
                             style={{ marginTop: 5 }}
                             data={building}
-                            refreshing={true}
+                            onRefresh={() => this.onRefresh()}
+                            refreshing={this.state.isFetching}
                             keyExtractor={(item) => item.building_id}
                             renderItem={this._renderItem} />
                     </View>

@@ -234,10 +234,13 @@ class PaymentChannelScreen extends React.Component {
                                     <TouchableOpacity key={i} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
                                         onPress={() => {
                                                 if (i == 1) {
-                                                    //this.generateQRcode()
                                                     this.CreateTransaction()
                                                 } else {
-                                                    this.gatewayAuthorize()
+                                                    //this.gatewayAuthorize()
+                                                    this.props.navigation.navigate('PaymentDirect',{
+                                                        total_final_price : total_final_price,
+                                                        booking_id : booking_id,
+                                                    })
                                                 }
                                             }
                                         }>

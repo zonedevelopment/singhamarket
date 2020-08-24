@@ -25,6 +25,8 @@ import StorageServies from '../../utils/StorageServies'
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class HomeScreen extends React.Component {
 
+
+
     renderPage(value, index) {
         return (
             <View key={index} >
@@ -64,6 +66,8 @@ class HomeScreen extends React.Component {
 
     }
 
+
+
     render() {
 
         const props = this.props
@@ -86,6 +90,7 @@ class HomeScreen extends React.Component {
                     <View>
                         <Text style={[styles.text18, { paddingLeft: 10 }]}>{`ข่าวสารและโปรโมชั่น`}</Text>
                     </View>
+
                     <FlatList
                         style={{ marginTop: 5 }}
                         data={news}
