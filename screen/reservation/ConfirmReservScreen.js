@@ -292,7 +292,13 @@ class ConfirmReservScreen extends React.Component {
                                 <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
                                         onPress={
-                                            () => null
+                                            () => {
+                                                this.props.navigation.reset({
+                                                    index: 0,
+                                                    routes: [{name: 'Building'}],
+                                                });
+                                                this.props.navigation.navigate('Reserv')
+                                            }
                                         }>
                                         <Text style={[styles.text14, { color: '#FFF' }]}>{`จองพื้นที่อื่นเพิ่ม`}</Text>
                                     </TouchableOpacity>

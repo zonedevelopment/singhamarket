@@ -86,7 +86,6 @@ function MyStack() {
         <Stack.Screen name="Choice" component={Choicescreen} />
         <Stack.Screen name="Login" component={Loginscreen} />
         <Stack.Screen name="Main" component={Mainscreen}  />
-        <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
         <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
         <Stack.Screen name="Registercompany" component={RegisterCompanyscreen} />
         <Stack.Screen name="Registercondition" component={Registerconditionsreen} />
@@ -94,8 +93,11 @@ function MyStack() {
         <Stack.Screen name="Productlist" component={Productscreen} />
         <Stack.Screen name="Historydetail" component={Historydetailscreen} />
         <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
+
         <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
         <Stack.Screen name="PaymentDirect" component={Paymentdirectpayscreen} />
+        <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
+
 
         <Stack.Screen name="AuditMain" component={AuditMainscreen}/>
         <Stack.Screen name="AdminMain" component={AdminMainscreen}/>
@@ -103,9 +105,10 @@ function MyStack() {
     );
 }
 
+const navigationRef = React.createRef();
 
 class App extends React.Component {
-
+ 
     componentDidMount() {
         const props = this.props
         fcmService.registerAppWithFCM()
@@ -135,7 +138,7 @@ class App extends React.Component {
             
             let action = notify.android.clickAction
             if(action != ""){ //// navigation in app
-                //this.props.navig
+                navigationRef.current && navigationRef.current.navigate(action, { ActionType : 'Notification' });
             }
         }
 
@@ -155,7 +158,7 @@ class App extends React.Component {
     render() {
         const props = this.props.reducer
         return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
             <MyStack />
             {
             props.indicator ?

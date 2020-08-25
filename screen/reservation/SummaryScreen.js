@@ -148,6 +148,10 @@ class SummaryScreen extends React.Component {
                 this.props.saveDateSelected('save',[])
                 this.props.setStateBookingSelected([results.BookingID])
                 this.props.dismissIndicator()
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Building'}],
+                });
                 this.props.navigation.navigate('ConfirmReserv')
             } else {
                 Alert.alert(results.message)

@@ -67,14 +67,14 @@ class PaymentChannelScreen extends React.Component {
     }
 
 
-    CreateTransaction = () => {
+    CreateTransactionQRCode = () => {
         this.props.openIndicator()
         let that = this;
         let formData = new FormData();
         formData.append('amount',that.state.amount)
         formData.append('partners_id',that.props.reducer.userInfo.partners_id)
+        formData.append('channel','qr code')
         formData.append('booking_id',JSON.stringify(that.state.booking_id))
-        console.log('formData',formData)
         Helper.post(BASE_URL + CREATE_TRANSACTION_URL,formData,HEADERFORMDATA,(results) => {
             console.log('CREATE_TRANSACTION_URL',results)
             if (results.status == 'SUCCESS') {
@@ -88,6 +88,31 @@ class PaymentChannelScreen extends React.Component {
                     "ref2": that.props.reducer.userInfo.partners_id,
                     "ref3": "GFD"
                 });
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        });
+    }
+
+    CreateTransaction2C2P(){
+        this.props.openIndicator()
+        let that = this;
+        let formData = new FormData();
+        formData.append('amount',that.state.amount)
+        formData.append('partners_id',that.props.reducer.userInfo.partners_id)
+        formData.append('channel','qr code')
+        formData.append('booking_id',JSON.stringify(that.state.booking_id))
+        Helper.post(BASE_URL + CREATE_TRANSACTION_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('CREATE_TRANSACTION_URL',results)
+            if (results.status == 'SUCCESS') {
+                let TransID = results.TransID;
+                that.props.navigation.navigate('PaymentDirect',{
+                    amount : that.state.amount,
+                    booking_id : that.state.booking_id,
+                    TransID : TransID,
+                    partners_id : that.props.reducer.userInfo.partners_id
+                })
             } else {
                 Alert.alert(results.message)
                 this.props.dismissIndicator()
@@ -133,25 +158,6 @@ class PaymentChannelScreen extends React.Component {
         })
     }
 
-    // _renderItem = ({ item, index }) => {
-    //     return (
-    //         <TouchableOpacity key={index} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
-    //             onPress={() => {
-    //                     if (index == 1) {
-    //                         this.generateQRcode()
-    //                     } else {
-    //                         this.gatewayAuthorize()
-    //                     }
-    //                 }
-    //             }>
-    //             <Image source={item.channel_icon} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
-    //             <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`${item.channel_name}`}</Text>
-    //             <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
-    //                 <Icon name='chevron-right' size={14} color={primaryColor} />
-    //             </View>
-    //         </TouchableOpacity>
-    //     )
-    // }
 
     ComponentLeft = () => {
         return (
@@ -234,13 +240,10 @@ class PaymentChannelScreen extends React.Component {
                                     <TouchableOpacity key={i} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
                                         onPress={() => {
                                                 if (i == 1) {
-                                                    this.CreateTransaction()
+                                                    this.CreateTransactionQRCode()
                                                 } else {
                                                     //this.gatewayAuthorize()
-                                                    this.props.navigation.navigate('PaymentDirect',{
-                                                        total_final_price : total_final_price,
-                                                        booking_id : booking_id,
-                                                    })
+                                                    this.CreateTransaction2C2P()
                                                 }
                                             }
                                         }>

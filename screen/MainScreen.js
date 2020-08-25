@@ -48,7 +48,6 @@ import Boothscreen from './reservation/BoothScreen'
 import Dayselectscreen from './reservation/DaySelectedScreen'
 import Accessoriesscreen from './reservation/AccessoriesScreen'
 import Summaryscreen from './reservation/SummaryScreen'
-import ConfirmReservscreen from './reservation/ConfirmReservScreen'
 import Editboothscreen from './reservation/EditBoothScreen'
 /**
  * End
@@ -64,6 +63,16 @@ import Favoritescreen from './account/FavoriteScreen'
 import Supportscreen from './account/SupportScreen'
 import Changepasswordscreen from './account/ChangePasswordScreen'
 /**
+ * End
+ */
+
+/**
+ * Cart stack
+ */
+import ConfirmReservscreen from './reservation/ConfirmReservScreen'
+import PaymentChannelscreen from './PaymentChannelScreen'
+import Paymentdirectpayscreen from './PaymentDirectPayScreen'
+ /**
  * End
  */
 
@@ -84,7 +93,6 @@ const Reserv = function MyStack() {
             <Stack.Screen name="Dayselect" component={Dayselectscreen} />
             <Stack.Screen name="Accessories" component={Accessoriesscreen} />
             <Stack.Screen name="Summary" component={Summaryscreen} />
-            {/* <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} /> */}
             <Stack.Screen name="EditBooth" component={Editboothscreen} />
         </Stack.Navigator>
     );
@@ -106,7 +114,6 @@ const Account = function AccStack() {
     )
 }
 
-
 const Home = function AccStack() {
     return (
         <Stack.Navigator
@@ -114,6 +121,19 @@ const Home = function AccStack() {
             initialRouteName='Home'>
             <Stack.Screen name="Home" component={Homescreen} />
             <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
+        </Stack.Navigator>
+    )
+}
+
+const Cart = function AccStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Home'>
+            <Stack.Screen name="Cart" component={Cartscreen} />
+            {/* <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
+            <Stack.Screen name="Paymentchannel" component={PaymentChannelscreen} />
+            <Stack.Screen name="PaymentDirect" component={Paymentdirectpayscreen} /> */}
         </Stack.Navigator>
     )
 }
@@ -157,7 +177,7 @@ const tabMain = () => {
                 }} />
             <Tab.Screen
                 name="Cart"
-                component={Cartscreen}
+                component={Cart}
                 options={{
                     tabBarLabel: 'รถเข็น',
                     tabBarIcon: ({ focused, color, screenProps }) => (

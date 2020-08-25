@@ -13,6 +13,7 @@ import {
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
+import { WebView } from "react-native-webview";
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
@@ -60,6 +61,8 @@ class PaymentDirectPayScreen extends React.Component {
         cardExpM: '',
         cardExpY: '',
         cardCVC: '',
+        loading : false,
+        url : '',
     }
 
     ComponentLeft = () => {
@@ -88,7 +91,11 @@ class PaymentDirectPayScreen extends React.Component {
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{name: 'Main'}],
+            });
+            this.props.navigation.navigate('Main');
             return true;
         }
     };
@@ -108,20 +115,28 @@ class PaymentDirectPayScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    async componentDidMount() {
-        const { total_final_price, booking_id } = this.props.route.params
-        await this.setState({
-            amount: total_final_price,
-            booking_id: booking_id
-        })
+  
 
+
+    async componentDidMount() {
+        //this.props.openIndicator()
+        const { amount, booking_id,TransID ,partners_id} = this.props.route.params
+
+        let url = 'https://benz.ots.co.th/singha/api/FormRequest2C2P' + "?amount=" + numeral(amount).format('0.00')
+            + "&TransID=" + TransID
+            + "&partners_id=" + partners_id;
+        this.setState({
+            url: url
+        });
+        //this.props.dismissIndicator()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
 
         const props = this.props.reducer
-        const { total_final_price, booking_id } = this.props.route.params
+        const { amount, booking_id,TransID ,partners_id} = this.props.route.params
+       // return <WebView source={{ uri: 'https://benz.ots.co.th/singha/api/FormRequest2C2P' }} />;
 
         return (
             <View style={[styles.container, { backgroundColor: primaryColor }]}>
@@ -139,9 +154,20 @@ class PaymentDirectPayScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[{ alignItems: 'center' }]}>
-                    <Text style={[styles.text20, { color: 'white' }]}>{`กรุณากรอกข้อมูลบัตร`}</Text>
-                    {/* <View style={[styles.panelWhite, styles.shadow, { height: DEVICE_HEIGHT / 1.5 }]}>
+                   
+                 <WebView 
+                    source={{ uri: this.state.url }} 
+                    // scalesPageToFit
+                    originWhitelist={['*']}
+                    javaScriptEnabled={true}
+                    // scalesPageToFit={true}
+                    scrollEnabled={true}
+                    onLoad={() => this.props.openIndicator()}
+                    onLoadEnd={() => this.props.dismissIndicator()}
+                    onLoadStart={() => this.props.openIndicator()}
+                    onResponderStart={() => this.props.openIndicator()} 
+                 />
+                  {/*   <View style={[styles.panelWhite, styles.shadow, { height: DEVICE_HEIGHT / 1.5 }]}>
                         <ScrollView style={{flex:0.7}} >
                             <KeyboardAvoidingView behavior="padding" >
                                 <CreditCardInput autoFocus={true} onChange={this._onChange} />
@@ -158,15 +184,16 @@ class PaymentDirectPayScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
                         
-                    </View> */}
-                    <View style={[styles.marginBetweenVertical]}></View>
+                    </View> 
+                    <View style={[styles.marginBetweenVertical]}></View>*/}
                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 15 }]}>
                         <Text style={[styles.text16, styles.bold, { flex: 0.6, color: 'white' }]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{numeral(total_final_price).format('0,0.00') + ` บาท`}</Text>
+                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{numeral(amount).format('0,0.00') + ` บาท`}</Text>
                     </View>
-                </View>
             </View>
         )
+
+
     }
 }
 
