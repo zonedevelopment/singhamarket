@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:862740865331:android:ba3462fd730ef82cab5e46",
+        "mobilesdk_app_id": "1:862740865331:android:4696a9ee8fa08041ab5e46",
         "android_client_info": {
-          "package_name": "th.co.zoneidea.singhamarket"
+          "package_name": "th.co.zoneidea.sunplaza"
         }
       },
       "oauth_client": [

@@ -1,7 +1,9 @@
-package th.co.zoneidea.singhamarket;
+package th.co.zoneidea.sunplaza;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.facebook.react.BuildConfig;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.imagepicker.ImagePickerPackage;

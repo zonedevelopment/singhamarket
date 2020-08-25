@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "th.co.zoneidea.singhamarket"
+        applicationId "th.co.zoneidea.sunplaza"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 3

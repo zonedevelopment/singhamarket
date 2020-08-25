@@ -32,7 +32,11 @@ import {
     QRCODECREATE,
     CREATE_TRANSACTION_URL,
     BASE_URL,
-    HEADERFORMDATA
+    HEADERFORMDATA,
+    PRIVATEKEY,
+    MERCHANTID,
+    SECRETKEY,
+    PRODUCTIONMODE
 } from '../utils/contants'
 
 import {
@@ -48,8 +52,8 @@ const DEVICE_HEIGHT = Dimensions.get('screen').height
 class PaymentDirectPayScreen extends React.Component {
 
     state = {
-        booking_id : [],
-        amount : 0,
+        booking_id: [],
+        amount: 0,
         cardInfo: {},
         cardName: '',
         cardNumber: '',
@@ -104,19 +108,20 @@ class PaymentDirectPayScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    async componentDidMount () {
-        const{ total_final_price,booking_id} = this.props.route.params
+    async componentDidMount() {
+        const { total_final_price, booking_id } = this.props.route.params
         await this.setState({
-            amount : total_final_price,
-            booking_id : booking_id
+            amount: total_final_price,
+            booking_id: booking_id
         })
+
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
 
         const props = this.props.reducer
-        const{ total_final_price,booking_id} = this.props.route.params
+        const { total_final_price, booking_id } = this.props.route.params
 
         return (
             <View style={[styles.container, { backgroundColor: primaryColor }]}>
@@ -136,7 +141,7 @@ class PaymentDirectPayScreen extends React.Component {
                     }} />
                 <View style={[{ alignItems: 'center' }]}>
                     <Text style={[styles.text20, { color: 'white' }]}>{`กรุณากรอกข้อมูลบัตร`}</Text>
-                    <View style={[styles.panelWhite, styles.shadow, { height: DEVICE_HEIGHT / 1.5 }]}>
+                    {/* <View style={[styles.panelWhite, styles.shadow, { height: DEVICE_HEIGHT / 1.5 }]}>
                         <ScrollView style={{flex:0.7}} >
                             <KeyboardAvoidingView behavior="padding" >
                                 <CreditCardInput autoFocus={true} onChange={this._onChange} />
@@ -153,11 +158,11 @@ class PaymentDirectPayScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
                         
-                    </View>
+                    </View> */}
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 15 }]}>
                         <Text style={[styles.text16, styles.bold, { flex: 0.6, color: 'white' }]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{ numeral(total_final_price).format('0,0.00') + ` บาท`}</Text>
+                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{numeral(total_final_price).format('0,0.00') + ` บาท`}</Text>
                     </View>
                 </View>
             </View>
