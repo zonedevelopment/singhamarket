@@ -37,10 +37,9 @@ import {
     setUserCountCartItem,
     setStateMyCart
 } from '../../actions'
-
-
 import styles from '../../style/style'
 
+const DEVICE_WIDTH = Dimensions.get('screen').width
 class CartScreen extends React.Component {
 
     state = {
@@ -286,7 +285,7 @@ class CartScreen extends React.Component {
                 {
                     this.state.arrBooking.length > 0 ?
                         <ScrollView>
-                            <View style={[styles.panelWhite, styles.shadow]}>
+                            <View style={{ width: DEVICE_WIDTH - 20 , padding: 10 }}>
                                 <FlatList
                                     data={this.state.arrBooking}
                                     keyExtractor={(item) => item.booking_id}

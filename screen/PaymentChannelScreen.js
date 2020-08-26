@@ -6,14 +6,18 @@ import {
     Image,
     Linking,
     FlatList,
+    Platform,
     ScrollView,
     Dimensions,
     BackHandler,
-    TouchableOpacity
+    TouchableOpacity,
+    PermissionsAndroid
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+var RNFS = require('react-native-fs')
 import ViewShot from "react-native-view-shot"
+import { request, check, PERMISSIONS, RESULTS } from 'react-native-permissions'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import CameraRoll from "@react-native-community/cameraroll"
@@ -45,6 +49,26 @@ import {
 import styles from '../style/style'
 import Helper from '../utils/Helper'
 
+const moveAttachment = async (filePath, newFilepath) => {
+    return new Promise((resolve, reject) => {
+        RNFS.moveFile(filePath, newFilepath)
+            .then(() => {
+                resolve(true);
+            }).catch(error => {
+                Alert.alert(
+                    'พบข้อผิดพลาด',
+                    `${error}`,
+                    [
+                        { text: 'ตกลง', onPress: () => console.log('OK Pressed') },
+                    ],
+                    { cancelable: false }
+                )
+                reject(error);
+            });
+    });
+};
+
+
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class PaymentChannelScreen extends React.Component {
 
@@ -53,21 +77,77 @@ class PaymentChannelScreen extends React.Component {
         errMessage: '',
         booking_id: [],
         amount: 0,
+        permission: '',
+        capimage: ''
     }
 
-    gatewayAuthorize = () => {
-        Helper.getSCBApi(AUTHORIZE, { headers: AUTHORIZEHEADER }, (results) => {
-            console.log(results)
-            let status = results.status
-            let data = results.data
-            let callbackUrl = ""
-            if (status.code == 1000) {
-                // callbackUrl = data.callbackUrl
-                Linking.openURL(data.callbackUrl);
+    captureQR = async () => {
+        if (Platform.OS === "android") {
+            if (Platform.Version >= 23) {
+                this.onCapture();
+            } else {
+                this.refs.viewShot.capture().then(uri => {
+                    this.ScreenFunction(uri)
+                });
             }
-        })
+        } else {
+            this.refs.viewShot.capture().then(uri => {
+                this.ScreenFunction(uri)
+            });
+        }
     }
 
+    onCapture = async () => {
+        try {
+            await request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE).then((result) => {
+                if (result == 'granted') {
+                    this.refs.viewShot.capture().then(uri => {
+                        this.ScreenFunction(uri)
+                    });
+                } else {
+                    Alert.alert(
+                        'คำเตือน',
+                        `${this.state.permission}`,
+                        [
+                            {
+                                text: 'ตกลง', onPress: () => {
+
+                                }
+                            },
+                        ],
+                        { cancelable: false }
+                    )
+                }
+            });
+        } catch (err) {
+            Alert.alert(
+                'พบข้อผิดพลาด',
+                `${err}`,
+                [
+                    { text: 'ตกลง', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            )
+        }
+    }
+
+    ScreenFunction = async (value) => {
+        // await this.setState({ capimage: value })
+        // await CameraRoll.saveToCameraRoll(value, 'photo')
+        const newImageName = `${moment().format('DDMMYY_HHmmSSS')}.jpg`;
+        const newFilepath = `${RNFS.PicturesDirectoryPath}/${newImageName}`;
+        const imageMoved = await moveAttachment(value, newFilepath);
+        if (imageMoved) {
+            Alert.alert(
+                'สำเร็จ',
+                'บันทึกภาพแล้ว',
+                [
+                    { text: 'ตกลง', onPress: () => null },
+                ],
+                { cancelable: false }
+            )
+        }
+    }
 
     CreateTransactionQRCode = () => {
         this.props.openIndicator()
@@ -121,8 +201,6 @@ class PaymentChannelScreen extends React.Component {
             }
         });
     }
-
-
 
     generateQRcode = (data) => {
         this.props.generateOauthToken()
@@ -261,18 +339,14 @@ class PaymentChannelScreen extends React.Component {
                         {
                             this.state.qrBase64 != '' ?
                                 <View style={[styles.container, styles.center]} >
-                                    <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1 }}>
-                                        <View style={{ padding: 10 }}>
+                                    <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1, alignItems: 'center' }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                        <View style={{ padding: 10, backgroundColor: 'white' }}>
                                             <Image source={{ uri: `data:image/png;base64,${this.state.qrBase64}` }} style={{ width: 200, height: 200, resizeMode: 'contain' }} />
                                         </View>
                                     </ViewShot>
                                     <View style={{ padding: 10 }}>
                                         <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
-                                            onPress={() => {
-                                                this.refs.viewShot.capture().then(uri => {
-                                                    CameraRoll.saveToCameraRoll(uri, 'photo')
-                                                });
-                                            }}>
+                                            onPress={() => this.captureQR()}>
                                             <Text style={[styles.text16, { color: '#FFF' }]}>{`บันทึกคิวอาร์โค้ด`}</Text>
                                         </TouchableOpacity>
                                     </View>
