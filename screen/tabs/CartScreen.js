@@ -24,6 +24,7 @@ import {
     emptyColor,
     BASE_URL,
     GET_CART_URL,
+    CANCEL_BOOKING_URL,
     HEADERFORMDATA
 } from '../../utils/contants'
 
@@ -85,6 +86,23 @@ class CartScreen extends React.Component {
         })
     }
 
+    CancelBooking = (item) => {
+        this.props.openIndicator()
+        //this.props.setStateMyCart([])
+        let formData = new FormData();
+        formData.append('partners_id', this.props.reducer.userInfo.partners_id)
+        formData.append('booking_id', item.booking_id)
+        Hepler.post(BASE_URL + CANCEL_BOOKING_URL, formData,HEADERFORMDATA,(results) => {
+            console.log('CANCEL_BOOKING_URL',results)
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.LoadData();
+            } else {
+                Alert.alert(results.message)
+            }
+        })
+    }
+
 
     _renderItem = ({ item, index }) => {
         return (
@@ -107,7 +125,7 @@ class CartScreen extends React.Component {
                     </View>
                     <View style={{ flex: 0.3 }}>
                         <View style={[styles.containerRow, { justifyContent: 'flex-end' }]}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => { this.CancelBooking(item)}}>
                                 <Text style={[styles.text16]}>{`ยกเลิก`}</Text>
                             </TouchableOpacity>
                         </View>

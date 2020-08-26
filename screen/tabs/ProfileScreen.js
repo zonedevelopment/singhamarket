@@ -157,6 +157,10 @@ class ProfileScreen extends React.Component {
                         <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
                         onPress={
                             async () => {
+                                this.props.navigation.reset({
+                                    index: 0,
+                                    routes: [{name: 'Building'}],
+                                });
                                 await StorageServies.clear()
                                 await this.props.saveUserInfo([])
                                 this.props.navigation.navigate('Choice')
