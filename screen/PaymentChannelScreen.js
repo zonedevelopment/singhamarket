@@ -13,8 +13,10 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import ViewShot from "react-native-view-shot"
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
+import CameraRoll from "@react-native-community/cameraroll"
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 var numeral = require('numeral');
 import {
@@ -49,15 +51,15 @@ class PaymentChannelScreen extends React.Component {
     state = {
         qrBase64: '',
         errMessage: '',
-        booking_id : [],
-        amount : 0,
+        booking_id: [],
+        amount: 0,
     }
 
     gatewayAuthorize = () => {
-        Helper.getSCBApi(AUTHORIZE, {headers: AUTHORIZEHEADER}, (results) => {
+        Helper.getSCBApi(AUTHORIZE, { headers: AUTHORIZEHEADER }, (results) => {
             console.log(results)
             let status = results.status
-            let data   = results.data
+            let data = results.data
             let callbackUrl = ""
             if (status.code == 1000) {
                 // callbackUrl = data.callbackUrl
@@ -71,12 +73,12 @@ class PaymentChannelScreen extends React.Component {
         this.props.openIndicator()
         let that = this;
         let formData = new FormData();
-        formData.append('amount',that.state.amount)
-        formData.append('partners_id',that.props.reducer.userInfo.partners_id)
-        formData.append('channel','qr code')
-        formData.append('booking_id',JSON.stringify(that.state.booking_id))
-        Helper.post(BASE_URL + CREATE_TRANSACTION_URL,formData,HEADERFORMDATA,(results) => {
-            console.log('CREATE_TRANSACTION_URL',results)
+        formData.append('amount', that.state.amount)
+        formData.append('partners_id', that.props.reducer.userInfo.partners_id)
+        formData.append('channel', 'qr code')
+        formData.append('booking_id', JSON.stringify(that.state.booking_id))
+        Helper.post(BASE_URL + CREATE_TRANSACTION_URL, formData, HEADERFORMDATA, (results) => {
+            console.log('CREATE_TRANSACTION_URL', results)
             if (results.status == 'SUCCESS') {
                 let TransID = results.TransID;
                 that.generateQRcode({
@@ -95,23 +97,23 @@ class PaymentChannelScreen extends React.Component {
         });
     }
 
-    CreateTransaction2C2P(){
+    CreateTransaction2C2P() {
         this.props.openIndicator()
         let that = this;
         let formData = new FormData();
-        formData.append('amount',that.state.amount)
-        formData.append('partners_id',that.props.reducer.userInfo.partners_id)
-        formData.append('channel','qr code')
-        formData.append('booking_id',JSON.stringify(that.state.booking_id))
-        Helper.post(BASE_URL + CREATE_TRANSACTION_URL,formData,HEADERFORMDATA,(results) => {
-            console.log('CREATE_TRANSACTION_URL',results)
+        formData.append('amount', that.state.amount)
+        formData.append('partners_id', that.props.reducer.userInfo.partners_id)
+        formData.append('channel', 'qr code')
+        formData.append('booking_id', JSON.stringify(that.state.booking_id))
+        Helper.post(BASE_URL + CREATE_TRANSACTION_URL, formData, HEADERFORMDATA, (results) => {
+            console.log('CREATE_TRANSACTION_URL', results)
             if (results.status == 'SUCCESS') {
                 let TransID = results.TransID;
-                that.props.navigation.navigate('PaymentDirect',{
-                    amount : that.state.amount,
-                    booking_id : that.state.booking_id,
-                    TransID : TransID,
-                    partners_id : that.props.reducer.userInfo.partners_id
+                that.props.navigation.navigate('PaymentDirect', {
+                    amount: that.state.amount,
+                    booking_id: that.state.booking_id,
+                    TransID: TransID,
+                    partners_id: that.props.reducer.userInfo.partners_id
                 })
             } else {
                 Alert.alert(results.message)
@@ -194,11 +196,11 @@ class PaymentChannelScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    async componentDidMount () {
-        const{ total_final_price,booking_id} = this.props.route.params
+    async componentDidMount() {
+        const { total_final_price, booking_id } = this.props.route.params
         await this.setState({
-            amount : total_final_price,
-            booking_id : booking_id
+            amount: total_final_price,
+            booking_id: booking_id
         })
         await this.props.generateOauthToken()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
@@ -208,7 +210,7 @@ class PaymentChannelScreen extends React.Component {
 
         const props = this.props.reducer
         const channel = props.paymentChannel
-        const{ total_final_price,booking_id} = this.props.route.params
+        const { total_final_price, booking_id } = this.props.route.params
 
         return (
             <View style={[styles.container, { backgroundColor: primaryColor }]}>
@@ -239,13 +241,13 @@ class PaymentChannelScreen extends React.Component {
                                 return (
                                     <TouchableOpacity key={i} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
                                         onPress={() => {
-                                                if (i == 1) {
-                                                    this.CreateTransactionQRCode()
-                                                } else {
-                                                    //this.gatewayAuthorize()
-                                                    this.CreateTransaction2C2P()
-                                                }
+                                            if (i == 1) {
+                                                this.CreateTransactionQRCode()
+                                            } else {
+                                                //this.gatewayAuthorize()
+                                                this.CreateTransaction2C2P()
                                             }
+                                        }
                                         }>
                                         <Image source={v.channel_icon} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                                         <Text style={[styles.text14, { flex: 0.8, color: primaryColor }]}>{`${v.channel_name}`}</Text>
@@ -259,11 +261,18 @@ class PaymentChannelScreen extends React.Component {
                         {
                             this.state.qrBase64 != '' ?
                                 <View style={[styles.container, styles.center]} >
+                                    <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1 }}>
+                                        <View style={{ padding: 10 }}>
+                                            <Image source={{ uri: `data:image/png;base64,${this.state.qrBase64}` }} style={{ width: 200, height: 200, resizeMode: 'contain' }} />
+                                        </View>
+                                    </ViewShot>
                                     <View style={{ padding: 10 }}>
-                                        <Image source={{uri: `data:image/png;base64,${this.state.qrBase64}`}} style={{width: 200, height: 200, resizeMode: 'contain' }} />
-                                    </View>
-                                    <View style={{ padding: 10 }}>
-                                        <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}>
+                                        <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
+                                            onPress={() => {
+                                                this.refs.viewShot.capture().then(uri => {
+                                                    CameraRoll.saveToCameraRoll(uri, 'photo')
+                                                });
+                                            }}>
                                             <Text style={[styles.text16, { color: '#FFF' }]}>{`บันทึกคิวอาร์โค้ด`}</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -271,18 +280,18 @@ class PaymentChannelScreen extends React.Component {
                                 :
                                 null
                         }
-                
+
                         <View>
-                            <Text style={{textAlign : 'center' , fontSize : 16,color:'red'}}>{
-                                    this.state.errMessage != '' ? this.state.errMessage : ''
+                            <Text style={{ textAlign: 'center', fontSize: 16, color: 'red' }}>{
+                                this.state.errMessage != '' ? this.state.errMessage : ''
                             }</Text>
                         </View>
-                        
+
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 15 }]}>
                         <Text style={[styles.text16, styles.bold, { flex: 0.6, color: 'white' }]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
-                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{ numeral(total_final_price).format('0,0.00') + ` บาท`}</Text>
+                        <Text style={[styles.text16, styles.bold, { flex: 0.4, color: 'white', textAlign: 'right' }]}>{numeral(total_final_price).format('0,0.00') + ` บาท`}</Text>
                     </View>
                 </View>
             </View>
