@@ -1,12 +1,14 @@
-import React from 'react'
+import React,{useCallback } from 'react'
 import {
     View,
     Text,
     Image,
+    Button,
     FlatList,
     Dimensions,
     BackHandler,
     ScrollView,
+    Linking,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -33,6 +35,7 @@ import Hepler from '../utils/Helper'
 
 import styles from '../style/style'
 
+import OpenURLButton from '../components/OpenURLButton'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class RegisterConditionScreen extends React.Component {
@@ -42,6 +45,7 @@ class RegisterConditionScreen extends React.Component {
         licenseAgree: false,
         privacyAgree: false,
         htmlContent : '',
+        privacy_url : '',
     }
 
     ComponentLeft = () => {
@@ -79,8 +83,8 @@ class RegisterConditionScreen extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
-    componentDidMount() {
-        this.LoadAgreement(1)
+    async componentDidMount() {
+        await this.LoadAgreement(1)
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -101,7 +105,8 @@ class RegisterConditionScreen extends React.Component {
             this.props.dismissIndicator()
             if (results.status == 'SUCCESS') {
                 this.setState({
-                    htmlContent : results.data,
+                    htmlContent : results.data['agreement'],
+                    privacy_url : results.data['privacy_url'],
                     type: type,
                     licenseAgree: false,
                     privacyAgree: false,
@@ -110,6 +115,7 @@ class RegisterConditionScreen extends React.Component {
                 Alert.alert(results.message)
                 this.setState({
                     htmlContent : '',
+                    privacy_url : '',
                     type: type,
                     licenseAgree: false,
                     privacyAgree: false,
@@ -117,6 +123,8 @@ class RegisterConditionScreen extends React.Component {
             }
         })
     }
+
+    
 
     render() {
         return (
@@ -138,7 +146,7 @@ class RegisterConditionScreen extends React.Component {
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <ScrollView>
-                        <View style={[styles.panelWhite, styles.shadow]}>
+                        <View style={[styles.panelWhite, styles.shadow,{ zIndex:1000}]}>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? secondaryColor : grayColor }]}
                                     onPress={
@@ -157,6 +165,7 @@ class RegisterConditionScreen extends React.Component {
                                 <HTML html={this.state.htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
+                                <OpenURLButton url={this.state.privacy_url}>{'นโยบายความเป็นส่วนตัว'}</OpenURLButton>
                             {
                                 this.state.type == 1 ?
                                     <View>

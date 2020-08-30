@@ -69,6 +69,7 @@ export const SET_MY_CART = 'SET_MY_CART'
 /**
  * End
  */
+                               
 
 /**
  * API
@@ -109,6 +110,7 @@ export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
 export const SYSTEMLOGIN_URL          = '/singha/api/SystemLogin'
 export const GET_NOTIFICATION_URL     = '/singha/api/GetNotification'
 export const CANCEL_BOOKING_URL     = '/singha/api/CancelBooking'
+export const UNSUBSCRIBE_PARTNERS_URL     = '/singha/api/UnSubscribePartners'
 
 export const CREATE_TRANSACTION_URL   = '/singha/api/CreateTransactionPayment'
 

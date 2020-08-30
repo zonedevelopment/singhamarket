@@ -220,7 +220,11 @@ class LoginScreen extends React.Component {
                                 returnKeyType={'next'}
                                 blurOnSubmit={false}
                                 value={this.state.username}
-                                onChangeText={(text) => this.setState({ username: text })}
+                                onChangeText={(text) => {
+                                    if(/^[a-zA-Z]+$/.test(text) || text == ''){
+                                        this.setState({ username: text })
+                                    }
+                                }}
                                 onSubmitEditing={() => this.password.focus()} />
                         </View>
                         <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>

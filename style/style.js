@@ -13,7 +13,7 @@ import {
     reservColor
 } from '../utils/contants'
 
-const COMPONENT_HIGHT = 45;
+const COMPONENT_HIGHT = 50;
 const BANNER_HEIGHT = 300;
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HIGHT = Dimensions.get('window').height;

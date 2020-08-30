@@ -27,6 +27,7 @@ import {
     BASE_URL,
     UPDATE_PROFILE_COMPANY,
     HEADERFORMDATA,
+    UNSUBSCRIBE_PARTNERS_URL,
     KEY_LOGIN,
     LOGIN_URL
 } from '../../utils/contants'
@@ -59,6 +60,9 @@ class ProfileCompanyScreen extends React.Component {
         receiptemail : '',
         accountname : '',
         accountphone : '',
+        type_name : '',
+        category_name : '',
+        product : [],
     }
 
     ComponentLeft = () => {
@@ -114,6 +118,9 @@ class ProfileCompanyScreen extends React.Component {
             receiptemail : props.userInfo.receiptemail,
             accountname : props.userInfo.accountname,
             accountphone : props.userInfo.accountphone,
+            type_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_name,
+            category_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.category_name,
+            product : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product,
 
         })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
@@ -173,6 +180,34 @@ class ProfileCompanyScreen extends React.Component {
                 Alert.alert(results.message)
             }
         })
+    }
+
+    
+    UnSubscribe() {
+        const props = this.props.reducer
+        let formData = new FormData();
+        formData.append('partners_id',props.userInfo.partners_id)
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + UNSUBSCRIBE_PARTNERS_URL,formData,HEADERFORMDATA,(results)=>{
+            console.log('UNSUBSCRIBE_PARTNERS_URL',results)
+            if (results.status == 'SUCCESS') {
+                this.props.dismissIndicator()
+                this.Logout()
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
+            }
+        })
+    }
+
+    async Logout (){
+        this.props.navigation.reset({
+            index: 0,
+            routes: [{name: 'Profile'}],
+        });
+        await StorageServies.clear()
+        await this.props.saveUserInfo([])
+        this.props.navigation.navigate('Choice')
     }
 
     render() {
@@ -440,11 +475,11 @@ class ProfileCompanyScreen extends React.Component {
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text18, { color: primaryColor }]}>{`ประเภทสินค้าที่นำมาขาย`}</Text>
                             <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
-                                <Text style={[styles.text16, { color: 'white' }]}>{ props.userInfo.product_type.type_name + ` : ` + props.userInfo.product_type.category_name}</Text>
+                                <Text style={[styles.text16, { color: 'white' }]}>{ this.state.type_name + ` : ` + this.state.category_name}</Text>
                             </View>
                             <Text style={[styles.text16, { paddingLeft: 20 }]}>{`สินค้าที่เลือก`}</Text>
                             {
-                                props.userInfo.product.map((v, i) => {
+                                this.state.product.map((v, i) => {
                                     return (
                                         <View key={i} style={{ paddingLeft: 40 }}>
                                             <Text style={[styles.text14]}>{`${(i + 1)}. ${v.product_name}`}</Text>
@@ -473,8 +508,25 @@ class ProfileCompanyScreen extends React.Component {
                                     <Text style={[styles.text16, { color: '#FFF' }]}>{`บันทึกการแก้ไข`}</Text>
                                 </TouchableOpacity>
                             </View>
-                            <Text style={[styles.text14, {textDecorationLine : 'underline', color: primaryColor }]}>{`ยกเลิกการสมัครสมาชิก`}</Text>
-                           
+                            <TouchableOpacity onPress={()=>{
+                                Alert.alert(
+                                    "คำเตือน",
+                                    'ยืนยันยกเลิกการสมัครสมาชิก?',
+                                    [
+                                        {
+                                            text: "ยกเลิก",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                            style: "cancel"
+                                        },
+                                        { text: "ตกลง", 
+                                            onPress: () => this.UnSubscribe() 
+                                        }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }}>
+                                <Text style={[styles.text14, { textDecorationLine: 'underline', color: primaryColor }]}>{`ยกเลิกการสมัครสมาชิก`}</Text>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </View>

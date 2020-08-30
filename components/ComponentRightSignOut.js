@@ -21,17 +21,27 @@ import {
     secondaryColor,
     redColor
 } from '../utils/contants'
-
+import StorageServies from '../utils/StorageServies'
+import {
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo
+} from '../actions'
+import Hepler from '../utils/Helper'
 import styles from '../style/style'
 const DEVICE_WIDTH = Dimensions.get('screen').width
 
 
 const ComponentRightSignOut = (props) => {
     return (
-        <View style={{ padding: 10,alignItems:'center',flex:0.2}}>
+        <TouchableOpacity style={{padding: 10,alignItems:'center'}} onPress={ async () => {
+                await StorageServies.clear()
+                await this.props.saveUserInfo([])
+                props.navigation.navigate('Choice')
+            }} >
             <Icon name='sign-out' size={20} color='white' />
             <Text style={{fontSize:8,color:'white'}}>{'Logout'}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -42,7 +52,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  
+    openIndicator,
+    dismissIndicator,
+    saveUserInfo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComponentRightSignOut)

@@ -139,9 +139,15 @@ class RegisterPersonScreen extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
+    validateEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     validateFields() {
         const fields = this.state;
         const names = Object.keys(fields);
+
         for (const name of names) {
             const validate = VALIDATION_FIELD[name] || {};
             if(validate != {}){
@@ -157,9 +163,16 @@ class RegisterPersonScreen extends React.Component {
                 }
             }
         }
+
+        if (!this.validateEmail(fields.email)){
+            return Alert.alert('Email ไม่ถูกต้อง!')
+        }
+      
         if(this.props.reducer.product_type.length == 0) {
             return Alert.alert('กรุณาเลือกสินค้าที่ต้องการขาย')//alert('กรุณาเลือกสินค้าที่ต้องการขาย')
         }
+
+
         this.onSubmit()
         //// call api
     }
@@ -346,9 +359,12 @@ class RegisterPersonScreen extends React.Component {
                                     ref={(input) => { this.email = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='อีเมล'
+                                    keyboardType={'email-address'}
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ email: text })}
+                                    onChangeText={(text) => {
+                                        this.setState({ email: text })
+                                    }}
                                     onSubmitEditing={() => this.username.focus()} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
@@ -361,10 +377,15 @@ class RegisterPersonScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='ชื่อผู้ใช้'
                                     returnKeyType={'next'}
+                                    //keyboardType={'email-address'}
                                     blurOnSubmit={false}
                                     value={this.state.username}
                                     onBlur={(e) => this.CheckUserName()}
-                                    onChangeText={(text) => this.setState({ username: text })}
+                                    onChangeText={(text) => {
+                                        if(/^[a-zA-Z]+$/.test(text) || text == ''){
+                                            this.setState({ username: text })
+                                        }
+                                    }}
                                     onSubmitEditing={() => this.password.focus()} />
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
@@ -454,8 +475,9 @@ class RegisterPersonScreen extends React.Component {
                                     onPress={() => this.onCheckPrivacy(!this.state.privacyAgree)} />
                                 <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
                             </View>
-                            <TouchableOpacity disabled={this.state.licenseAgree && this.state.privacyAgree ? false : true} 
-                            style={[this.state.licenseAgree && this.state.privacyAgree ? styles.mainButton : styles.mainButtonDisabled , styles.center]}
+                            <TouchableOpacity 
+                            disabled={this.state.licenseAgree/* && this.state.privacyAgree*/ ? false : true} 
+                            style={[this.state.licenseAgree/* && this.state.privacyAgree*/ ? styles.mainButton : styles.mainButtonDisabled , styles.center]}
                                 onPress={
                                     () => {
                                         this.validateFields()

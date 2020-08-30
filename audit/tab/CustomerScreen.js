@@ -31,6 +31,7 @@ import {
     saveUserInfo
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import ComponentRightSignOut from '../../components/ComponentRightSignOut'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class CustomerScreen extends React.Component {
@@ -42,23 +43,23 @@ class CustomerScreen extends React.Component {
     
     ComponentLeft = () => {
         return (
-            <View style={{ padding: 10 }}>
-
+            <View style={{ padding : 10,flex:0.1 }}>
             </View>
         );
     }
 
     ComponentCenter = () => {
         return (
-            <View style={[styles.center]}>
+            <View style={[styles.center,{flex:0.8}]}>
                 <Text style={[styles.text18, { color: 'white'}]}>{`รายชื่อลูกค้า`}</Text>
             </View>
         );
     }
 
-    ComponentRight = () => {
+    ComponentRight = (props) => {
         return (
-            <TouchableOpacity style={{ padding: 10,alignItems:'center',flex:0.2}} onPress={ async () => {
+           //<ComponentRightSignOut {...props}  style={{ flex:0.1 }} />
+            <TouchableOpacity style={{ padding: 10,alignItems:'center',flex:0.1}} onPress={ async () => {
                 await StorageServies.clear()
                 await this.props.saveUserInfo([])
                 this.props.navigation.navigate('Choice')

@@ -218,6 +218,12 @@ class RegisterCompanyScreen extends React.Component {
         });
     }
 
+
+    validateEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     validateFields() {
         const fields = this.state;
         const names = Object.keys(fields);
@@ -236,6 +242,15 @@ class RegisterCompanyScreen extends React.Component {
                 }
             }
         }
+
+        if (!this.validateEmail(fields.email)){
+            return Alert.alert('Email ข้อมูลผู้มาติดต่อไม่ถูกต้อง!')
+        }
+
+        if (!this.validateEmail(fields.receiptEmail)){
+            return Alert.alert('Email ภ.พ.20 ไม่ถูกต้อง!')
+        }
+
         if(this.props.reducer.product_type.length == 0) {
             return Alert.alert('กรุณาเลือกสินค้าที่ต้องการขาย')//alert('กรุณาเลือกสินค้าที่ต้องการขาย')
         }
@@ -453,6 +468,7 @@ class RegisterCompanyScreen extends React.Component {
                                     placeholder='อีเมล'
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    keyboardType={'email-address'}
                                     onChangeText={(text) => this.setState({ email: text })}
                                     onSubmitEditing={() => this.receiptName.focus()} />
                             </View>
@@ -531,6 +547,7 @@ class RegisterCompanyScreen extends React.Component {
                                     ref={(input) => { this.receiptEmail = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='อีเมล'
+                                    keyboardType={'email-address'}
                                     returnKeyType={'done'}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ receiptEmail: text })} 
@@ -574,7 +591,11 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     value={this.state.username}
                                     onBlur={(e) => this.CheckUserName()}
-                                    onChangeText={(text) => this.setState({ username: text })}
+                                    onChangeText={(text) => {
+                                        if(/^[a-zA-Z]+$/.test(text) || text == ''){
+                                            this.setState({ username: text })
+                                        }
+                                    }}
                                     onSubmitEditing={() => this.password.focus()} />
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
@@ -655,8 +676,9 @@ class RegisterCompanyScreen extends React.Component {
                                     onPress={() => this.onCheckLicense(!this.state.licenseAgree)} />
                                 <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ยอมรับข้อตกลงและเงื่อนไขในการจองตลาด `}</Text>
                             </View>
-                            <TouchableOpacity disabled={this.state.licenseAgree ? false : true}
-                            style={[this.state.licenseAgree ? styles.mainButton : styles.mainButtonDisabled, styles.center]}
+                            <TouchableOpacity 
+                                disabled={this.state.licenseAgree/* && this.state.privacyAgree*/ ? false : true} 
+                                style={[this.state.licenseAgree/* && this.state.privacyAgree*/ ? styles.mainButton : styles.mainButtonDisabled , styles.center]}
                                 onPress={
                                     () => {
                                         this.validateFields()
