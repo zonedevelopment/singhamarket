@@ -219,7 +219,7 @@ class ProfilePersonalScreen extends React.Component {
                                         style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
                                         returnKeyType={'next'}
                                         value={this.state.phoneNumber}
-                                        onChangeText={(text) => this.setState({ phoneNumber: text })} />
+                                        onChangeText={(text) => this.setState({ phoneNumber: text.replace(/[^0-9\-]+/g, '') })} />
                                 </View>
                                 <Icon name='edit' size={20} color={primaryColor} />
                                 {/* <TouchableOpacity style={[styles.inputWithIcon, { width: '100%', paddingLeft: 0, alignItems: 'center', flex: 0.1 }]}
@@ -255,7 +255,22 @@ class ProfilePersonalScreen extends React.Component {
                                     <TextInput
                                         style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
                                         returnKeyType={'next'}
+                                        ref={(input) => { this.email = input; }}
                                         value={this.state.email}
+                                        onBlur={() => { 
+                                            let e = this.state.email
+                                            if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(e) == false) {
+                                                Alert.alert('คำเตือน!','Email ไม่ถูกต้อง!',
+                                                    [
+                                                        { text: 'ตกลง', onPress: () => {
+                                                            this.setState({ email : '' })
+                                                            this.email.focus()
+                                                        } }
+                                                    ],
+                                                    { cancelable: false }
+                                                );
+                                            }
+                                        }}
                                         onChangeText={(text) => this.setState({ email: text })} />
                                 </View>
                                 <Icon name='edit' size={20} color={primaryColor} />

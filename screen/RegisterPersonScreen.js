@@ -189,6 +189,8 @@ class RegisterPersonScreen extends React.Component {
         formData.append('password', this.state.password)
         formData.append('productCate', this.state.productCate)
         formData.append('product_type', JSON.stringify(this.props.reducer.product_type))
+        formData.append('licenseAgree', this.state.licenseAgree)
+        formData.append('privacyAgree', this.state.privacyAgree)
         Hepler.post(BASE_URL + REGISTER_PERSONAL_URL,formData,HEADERFORMDATA,(results) => {
             if (results.status == 'SUCCESS') {
                 Alert.alert(
@@ -274,7 +276,7 @@ class RegisterPersonScreen extends React.Component {
         })
     }
 
- 
+
 
     render() {
 
@@ -330,7 +332,8 @@ class RegisterPersonScreen extends React.Component {
                                     value={this.state.idcard}
                                     onBlur={(e) => this.CheckIDCard()}
                                     onChangeText={(text) => this.setState({ idcard: text })}
-                                    onSubmitEditing={() => this.phone.focus()} />
+                                    onSubmitEditing={() => this.phone.focus()} 
+                                    />
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
@@ -339,9 +342,12 @@ class RegisterPersonScreen extends React.Component {
                                     placeholder='เบอร์โทรศัพท์'
                                     maxLength={10} 
                                     returnKeyType={'next'}
-                                    keyboardType='numeric'
+                                    keyboardType='phone-pad'
                                     blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ phone: text })}
+                                    value={this.state.phone}
+                                    onChangeText={(text) => {
+                                        this.setState({ phone: text.replace(/[^0-9\-]+/g, '') });
+                                    }}
                                     onSubmitEditing={() => this.lineid.focus()} />
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
@@ -361,11 +367,27 @@ class RegisterPersonScreen extends React.Component {
                                     placeholder='อีเมล'
                                     keyboardType={'email-address'}
                                     returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => {
-                                        this.setState({ email: text })
+                                    //blurOnSubmit={false}
+                                    onBlur={() => { 
+                                        let e = this.state.email
+                                        if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(e) == false) {
+                                            Alert.alert('คำเตือน!','Email ไม่ถูกต้อง!',
+                                                [
+                                                    { text: 'ตกลง', onPress: () => {
+                                                        this.setState({ email : '' })
+                                                        this.email.focus()
+                                                    } }
+                                                ],
+                                                { cancelable: false }
+                                            );
+                                        }else{
+                                            this.username.focus()
+                                        } 
                                     }}
-                                    onSubmitEditing={() => this.username.focus()} />
+                                    value={this.state.email}
+                                    onChangeText={(text) => { this.setState({ email: text}) }}
+                                    //onSubmitEditing={() => this.username.focus()} 
+                                    />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.container]}>

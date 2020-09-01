@@ -1,4 +1,3 @@
-import { exp } from "react-native-reanimated"
 
 /**
  * Color
