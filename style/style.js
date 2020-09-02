@@ -14,7 +14,7 @@ import {
 } from '../utils/contants'
 
 const COMPONENT_HIGHT = 50;
-const BANNER_HEIGHT = 300;
+const BANNER_HEIGHT = 250;
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({

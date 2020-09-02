@@ -37,12 +37,14 @@
 			</dict>
 		</dict>
 	</dict>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>Allow $(PRODUCT_NAME) to access photo library to upload your ID Card picture or your profile picture.</string>
-  <key>NSCameraUsageDescription</key>
-  <string>Allow $(PRODUCT_NAME) to access camera to upload your ID Card picture or your profile picture.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to access camera to upload your ID Card picture or your profile picture.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to access photo library to upload your ID Card picture or your profile picture.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -61,8 +63,6 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-<!--		<string>DBMed.ttf</string>-->
-<!--		<string>DBYord.ttf</string>-->
 		<string>SinghaEstate-Bold.ttf</string>
 		<string>SinghaEstate-Medium.ttf</string>
 		<string>SinghaEstate-Regular.ttf</string>
@@ -73,7 +73,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
-		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

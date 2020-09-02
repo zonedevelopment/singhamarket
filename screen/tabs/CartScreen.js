@@ -3,6 +3,8 @@ import {
     View,
     Text,
     Image,
+    Platform,
+    StatusBar,
     FlatList,
     TextInput,
     Dimensions,
@@ -285,6 +287,12 @@ class CartScreen extends React.Component {
     render() {
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
+                {/* {
+                    Platform.OS === 'ios' ?
+                        <StatusBar backgroundColor={primaryColor} />
+                        :
+                        null
+                } */}
                 <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
@@ -299,6 +307,7 @@ class CartScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
+                    <StatusBar backgroundColor={primaryColor} />
                 <View style={[styles.container, { alignItems: 'center' }]}>
                 {
                     this.state.arrBooking.length > 0 ?

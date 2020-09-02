@@ -215,7 +215,7 @@ class LoginScreen extends React.Component {
                             <Image source={ic_user} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
                             <TextInput
                                 ref={(input) => { this.username = input; }}
-                                style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black', paddingLeft: 5 }}
                                 placeholder='ชื่อผู้ใช้งาน'
                                 returnKeyType={'next'}
                                 blurOnSubmit={false}
