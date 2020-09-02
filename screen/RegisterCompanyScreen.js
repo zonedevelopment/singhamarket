@@ -30,6 +30,9 @@ import {
     REGISTER_COMPANY_URL,
     HEADERFORMDATA,
     CHECK_REGISTER_URL,
+    PROVINCE_URL,
+    DISTRICT_URL,
+    SUBDISTRICT_URL,
 } from '../utils/contants'
 import styles from '../style/style'
 import {
@@ -38,6 +41,7 @@ import {
     saveProductType
 } from '../actions'
 import Hepler from '../utils/Helper'
+import { value } from 'numeral'
 
 const VALIDATION_FIELD = {
     compname : {
@@ -54,10 +58,6 @@ const VALIDATION_FIELD = {
     },
     name : {
         message : 'กรุณากรอกชื่อ-นามสกุล',
-        type : 'text'
-    },
-    idcard : {
-        message : 'กรุณากรอกเลขบัตรประชาชน',
         type : 'text'
     },
     phone : {
@@ -80,30 +80,12 @@ const VALIDATION_FIELD = {
         message : 'กรุณาเลือกประเภทสินค้า',
         type : 'radio'
     },
-    receiptName: {
-        message : 'กรุณากรอกชื่อนิติบุคคลสำหรับออกใบเสร็จรับเงิน',
-        type : 'text'
-    },
-    receiptPhone : {
-        message : 'กรุณากรอกเบอร์โทรศัพท์สำหรับออกใบเสร็จรับเงิน',
-        type : 'text'
-    },
+    
     FileSource : {
         message : 'กรุณาแนบไฟล์ ภ.พ 20',
         type : 'text'
     },
-    receiptOffice : {
-        message : 'กรุณากรอกสำนักงาน',
-        type : 'text'
-    },
-    receiptTelephone : {
-        message : 'กรุณากรอกเบอร์โทรศัพท์สำนักงาน',
-        type : 'text'
-    },
-    receiptEmail : {
-        message : 'กรุณากรอกอีเมล์สำนักงาน',
-        type : 'text'
-    },
+  
     accountName : {
         message : 'กรุณากรอกชื่อ-นามสกุล เจ้าหน้าที่บัญชี',
         type : 'text'
@@ -125,25 +107,114 @@ class RegisterCompanyScreen extends React.Component {
         FileSourceBase64 : '',
         compname : '',
         compid : '',
-        compAddr : '',
+        
         branch_code : '',
         branch_name : '',
         name : '',
-        idcard : '',
         phone : '',
-        lineid : '',
         email : '',
         username : '',
         password : '',
-        receiptName : '',
-        receiptTelephone : '',
-        receiptOffice : '',
-        receiptPhone : '',
-        receiptEmail : '',
+    
         accountName : '',
         accountPhone : '',
 
-        country: null
+       
+        ProvinceData : [],
+        DistrictData : [],
+        SubDistrictData : [],
+        compAddr : '',
+        compSoi : '',
+        compRoad : '',
+        ProvinceSelected : null,
+        DistrictSelected : null,
+        SubDistrictSelected : null,
+        Zipcode : '',
+
+
+    }
+
+    LoadProvince () {
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + PROVINCE_URL,null,HEADERFORMDATA,(results) => {
+            console.log('PROVINCE_URL',results)
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    ProvinceData: results.data,
+                    ProvinceSelected : null,
+                    DistrictData : [],
+                    DistrictSelected : null,
+                    SubDistrictData : [],
+                    SubDistrictSelected : null,
+                    Zipcode : '',
+                })
+            } else {
+                Alert.alert(results.message)
+                this.setState({
+                    ProvinceData : [],
+                    ProvinceSelected : null,
+                    DistrictData : [],
+                    DistrictSelected : null,
+                    SubDistrictData : [],
+                    SubDistrictSelected : null,
+                    Zipcode : '',
+                })
+            }
+        })
+    }
+
+    LoadDistrict (province_id) {
+        this.props.openIndicator()
+        let formData = new FormData();
+        this.setState({ProvinceSelected : province_id})
+        formData.append('province_id', province_id)
+        Hepler.post(BASE_URL + DISTRICT_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('DISTRICT_URL',results)
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    DistrictData: results.data,
+                    DistrictSelected : null,
+                    SubDistrictData : [],
+                    SubDistrictSelected : null,
+                    Zipcode : '',
+                })
+            } else {
+                Alert.alert(results.message)
+                this.setState({
+                    DistrictData : [],
+                    DistrictSelected : null,
+                    SubDistrictData : [],
+                    SubDistrictSelected : null,
+                    Zipcode : '',
+                })
+            }
+        })
+    }
+
+    LoadSubDistrict(district_id){
+        this.props.openIndicator()
+        let formData = new FormData();
+        this.setState({DistrictSelected : district_id})
+        formData.append('district_id', district_id)
+        Hepler.post(BASE_URL + SUBDISTRICT_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('SUBDISTRICT_URL',results)
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    SubDistrictData: results.data,
+                    SubDistrictSelected : null,
+                })
+            } else {
+                Alert.alert(results.message)
+                this.setState({
+                    SubDistrictData : [],
+                    SubDistrictSelected : null,
+                    Zipcode : '',
+                })
+            }
+        })
     }
 
     onSelectProductCategory(index, value) {
@@ -192,6 +263,7 @@ class RegisterCompanyScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.LoadProvince()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -247,19 +319,41 @@ class RegisterCompanyScreen extends React.Component {
             }
         }
 
+        if (fields.phone.length != 10){
+            return Alert.alert('จำนวนเบอร์โทรศัพท์ผู้มาติดต่อไม่ถูกต้อง!')
+        }
+
+        if (fields.accountPhone.length != 10){
+            return Alert.alert('จำนวนเบอร์โทรศัพท์เจ้าหน้าที่บัญชีไม่ถูกต้อง!')
+        }
+
+
         if (!this.validateEmail(fields.email)){
             return Alert.alert('Email ข้อมูลผู้มาติดต่อไม่ถูกต้อง!')
         }
-
-        if (!this.validateEmail(fields.receiptEmail)){
-            return Alert.alert('Email ภ.พ.20 ไม่ถูกต้อง!')
-        }
+     
 
         if(this.props.reducer.product_type.length == 0) {
             return Alert.alert('กรุณาเลือกสินค้าที่ต้องการขาย')//alert('กรุณาเลือกสินค้าที่ต้องการขาย')
         }
 
-        this.onSubmit()
+
+        Alert.alert(
+            "ยืนยัน",
+            'ยืนยันสมัครสมาชิก?',
+            [
+                {
+                    text: "ยกเลิก",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "ตกลง", 
+                    onPress: () => this.onSubmit() 
+                }
+            ],
+            { cancelable: false }
+        );
+
         /// insert api
     }
 
@@ -272,19 +366,20 @@ class RegisterCompanyScreen extends React.Component {
         formData.append('compAddr', this.state.compAddr)
         formData.append('branch_code', this.state.branch_code)
         formData.append('branch_name', this.state.branch_name)
+
+        formData.append('compSoi', this.state.compSoi)
+        formData.append('compRoad', this.state.compRoad)
+        formData.append('province_id', this.state.ProvinceSelected)
+        formData.append('district_id', this.state.DistrictSelected)
+        formData.append('subdistrict_id', this.state.SubDistrictSelected)
+        formData.append('zipcode', this.state.Zipcode)
+  
         ///ข้อมูลผู้มาติดต่อ
         formData.append('name', this.state.name)
-        formData.append('idcard', this.state.idcard)
         formData.append('phone', this.state.phone)
-        formData.append('lineid', this.state.lineid)
         formData.append('email', this.state.email)
         ///ข้อมูลออกใบเสร็จรับเงิน
-        formData.append('receiptName', this.state.receiptName)
-        formData.append('receiptPhone', this.state.receiptPhone)
         formData.append('FileSourceBase64', this.state.FileSourceBase64)
-        formData.append('receiptOffice', this.state.receiptOffice)
-        formData.append('receiptTelephone', this.state.receiptTelephone)
-        formData.append('receiptEmail', this.state.receiptEmail)
         ///ข้อมูลเจ้าหน้าที่บัญชี
         formData.append('accountName', this.state.accountName)
         formData.append('accountPhone', this.state.accountPhone)
@@ -401,55 +496,130 @@ class RegisterCompanyScreen extends React.Component {
                                     onChangeText={(text) => this.setState({ compAddr: text })}
                                     onSubmitEditing={() => this.branch_code.focus()} />
                             </View> */}
-                            <View /*style={[styles.shadow,  styles.inputWithIcon, { alignSelf: 'center' }]}*/>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.compAddr = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ที่อยู่'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ compAddr: text })}
+                                    onSubmitEditing={() => this.compSoi.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.compSoi = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ซอย'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ compSoi: text })}
+                                    onSubmitEditing={() => this.compRoad.focus()} />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.compRoad = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ถนน'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ compRoad: text })}
+                                    onSubmitEditing={() => {/*this.branch_name.focus()*/}} />
+                            </View>
+                            <View >
                                 <DropDownPicker
-                                    zIndex={99999}
+                                    zIndex={5000}
                                     searchable={true}
-                                    searchablePlaceholder="Search for an item"
+                                    searchablePlaceholder="กรอกชื่อจังหวัดที่ต้องการค้นหา"
                                     searchablePlaceholderTextColor="gray"
                                     seachableStyle={{}}
-                                    searchableError={() => <Text>Not Found</Text>}
-                                    items={[
-                                        {label: 'UK', value: 'uk'},
-                                        {label: 'France', value: 'france'},
-                                        {label: 'Thai', value: '1'},
-                                        {label: 'English', value: '2'},
-                                    ]}
-                                    defaultValue={this.state.country}
-                                    // labelStyle={{
-                                    //     fontSize: 14,
-                                    //     textAlign: 'left',
-                                    //     color: '#000'
-                                    // }}
-                                    style={[  styles.inputWithIcon, {
-                                        borderWidth : 0,
-                                        borderTopLeftRadius: 50, borderTopRightRadius: 50,
-                                        borderBottomLeftRadius: 50, borderBottomRightRadius: 50,
-                                        borderRadius:100,
-                                        backgroundColor: '#ffffff',
-                                        shadowOffset: {
-                                            width: 0,
-                                            height: 2,
-                                        },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 100 ,
-                                        elevation: 3,
-                                        
-                                    }]}
-                                    dropDownStyle={{backgroundColor: 'green'}}
+                                    searchableError={() => <Text>ไม่พบข้อมูล</Text>}
+                                    items={this.state.ProvinceData}
+                                    defaultValue={this.state.ProvinceSelected}
+                                    style={[  styles.dropdownWithIcon,]}
+                                    dropDownMaxHeight={300}
+                                    dropDownStyle={{
+                                        borderTopLeftRadius: 20, borderTopRightRadius: 20,
+                                        borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
+                                        elevation: 5,
+                                    }}
                                     itemStyle={{
                                         justifyContent: 'flex-start',
-                                        backgroundColor:'red',
+                                        elevation: 5,
                                     }}
-                                    placeholder="Select an item"
-                                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                                    onChangeItem={ item => this.setState({
-                                        country: item.value
-                                    })}
+                                    placeholder="กรุณาเลือกจังหวัด"
+                                    onChangeItem={ item => this.LoadDistrict(item.value)}
                                 />
                             </View>
+                            <View >
+                                <DropDownPicker
+                                    zIndex={5000}
+                                    searchable={true}
+                                    searchablePlaceholder="กรอกชื่ออำเภอที่ต้องการค้นหา"
+                                    searchablePlaceholderTextColor="gray"
+                                    seachableStyle={{}}
+                                    searchableError={() => <Text>ไม่พบข้อมูล</Text>}
+                                    items={this.state.DistrictData}
+                                    defaultValue={this.state.DistrictSelected}
+                                    style={[  styles.dropdownWithIcon,]}
+                                    dropDownMaxHeight={300}
+                                    dropDownStyle={{
+                                        borderTopLeftRadius: 20, borderTopRightRadius: 20,
+                                        borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
+                                        elevation: 5,
+                                    }}
+                                    itemStyle={{
+                                        justifyContent: 'flex-start',
+                                        elevation: 5,
+                                    }}
+                                    placeholder="กรุณาเลือกอำเภอ"
+                                    onChangeItem={ item => this.LoadSubDistrict(item.value)}
+                                />
+                            </View>
+                            <View >
+                                <DropDownPicker
+                                    zIndex={5000}
+                                    searchable={true}
+                                    searchablePlaceholder="กรอกชื่อตำบลที่ต้องการค้นหา"
+                                    searchablePlaceholderTextColor="gray"
+                                    seachableStyle={{}}
+                                    searchableError={() => <Text>ไม่พบข้อมูล</Text>}
+                                    items={this.state.SubDistrictData}
+                                    defaultValue={this.state.SubDistrictSelected}
+                                    style={[  styles.dropdownWithIcon,]}
+                                    dropDownMaxHeight={300}
+                                    dropDownStyle={{
+                                        borderTopLeftRadius: 20, borderTopRightRadius: 20,
+                                        borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
+                                        elevation: 5,
+                                    }}
+                                    itemStyle={{
+                                        justifyContent: 'flex-start',
+                                        elevation: 5,
+                                    }}
+                                    placeholder="กรุณาเลือกตำบล"
+                                    onChangeItem={ item => {
+                                        console.log('SubDistrictSelected',item)
+                                        this.setState({ 
+                                            SubDistrictSelected : item.value,
+                                            Zipcode : item.zipcode
+                                        })
+                                    }}
+                                />
+                            </View>
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.zipcode = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='รหัสไปรษณีย์'
+                                    editable={false}
+                                    returnKeyType={'next'}
+                                    value={this.state.Zipcode}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ zipcode: text })}
+                                    onSubmitEditing={() => this.branch_code.focus()} />
+                            </View>
 
-                            {/* <View style={[styles.marginBetweenVerticalz,{height:500}]}></View> */}
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
                                     ref={(input) => { this.branch_code = input; }}
@@ -469,89 +639,6 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ branch_name: text })}
                                     onSubmitEditing={() => this.name.focus()} /> 
-                            </View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.container]}>
-                                <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลผู้มาติดต่อ`}</Text>
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.name = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='ชื่อ - นามสกุล'
-                                    returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ name: text })}
-                                    onSubmitEditing={() => this.idcard.focus()} />
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.idcard = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='เลขบัตรประชาชน'
-                                    returnKeyType={'next'}
-                                    maxLength={13} 
-                                    keyboardType='numeric'
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ idcard: text })}
-                                    onSubmitEditing={() => this.phone.focus()} />
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.phone = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='เบอร์โทรศัพท์'
-                                    returnKeyType={'next'}
-                                    keyboardType='numeric'
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ phone: text })}
-                                    onSubmitEditing={() => this.lineid.focus()} />
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.lineid = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='Line ID'
-                                    returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ lineid: text })}
-                                    onSubmitEditing={() => this.email.focus()} />
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.email = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='อีเมล'
-                                    returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    keyboardType={'email-address'}
-                                    onChangeText={(text) => this.setState({ email: text })}
-                                    onSubmitEditing={() => this.receiptName.focus()} />
-                            </View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.container]}>
-                                <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลเพื่อออกใบเสร็จรับเงิน`}</Text>
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.receiptName = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='ชื่อนิติบุคคล'
-                                    returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ receiptName: text })}
-                                    onSubmitEditing={() => this.receiptPhone.focus()} />
-                            </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.receiptPhone = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='เบอร์โทรศัพท์'
-                                    returnKeyType={'next'}
-                                    keyboardType='numeric'
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ receiptPhone: text })}
-                                    onSubmitEditing={() => this.receiptOffice.focus()} />
                             </View>
                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 15 }]}>
                                 <Text style={[styles.text18, { color: primaryColor }]}>{`แนบไฟล์ ภ.พ. 20`}</Text>
@@ -576,40 +663,48 @@ class RegisterCompanyScreen extends React.Component {
                                 :
                                     <View></View>
                             }
-
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.receiptOffice = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='สำนักงาน'
-                                    returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ receiptOffice: text })}
-                                    onSubmitEditing={() => this.receiptTelephone.focus()} />
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.container]}>
+                                <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลผู้มาติดต่อ`}</Text>
                             </View>
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
-                                    ref={(input) => { this.receiptTelephone = input; }}
+                                    ref={(input) => { this.name = input; }}
+                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                    placeholder='ชื่อ - นามสกุล'
+                                    returnKeyType={'next'}
+                                    blurOnSubmit={false}
+                                    onChangeText={(text) => this.setState({ name: text })}
+                                    onSubmitEditing={() => this.phone.focus()} />
+                            </View>
+                        
+                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <TextInput
+                                    ref={(input) => { this.phone = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='เบอร์โทรศัพท์'
+                                    value={this.state.phone}
                                     returnKeyType={'next'}
-                                    keyboardType='numeric'
+                                    maxLength={10} 
+                                    keyboardType='phone-pad'
                                     blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ receiptTelephone: text })}
-                                    onSubmitEditing={() => this.receiptEmail.focus()} />
+                                    onChangeText={(text) => this.setState({ phone: text.replace(/[^0-9\-]+/g, '') })}
+                                    onSubmitEditing={() => this.email.focus()} />
                             </View>
+                       
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
-                                    ref={(input) => { this.receiptEmail = input; }}
+                                    ref={(input) => { this.email = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='อีเมล'
-                                    keyboardType={'email-address'}
-                                    returnKeyType={'done'}
+                                    returnKeyType={'next'}
                                     blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ receiptEmail: text })} 
+                                    keyboardType={'email-address'}
+                                    onChangeText={(text) => this.setState({ email: text })}
                                     onSubmitEditing={() => this.accountName.focus()} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
+                           
                             <View style={[styles.container]}>
                                 <Text style={[styles.text18, { color: primaryColor }]}>{`ข้อมูลเจ้าหน้าที่บัญชี`}</Text>
                             </View>
@@ -629,9 +724,11 @@ class RegisterCompanyScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='เบอร์โทรศัพท์'
                                     returnKeyType={'next'}
-                                    keyboardType='numeric'
+                                    keyboardType='phone-pad'
+                                    value={this.state.accountPhone}
+                                    maxLength={10} 
                                     blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ accountPhone: text })}
+                                    onChangeText={(text) => this.setState({ accountPhone: text.replace(/[^0-9\-]+/g, '') })}
                                     onSubmitEditing={() => this.username.focus()} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>

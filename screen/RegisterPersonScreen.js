@@ -163,6 +163,10 @@ class RegisterPersonScreen extends React.Component {
                 }
             }
         }
+        if (fields.phone.length != 10){
+            return Alert.alert('จำนวนเบอร์โทรศัพท์ไม่ถูกต้อง!')
+        }
+
 
         if (!this.validateEmail(fields.email)){
             return Alert.alert('Email ไม่ถูกต้อง!')
@@ -173,7 +177,22 @@ class RegisterPersonScreen extends React.Component {
         }
 
 
-        this.onSubmit()
+        Alert.alert(
+            "ยืนยัน",
+            'ยืนยันสมัครสมาชิก?',
+            [
+                {
+                    text: "ยกเลิก",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "ตกลง", 
+                    onPress: () => this.onSubmit() 
+                }
+            ],
+            { cancelable: false }
+        );
+
         //// call api
     }
 

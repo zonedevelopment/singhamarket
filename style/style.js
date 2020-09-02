@@ -60,6 +60,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
+    dropdownWithIcon : {
+        margin: 10,
+        height: COMPONENT_HIGHT,
+        width: '95%',
+        paddingLeft: 15,
+        borderWidth : 0,
+        borderTopLeftRadius: 50, borderTopRightRadius: 50,
+        borderBottomLeftRadius: 50, borderBottomRightRadius: 50,
+        borderRadius:100,
+        backgroundColor: '#ffffff',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 100 ,
+        elevation: 5,
+    },
     inputWithIcon: {
         paddingLeft: 15,
         flexDirection: 'row',
