@@ -12,7 +12,6 @@ import {
     Text,
     StatusBar,
     YellowBox,
-    Alert,
     Platform,
     ActivityIndicator
 } from 'react-native';
@@ -24,7 +23,7 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import styles from './style/style'
 import {
-secondaryColor
+secondaryColor, primaryColor
 } from './utils/contants';
 
 import {
