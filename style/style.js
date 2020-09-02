@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 3
+        elevation: 3,
     },
     center: {
         alignItems: 'center',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'space-between',
         borderRadius: COMPONENT_HIGHT / 2,
-        margin: 10
+        margin: 10,
     },
     TextAreaWithIcon: {
         paddingLeft: 15,

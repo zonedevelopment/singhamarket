@@ -165,7 +165,7 @@ class RegisterConditionScreen extends React.Component {
                                 <HTML html={this.state.htmlContent} imagesMaxWidth={DEVICE_WIDTH - 20} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
-                                <OpenURLButton url={this.state.privacy_url}>{'นโยบายความเป็นส่วนตัว'}</OpenURLButton>
+                                <OpenURLButton fontSize={20} url={this.state.privacy_url}>{'นโยบายความเป็นส่วนตัว'}</OpenURLButton>
                             {
                                 this.state.type == 1 ?
                                     <View>

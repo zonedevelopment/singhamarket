@@ -8,7 +8,7 @@ import {
 } from '../utils/contants'
 import styles from '../style/style'
  
-const OpenURLButton = ({ url, children }) => {
+const OpenURLButton = ({ url, children,fontSize }) => {
     const handlePress = useCallback(async () => {
       // Checking if the link is supported for links with custom URL scheme.
       const supported = await Linking.canOpenURL(url);
@@ -22,7 +22,7 @@ const OpenURLButton = ({ url, children }) => {
       }
     }, [url]);
     return <TouchableOpacity onPress={handlePress} >
-        <Text style={{color:primaryColor,fontSize:20,textDecorationLine: 'underline'}}>{children}</Text>
+        <Text style={{color:primaryColor,fontSize:fontSize,textDecorationLine: 'underline'}}>{children}</Text>
     </TouchableOpacity>;
 };
 export default OpenURLButton

@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import ImagePicker from 'react-native-image-picker'
 import Lightbox from 'react-native-lightbox'
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
     darkColor,
     grayColor,
@@ -114,6 +115,7 @@ const VALIDATION_FIELD = {
 }
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
+const DEVICE_WIDTH = Dimensions.get('screen').width
 class RegisterCompanyScreen extends React.Component {
 
     state = {
@@ -140,6 +142,8 @@ class RegisterCompanyScreen extends React.Component {
         receiptEmail : '',
         accountName : '',
         accountPhone : '',
+
+        country: null
     }
 
     onSelectProductCategory(index, value) {
@@ -290,6 +294,9 @@ class RegisterCompanyScreen extends React.Component {
         ///ประเภทสินค้า
         formData.append('productCate', this.state.productCate)
         formData.append('product_type', JSON.stringify(this.props.reducer.product_type))
+
+        formData.append('licenseAgree', this.state.licenseAgree === true ? 'Y' : 'N')
+        //formData.append('privacyAgree', this.state.privacyAgree)
         Hepler.post(BASE_URL + REGISTER_COMPANY_URL,formData,HEADERFORMDATA,(results) => {
             //console.log('REGISTER_COMPANY_URL',results)
             if (results.status == 'SUCCESS') {
@@ -382,7 +389,7 @@ class RegisterCompanyScreen extends React.Component {
                                     onChangeText={(text) => this.setState({ compid: text })}
                                     onSubmitEditing={() => this.compAddr.focus()} />
                             </View>
-                            <View style={[styles.shadow, styles.TextAreaWithIcon, { alignSelf: 'center' }]}>
+                            {/* <View style={[styles.shadow, styles.TextAreaWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
                                     ref={(input) => { this.compAddr = input; }}
                                     style={{ width: '100%', height: '100%',textAlignVertical: 'top', justifyContent: "flex-start",alignSelf: 'flex-start', color: 'black' }}
@@ -393,7 +400,56 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ compAddr: text })}
                                     onSubmitEditing={() => this.branch_code.focus()} />
+                            </View> */}
+                            <View /*style={[styles.shadow,  styles.inputWithIcon, { alignSelf: 'center' }]}*/>
+                                <DropDownPicker
+                                    zIndex={99999}
+                                    searchable={true}
+                                    searchablePlaceholder="Search for an item"
+                                    searchablePlaceholderTextColor="gray"
+                                    seachableStyle={{}}
+                                    searchableError={() => <Text>Not Found</Text>}
+                                    items={[
+                                        {label: 'UK', value: 'uk'},
+                                        {label: 'France', value: 'france'},
+                                        {label: 'Thai', value: '1'},
+                                        {label: 'English', value: '2'},
+                                    ]}
+                                    defaultValue={this.state.country}
+                                    // labelStyle={{
+                                    //     fontSize: 14,
+                                    //     textAlign: 'left',
+                                    //     color: '#000'
+                                    // }}
+                                    style={[  styles.inputWithIcon, {
+                                        borderWidth : 0,
+                                        borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                                        borderBottomLeftRadius: 50, borderBottomRightRadius: 50,
+                                        borderRadius:100,
+                                        backgroundColor: '#ffffff',
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
+                                        shadowOpacity: 0.25,
+                                        shadowRadius: 100 ,
+                                        elevation: 3,
+                                        
+                                    }]}
+                                    dropDownStyle={{backgroundColor: 'green'}}
+                                    itemStyle={{
+                                        justifyContent: 'flex-start',
+                                        backgroundColor:'red',
+                                    }}
+                                    placeholder="Select an item"
+                                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                                    onChangeItem={ item => this.setState({
+                                        country: item.value
+                                    })}
+                                />
                             </View>
+
+                            {/* <View style={[styles.marginBetweenVerticalz,{height:500}]}></View> */}
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
                                     ref={(input) => { this.branch_code = input; }}

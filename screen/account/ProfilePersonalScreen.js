@@ -23,6 +23,7 @@ import {
     emptyColor,
     primaryColor,
     secondaryColor,
+    GET_AGREEMENT_REGISTER,
     UNSUBSCRIBE_PARTNERS_URL,
     redColor,
     BASE_URL,
@@ -40,7 +41,7 @@ import {
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 import StorageServies from '../../utils/StorageServies'
-
+import OpenURLButton from '../../components/OpenURLButton'
 class ProfilePersonalScreen extends React.Component {
 
     state = {
@@ -51,6 +52,7 @@ class ProfilePersonalScreen extends React.Component {
         type_name : '',
         category_name : '',
         product : [],
+        privacy_url : '',
     }
     
     onUpdateProfile() {
@@ -177,8 +179,30 @@ class ProfilePersonalScreen extends React.Component {
             type_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_name,
             category_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.category_name,
             product : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product,
+            privacyAgree : props.userInfo.privacyAgree == 'Y' ? true : false,
         })
+        this.LoadAgreement(props.userInfo.partners_type)
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    
+    LoadAgreement (type) {
+        this.props.openIndicator()
+        let formData = new FormData();
+        formData.append('partners_type_id', type)
+        Hepler.post(BASE_URL + GET_AGREEMENT_REGISTER,formData,HEADERFORMDATA,(results) => {
+            this.props.dismissIndicator()
+            if (results.status == 'SUCCESS') {
+                this.setState({
+                    privacy_url : results.data['privacy_url'],
+                })
+            } else {
+                Alert.alert(results.message)
+                this.setState({
+                    privacy_url : '',
+                })
+            }
+        })
     }
 
     render() {
@@ -313,7 +337,8 @@ class ProfilePersonalScreen extends React.Component {
                             <Text style={[styles.text12, { color: primaryColor, paddingTop: 5, paddingLeft: 20 }]}>{`*หมายเหตุ ถ้าท่านต้องเปลี่ยนประเภทสินค้าที่ต้องการขาย\n กรุณาติดต่อเจ้าหน้าที่`}</Text>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.hr]}></View>
-                            <Text style={[styles.text14, { textDecorationLine: 'underline', color: primaryColor }]}>{`ข้อตกลงและเงื่อนไขในการจองตลาด`}</Text>
+                            <OpenURLButton url={this.state.privacy_url} fontSize={14}>{'ข้อตกลงและเงื่อนไขในการจองตลาด'}</OpenURLButton>
+                            {/* <Text style={[styles.text14, { textDecorationLine: 'underline', color: primaryColor }]}>{`ข้อตกลงและเงื่อนไขในการจองตลาด`}</Text> */}
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}>
                                 <CheckBox
                                     center

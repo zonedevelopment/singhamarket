@@ -189,8 +189,8 @@ class RegisterPersonScreen extends React.Component {
         formData.append('password', this.state.password)
         formData.append('productCate', this.state.productCate)
         formData.append('product_type', JSON.stringify(this.props.reducer.product_type))
-        formData.append('licenseAgree', this.state.licenseAgree)
-        formData.append('privacyAgree', this.state.privacyAgree)
+        formData.append('licenseAgree', this.state.licenseAgree === true ? 'Y' : 'N')
+        formData.append('privacyAgree', this.state.privacyAgree === true ? 'Y' : 'N')
         Hepler.post(BASE_URL + REGISTER_PERSONAL_URL,formData,HEADERFORMDATA,(results) => {
             if (results.status == 'SUCCESS') {
                 Alert.alert(
