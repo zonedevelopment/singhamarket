@@ -128,58 +128,6 @@ class CategoryListScreen extends React.Component {
 
     render() {
 
-        // const cate = [
-        //     {
-        //         "category_id": "9",
-        //         "type_id": "1",
-        //         "name": "การแฟ ชาไข่มุก ลงเฉพาะ F1 - F5เท่านั้น",
-        //         "product": [
-        //             {
-        //                 "product_id": "21",
-        //                 "type_id": "1",
-        //                 "category_id": "9",
-        //                 "product_name": "เครื่องดื่ม กาแฟ ชาไข่มุก น้ำผลไม้ ลงเฉพาะ F1-F6 เท่านั้น",
-        //                 "checked": false
-        //             }
-        //         ]
-        //     },
-        //     {
-        //         "category_id": "10",
-        //         "type_id": "1",
-        //         "name": "อาหาร",
-        //         "product": [
-        //             {
-        //                 "product_id": "20",
-        //                 "type_id": "1",
-        //                 "category_id": "10",
-        //                 "product_name": "อาหาร",
-        //                 "checked": false
-        //             },
-        //             {
-        //                 "product_id": "22",
-        //                 "type_id": "1",
-        //                 "category_id": "10",
-        //                 "product_name": "ของทอด",
-        //                 "checked": false
-        //             },
-        //             {
-        //                 "product_id": "23",
-        //                 "type_id": "1",
-        //                 "category_id": "10",
-        //                 "product_name": "ประเภทยำ ยำวุ้นเส้น ยำมาม่า ยำรวมมิตร",
-        //                 "checked": false
-        //             },
-        //             {
-        //                 "product_id": "25",
-        //                 "type_id": "1",
-        //                 "category_id": "10",
-        //                 "product_name": "ลูกชิ้นปิ้ง",
-        //                 "checked": false
-        //             }
-        //         ]
-        //     },
-        // ]
-
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -200,15 +148,7 @@ class CategoryListScreen extends React.Component {
                     <View style={[styles.marginBetweenVertical]}></View>
                     <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกประเภท${this.state.type_id == 1 ? 'อาหาร' : 'สินค้า'}ที่ต้องการขาย`}</Text>
                     <View style={[styles.marginBetweenVertical]}></View>
-                    {/* <View style={[styles.mainButton2, styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', paddingLeft: 10, paddingRight: 10 }]}>
-                        <TextInput
-                            style={[{ color: 'white' }]}
-                            textContentType={{ color: 'white' }}
-                            placeholder='ค้นหาประเภทอาหาร...'
-                            placeholderTextColor="white" />
-                        <Icon name='search' size={16} color='white' />
-                    </View>
-                    <View style={[styles.marginBetweenVertical]}></View> */}
+                  
                     <FlatList
                         style={{ marginTop: 5 }}
                         data={this.state.cate}

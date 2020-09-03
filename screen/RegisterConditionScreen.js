@@ -30,6 +30,7 @@ import {
 import {
     openIndicator,
     dismissIndicator,
+    saveProductType
 } from '../actions'
 import Hepler from '../utils/Helper'
 
@@ -85,6 +86,7 @@ class RegisterConditionScreen extends React.Component {
 
     async componentDidMount() {
         await this.LoadAgreement(1)
+       
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -207,6 +209,7 @@ class RegisterConditionScreen extends React.Component {
                                 disabled={this.state.type == 1 ? (this.state.licenseAgree ? false : true) : (this.state.licenseAgree ? false : true)} 
                                 onPress={
                                     () => {
+                                        this.props.saveProductType([])
                                         if (this.state.type == 1) {
                                             this.props.navigation.navigate('Registerperson')
                                         } else if (this.state.type == 2) {
@@ -231,6 +234,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
+    saveProductType
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterConditionScreen)

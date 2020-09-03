@@ -178,8 +178,12 @@ class ProductListScreen extends React.Component {
                                         await this.props.saveProductType(this.state.productSelected)
                                         if(this.state.RegisType == 'Personal'){
                                             this.props.navigation.navigate('Registerperson')
-                                        }else{
+                                        }else if(this.state.RegisType == 'Company'){
                                             this.props.navigation.navigate('Registercompany')
+                                        }else if (this.state.RegisType == 'ProfileCompany'){
+                                            this.props.navigation.navigate('Company')
+                                        }else{
+                                            this.props.navigation.navigate('Personal')
                                         }
                                     }
                                 }>

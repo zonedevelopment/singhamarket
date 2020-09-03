@@ -42,6 +42,7 @@ import {
     openIndicator,
     dismissIndicator,
     saveUserInfo,
+    saveProductType
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 import StorageServies from '../../utils/StorageServies'
@@ -60,6 +61,7 @@ class ProfileCompanyScreen extends React.Component {
         accountname : '',
         accountphone : '',
 
+        type_id : '',
         type_name : '',
         category_name : '',
         product : [],
@@ -126,29 +128,24 @@ class ProfileCompanyScreen extends React.Component {
         this.LoadProvince()
         this.LoadDistrict(typeof props.userInfo === 'undefined' ? null : props.userInfo.province)
         this.LoadSubDistrict(typeof props.userInfo === 'undefined' ? null : props.userInfo.ampure)
-        
+        this.props.saveProductType(typeof props.userInfo === 'undefined' ? [] : props.userInfo.product)
         this.setState({
             address : props.userInfo.address,
             branch_code : props.userInfo.branch_code,
             branch_name : props.userInfo.branch_name,
             name : props.userInfo.name,
-            citizenid : props.userInfo.citizenid,
             phone : props.userInfo.phone,
-            lineid : props.userInfo.lineid,
             email : props.userInfo.email,
-            receiptname : props.userInfo.receiptname,
-            receiptphone : props.userInfo.receiptphone,
-            receiptofficename : props.userInfo.receiptofficename,
-            receiptofficephone : props.userInfo.receiptofficephone,
-            receiptemail : props.userInfo.receiptemail,
             accountname : props.userInfo.accountname,
             accountphone : props.userInfo.accountphone,
+            type_id : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_id,
             type_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_name,
             category_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.category_name,
-            product : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product,
+           // product : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product,
             Soi : props.userInfo.soi,
             Road : props.userInfo.road,
         }) 
+
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -163,20 +160,23 @@ class ProfileCompanyScreen extends React.Component {
         const props = this.props.reducer
         let formData = new FormData();
         formData.append('address',this.state.address)
+        formData.append('Soi', this.state.Soi)
+        formData.append('Road', this.state.Road)
+        formData.append('province_id', this.state.ProvinceSelected)
+        formData.append('district_id', this.state.DistrictSelected)
+        formData.append('subdistrict_id', this.state.SubDistrictSelected)
+        formData.append('zipcode', this.state.Zipcode)
         formData.append('branch_code',this.state.branch_code)
         formData.append('branch_name',this.state.branch_name)
+
         formData.append('name',this.state.name)
-        formData.append('citizenid',this.state.citizenid)
         formData.append('phone',this.state.phone)
-        formData.append('lineid',this.state.lineid)
         formData.append('email',this.state.email)
-        formData.append('receiptname',this.state.receiptname)
-        formData.append('receiptphone',this.state.receiptphone)
-        formData.append('receiptofficename',this.state.receiptofficename)
-        formData.append('receiptofficephone',this.state.receiptofficephone)
-        formData.append('receiptemail',this.state.receiptemail)
+
         formData.append('accountname',this.state.accountname)
         formData.append('accountphone',this.state.accountphone)
+
+        formData.append('product_type', JSON.stringify(this.props.reducer.product_type))
 
         formData.append('partners_id',props.userInfo.partners_id)
         this.props.openIndicator()
@@ -477,10 +477,8 @@ class ProfileCompanyScreen extends React.Component {
                                         }}
                                         placeholder="กรุณาเลือกจังหวัด"
                                         onChangeItem={ item => {
-                                            this.props.openIndicator()
                                             this.LoadDistrict(item.value)
                                             this.setState({ProvinceSelected : item.value})
-                                            this.props.dismissIndicator()
                                         }}
                                     />
                                     
@@ -524,10 +522,8 @@ class ProfileCompanyScreen extends React.Component {
                                         }}
                                         placeholder="กรุณาเลือกอำเภอ"
                                         onChangeItem={ item => {
-                                            this.props.openIndicator()
                                             this.LoadSubDistrict(item.value)
                                             this.setState({DistrictSelected : item.value})
-                                            this.props.dismissIndicator()
                                         }}
                                     />
                                     
@@ -572,7 +568,6 @@ class ProfileCompanyScreen extends React.Component {
                                         }}
                                         placeholder="กรุณาเลือกตำบล"
                                         onChangeItem={ item => {
-                                            
                                             this.setState({ 
                                                 SubDistrictSelected : item.value,
                                                 Zipcode : item.zipcode
@@ -733,12 +728,28 @@ class ProfileCompanyScreen extends React.Component {
                             </TouchableOpacity>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text18, { color: primaryColor }]}>{`ประเภทสินค้าที่นำมาขาย`}</Text>
-                            <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
-                                <Text style={[styles.text16, { color: 'white' }]}>{ this.state.type_name + ` : ` + this.state.category_name}</Text>
-                            </View>
+
+                            <TouchableOpacity
+                                style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}
+                                onPress={
+                                    () => {
+                                        this.props.navigation.navigate('Categoryscreen', {
+                                            typeId: this.state.type_id,
+                                            RegisType : 'ProfileCompany'
+                                        })
+                                    }
+                                }>
+                                <View style={[styles.containerRow]}>
+                                    <Text style={[styles.text16, {color: 'white',flex:0.9}]}>{this.state.type_name}</Text>
+                                    <View style={{alignItems:'center',flex:0.1}}>
+                                        <Icon  name='chevron-right' size={20} color='white' />
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                          
                             <Text style={[styles.text16, { paddingLeft: 20 }]}>{`สินค้าที่เลือก`}</Text>
                             {
-                                this.state.product.map((v, i) => {
+                                props.product_type.map((v, i) => {
                                     return (
                                         <View key={i} style={{ paddingLeft: 40 }}>
                                             <Text style={[styles.text14]}>{`${(i + 1)}. ${v.product_name}`}</Text>
@@ -761,7 +772,21 @@ class ProfileCompanyScreen extends React.Component {
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
                                         () => {
-                                            this.onUpdateProfile()
+                                            Alert.alert(
+                                                "ยืนยัน",
+                                                'ยืนยันการแก้ไขข้อมูล?',
+                                                [
+                                                    {
+                                                        text: "ยกเลิก",
+                                                        onPress: () => console.log("Cancel Pressed"),
+                                                        style: "cancel"
+                                                    },
+                                                    { text: "ตกลง", 
+                                                        onPress: () => this.onUpdateProfile() 
+                                                    }
+                                                ],
+                                                { cancelable: false }
+                                            );
                                         }
                                     }>
                                     <Text style={[styles.text16, { color: '#FFF' }]}>{`บันทึกการแก้ไข`}</Text>
@@ -802,6 +827,7 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     saveUserInfo,
+    saveProductType
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileCompanyScreen)
