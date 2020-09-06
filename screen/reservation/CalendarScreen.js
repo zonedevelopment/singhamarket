@@ -129,19 +129,20 @@ class CalendarScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[styles.container, { padding: 15 }]}>
+                <ScrollView style={[styles.container, { padding: 15 }]}>
                     <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกวันที่ท่านต้องการขายของ`}</Text>
                     <View style={[styles.panelRectangleGray, styles.center, { alignItems: 'flex-start' }]}>
                         <Text style={{ color: 'white' }}>{`${moment().format('dddd')}, ${moment().format('LL')}`}</Text>
                     </View>
-                    <View>
+                    <View style={{marginBottom :30}}>
                         <Calendar
                             minDate={_today}
                             maxDate={_maxDate}
                             onDayPress={this.onDaySelect}
                             markedDates={this.state._markedDates} />
                     </View>
-                </View>
+                    
+                </ScrollView>
                 <View style={[styles.positionBottom, styles.center, { padding: 10, bottom: 10, alignSelf: 'center' }]}>
                     <TouchableOpacity style={[styles.mainButton, styles.center]}
                         onPress={

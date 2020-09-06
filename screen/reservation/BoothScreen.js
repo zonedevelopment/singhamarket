@@ -361,7 +361,7 @@ class BoothScreen extends React.Component {
                                 renderItem={this._renderItem} />
                         :
                             <View style={[styles.containerRow, { padding: 5, height: 55,alignSelf:'center' }]}>
-                                <Text style={[styles.text16,{textAlign:'center',color:primaryColor}]}>{'ไม่พบข้อมูล'}</Text>
+                                <Text style={[styles.text16,{textAlign:'center',color:primaryColor}]}>{'ไม่พบข้อมูลบูธขายของ'}</Text>
                             </View>
                     }
                 </View>
