@@ -149,10 +149,10 @@ class ProductListScreen extends React.Component {
                     <View style={[styles.mainButton2, styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', paddingLeft: 10, paddingRight: 10 }]}>
                         <TextInput
                             style={[{ color: 'white' }]}
-                            textContentType={{ color: 'white' }}
+                            // textContentType={{ color: 'white' }}
                             placeholder='ค้นหาประเภทอาหาร...'
                             placeholderTextColor="white" />
-                        <Icon name='search' size={16} color='white' />
+                        <Icon name='search' size={16} color={`#fff`} />
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
                     {

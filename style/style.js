@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
         width: DEVICE_WIDTH - 40,
         height: 50,
         borderRadius: 4,
-        padding: 20,
+        padding: 10,
         alignSelf: 'center'
     },
     hr: {

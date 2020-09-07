@@ -129,7 +129,7 @@ class CalendarScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <ScrollView style={[styles.container, { padding: 15 }]}>
+                <ScrollView style={[styles.container, { padding: 5 }]}>
                     <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกวันที่ท่านต้องการขายของ`}</Text>
                     <View style={[styles.panelRectangleGray, styles.center, { alignItems: 'flex-start' }]}>
                         <Text style={{ color: 'white' }}>{`${moment().format('dddd')}, ${moment().format('LL')}`}</Text>

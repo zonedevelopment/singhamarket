@@ -309,9 +309,13 @@ class RegisterCompanyScreen extends React.Component {
         for (const name of names) {
             const validate = VALIDATION_FIELD[name] || {};
             if(validate != {}){
-                if(validate.type === 'text'){
-                    if(fields[name] === ''){
-                        return Alert.alert(validate.message)
+                if (this.state.apptype == 'UAT' && name == 'compid') {
+                    /// ไม่ให้ตรวจสอบเลขบัตรประชาชน เพราะไม่ผ่าน ios
+                } else {
+                    if(validate.type === 'text'){
+                        if(fields[name] === ''){
+                            return Alert.alert(validate.message)
+                        }
                     }
                 }
                 if(validate.type === 'radio'){
@@ -459,7 +463,7 @@ class RegisterCompanyScreen extends React.Component {
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <ScrollView
                         contentContainerStyle={{ flexGrow: 1, padding: 8 }}
-                        keyboardShouldPersistTaps="always">
+                        keyboardShouldPersistTaps='handled'>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>
                             <View style={[styles.hr]}></View>
@@ -472,21 +476,29 @@ class RegisterCompanyScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='ชื่อนิติบุคคล'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ compname: text })}
                                     onSubmitEditing={() => this.compid.focus()} />
                             </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.compid = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='เลขประจำตัวผู้เสียภาษีอากร'
-                                    returnKeyType={'next'}
-                                    keyboardType='numeric'
-                                    blurOnSubmit={false}
-                                    onChangeText={(text) => this.setState({ compid: text })}
-                                    onSubmitEditing={() => this.compAddr.focus()} />
-                            </View>
+                            {
+                                this.state.apptype == 'UAT' ?
+                                    null
+                                    :
+                                    <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                        <TextInput
+                                            ref={(input) => { this.compid = input; }}
+                                            style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                            placeholder='เลขประจำตัวผู้เสียภาษีอากร'
+                                            returnKeyType={'next'}
+                                            autoCapitalize={false}
+                                            keyboardType='numeric'
+                                            blurOnSubmit={false}
+                                            onChangeText={(text) => this.setState({ compid: text })}
+                                            onSubmitEditing={() => this.compAddr.focus()} />
+                                    </View>
+                            }
+                            
                             {/* <View style={[styles.shadow, styles.TextAreaWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
                                     ref={(input) => { this.compAddr = input; }}
@@ -505,6 +517,7 @@ class RegisterCompanyScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='ที่อยู่'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ compAddr: text })}
                                     onSubmitEditing={() => this.compSoi.focus()} />
@@ -516,6 +529,7 @@ class RegisterCompanyScreen extends React.Component {
                                     placeholder='ซอย'
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     onChangeText={(text) => this.setState({ compSoi: text })}
                                     onSubmitEditing={() => this.compRoad.focus()} />
                             </View>
@@ -526,6 +540,7 @@ class RegisterCompanyScreen extends React.Component {
                                     placeholder='ถนน'
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     onChangeText={(text) => this.setState({ compRoad: text })}
                                     onSubmitEditing={() => {/*this.branch_name.focus()*/}} />
                             </View>
@@ -630,6 +645,7 @@ class RegisterCompanyScreen extends React.Component {
                                     placeholder='รหัสสาขา'
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     onChangeText={(text) => this.setState({ branch_code: text })}
                                     onSubmitEditing={() => this.branch_name.focus()} />
                             </View>
@@ -639,6 +655,7 @@ class RegisterCompanyScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='ชื่อสาขา'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ branch_name: text })}
                                     onSubmitEditing={() => this.name.focus()} /> 
@@ -677,6 +694,7 @@ class RegisterCompanyScreen extends React.Component {
                                     placeholder='ชื่อ - นามสกุล'
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     onChangeText={(text) => this.setState({ name: text })}
                                     onSubmitEditing={() => this.phone.focus()} />
                             </View>
@@ -691,6 +709,7 @@ class RegisterCompanyScreen extends React.Component {
                                     maxLength={10} 
                                     keyboardType='phone-pad'
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     onChangeText={(text) => this.setState({ phone: text.replace(/[^0-9\-]+/g, '') })}
                                     onSubmitEditing={() => this.email.focus()} />
                             </View>
@@ -700,6 +719,7 @@ class RegisterCompanyScreen extends React.Component {
                                     ref={(input) => { this.email = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='อีเมล'
+                                    autoCapitalize={false}
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
                                     keyboardType={'email-address'}
@@ -717,6 +737,7 @@ class RegisterCompanyScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='ชื่อ - นามสกุล'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ accountName: text })}
                                     onSubmitEditing={() => this.accountPhone.focus()} />
@@ -729,6 +750,7 @@ class RegisterCompanyScreen extends React.Component {
                                     returnKeyType={'next'}
                                     keyboardType='phone-pad'
                                     value={this.state.accountPhone}
+                                    autoCapitalize={false}
                                     maxLength={10} 
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ accountPhone: text.replace(/[^0-9\-]+/g, '') })}
@@ -742,7 +764,8 @@ class RegisterCompanyScreen extends React.Component {
                                 <TextInput
                                     ref={(input) => { this.username = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='ชื่อผู้ใช้'
+                                    placeholder='Username'
+                                    autoCapitalize={false}
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
                                     value={this.state.username}
@@ -758,7 +781,8 @@ class RegisterCompanyScreen extends React.Component {
                                 <TextInput
                                     ref={(input) => { this.password = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='รหัสผ่าน'
+                                    placeholder='Password'
+                                    autoCapitalize={false}
                                     returnKeyType={'done'}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ password: text })} />

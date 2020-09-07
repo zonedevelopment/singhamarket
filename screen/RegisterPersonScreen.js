@@ -327,7 +327,7 @@ class RegisterPersonScreen extends React.Component {
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <ScrollView
                         contentContainerStyle={{ flexGrow: 1, padding: 8 }}
-                        keyboardShouldPersistTaps="always">
+                        keyboardShouldPersistTaps='handled'>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>
                             <View style={[styles.hr]}></View>
@@ -340,6 +340,7 @@ class RegisterPersonScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='ชื่อ - นามสกุล'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ name: text })}
                                     onSubmitEditing={() => this.idcard.focus()} />
@@ -371,6 +372,7 @@ class RegisterPersonScreen extends React.Component {
                                     placeholder='เบอร์โทรศัพท์'
                                     maxLength={10} 
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     keyboardType='phone-pad'
                                     blurOnSubmit={false}
                                     value={this.state.phone}
@@ -385,6 +387,7 @@ class RegisterPersonScreen extends React.Component {
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
                                     placeholder='Line ID'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ lineid: text })}
                                     onSubmitEditing={() => this.email.focus()} />
@@ -397,6 +400,7 @@ class RegisterPersonScreen extends React.Component {
                                     keyboardType={'email-address'}
                                     returnKeyType={'next'}
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     // onBlur={() => { 
                                     //     let e = this.state.email
                                     //     if (!EmailValidator.validate(e)) {
@@ -426,8 +430,9 @@ class RegisterPersonScreen extends React.Component {
                                 <TextInput
                                     ref={(input) => { this.username = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='ชื่อผู้ใช้'
+                                    placeholder='Username'
                                     returnKeyType={'next'}
+                                    autoCapitalize={false}
                                     //keyboardType={'email-address'}
                                     blurOnSubmit={false}
                                     value={this.state.username}
@@ -443,9 +448,10 @@ class RegisterPersonScreen extends React.Component {
                                 <TextInput
                                     ref={(input) => { this.password = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='รหัสผ่าน'
+                                    placeholder='Password'
                                     returnKeyType={'done'}
                                     blurOnSubmit={false}
+                                    autoCapitalize={false}
                                     onChangeText={(text) => this.setState({ password: text })} />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
