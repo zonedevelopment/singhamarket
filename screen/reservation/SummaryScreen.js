@@ -22,6 +22,7 @@ import {
     secondaryColor,
     emptyColor,
     SUBMIT_BOOKING_URL,
+    GET_CART_URL,
     BASE_URL,
     HEADERFORMDATA,
     CHECK_DISCOUNT_URL,
@@ -31,8 +32,9 @@ import {
     openIndicator,
     dismissIndicator,
     saveDateSelected,
-    setStateBookingSelected
-
+    setStateBookingSelected,
+    setStateMyCart,
+    setUserCountCartItem,
 } from '../../actions'
 import styles from '../../style/style'
 import Hepler from '../../utils/Helper'
@@ -147,12 +149,38 @@ class SummaryScreen extends React.Component {
             if (results.status == 'SUCCESS') {
                 this.props.saveDateSelected('save',[])
                 this.props.setStateBookingSelected([results.BookingID])
-                this.props.dismissIndicator()
-                this.props.navigation.reset({
-                    index: 0,
-                    routes: [{name: 'Building'}],
-                });
-                this.props.navigation.navigate('ConfirmReserv')
+
+                //// count item cart
+                let formData1 = new FormData();
+                formData1.append('partners_id', this.props.reducer.userInfo.partners_id)
+                Hepler.post(BASE_URL + GET_CART_URL, formData1,HEADERFORMDATA,(results1 ) => {
+                    console.log('GET_CART_URL',results1)
+                    if (results1.status == 'SUCCESS') {
+                        this.props.setStateMyCart(results1.data)
+                        this.props.setUserCountCartItem(results1.data.length)
+                        this.props.dismissIndicator()
+                        /// navigation
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [{name: 'Building'}],
+                        });
+                        if(results1.data.length > 1) {
+                            this.props.navigation.navigate('Cart')
+                        }else{
+                            this.props.navigation.navigate('ConfirmReserv')
+                        }
+                     
+                    } else {
+                        this.props.setStateMyCart([])
+                        this.props.setUserCountCartItem(0)
+                        Alert.alert(results.message)
+                        this.props.dismissIndicator()
+                    }
+                })
+
+         
+
+
             } else {
                 Alert.alert(results.message)
                 this.props.dismissIndicator()
@@ -386,8 +414,9 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     saveDateSelected,
-    setStateBookingSelected
-
+    setStateBookingSelected,
+    setStateMyCart,
+    setUserCountCartItem,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen)

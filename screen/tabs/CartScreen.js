@@ -7,6 +7,7 @@ import {
     StatusBar,
     FlatList,
     TextInput,
+    Alert,
     Dimensions,
     BackHandler,
     ScrollView,
@@ -77,6 +78,11 @@ class CartScreen extends React.Component {
                 })
                 this.props.setStateMyCart(results.data)
                 this.props.setUserCountCartItem(results.data.length)
+                if(results.data.length > 0) {
+                    results.data.map((item,index) => {
+                        this.onChecked(item, false)
+                    })
+                }
                 this.props.dismissIndicator()
             } else {
                 this.setState({arrBooking:[]})
@@ -227,6 +233,8 @@ class CartScreen extends React.Component {
             this.LoadData()
             this.props.setStateBookingSelected([])
         });
+
+      
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 

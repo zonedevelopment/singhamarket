@@ -22,6 +22,7 @@ import {
     primaryColor,
     secondaryColor,
     emptyColor,
+    GET_CART_URL,
     redColor,
     BASE_URL,
     GET_CONFIRMRESERVATION_URL,
@@ -34,7 +35,9 @@ import {
     openIndicator,
     dismissIndicator,
     saveDateSelected,
-    setStateBookingSelected
+    setStateBookingSelected,
+    setStateMyCart,
+    setUserCountCartItem,
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -208,6 +211,8 @@ class ConfirmReservScreen extends React.Component {
         )
     }
 
+  
+
     render() {
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
@@ -293,11 +298,14 @@ class ConfirmReservScreen extends React.Component {
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
                                         onPress={
                                             () => {
+
                                                 this.props.navigation.reset({
                                                     index: 0,
                                                     routes: [{name: 'Building'}],
                                                 });
                                                 this.props.navigation.navigate('Reserv')
+
+
                                             }
                                         }>
                                         <Text style={[styles.text14, { color: '#FFF' }]}>{`จองพื้นที่อื่นเพิ่ม`}</Text>
@@ -329,7 +337,9 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     saveDateSelected,
-    setStateBookingSelected
+    setStateBookingSelected,
+    setStateMyCart,
+    setUserCountCartItem,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmReservScreen)
