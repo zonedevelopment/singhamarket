@@ -18,6 +18,7 @@ import {
 require('moment/locale/th.js');
 console.disableYellowBox = true
 import { connect } from 'react-redux'
+import Orientation from 'react-native-orientation-locker';
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
@@ -109,6 +110,7 @@ const navigationRef = React.createRef();
 class App extends React.Component {
  
     componentDidMount() {
+        Orientation.lockToPortrait();
         const props = this.props
         fcmService.registerAppWithFCM()
         fcmService.register(onRegister,onNotificaion,onOpenNotification)

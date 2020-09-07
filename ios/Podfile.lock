@@ -332,6 +332,8 @@ PODS:
     - React
   - react-native-image-picker (2.3.1):
     - React
+  - react-native-orientation-locker (1.2.0):
+    - React
   - react-native-safe-area-context (0.7.3):
     - React
   - react-native-view-shot (3.1.2):
@@ -492,6 +494,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -591,6 +594,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-view-shot:
@@ -692,6 +697,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-cameraroll: 7c2e22b5a8e8f30fc6d5566c942b225ca7129752
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
+  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
   react-native-view-shot: 08c46c9e8e92f6681e8f2ffa55ac3d06e7e99070
   react-native-webview: 0e2881d2e3e72ad52a82445c1a116c43205fd471

@@ -85,6 +85,7 @@ class RegisterPersonScreen extends React.Component {
         email : '',
         username : '',
         password : '',
+        apptype: '',
     }
 
     async onSelectProductCategory(index, value) {
@@ -136,6 +137,8 @@ class RegisterPersonScreen extends React.Component {
     }
 
     componentDidMount() {
+        const { apptype } = this.props.route.params //รับค่า UAT เพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+        this.setState({ apptype: apptype })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -151,11 +154,16 @@ class RegisterPersonScreen extends React.Component {
         for (const name of names) {
             const validate = VALIDATION_FIELD[name] || {};
             if(validate != {}){
-                if(validate.type === 'text'){
-                    if(fields[name] === ''){
-                        return Alert.alert(validate.message)
+                if (this.state.apptype == 'UAT' && name == 'idcard') {
+                    /// ไม่ให้ตรวจสอบเลขบัตรประชาชน เพราะไม่ผ่าน ios
+                } else {
+                    if(validate.type === 'text'){
+                        if(fields[name] === ''){
+                            return Alert.alert(validate.message)
+                        }
                     }
                 }
+                
                 if(validate.type === 'radio'){
                     if(fields[name] == 0){
                         return Alert.alert(validate.message)
@@ -339,21 +347,26 @@ class RegisterPersonScreen extends React.Component {
                                     onChangeText={(text) => this.setState({ name: text })}
                                     onSubmitEditing={() => this.idcard.focus()} />
                             </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <TextInput
-                                    ref={(input) => { this.idcard = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='เลขบัตรประชาชน'
-                                    maxLength={13} 
-                                    keyboardType='numeric'
-                                    returnKeyType={'next'}
-                                    //blurOnSubmit={true}
-                                    value={this.state.idcard}
-                                    onBlur={(e) => this.CheckIDCard()}
-                                    onChangeText={(text) => this.setState({ idcard: text })}
-                                    onSubmitEditing={() => this.phone.focus()} 
-                                    />
-                            </View>
+                            {
+                                this.state.apptype == 'UAT' ?
+                                    null
+                                    :
+                                    <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                        <TextInput
+                                            ref={(input) => { this.idcard = input; }}
+                                            style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                            placeholder='เลขบัตรประชาชน'
+                                            maxLength={13} 
+                                            keyboardType='numeric'
+                                            returnKeyType={'next'}
+                                            //blurOnSubmit={true}
+                                            value={this.state.idcard}
+                                            onBlur={(e) => this.CheckIDCard()}
+                                            onChangeText={(text) => this.setState({ idcard: text })}
+                                            onSubmitEditing={() => this.phone.focus()} 
+                                            />
+                                    </View>
+                            }
                             <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
                                     ref={(input) => { this.phone = input; }}

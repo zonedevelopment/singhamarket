@@ -264,6 +264,8 @@ class RegisterCompanyScreen extends React.Component {
 
     componentDidMount() {
         this.LoadProvince()
+        const { apptype } = this.props.route.params //รับค่า UAT เพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+        this.setState({ apptype: apptype })
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 

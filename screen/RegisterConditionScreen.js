@@ -47,6 +47,7 @@ class RegisterConditionScreen extends React.Component {
         privacyAgree: false,
         htmlContent : '',
         privacy_url : '',
+        apptype: '',
     }
 
     ComponentLeft = () => {
@@ -112,6 +113,7 @@ class RegisterConditionScreen extends React.Component {
                     type: type,
                     licenseAgree: false,
                     privacyAgree: false,
+                    apptype: results.app
                 })
             } else {
                 Alert.alert(results.message)
@@ -211,9 +213,13 @@ class RegisterConditionScreen extends React.Component {
                                     () => {
                                         this.props.saveProductType([])
                                         if (this.state.type == 1) {
-                                            this.props.navigation.navigate('Registerperson')
+                                            this.props.navigation.navigate('Registerperson', {
+                                                apptype: this.state.apptype //ส่งค่า UAT ไปเช็คที่ฟอร์มสมัครเพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+                                            })
                                         } else if (this.state.type == 2) {
-                                            this.props.navigation.navigate('Registercompany')
+                                            this.props.navigation.navigate('Registercompany', {
+                                                apptype: this.state.apptype //ส่งค่า UAT ไปเช็คที่ฟอร์มสมัครเพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+                                            })
                                         }
                                     }
                                 }>
