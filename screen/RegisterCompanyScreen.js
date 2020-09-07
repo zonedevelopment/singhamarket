@@ -21,6 +21,7 @@ import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import ImagePicker from 'react-native-image-picker'
 import Lightbox from 'react-native-lightbox'
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as EmailValidator from 'email-validator';
 import {
     darkColor,
     grayColor,
@@ -330,7 +331,7 @@ class RegisterCompanyScreen extends React.Component {
         }
 
 
-        if (!this.validateEmail(fields.email)){
+        if (!EmailValidator.validate(fields.email)){
             return Alert.alert('Email ข้อมูลผู้มาติดต่อไม่ถูกต้อง!')
         }
      

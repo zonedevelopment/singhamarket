@@ -28,7 +28,7 @@ import {
     HEADERFORMDATA,
     CHECK_REGISTER_URL,
 } from '../utils/contants'
-
+import * as EmailValidator from 'email-validator';
 
 
 import {
@@ -142,11 +142,8 @@ class RegisterPersonScreen extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
-    validateEmail(email) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
-
+  
+  
     validateFields() {
         const fields = this.state;
         const names = Object.keys(fields);
@@ -176,7 +173,7 @@ class RegisterPersonScreen extends React.Component {
         }
 
 
-        if (!this.validateEmail(fields.email)){
+        if (!EmailValidator.validate(fields.email)){
             return Alert.alert('Email ไม่ถูกต้อง!')
         }
       
@@ -399,26 +396,26 @@ class RegisterPersonScreen extends React.Component {
                                     placeholder='อีเมล'
                                     keyboardType={'email-address'}
                                     returnKeyType={'next'}
-                                    //blurOnSubmit={false}
-                                    onBlur={() => { 
-                                        let e = this.state.email
-                                        if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(e) == false) {
-                                            Alert.alert('คำเตือน!','Email ไม่ถูกต้อง!',
-                                                [
-                                                    { text: 'ตกลง', onPress: () => {
-                                                        this.setState({ email : '' })
-                                                        this.email.focus()
-                                                    } }
-                                                ],
-                                                { cancelable: false }
-                                            );
-                                        }else{
-                                            this.username.focus()
-                                        } 
-                                    }}
+                                    blurOnSubmit={false}
+                                    // onBlur={() => { 
+                                    //     let e = this.state.email
+                                    //     if (!EmailValidator.validate(e)) {
+                                    //         Alert.alert('คำเตือน!','Email ไม่ถูกต้อง!',
+                                    //             [
+                                    //                 { text: 'ตกลง', onPress: () => {
+                                    //                     this.setState({ email : '' })
+                                    //                     this.email.focus()
+                                    //                 } }
+                                    //             ],
+                                    //             { cancelable: false }
+                                    //         );
+                                    //     }else{
+                                    //         this.username.focus()
+                                    //     } 
+                                    // }}
                                     value={this.state.email}
                                     onChangeText={(text) => { this.setState({ email: text}) }}
-                                    //onSubmitEditing={() => this.username.focus()} 
+                                    onSubmitEditing={() => this.username.focus()} 
                                     />
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>

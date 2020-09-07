@@ -16,6 +16,7 @@ import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
+import * as EmailValidator from 'email-validator';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { CheckBox } from 'react-native-elements'
 import {
@@ -661,7 +662,7 @@ class ProfileCompanyScreen extends React.Component {
                                         keyboardType={'email-address'}
                                         onBlur={() => { 
                                             let e = this.state.email
-                                            if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(e) == false) {
+                                            if (!EmailValidator.validate(e)) {
                                                 Alert.alert('คำเตือน!','Email ไม่ถูกต้อง!',
                                                     [
                                                         { text: 'ตกลง', onPress: () => {

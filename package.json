@@ -22,6 +22,7 @@
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",
     "axios": "^0.19.2",
+    "email-validator": "^2.0.4",
     "formik": "^2.1.4",
     "moment": "^2.25.3",
     "native-base": "^2.13.12",
