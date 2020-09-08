@@ -469,12 +469,21 @@ class ProfileCompanyScreen extends React.Component {
                                             borderTopLeftRadius: 20, borderTopRightRadius: 20,
                                             borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
                                             elevation: 5,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
                                         }}
                                         itemStyle={{
                                             justifyContent: 'flex-start',
                                             elevation: 5,
                                             color: primaryColor,
-                                            fontSize:16
+                                            fontSize:16,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
+                                            
                                         }}
                                         placeholder="กรุณาเลือกจังหวัด"
                                         onChangeItem={ item => {
@@ -514,12 +523,20 @@ class ProfileCompanyScreen extends React.Component {
                                             borderTopLeftRadius: 20, borderTopRightRadius: 20,
                                             borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
                                             elevation: 5,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
                                         }}
                                         itemStyle={{
                                             justifyContent: 'flex-start',
                                             elevation: 5,
                                             color: primaryColor,
-                                            fontSize:16
+                                            fontSize:16,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
                                         }}
                                         placeholder="กรุณาเลือกอำเภอ"
                                         onChangeItem={ item => {
@@ -560,12 +577,20 @@ class ProfileCompanyScreen extends React.Component {
                                             borderTopLeftRadius: 20, borderTopRightRadius: 20,
                                             borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
                                             elevation: 5,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
                                         }}
                                         itemStyle={{
                                             justifyContent: 'flex-start',
                                             elevation: 5,
                                             color: primaryColor,
-                                            fontSize:16
+                                            fontSize:16,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
                                         }}
                                         placeholder="กรุณาเลือกตำบล"
                                         onChangeItem={ item => {

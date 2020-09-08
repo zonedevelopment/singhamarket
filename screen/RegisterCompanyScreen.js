@@ -559,11 +559,19 @@ class RegisterCompanyScreen extends React.Component {
                                     dropDownStyle={{
                                         borderTopLeftRadius: 20, borderTopRightRadius: 20,
                                         borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
                                         elevation: 5,
                                     }}
                                     itemStyle={{
                                         justifyContent: 'flex-start',
                                         elevation: 5,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
                                     }}
                                     placeholder="กรุณาเลือกจังหวัด"
                                     onChangeItem={ item => this.LoadDistrict(item.value)}
@@ -585,10 +593,18 @@ class RegisterCompanyScreen extends React.Component {
                                         borderTopLeftRadius: 20, borderTopRightRadius: 20,
                                         borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
                                         elevation: 5,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
                                     }}
                                     itemStyle={{
                                         justifyContent: 'flex-start',
                                         elevation: 5,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
                                     }}
                                     placeholder="กรุณาเลือกอำเภอ"
                                     onChangeItem={ item => this.LoadSubDistrict(item.value)}
@@ -610,10 +626,18 @@ class RegisterCompanyScreen extends React.Component {
                                         borderTopLeftRadius: 20, borderTopRightRadius: 20,
                                         borderBottomLeftRadius: 20, borderBottomRightRadius: 20,
                                         elevation: 5,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
                                     }}
                                     itemStyle={{
                                         justifyContent: 'flex-start',
                                         elevation: 5,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
                                     }}
                                     placeholder="กรุณาเลือกตำบล"
                                     onChangeItem={ item => {
@@ -771,7 +795,7 @@ class RegisterCompanyScreen extends React.Component {
                                     value={this.state.username}
                                     onBlur={(e) => this.CheckUserName()}
                                     onChangeText={(text) => {
-                                        if(/^[a-zA-Z]+$/.test(text) || text == ''){
+                                        if(/^[a-zA-Z0-9]+$/.test(text) || text == ''){
                                             this.setState({ username: text })
                                         }
                                     }}

@@ -438,7 +438,7 @@ class RegisterPersonScreen extends React.Component {
                                     value={this.state.username}
                                     onBlur={(e) => this.CheckUserName()}
                                     onChangeText={(text) => {
-                                        if(/^[a-zA-Z]+$/.test(text) || text == ''){
+                                        if(/^[a-zA-Z0-9]+$/.test(text) || text == ''){
                                             this.setState({ username: text })
                                         }
                                     }}

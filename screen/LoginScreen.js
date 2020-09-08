@@ -221,7 +221,7 @@ class LoginScreen extends React.Component {
                                 blurOnSubmit={false}
                                 value={this.state.username}
                                 onChangeText={(text) => {
-                                    if(/^[a-zA-Z]+$/.test(text) || text == ''){
+                                    if(/^[a-zA-Z0-9]+$/.test(text) || text == ''){
                                         this.setState({ username: text })
                                     }
                                 }}
