@@ -127,12 +127,16 @@ class ConfirmReservScreen extends React.Component {
                     console.log('discount_price',discount_price)
                     console.log('total_other_service',total_other_service)
                 })
-                if (reducer.userInfo.partners_type == 1) {
+                if (reducer.userInfo.partners_type == 1) {/// บุคคลธรรมดา
                     vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.personal_vat / 100
-                } else {
+                    total_final_price = parseFloat(total_area) + parseFloat(total_other_service)  - parseFloat(discount_price)
+                } else { /// นิติบุคคล
                     vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
+                    total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
                 }
-                total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+
+               // total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+                
                 this.setState({
                     total_area: total_area,
                     area_item : area_item,
@@ -276,12 +280,18 @@ class ConfirmReservScreen extends React.Component {
                                     <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
                                     <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
                                 </View>
+
+                                {
+                                        this.props.reducer.userInfo.partners_type == 2 ? 
+                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                                <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
+                                                <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
+                                            </View>
+                                            :
+                                            <View></View>
+                                    }
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
-                                    <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
-                                </View>
-                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                    <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
+                                    <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ `}</Text>
                                     <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                 </View>
                             </View>

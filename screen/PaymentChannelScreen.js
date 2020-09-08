@@ -69,6 +69,8 @@ const moveAttachment = async (filePath, newFilepath) => {
 };
 
 
+
+
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class PaymentChannelScreen extends React.Component {
 
@@ -134,8 +136,9 @@ class PaymentChannelScreen extends React.Component {
     ScreenFunction = async (value) => {
         // await this.setState({ capimage: value })
         // await CameraRoll.saveToCameraRoll(value, 'photo')
+        this.props.openIndicator()
         const newImageName = `${moment().format('DDMMYY_HHmmSSS')}.jpg`;
-        const newFilepath = `${RNFS.PicturesDirectoryPath}/${newImageName}`;
+        const newFilepath = `${RNFS.ExternalStorageDirectoryPath}/${newImageName}`;
         const imageMoved = await moveAttachment(value, newFilepath);
         if (imageMoved) {
             Alert.alert(
@@ -147,6 +150,7 @@ class PaymentChannelScreen extends React.Component {
                 { cancelable: false }
             )
         }
+        this.props.dismissIndicator()
     }
 
     CreateTransactionQRCode = () => {

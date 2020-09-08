@@ -48,11 +48,12 @@ class HistoryScreen extends React.Component {
         this.state = {
             DateStartSelectValue : moment().format('YYYY-MM-DD'),
             DateStartSelectText : moment().format('ll'),
-            DateEndSelectValue : moment().format('YYYY-MM-DD'),
-            DateEndSelectText : moment().format('ll'),
+            DateEndSelectValue : moment().add(30, 'days').format('YYYY-MM-DD'),
+            DateEndSelectText : moment().add(30, 'days').format('ll'),
             isDateTimePickerVisible : false,
             ActiveDateType : '',
             ListData : [],
+            isFetching : false,
         };
     }
 
@@ -200,13 +201,25 @@ class HistoryScreen extends React.Component {
             console.log('GET_HISTORY_URL',results)
             if (results.status == 'SUCCESS') {
                 this.setState({
-                    ListData : results.data
+                    ListData : results.data,
+                    isFetching: false
                 })
                 this.props.dismissIndicator()
             } else {
+                this.setState({
+                    isFetching: false
+                })
                 Alert.alert(results.message)
                 this.props.dismissIndicator()
             }
+        })
+    }
+
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.SearchData()
         })
     }
 
@@ -265,26 +278,7 @@ class HistoryScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
 
-                    
-                    {/* <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}>
-                        <View style={[styles.mainButton3, {  paddingLeft: 10,color: '#FFF' }]}>
-                            <Picker
-                                mode="dropdown"
-                                style={{color: '#FFF'}}
-                                placeholder="เลือกเดือนที่ต้องการดู"
-                                textStyle={{ fontSize: 18 }}
-                                itemStyle={{ marginLeft: 0, paddingLeft: 10 }}
-                                itemTextStyle={{ color: '#FFF', fontSize: 18 }}
-                                selectedValue={this.state.selected}
-                                onValueChange={(value) => this.setState({selected : value})} 
-                            >
-                                    <Picker.Item label="เลือกเดือนที่ต้องการดู" value="" />
-                            </Picker>
-                        </View>
-                        <TouchableOpacity style={[styles.twoButton, styles.center, { width: 100, backgroundColor: grayColor }]}>
-                            <Text style={[styles.text18, { color: '#FFF' }]}>{`ดูทั้งหมด`}</Text>
-                        </TouchableOpacity>
-                    </View> */}
+      
 
                     <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>
                     <View style={[styles.marginBetweenVertical]}></View>
@@ -293,6 +287,8 @@ class HistoryScreen extends React.Component {
                             <FlatList
                             style={{ marginTop: 5, paddingBottom: 60 }}
                             data={this.state.ListData}
+                            onRefresh={() => this.onRefresh()}
+                            refreshing={this.state.isFetching}
                             extraData={this.state}
                             keyExtractor={(item) => item.booking_detail_id}
                             renderItem={this._renderItem} />

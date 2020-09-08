@@ -32,6 +32,7 @@ import {
     setStateSelectedBuildingName,
     setStateSelectedFloorName,
     setStateSelectedZoneName,
+    setStateSelectedProduct,
 } from '../../actions'
 
 import styles from '../../style/style'
@@ -126,6 +127,14 @@ class FloorZoneScreen extends React.Component {
     async componentDidMount() {
         const{ building_data } = this.props.route.params
         let index = this.props.reducer.building.findIndex(p => p.building_id == building_data.building_id)
+        const props = this.props.reducer
+        this.props.setStateSelectedProduct({
+            cate_id : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.cate_id,
+            cate_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.category_name,
+            type_id : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_id,
+            type_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_name,
+            product : typeof props.userInfo === 'undefined' ? [] : props.userInfo.product
+        })
         await this.setState({
             index : index,
             floor : this.props.reducer.building[index].building_floor,
@@ -262,12 +271,29 @@ class FloorZoneScreen extends React.Component {
                             <View style={[styles.hr]}></View>
                             <View>
                                 <Text style={[styles.text16]}>{`ประเภทสินค้าที่ขาย`}</Text>
-                                <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
+                                {/* <View style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}>
                                     <Text style={[styles.text16, { color: 'white' }]}>{ props.userInfo.product_type.type_name + ` : ` + props.userInfo.product_type.category_name}</Text>
-                                </View>
+                                </View> */}
+                                <TouchableOpacity
+                                    style={[styles.mainButton2, { marginTop: 5, marginBottom: 5, justifyContent: 'center', paddingLeft: 10 }]}
+                                    onPress={
+                                        () => {
+                                            this.props.navigation.navigate('Categoryscreen', {
+                                                typeId: props.reserverion_product.type_id ,
+                                                RegisType : 'FloorZoneScreen'
+                                            })
+                                        }
+                                    }>
+                                    <View style={[styles.containerRow]}>
+                                        <Text style={[styles.text16, {color: 'white',flex:0.9}]}>{props.reserverion_product.type_name + ' : ' + props.reserverion_product.cate_name}</Text>
+                                        <View style={{alignItems:'center',justifyContent: 'center',flex:0.1}}>
+                                            <Icon  name='chevron-right' size={20} color='white' />
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
                                 <Text style={[styles.text16, { paddingLeft: 20 }]}>{`สินค้าที่เลือก`}</Text>
                                 {
-                                    props.userInfo.product.map((v, i) => {
+                                    props.reserverion_product.product.map((v, i) => {
                                         return (
                                             <View key={i} style={{ paddingLeft: 40 }}>
                                                 <Text style={[styles.text14]}>{`${(i + 1)}. ${v.product_name}`}</Text>
@@ -333,6 +359,7 @@ const mapDispatchToProps = {
     setStateSelectedBuildingName,
     setStateSelectedFloorName,
     setStateSelectedZoneName,
+    setStateSelectedProduct
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FloorZoneScreen)

@@ -39,7 +39,8 @@ class CategoryListScreen extends React.Component {
     state = {
         type_id: '',
         cate : [],
-        RegisType : ''
+        RegisType : '',
+        isFetching : false,
     }
 
     _renderItem = ({ item, index }) => {
@@ -49,7 +50,9 @@ class CategoryListScreen extends React.Component {
                     () => this.props.navigation.navigate('Productlist', {
                         typeId: this.state.type_id,
                         product: item.product,
-                        RegisType : this.state.RegisType
+                        RegisType : this.state.RegisType,
+                        category_id : item.category_id,
+                        category_name : item.name,
                     })
                 }>
                 {/* <CheckBox
@@ -70,11 +73,13 @@ class CategoryListScreen extends React.Component {
             if (results.status == 'SUCCESS') {
                 this.setState({
                     cate: results.data,
+                    isFetching: false
                 })
                 this.props.dismissIndicator()
             } else {
                 this.setState({
                     cate : [],
+                    isFetching: false
                 })
                 this.props.dismissIndicator()
             }
@@ -126,6 +131,14 @@ class CategoryListScreen extends React.Component {
         this.LoadData(typeId)
     }
 
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData(this.state.type_id)
+        })
+    }
+
     render() {
 
         return (
@@ -152,6 +165,8 @@ class CategoryListScreen extends React.Component {
                     <FlatList
                         style={{ marginTop: 5 }}
                         data={this.state.cate}
+                        onRefresh={() => this.onRefresh()}
+                        refreshing={this.state.isFetching}
                         keyExtractor={(item) => item.category_id}
                         renderItem={this._renderItem} />
                 </View>

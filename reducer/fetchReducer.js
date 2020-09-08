@@ -18,6 +18,7 @@ import {
     SET_ZONE_NAME_SELECTED,
     SET_PREVIOUS_SCREEN,
     SET_BOOKINGID_SELECTED,
+    SET_PRODUCT_SELECTED,
     SET_MY_CART,
     SET_USER_CART_ITEM,
     SET_USER_NOTIFY_ITEM,
@@ -46,6 +47,13 @@ const initialState = {
     reserverion_building_name : '',
     reserverion_zone_name : '',
     reserverion_floor_name : '',
+    reserverion_product : {
+        cate_id : '',
+        cate_name : '',
+        type_id : '',
+        type_name : '',
+        product : [],
+    },
     news: [],
     banner: [/*{ link: 'https://www.smartsme.co.th/media/BorYqhd9Mg2OTmfmqCVvtVwGaECFdstenBmooYh0jMWsGT5Yv3Zm3.png' }*/],
     standardAccessories: [],
@@ -182,6 +190,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 booking_selected : action.payload
+            }
+        case SET_PRODUCT_SELECTED : 
+            return {
+                ...state,
+                reserverion_product : action.payload
             }
         case SET_MY_CART : 
             return {

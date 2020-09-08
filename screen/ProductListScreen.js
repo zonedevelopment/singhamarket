@@ -28,7 +28,8 @@ import {
 } from '../utils/contants'
 
 import {
-    saveProductType
+    saveProductType,
+    setStateSelectedProduct
 } from '../actions'
 
 import styles from '../style/style'
@@ -40,7 +41,9 @@ class ProductListScreen extends React.Component {
         type_id: '',
         productList: [],
         productSelected: [],
-        RegisType: ''
+        RegisType: '',
+        category_id : '',
+        category_name : '',
     }
 
     async onItemChecked(item, checked) {
@@ -121,11 +124,17 @@ class ProductListScreen extends React.Component {
     }
 
     componentDidMount() {
-        const { typeId, product,RegisType } = this.props.route.params
-        this.setState({ type_id: typeId, productList: product,RegisType:RegisType })
+        const { typeId, product,RegisType,category_id ,category_name} = this.props.route.params
+        this.setState({ 
+            type_id: typeId, 
+            productList: product,
+            RegisType:RegisType ,
+            category_id : category_id
+        })
     }
 
     render() {
+        const props = this.props.reducer
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
                 <NavigationBar
@@ -175,15 +184,28 @@ class ProductListScreen extends React.Component {
                             <TouchableOpacity style={[styles.mainButton, styles.center]}
                                 onPress={
                                     async () => {
-                                        await this.props.saveProductType(this.state.productSelected)
+                                        
                                         if(this.state.RegisType == 'Personal'){
+                                            await this.props.saveProductType(this.state.productSelected)
                                             this.props.navigation.navigate('Registerperson')
                                         }else if(this.state.RegisType == 'Company'){
+                                            await this.props.saveProductType(this.state.productSelected)
                                             this.props.navigation.navigate('Registercompany')
                                         }else if (this.state.RegisType == 'ProfileCompany'){
+                                            await this.props.saveProductType(this.state.productSelected)
                                             this.props.navigation.navigate('Company')
-                                        }else{
+                                        }else if (this.state.RegisType == 'ProfilePersonal'){
+                                            await this.props.saveProductType(this.state.productSelected)
                                             this.props.navigation.navigate('Personal')
+                                        }else{
+                                            await this.props.setStateSelectedProduct({
+                                                cate_id : this.state.category_id,
+                                                cate_name : this.state.category_name,
+                                                type_id : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_id,
+                                                type_name : typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_name,
+                                                product : this.state.productSelected
+                                            })
+                                            this.props.navigation.navigate('Floorzone')
                                         }
                                     }
                                 }>
@@ -204,7 +226,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    saveProductType
+    saveProductType,
+    setStateSelectedProduct,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductListScreen)

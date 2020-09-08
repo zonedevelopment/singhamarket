@@ -248,8 +248,8 @@ class BoothScreen extends React.Component {
             formData.append('floor_id',this.props.reducer.reserverion_floor_id)
             formData.append('zone_id',this.props.reducer.reserverion_zone_id)
             formData.append('date',itemValue)
-            formData.append('product_type_id',this.props.reducer.userInfo.product_type.type_id)
-            formData.append('product_cate_id',this.props.reducer.userInfo.product_type.cate_id)
+            formData.append('product_type_id',this.props.reducer.reserverion_product.type_id)
+            formData.append('product_cate_id',this.props.reducer.reserverion_product.cate_id)
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {

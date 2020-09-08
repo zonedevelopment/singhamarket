@@ -18,6 +18,7 @@ import {
     SET_ZONE_NAME_SELECTED,
     SET_PREVIOUS_SCREEN,
     SET_BOOKINGID_SELECTED,
+    SET_PRODUCT_SELECTED,
     SET_MY_CART,
     SET_USER_CART_ITEM,
     SET_USER_NOTIFY_ITEM,
@@ -203,6 +204,11 @@ export const setStatePreviousScreen = (data) => ({
 
 export const setStateBookingSelected = (data) => ({
     type: SET_BOOKINGID_SELECTED,
+    payload: data
+})
+
+export const setStateSelectedProduct = (data) => ({
+    type: SET_PRODUCT_SELECTED,
     payload: data
 })
 

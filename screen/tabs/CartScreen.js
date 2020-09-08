@@ -110,7 +110,7 @@ class CartScreen extends React.Component {
             }
         })
     }
-
+    
 
     _renderItem = ({ item, index }) => {
         return (
@@ -133,7 +133,23 @@ class CartScreen extends React.Component {
                     </View>
                     <View style={{ flex: 0.3 }}>
                         <View style={[styles.containerRow, { justifyContent: 'flex-end' }]}>
-                            <TouchableOpacity onPress={() => { this.CancelBooking(item)}}>
+                            <TouchableOpacity onPress={() => { 
+                                Alert.alert(
+                                    "ยืนยัน",
+                                    'ยืนยันการยกเลิกการจอง?',
+                                    [
+                                        {
+                                            text: "ยกเลิก",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                            style: "cancel"
+                                        },
+                                        { text: "ตกลง", 
+                                            onPress: () => this.CancelBooking(item)
+                                        }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }}>
                                 <Text style={[styles.text16]}>{`ยกเลิก`}</Text>
                             </TouchableOpacity>
                         </View>
@@ -230,8 +246,8 @@ class CartScreen extends React.Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            this.LoadData()
             this.props.setStateBookingSelected([])
+            this.LoadData()
         });
 
       
@@ -262,13 +278,17 @@ class CartScreen extends React.Component {
             //total_final_price = parseFloat(total_final_price) - parseFloat(item.booking_grand_total)
         }
 
-        if (reducer.userInfo.partners_type == 1) {
+        if (reducer.userInfo.partners_type == 1) { /// บุคคลธรรมดา
             vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.personal_vat / 100
-        } else {
+            total_final_price = parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)
+        } else { /// นิติบุคคล
             vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
+            total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
         }
 
-        total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+        // total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+      
+        
         this.setState({
             arrBooking: arr,
             total_area: total_area,
@@ -342,12 +362,18 @@ class CartScreen extends React.Component {
                                         <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
                                         <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
                                     </View>
+                                    {
+                                        this.props.reducer.userInfo.partners_type == 2 ? 
+                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                                <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
+                                                <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
+                                            </View>
+                                            :
+                                            <View></View>
+                                    }
+                                    
                                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                        <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
-                                        <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                        <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ (รวม Vat)`}</Text>
+                                        <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ`}</Text>
                                         <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                     </View>
                                 </View>
