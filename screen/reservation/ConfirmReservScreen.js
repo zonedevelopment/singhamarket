@@ -135,13 +135,13 @@ class ConfirmReservScreen extends React.Component {
                     // vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
                     vat_cut = (parseFloat(total_area) - (parseFloat(total_area) * 7) / 107)
                     vat = (parseFloat(vat_cut) - parseFloat(discount_price)) * reducer.company_vat / 100
-                    total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+                    total_final_price = (parseFloat(total_area) - parseFloat(vat)) + parseFloat(total_other_service) - parseFloat(discount_price)
                 }
 
                 // total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
 
                 this.setState({
-                    total_area: total_area - ((total_area * 7) / 107),
+                    total_area: total_area,// - ((total_area * 7) / 107),
                     area_item: area_item,
                     total_other_service: total_other_service,
                     discount_price: discount_price,

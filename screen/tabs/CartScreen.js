@@ -264,12 +264,17 @@ class CartScreen extends React.Component {
     }
 
     onChecked(item, checked) {
+
         const props = this.props
         const reducer = props.reducer
         let arr = this.state.arrBooking;
         let booking_id = item.booking_id;
         let index = arr.findIndex(k => k.booking_id == booking_id);
         arr[index].checked = checked == true ? false : true;
+        console.log('booking_id',booking_id)
+        console.log('arr',arr)
+        console.log('checked',checked)
+        console.log('index',index)
 
         ///// calculate money
         let { total_area, area_item, total_other_service, discount_price } = this.state
@@ -303,7 +308,7 @@ class CartScreen extends React.Component {
 
         this.setState({
             arrBooking: arr,
-            total_area: (total_area - (total_area * 7) / 107),
+            total_area: total_area,//(total_area - (total_area * 7) / 107),
             area_item: area_item,
             total_other_service: total_other_service,
             discount_price: discount_price,
