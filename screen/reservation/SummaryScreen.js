@@ -193,8 +193,8 @@ class SummaryScreen extends React.Component {
             <View key={index}>
                 <View style={[styles.containerRow]}>
                     <View style={{ flex: 0.15 }}>
-                        <View style={[styles.center, { alignItems: 'center', width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                            <Text style={[styles.text16, styles.bold, { textAlign: 'center' }]}>{item.boothSelectName}</Text>
+                        <View style={[styles.center, { alignItems: 'center', width: 42, height: 42, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                            <Text style={[styles.text14, styles.bold, { textAlign: 'center' }]}>{item.boothSelectName}</Text>
                         </View>
                     </View>
                     <View style={{ flex: 0.9 }}>
@@ -206,13 +206,13 @@ class SummaryScreen extends React.Component {
                                         day: item.date,
                                     })
                                 }}>
-                                    <Text style={[styles.text16]}>{`แก้ไข`}</Text>
+                                    <Text style={[styles.text16, styles.bold]}>{`แก้ไข`}</Text>
                                 </TouchableOpacity>
                                 <View style={{ width: 1, backgroundColor: grayColor, margin: 4 }}></View>
                                 <TouchableOpacity onPress={()=>{
                                     this.CancelOrder(item.date)
                                 }}>
-                                    <Text style={[styles.text16]}>{`ลบ`}</Text>
+                                    <Text style={[styles.text16, styles.bold, { color: 'red' }]}>{`ลบ`}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

@@ -45,14 +45,14 @@ import styles from '../../style/style'
 class ConfirmReservScreen extends React.Component {
 
     state = {
-        area_item : 0,
-        total_area : 0,
-        discount_price : 0,
-        total_other_service : 0,
-        vat : 0,
-        total_final_price : 0,
-        arrBooking:[],
-        Timeout : '',
+        area_item: 0,
+        total_area: 0,
+        discount_price: 0,
+        total_other_service: 0,
+        vat: 0,
+        total_final_price: 0,
+        arrBooking: [],
+        Timeout: '',
     }
 
     ComponentLeft = () => {
@@ -92,60 +92,63 @@ class ConfirmReservScreen extends React.Component {
 
     componentDidMount() {
         //this.calculate()
-        console.log('bookingID',this.props.reducer.booking_selected)
+        console.log('bookingID', this.props.reducer.booking_selected)
         this.GetData()
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
 
-    GetData(){
+    GetData() {
         let BookingID = this.props.reducer.booking_selected
         const props = this.props
         const reducer = props.reducer
         let formData = new FormData();
-        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
-        formData.append('booking_id',JSON.stringify(BookingID))
+        formData.append('partners_id', this.props.reducer.userInfo.partners_id)
+        formData.append('booking_id', JSON.stringify(BookingID))
         this.props.openIndicator()
-        Hepler.post(BASE_URL+GET_CONFIRMRESERVATION_URL,formData,HEADERFORMDATA,(results)=>{
-            console.log('GET_CONFIRMRESERVATION_URL',results)
+        Hepler.post(BASE_URL + GET_CONFIRMRESERVATION_URL, formData, HEADERFORMDATA, (results) => {
+            console.log('GET_CONFIRMRESERVATION_URL', results)
             if (results.status == 'SUCCESS') {
                 let total_area = 0
                 let area_item = 0
                 let total_other_service = 0
                 let discount_price = 0
                 let vat = 0
+                let vat_cut = 0;
                 let total_final_price = 0
-                results.data.map((vBooking,iBooking)=>{
-                    console.log('vBooking',vBooking)
+                results.data.map((vBooking, iBooking) => {
+                    console.log('vBooking', vBooking)
                     total_area += parseFloat(vBooking.booking_total)
                     area_item += vBooking.Booking_Details.length
                     discount_price += parseFloat(vBooking.booking_coupon)
                     total_other_service += parseFloat(vBooking.booking_service_total)
 
-                    console.log('total_area',total_area)
-                    console.log('area_item',area_item)
-                    console.log('discount_price',discount_price)
-                    console.log('total_other_service',total_other_service)
+                    console.log('total_area', total_area)
+                    console.log('area_item', area_item)
+                    console.log('discount_price', discount_price)
+                    console.log('total_other_service', total_other_service)
                 })
                 if (reducer.userInfo.partners_type == 1) {/// บุคคลธรรมดา
                     vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.personal_vat / 100
-                    total_final_price = parseFloat(total_area) + parseFloat(total_other_service)  - parseFloat(discount_price)
+                    total_final_price = parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)
                 } else { /// นิติบุคคล
-                    vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
+                    // vat = (parseFloat(total_area) + parseFloat(total_other_service) - parseFloat(discount_price)) * reducer.company_vat / 100
+                    vat_cut = (parseFloat(total_area) - (parseFloat(total_area) * 7) / 107)
+                    vat = (parseFloat(vat_cut) - parseFloat(discount_price)) * reducer.company_vat / 100
                     total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
                 }
 
-               // total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
-                
+                // total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
+
                 this.setState({
-                    total_area: total_area,
-                    area_item : area_item,
+                    total_area: total_area - ((total_area * 7) / 107),
+                    area_item: area_item,
                     total_other_service: total_other_service,
-                    discount_price : discount_price,
+                    discount_price: discount_price,
                     vat: vat,
                     total_final_price: total_final_price,
-                    arrBooking : results.data,
-                    Timeout : results.Timeout
+                    arrBooking: results.data,
+                    Timeout: results.Timeout
                 })
                 this.props.dismissIndicator()
             } else {
@@ -162,26 +165,32 @@ class ConfirmReservScreen extends React.Component {
         return (
             <View>
                 {
-                    item.Booking_Details.map((valueDetails,indexDetails)=>{
+                    item.Booking_Details.map((valueDetails, indexDetails) => {
                         return (
                             <View>
-                                <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8,  justifyContent: 'center', paddingLeft: 10 }]}>
-                                    <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.name_market}</Text>
-                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.floor_name + ` / ` + valueDetails.zone_name}</Text>
-                                    </View>
-                                    <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
-                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                        <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.product_type_name}</Text>
-                                    </View>
-                                </View>
+                                {
+                                    indexDetails == 0 ?
+                                        <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8, justifyContent: 'center', paddingLeft: 10 }]}>
+                                            <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.name_market}</Text>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.floor_name + ` / ` + valueDetails.zone_name}</Text>
+                                            </View>
+                                            <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.product_type_name}</Text>
+                                            </View>
+                                        </View>
+                                        :
+                                        null
+                                }
+
                                 <View style={[styles.marginBetweenVertical]}></View>
                                 <View style={[styles.containerRow]}>
                                     <View style={{ flex: 0.15 }}>
-                                        <View style={[styles.center, { width: 40, height: 40, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                            <Text style={[styles.text16, styles.bold,{textAlign:'center'}]}>{valueDetails.boothname}</Text>
+                                        <View style={[styles.center, { width: 42, height: 42, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                                            <Text style={[styles.text14, styles.bold, { textAlign: 'center' }]}>{valueDetails.boothname}</Text>
                                         </View>
                                     </View>
                                     <View style={{ flex: 0.9 }}>
@@ -193,7 +202,7 @@ class ConfirmReservScreen extends React.Component {
                                             <Text style={[styles.text14]}>{numeral(valueDetails.boothprice).format('0,0.00') + ` บาท`}</Text>
                                         </View>
                                         {
-                                            valueDetails.Service.map((vService,iService)=>{
+                                            valueDetails.Service.map((vService, iService) => {
                                                 return (
                                                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                                         <Text style={[styles.text14]}>{vService.service_name + ' x' + vService.qty}</Text>
@@ -210,12 +219,12 @@ class ConfirmReservScreen extends React.Component {
                     })
                 }
                 <View style={[styles.hr]}></View>
-                
+
             </View>
         )
     }
 
-  
+
 
     render() {
         return (
@@ -261,7 +270,7 @@ class ConfirmReservScreen extends React.Component {
                                 data={this.state.arrBooking}
                                 keyExtractor={(item) => item.booking_id}
                                 extraData={this.state}
-                                renderItem={this._renderItem} 
+                                renderItem={this._renderItem}
                             />
 
                             <View style={[styles.hr]}></View>
@@ -270,7 +279,7 @@ class ConfirmReservScreen extends React.Component {
                                 <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.props.reducer.date_selected.length}</Text>
-                                    <Text style={[styles.text16]}>{ numeral(this.state.total_area).format('0,0.00') + ' บาท'}</Text>
+                                    <Text style={[styles.text16]}>{numeral(this.state.total_area).format('0,0.00') + ' บาท'}</Text>
                                 </View>
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16]}>{`โค้ดส่วนลด`}</Text>
@@ -282,14 +291,14 @@ class ConfirmReservScreen extends React.Component {
                                 </View>
 
                                 {
-                                        this.props.reducer.userInfo.partners_type == 2 ? 
-                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                                                <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
-                                                <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
-                                            </View>
-                                            :
-                                            <View></View>
-                                    }
+                                    this.props.reducer.userInfo.partners_type == 2 ?
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                            <Text style={[styles.text16]}>{this.props.reducer.userInfo.partners_type == 1 ? 'บุคคลธรรมดาหัก ณ ที่จ่าย ' + this.props.reducer.personal_vat + ' %' : 'นิติบุคคลหัก ณ ที่จ่าย ' + this.props.reducer.company_vat + ' %'}</Text>
+                                            <Text style={[styles.text16]}>{numeral(this.state.vat).format('0,0.00') + ` บาท`}</Text>
+                                        </View>
+                                        :
+                                        <View></View>
+                                }
                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                                     <Text style={[styles.text16, styles.bold]}>{`ยอดรวมที่ต้องชำระ `}</Text>
                                     <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
@@ -311,7 +320,7 @@ class ConfirmReservScreen extends React.Component {
 
                                                 this.props.navigation.reset({
                                                     index: 0,
-                                                    routes: [{name: 'Building'}],
+                                                    routes: [{ name: 'Building' }],
                                                 });
                                                 this.props.navigation.navigate('Reserv')
 
@@ -322,9 +331,9 @@ class ConfirmReservScreen extends React.Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                         onPress={
-                                            () => this.props.navigation.navigate('Paymentchannel',{
-                                                total_final_price : this.state.total_final_price,
-                                                booking_id : this.props.reducer.booking_selected,
+                                            () => this.props.navigation.navigate('Paymentchannel', {
+                                                total_final_price: this.state.total_final_price,
+                                                booking_id: this.props.reducer.booking_selected,
                                             })
                                         }>
                                         <Text style={[styles.text18, { color: '#FFF' }]}>{`ชำระเงิน`}</Text>

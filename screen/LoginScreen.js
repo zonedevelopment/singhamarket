@@ -216,7 +216,8 @@ class LoginScreen extends React.Component {
                             <TextInput
                                 ref={(input) => { this.username = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black', paddingLeft: 5 }}
-                                placeholder='ชื่อผู้ใช้งาน'
+                                placeholder='Username'
+                                autoCapitalize={false}
                                 returnKeyType={'next'}
                                 blurOnSubmit={false}
                                 value={this.state.username}
@@ -232,7 +233,8 @@ class LoginScreen extends React.Component {
                             <TextInput
                                 ref={(input) => { this.password = input; }}
                                 style={{ width: '80%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                placeholder='รหัสผ่าน'
+                                placeholder='Password'
+                                autoCapitalize={false}
                                 returnKeyType={'done'}
                                 secureTextEntry={this.state.showPassword}
                                 blurOnSubmit={false}
