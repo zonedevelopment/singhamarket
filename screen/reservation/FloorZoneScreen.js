@@ -48,43 +48,44 @@ class FloorZoneScreen extends React.Component {
         building_id : '',
         building_name : '',
         plan_image : '',
-        floor : [],
+        // floor : [],
         zone : [],
-        floor_selectedValue : '',
-        floor_selectedIndex : null,
+        // floor_selectedValue : '',
+        // floor_selectedIndex : null,
         zone_selectedValue : '',
         zone_selectedIndex : null,
     }
 
-    onSelectFloor(index, value) {
-        this.props.openIndicator()
-        let zone = this.props.reducer.building[this.state.index].building_zone
-        let floor_image = this.props.reducer.building[this.state.index].building_floor[index].floor_image
-        // this.state.zone.map((v,i)=>{
-        //     if(zone[i]['floor_id'] == value){
-        //         zone[i]['disabled'] = false
-        //     }else{
-        //         zone[i]['disabled'] = true
-        //     }
-        // })
-        zone = zone.filter(x => x.floor_id == value)
-        console.log('zone',zone)
-        this.setState({
-            floor_selectedIndex : index,
-            floor_selectedValue : value,
-            zone_selectedIndex : null,
-            zone_selectedValue : '',
-            zone : zone,
-            plan_image : floor_image
-        })
-        this.props.dismissIndicator()
-    }
+    // onSelectFloor(index, value) {
+    //     this.props.openIndicator()
+    //     let zone = this.props.reducer.building[this.state.index].building_zone
+    //     let floor_image = this.props.reducer.building[this.state.index].building_floor[index].floor_image
+    //     // this.state.zone.map((v,i)=>{
+    //     //     if(zone[i]['floor_id'] == value){
+    //     //         zone[i]['disabled'] = false
+    //     //     }else{
+    //     //         zone[i]['disabled'] = true
+    //     //     }
+    //     // })
+    //     zone = zone.filter(x => x.floor_id == value)
+    //     console.log('zone',zone)
+    //     this.setState({
+    //         floor_selectedIndex : index,
+    //         floor_selectedValue : value,
+    //         zone_selectedIndex : null,
+    //         zone_selectedValue : '',
+    //         zone : zone,
+    //         plan_image : floor_image
+    //     })
+    //     this.props.dismissIndicator()
+    // }
 
     onSelectZone(index, value){
         this.props.openIndicator()
         this.setState({
             zone_selectedIndex : index,
             zone_selectedValue : value,
+            plan_image : zone_image
         })
         this.props.dismissIndicator()
     }
@@ -137,15 +138,15 @@ class FloorZoneScreen extends React.Component {
         })
         await this.setState({
             index : index,
-            floor : this.props.reducer.building[index].building_floor,
-            //zone : this.props.reducer.building[index].building_zone,
+            //floor : this.props.reducer.building[index].building_floor,
+            zone : this.props.reducer.building[index].building_zone,
             building_id : building_data.building_id,
             building_name : building_data.building_name,
         })
 
-        if (this.props.reducer.building[index].building_floor.length == 1) {
-            this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
-        }
+        // if (this.props.reducer.building[index].building_floor.length == 1) {
+        //     this.onSelectFloor(0, this.props.reducer.building[index].building_floor[0].floor_id)
+        // }
         BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -200,7 +201,7 @@ class FloorZoneScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <View >
+                            {/* <View >
                                 <Text style={[styles.text16]}>{`กรุณาเลือกชั้นที่ท่านต้องการ`}</Text>
                                 {
                                     this.state.floor.length ?
@@ -231,9 +232,8 @@ class FloorZoneScreen extends React.Component {
                                         <Text style={{textAlign:'center',fontSize:16, color: primaryColor}}>{'ไม่พบข้อมูลชั้น!'}</Text>
                                     </View>
                                 }
-                                
                             </View>
-                            <View style={[styles.hr]}></View>
+                            <View style={[styles.hr]}></View> */}
                             <View>
                                 <Text style={[styles.text16]}>{`กรุณาเลือกโซน`}</Text>
                                 {
@@ -311,7 +311,7 @@ class FloorZoneScreen extends React.Component {
                                 <TouchableOpacity style={[styles.mainButton2, { flexDirection: 'row', marginTop: 5, marginBottom: 5, alignItems: 'center', justifyContent: 'space-between', paddingLeft: 10, paddingRight: 5 }]}
                                     onPress={
                                          () => {
-                                            if(this.state.floor_selectedValue == '' || this.state.zone_selectedValue == ''){
+                                            if(this.state.zone_selectedValue == ''){
                                                 Alert.alert(
                                                     'คำเตือน!',
                                                     'กรุณาเลือกโซนที่ท่านต้องการขายของ!'
@@ -319,11 +319,11 @@ class FloorZoneScreen extends React.Component {
                                             }else{
                                                 this.props.openIndicator()
                                                 this.props.setStateSelectedBuildingID(this.state.building_id)
-                                                this.props.setStateSelectedFloorID(this.state.floor_selectedValue)
+                                                //this.props.setStateSelectedFloorID(this.state.floor_selectedValue)
                                                 this.props.setStateSelectedZoneID(this.state.zone_selectedValue)
 
                                                 this.props.setStateSelectedBuildingName(this.state.building_name)
-                                                this.props.setStateSelectedFloorName(this.state.floor[this.state.floor_selectedIndex].floor_name)
+                                                //this.props.setStateSelectedFloorName(this.state.floor[this.state.floor_selectedIndex].floor_name)
                                                 this.props.setStateSelectedZoneName(this.state.zone[this.state.zone_selectedIndex].zone_name)
 
                                                 this.props.dismissIndicator()
