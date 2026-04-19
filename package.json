@@ -8,6 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "postinstall": "patch-package",
     "bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
@@ -57,7 +58,7 @@
     "react-native-table-component": "^1.2.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-view-shot": "^3.1.2",
-    "react-native-webview": "^9.4.0",
+    "react-native-webview": "^10.10.2",
     "react-native-zoom-lightbox": "0.0.2",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
@@ -72,6 +73,7 @@
     "eslint": "6.8.0",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "0.58.0",
+    "patch-package": "^8.0.1",
     "react-test-renderer": "16.11.0"
   },
   "jest": {
