@@ -62,13 +62,13 @@
 //}
 buildscript {
     ext {
-        buildToolsVersion = "31.0.0"
+        buildToolsVersion = "33.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 31
-        targetSdkVersion = 31
-        kotlinVersion = "1.6.10"
+        compileSdkVersion = 33
+        targetSdkVersion = 33
+        kotlinVersion = "1.7.22"
         firebaseMessagingVersion = "23.4.1"
-        reactNativeVersion = "0.68.6"
+        reactNativeVersion = "0.71.19"
     }
 
     repositories {
@@ -78,7 +78,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("com.android.tools.build:gradle:7.4.1")
         classpath("com.google.gms:google-services:4.3.15")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
@@ -99,12 +99,13 @@ allprojects {
 subprojects { subproject ->
     afterEvaluate {
         if (subproject.hasProperty("configurations")) {
-            subproject.configurations.all {
+            subproject.configurations.all { config ->
                 resolutionStrategy.eachDependency { details ->
                     if (details.requested.group == "com.facebook.react" &&
                             details.requested.name == "react-native") {
-                        details.useVersion rootProject.ext.reactNativeVersion
+                        details.useTarget("com.facebook.react:react-android:${rootProject.ext.reactNativeVersion}")
                     }
+
                     if (details.requested.group == "com.google.firebase" &&
                             details.requested.name == "firebase-messaging") {
                         details.useVersion rootProject.ext.firebaseMessagingVersion

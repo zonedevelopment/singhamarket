@@ -1,85 +1,49 @@
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/.transforms/d4ce8cb1ff839316060e5d80a3dc30fe/results.bin b/node_modules/@react-native-firebase/messaging/android/build/.transforms/d4ce8cb1ff839316060e5d80a3dc30fe/results.bin
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/results.bin b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/results.bin
 new file mode 100644
 index 0000000..0d259dd
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/.transforms/d4ce8cb1ff839316060e5d80a3dc30fe/results.bin
++++ b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/results.bin
 @@ -0,0 +1 @@
 +o/classes
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/.transforms/d4ce8cb1ff839316060e5d80a3dc30fe/transformed/classes/classes.dex b/node_modules/@react-native-firebase/messaging/android/build/.transforms/d4ce8cb1ff839316060e5d80a3dc30fe/transformed/classes/classes.dex
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/transformed/classes/classes.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/transformed/classes/classes.dex
 new file mode 100644
-index 0000000..b80165b
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/.transforms/d4ce8cb1ff839316060e5d80a3dc30fe/transformed/classes/classes.dex differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/generated/source/buildConfig/debug/io/invertase/firebase/messaging/BuildConfig.java b/node_modules/@react-native-firebase/messaging/android/build/generated/source/buildConfig/debug/io/invertase/firebase/messaging/BuildConfig.java
+index 0000000..897a5a1
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/transformed/classes/classes.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/cameraroll/BuildConfig.java b/node_modules/@react-native-community/cameraroll/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/cameraroll/BuildConfig.java
 new file mode 100644
-index 0000000..05c96b0
+index 0000000..be91512
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/generated/source/buildConfig/debug/io/invertase/firebase/messaging/BuildConfig.java
-@@ -0,0 +1,12 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/cameraroll/BuildConfig.java
+@@ -0,0 +1,10 @@
 +/**
 + * Automatically generated file. DO NOT MODIFY
 + */
-+package io.invertase.firebase.messaging;
++package com.reactnativecommunity.cameraroll;
 +
 +public final class BuildConfig {
 +  public static final boolean DEBUG = Boolean.parseBoolean("true");
-+  public static final String LIBRARY_PACKAGE_NAME = "io.invertase.firebase.messaging";
++  public static final String LIBRARY_PACKAGE_NAME = "com.reactnativecommunity.cameraroll";
 +  public static final String BUILD_TYPE = "debug";
-+  // Field from default config.
-+  public static final String FIREBASE_JSON_RAW = "{}";
 +}
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
 new file mode 100644
-index 0000000..5e66e1c
+index 0000000..450fa42
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
-@@ -0,0 +1,41 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-+    package="io.invertase.firebase.messaging" >
++    package="com.reactnativecommunity.cameraroll" >
 +
 +    <uses-sdk android:minSdkVersion="21" />
 +
-+    <uses-permission android:name="android.permission.INTERNET" />
-+    <uses-permission android:name="android.permission.WAKE_LOCK" />
-+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-+
-+    <application>
-+        <service android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService" />
-+        <service
-+            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService"
-+            android:exported="false" >
-+            <intent-filter>
-+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-+            </intent-filter>
-+        </service>
-+
-+        <receiver
-+            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver"
-+            android:exported="true"
-+            android:permission="com.google.android.c2dm.permission.SEND" >
-+            <intent-filter>
-+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-+            </intent-filter>
-+        </receiver>
-+
-+        <meta-data
-+            android:name="firebase_messaging_auto_init_enabled"
-+            android:value="true" />
-+        <meta-data
-+            android:name="com.google.firebase.messaging.default_notification_channel_id"
-+            android:value="" />
-+        <meta-data
-+            android:name="com.google.firebase.messaging.default_notification_color"
-+            android:resource="@color/white" />
-+    </application>
-+
 +</manifest>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json b/node_modules/@react-native-firebase/messaging/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
 new file mode 100644
-index 0000000..ff221ff
+index 0000000..b97236b
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
 @@ -0,0 +1,18 @@
 +{
 +  "version": 3,
@@ -87,7 +51,7 @@ index 0000000..ff221ff
 +    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
 +    "kind": "Directory"
 +  },
-+  "applicationId": "io.invertase.firebase.messaging",
++  "applicationId": "com.reactnativecommunity.cameraroll",
 +  "variantName": "debug",
 +  "elements": [
 +    {
@@ -100,39 +64,39 @@ index 0000000..ff221ff
 +  "elementType": "File"
 +}
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/@react-native-firebase/messaging/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
 new file mode 100644
 index 0000000..776557e
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
 @@ -0,0 +1,5 @@
 +aarFormatVersion=1.0
 +aarMetadataVersion=1.0
 +minCompileSdk=1
 +minCompileSdkExtension=0
 +minAndroidGradlePluginVersion=1.0.0
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/@react-native-firebase/messaging/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
 new file mode 100644
 index 0000000..9e26dfe
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
 @@ -0,0 +1 @@
 +{}
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..c83c324
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_r_class_jar/debug/R.jar
+index 0000000..a21f29c
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
-index 0000000..5d6d752
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_symbol_list/debug/R.txt
+index 0000000..d13f32a
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/R.txt
 new file mode 100644
-index 0000000..434b80b
+index 0000000..7c9d30e
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/compile_symbol_list/debug/R.txt
-@@ -0,0 +1,2237 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/R.txt
+@@ -0,0 +1,1953 @@
 +int anim abc_fade_in 0x0
 +int anim abc_fade_out 0x0
 +int anim abc_grow_fade_in_from_bottom 0x0
@@ -163,13 +127,7 @@ index 0000000..434b80b
 +int anim catalyst_push_up_out 0x0
 +int anim catalyst_slide_down 0x0
 +int anim catalyst_slide_up 0x0
-+int anim fragment_close_enter 0x0
-+int anim fragment_close_exit 0x0
-+int anim fragment_fade_enter 0x0
-+int anim fragment_fade_exit 0x0
 +int anim fragment_fast_out_extra_slow_in 0x0
-+int anim fragment_open_enter 0x0
-+int anim fragment_open_exit 0x0
 +int animator fragment_close_enter 0x0
 +int animator fragment_close_exit 0x0
 +int animator fragment_fade_enter 0x0
@@ -252,7 +210,6 @@ index 0000000..434b80b
 +int attr buttonGravity 0x0
 +int attr buttonIconDimen 0x0
 +int attr buttonPanelSideLayout 0x0
-+int attr buttonSize 0x0
 +int attr buttonStyle 0x0
 +int attr buttonStyleSmall 0x0
 +int attr buttonTint 0x0
@@ -262,7 +219,6 @@ index 0000000..434b80b
 +int attr checkMarkTintMode 0x0
 +int attr checkboxStyle 0x0
 +int attr checkedTextViewStyle 0x0
-+int attr circleCrop 0x0
 +int attr closeIcon 0x0
 +int attr closeItemLayout 0x0
 +int attr collapseContentDescription 0x0
@@ -277,7 +233,6 @@ index 0000000..434b80b
 +int attr colorError 0x0
 +int attr colorPrimary 0x0
 +int attr colorPrimaryDark 0x0
-+int attr colorScheme 0x0
 +int attr colorSwitchThumbNormal 0x0
 +int attr commitIcon 0x0
 +int attr contentDescription 0x0
@@ -288,7 +243,6 @@ index 0000000..434b80b
 +int attr contentInsetStart 0x0
 +int attr contentInsetStartWithNavigation 0x0
 +int attr controlBackground 0x0
-+int attr coordinatorLayoutStyle 0x0
 +int attr customNavigationLayout 0x0
 +int attr defaultQueryHint 0x0
 +int attr dialogCornerRadius 0x0
@@ -309,7 +263,6 @@ index 0000000..434b80b
 +int attr drawableTintMode 0x0
 +int attr drawableTopCompat 0x0
 +int attr drawerArrowStyle 0x0
-+int attr drawerLayoutStyle 0x0
 +int attr dropDownListViewStyle 0x0
 +int attr dropdownListPreferredItemHeight 0x0
 +int attr editTextBackground 0x0
@@ -344,24 +297,15 @@ index 0000000..434b80b
 +int attr iconTint 0x0
 +int attr iconTintMode 0x0
 +int attr iconifiedByDefault 0x0
-+int attr imageAspectRatio 0x0
-+int attr imageAspectRatioAdjust 0x0
 +int attr imageButtonStyle 0x0
 +int attr indeterminateProgressStyle 0x0
 +int attr initialActivityCount 0x0
 +int attr isAutofillInlineSuggestionTheme 0x0
 +int attr isLightTheme 0x0
 +int attr itemPadding 0x0
-+int attr keylines 0x0
 +int attr lStar 0x0
 +int attr lastBaselineToBottomHeight 0x0
 +int attr layout 0x0
-+int attr layout_anchor 0x0
-+int attr layout_anchorGravity 0x0
-+int attr layout_behavior 0x0
-+int attr layout_dodgeInsetEdges 0x0
-+int attr layout_insetEdge 0x0
-+int attr layout_keyline 0x0
 +int attr lineHeight 0x0
 +int attr listChoiceBackgroundIndicator 0x0
 +int attr listChoiceIndicatorMultipleAnimated 0x0
@@ -433,7 +377,6 @@ index 0000000..434b80b
 +int attr roundingBorderColor 0x0
 +int attr roundingBorderPadding 0x0
 +int attr roundingBorderWidth 0x0
-+int attr scopeUris 0x0
 +int attr searchHintIcon 0x0
 +int attr searchIcon 0x0
 +int attr searchViewStyle 0x0
@@ -452,7 +395,6 @@ index 0000000..434b80b
 +int attr splitTrack 0x0
 +int attr srcCompat 0x0
 +int attr state_above_anchor 0x0
-+int attr statusBarBackground 0x0
 +int attr subMenuArrow 0x0
 +int attr submitBackground 0x0
 +int attr subtitle 0x0
@@ -460,7 +402,6 @@ index 0000000..434b80b
 +int attr subtitleTextColor 0x0
 +int attr subtitleTextStyle 0x0
 +int attr suggestionRowLayout 0x0
-+int attr swipeRefreshLayoutProgressSpinnerBackgroundColor 0x0
 +int attr switchMinWidth 0x0
 +int attr switchPadding 0x0
 +int attr switchStyle 0x0
@@ -548,124 +489,32 @@ index 0000000..434b80b
 +int color abc_tint_switch_track 0x0
 +int color accent_material_dark 0x0
 +int color accent_material_light 0x0
-+int color aliceblue 0x0
 +int color androidx_core_ripple_material_light 0x0
 +int color androidx_core_secondary_text_default_material_light 0x0
-+int color antiquewhite 0x0
-+int color aqua 0x0
-+int color aquamarine 0x0
-+int color azure 0x0
 +int color background_floating_material_dark 0x0
 +int color background_floating_material_light 0x0
 +int color background_material_dark 0x0
 +int color background_material_light 0x0
-+int color beige 0x0
-+int color bisque 0x0
-+int color black 0x0
-+int color blanchedalmond 0x0
-+int color blue 0x0
-+int color blueviolet 0x0
 +int color bright_foreground_disabled_material_dark 0x0
 +int color bright_foreground_disabled_material_light 0x0
 +int color bright_foreground_inverse_material_dark 0x0
 +int color bright_foreground_inverse_material_light 0x0
 +int color bright_foreground_material_dark 0x0
 +int color bright_foreground_material_light 0x0
-+int color brown 0x0
-+int color burlywood 0x0
 +int color button_material_dark 0x0
 +int color button_material_light 0x0
-+int color cadetblue 0x0
 +int color catalyst_logbox_background 0x0
 +int color catalyst_redbox_background 0x0
-+int color chartreuse 0x0
-+int color chocolate 0x0
-+int color common_google_signin_btn_text_dark 0x0
-+int color common_google_signin_btn_text_dark_default 0x0
-+int color common_google_signin_btn_text_dark_disabled 0x0
-+int color common_google_signin_btn_text_dark_focused 0x0
-+int color common_google_signin_btn_text_dark_pressed 0x0
-+int color common_google_signin_btn_text_light 0x0
-+int color common_google_signin_btn_text_light_default 0x0
-+int color common_google_signin_btn_text_light_disabled 0x0
-+int color common_google_signin_btn_text_light_focused 0x0
-+int color common_google_signin_btn_text_light_pressed 0x0
-+int color common_google_signin_btn_tint 0x0
-+int color coral 0x0
-+int color cornflowerblue 0x0
-+int color cornsilk 0x0
-+int color crimson 0x0
-+int color cyan 0x0
-+int color darkblue 0x0
-+int color darkcyan 0x0
-+int color darkgoldenrod 0x0
-+int color darkgray 0x0
-+int color darkgreen 0x0
-+int color darkkhaki 0x0
-+int color darkmagenta 0x0
-+int color darkolivegreen 0x0
-+int color darkorange 0x0
-+int color darkorchid 0x0
-+int color darkred 0x0
-+int color darksalmon 0x0
-+int color darkseagreen 0x0
-+int color darkslateblue 0x0
-+int color darkslategray 0x0
-+int color darkturquoise 0x0
-+int color darkviolet 0x0
-+int color deeppink 0x0
-+int color deepskyblue 0x0
 +int color dim_foreground_disabled_material_dark 0x0
 +int color dim_foreground_disabled_material_light 0x0
 +int color dim_foreground_material_dark 0x0
 +int color dim_foreground_material_light 0x0
-+int color dimgray 0x0
-+int color dodgerblue 0x0
 +int color error_color_material_dark 0x0
 +int color error_color_material_light 0x0
-+int color firebrick 0x0
-+int color floralwhite 0x0
 +int color foreground_material_dark 0x0
 +int color foreground_material_light 0x0
-+int color forestgreen 0x0
-+int color fuchsia 0x0
-+int color gainsboro 0x0
-+int color ghostwhite 0x0
-+int color gold 0x0
-+int color goldenrod 0x0
-+int color gray 0x0
-+int color green 0x0
-+int color greenyellow 0x0
 +int color highlighted_text_material_dark 0x0
 +int color highlighted_text_material_light 0x0
-+int color honeydew 0x0
-+int color hotpink 0x0
-+int color indianred 0x0
-+int color indigo 0x0
-+int color ivory 0x0
-+int color khaki 0x0
-+int color lavender 0x0
-+int color lavenderblush 0x0
-+int color lawngreen 0x0
-+int color lemonchiffon 0x0
-+int color lightblue 0x0
-+int color lightcoral 0x0
-+int color lightcyan 0x0
-+int color lightgoldenrodyellow 0x0
-+int color lightgreen 0x0
-+int color lightgrey 0x0
-+int color lightpink 0x0
-+int color lightsalmon 0x0
-+int color lightseagreen 0x0
-+int color lightskyblue 0x0
-+int color lightslategray 0x0
-+int color lightsteelblue 0x0
-+int color lightyellow 0x0
-+int color lime 0x0
-+int color limegreen 0x0
-+int color linen 0x0
-+int color magenta 0x0
-+int color maroon 0x0
 +int color material_blue_grey_800 0x0
 +int color material_blue_grey_900 0x0
 +int color material_blue_grey_950 0x0
@@ -678,40 +527,8 @@ index 0000000..434b80b
 +int color material_grey_800 0x0
 +int color material_grey_850 0x0
 +int color material_grey_900 0x0
-+int color mediumaquamarine 0x0
-+int color mediumblue 0x0
-+int color mediumorchid 0x0
-+int color mediumpurple 0x0
-+int color mediumseagreen 0x0
-+int color mediumslateblue 0x0
-+int color mediumspringgreen 0x0
-+int color mediumturquoise 0x0
-+int color mediumvioletred 0x0
-+int color midnightblue 0x0
-+int color mintcream 0x0
-+int color mistyrose 0x0
-+int color moccasin 0x0
-+int color navajowhite 0x0
-+int color navy 0x0
 +int color notification_action_color_filter 0x0
 +int color notification_icon_bg_color 0x0
-+int color notification_material_background_media_default_color 0x0
-+int color oldlace 0x0
-+int color olive 0x0
-+int color olivedrab 0x0
-+int color orange 0x0
-+int color orangered 0x0
-+int color orchid 0x0
-+int color palegoldenrod 0x0
-+int color palegreen 0x0
-+int color paleturquoise 0x0
-+int color palevioletred 0x0
-+int color papayawhip 0x0
-+int color peachpuff 0x0
-+int color peru 0x0
-+int color pink 0x0
-+int color plum 0x0
-+int color powderblue 0x0
 +int color primary_dark_material_dark 0x0
 +int color primary_dark_material_light 0x0
 +int color primary_material_dark 0x0
@@ -720,48 +537,20 @@ index 0000000..434b80b
 +int color primary_text_default_material_light 0x0
 +int color primary_text_disabled_material_dark 0x0
 +int color primary_text_disabled_material_light 0x0
-+int color purple 0x0
-+int color red 0x0
 +int color ripple_material_dark 0x0
 +int color ripple_material_light 0x0
-+int color rosybrown 0x0
-+int color royalblue 0x0
-+int color saddlebrown 0x0
-+int color salmon 0x0
-+int color sandybrown 0x0
-+int color seagreen 0x0
-+int color seashell 0x0
 +int color secondary_text_default_material_dark 0x0
 +int color secondary_text_default_material_light 0x0
 +int color secondary_text_disabled_material_dark 0x0
 +int color secondary_text_disabled_material_light 0x0
-+int color sienna 0x0
-+int color silver 0x0
-+int color skyblue 0x0
-+int color slateblue 0x0
-+int color slategray 0x0
-+int color snow 0x0
-+int color springgreen 0x0
-+int color steelblue 0x0
 +int color switch_thumb_disabled_material_dark 0x0
 +int color switch_thumb_disabled_material_light 0x0
 +int color switch_thumb_material_dark 0x0
 +int color switch_thumb_material_light 0x0
 +int color switch_thumb_normal_material_dark 0x0
 +int color switch_thumb_normal_material_light 0x0
-+int color tan 0x0
-+int color teal 0x0
-+int color thistle 0x0
-+int color tomato 0x0
 +int color tooltip_background_dark 0x0
 +int color tooltip_background_light 0x0
-+int color turquoise 0x0
-+int color violet 0x0
-+int color wheat 0x0
-+int color white 0x0
-+int color whitesmoke 0x0
-+int color yellow 0x0
-+int color yellowgreen 0x0
 +int dimen abc_action_bar_content_inset_material 0x0
 +int dimen abc_action_bar_content_inset_with_nav 0x0
 +int dimen abc_action_bar_default_height_material 0x0
@@ -851,7 +640,6 @@ index 0000000..434b80b
 +int dimen compat_control_corner_material 0x0
 +int dimen compat_notification_large_icon_max_height 0x0
 +int dimen compat_notification_large_icon_max_width 0x0
-+int dimen def_drawer_elevation 0x0
 +int dimen disabled_alpha_material_dark 0x0
 +int dimen disabled_alpha_material_light 0x0
 +int dimen highlight_alpha_material_colored 0x0
@@ -972,27 +760,6 @@ index 0000000..434b80b
 +int drawable btn_radio_off_to_on_mtrl_animation 0x0
 +int drawable btn_radio_on_mtrl 0x0
 +int drawable btn_radio_on_to_off_mtrl_animation 0x0
-+int drawable common_full_open_on_phone 0x0
-+int drawable common_google_signin_btn_icon_dark 0x0
-+int drawable common_google_signin_btn_icon_dark_focused 0x0
-+int drawable common_google_signin_btn_icon_dark_normal 0x0
-+int drawable common_google_signin_btn_icon_dark_normal_background 0x0
-+int drawable common_google_signin_btn_icon_disabled 0x0
-+int drawable common_google_signin_btn_icon_light 0x0
-+int drawable common_google_signin_btn_icon_light_focused 0x0
-+int drawable common_google_signin_btn_icon_light_normal 0x0
-+int drawable common_google_signin_btn_icon_light_normal_background 0x0
-+int drawable common_google_signin_btn_text_dark 0x0
-+int drawable common_google_signin_btn_text_dark_focused 0x0
-+int drawable common_google_signin_btn_text_dark_normal 0x0
-+int drawable common_google_signin_btn_text_dark_normal_background 0x0
-+int drawable common_google_signin_btn_text_disabled 0x0
-+int drawable common_google_signin_btn_text_light 0x0
-+int drawable common_google_signin_btn_text_light_focused 0x0
-+int drawable common_google_signin_btn_text_light_normal 0x0
-+int drawable common_google_signin_btn_text_light_normal_background 0x0
-+int drawable googleg_disabled_color_18 0x0
-+int drawable googleg_standard_color_18 0x0
 +int drawable notification_action_background 0x0
 +int drawable notification_bg 0x0
 +int drawable notification_bg_low 0x0
@@ -1051,7 +818,6 @@ index 0000000..434b80b
 +int id accessibility_role 0x0
 +int id accessibility_state 0x0
 +int id accessibility_value 0x0
-+int id action0 0x0
 +int id action_bar 0x0
 +int id action_bar_activity_content 0x0
 +int id action_bar_container 0x0
@@ -1072,47 +838,31 @@ index 0000000..434b80b
 +int id actions 0x0
 +int id activity_chooser_view_content 0x0
 +int id add 0x0
-+int id adjust_height 0x0
-+int id adjust_width 0x0
 +int id alertTitle 0x0
-+int id all 0x0
 +int id async 0x0
-+int id auto 0x0
 +int id autofill_inline_suggestion_end_icon 0x0
 +int id autofill_inline_suggestion_start_icon 0x0
 +int id autofill_inline_suggestion_subtitle 0x0
 +int id autofill_inline_suggestion_title 0x0
 +int id blocking 0x0
-+int id bottom 0x0
 +int id buttonPanel 0x0
-+int id cancel_action 0x0
 +int id catalyst_redbox_title 0x0
 +int id center 0x0
 +int id centerCrop 0x0
 +int id centerInside 0x0
-+int id center_horizontal 0x0
-+int id center_vertical 0x0
 +int id checkbox 0x0
 +int id checked 0x0
 +int id chronometer 0x0
-+int id clip_horizontal 0x0
-+int id clip_vertical 0x0
 +int id content 0x0
 +int id contentPanel 0x0
 +int id custom 0x0
 +int id customPanel 0x0
-+int id dark 0x0
 +int id decor_content_parent 0x0
 +int id default_activity_button 0x0
 +int id dialog_button 0x0
 +int id edit_query 0x0
-+int id end 0x0
-+int id end_padder 0x0
 +int id expand_activities_button 0x0
 +int id expanded_menu 0x0
-+int id fill 0x0
-+int id fill_horizontal 0x0
-+int id fill_vertical 0x0
 +int id fitBottomStart 0x0
 +int id fitCenter 0x0
 +int id fitEnd 0x0
@@ -1126,7 +876,6 @@ index 0000000..434b80b
 +int id home 0x0
 +int id icon 0x0
 +int id icon_group 0x0
-+int id icon_only 0x0
 +int id image 0x0
 +int id info 0x0
 +int id italic 0x0
@@ -1135,14 +884,10 @@ index 0000000..434b80b
 +int id item3 0x0
 +int id item4 0x0
 +int id labelled_by 0x0
-+int id left 0x0
-+int id light 0x0
 +int id line1 0x0
 +int id line3 0x0
 +int id listMode 0x0
 +int id list_item 0x0
-+int id media_actions 0x0
-+int id media_controller_compat_view_tag 0x0
 +int id message 0x0
 +int id multiply 0x0
 +int id none 0x0
@@ -1158,7 +903,6 @@ index 0000000..434b80b
 +int id progress_horizontal 0x0
 +int id radio 0x0
 +int id react_test_id 0x0
-+int id right 0x0
 +int id right_icon 0x0
 +int id right_side 0x0
 +int id rn_frame_file 0x0
@@ -1192,9 +936,6 @@ index 0000000..434b80b
 +int id src_atop 0x0
 +int id src_in 0x0
 +int id src_over 0x0
-+int id standard 0x0
-+int id start 0x0
-+int id status_bar_latest_event_content 0x0
 +int id submenuarrow 0x0
 +int id submit_area 0x0
 +int id tabMode 0x0
@@ -1219,7 +960,6 @@ index 0000000..434b80b
 +int id title 0x0
 +int id titleDividerNoCustom 0x0
 +int id title_template 0x0
-+int id top 0x0
 +int id topPanel 0x0
 +int id unchecked 0x0
 +int id uniform 0x0
@@ -1230,13 +970,11 @@ index 0000000..434b80b
 +int id view_tree_saved_state_registry_owner 0x0
 +int id view_tree_view_model_store_owner 0x0
 +int id visible_removing_fragment_view_tag 0x0
-+int id wide 0x0
 +int id wrap_content 0x0
 +int integer abc_config_activityDefaultDur 0x0
 +int integer abc_config_activityShortDur 0x0
 +int integer cancel_button_image_alpha 0x0
 +int integer config_tooltipAnimTime 0x0
-+int integer google_play_services_version 0x0
 +int integer react_native_dev_server_port 0x0
 +int integer react_native_inspector_proxy_port 0x0
 +int integer status_bar_notification_info_maxnum 0x0
@@ -1281,17 +1019,8 @@ index 0000000..434b80b
 +int layout fps_view 0x0
 +int layout notification_action 0x0
 +int layout notification_action_tombstone 0x0
-+int layout notification_media_action 0x0
-+int layout notification_media_cancel_action 0x0
-+int layout notification_template_big_media 0x0
-+int layout notification_template_big_media_custom 0x0
-+int layout notification_template_big_media_narrow 0x0
-+int layout notification_template_big_media_narrow_custom 0x0
 +int layout notification_template_custom_big 0x0
 +int layout notification_template_icon_group 0x0
-+int layout notification_template_lines_media 0x0
-+int layout notification_template_media 0x0
-+int layout notification_template_media_custom 0x0
 +int layout notification_template_part_chronometer 0x0
 +int layout notification_template_part_time 0x0
 +int layout redbox_item_frame 0x0
@@ -1303,7 +1032,6 @@ index 0000000..434b80b
 +int layout support_simple_spinner_dropdown_item 0x0
 +int menu example_menu 0x0
 +int menu example_menu2 0x0
-+int raw firebase_common_keep 0x0
 +int string abc_action_bar_home_description 0x0
 +int string abc_action_bar_up_description 0x0
 +int string abc_action_menu_overflow_description 0x0
@@ -1363,25 +1091,6 @@ index 0000000..434b80b
 +int string catalyst_settings 0x0
 +int string catalyst_settings_title 0x0
 +int string combobox_description 0x0
-+int string common_google_play_services_enable_button 0x0
-+int string common_google_play_services_enable_text 0x0
-+int string common_google_play_services_enable_title 0x0
-+int string common_google_play_services_install_button 0x0
-+int string common_google_play_services_install_text 0x0
-+int string common_google_play_services_install_title 0x0
-+int string common_google_play_services_notification_channel_name 0x0
-+int string common_google_play_services_notification_ticker 0x0
-+int string common_google_play_services_unknown_issue 0x0
-+int string common_google_play_services_unsupported_text 0x0
-+int string common_google_play_services_update_button 0x0
-+int string common_google_play_services_update_text 0x0
-+int string common_google_play_services_update_title 0x0
-+int string common_google_play_services_updating_text 0x0
-+int string common_google_play_services_wear_update_text 0x0
-+int string common_open_on_phone 0x0
-+int string common_signin_button_text 0x0
-+int string common_signin_button_text_long 0x0
-+int string fcm_fallback_notification_channel_label 0x0
 +int string header_description 0x0
 +int string image_description 0x0
 +int string imagebutton_description 0x0
@@ -1653,14 +1362,9 @@ index 0000000..434b80b
 +int style TextAppearance_AppCompat_Widget_TextView_SpinnerItem 0x0
 +int style TextAppearance_Compat_Notification 0x0
 +int style TextAppearance_Compat_Notification_Info 0x0
-+int style TextAppearance_Compat_Notification_Info_Media 0x0
 +int style TextAppearance_Compat_Notification_Line2 0x0
-+int style TextAppearance_Compat_Notification_Line2_Media 0x0
-+int style TextAppearance_Compat_Notification_Media 0x0
 +int style TextAppearance_Compat_Notification_Time 0x0
-+int style TextAppearance_Compat_Notification_Time_Media 0x0
 +int style TextAppearance_Compat_Notification_Title 0x0
-+int style TextAppearance_Compat_Notification_Title_Media 0x0
 +int style TextAppearance_Widget_AppCompat_ExpandedMenu_Item 0x0
 +int style TextAppearance_Widget_AppCompat_Toolbar_Subtitle 0x0
 +int style TextAppearance_Widget_AppCompat_Toolbar_Title 0x0
@@ -1786,7 +1490,6 @@ index 0000000..434b80b
 +int style Widget_Autofill_InlineSuggestionTitle 0x0
 +int style Widget_Compat_NotificationActionContainer 0x0
 +int style Widget_Compat_NotificationActionText 0x0
-+int style Widget_Support_CoordinatorLayout 0x0
 +int style redboxButton 0x0
 +int[] styleable ActionBar { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable ActionBar_background 0
@@ -2055,17 +1758,6 @@ index 0000000..434b80b
 +int styleable CompoundButton_buttonCompat 1
 +int styleable CompoundButton_buttonTint 2
 +int styleable CompoundButton_buttonTintMode 3
-+int[] styleable CoordinatorLayout { 0x0, 0x0 }
-+int styleable CoordinatorLayout_keylines 0
-+int styleable CoordinatorLayout_statusBarBackground 1
-+int[] styleable CoordinatorLayout_Layout { 0x10100b3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
-+int styleable CoordinatorLayout_Layout_android_layout_gravity 0
-+int styleable CoordinatorLayout_Layout_layout_anchor 1
-+int styleable CoordinatorLayout_Layout_layout_anchorGravity 2
-+int styleable CoordinatorLayout_Layout_layout_behavior 3
-+int styleable CoordinatorLayout_Layout_layout_dodgeInsetEdges 4
-+int styleable CoordinatorLayout_Layout_layout_insetEdge 5
-+int styleable CoordinatorLayout_Layout_layout_keyline 6
 +int[] styleable DrawerArrowToggle { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable DrawerArrowToggle_arrowHeadLength 0
 +int styleable DrawerArrowToggle_arrowShaftLength 1
@@ -2075,8 +1767,6 @@ index 0000000..434b80b
 +int styleable DrawerArrowToggle_gapBetweenBars 5
 +int styleable DrawerArrowToggle_spinBars 6
 +int styleable DrawerArrowToggle_thickness 7
-+int[] styleable DrawerLayout { 0x0 }
-+int styleable DrawerLayout_elevation 0
 +int[] styleable FontFamily { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable FontFamily_fontProviderAuthority 0
 +int styleable FontFamily_fontProviderCerts 1
@@ -2167,10 +1857,6 @@ index 0000000..434b80b
 +int[] styleable ListPopupWindow { 0x10102ac, 0x10102ad }
 +int styleable ListPopupWindow_android_dropDownHorizontalOffset 0
 +int styleable ListPopupWindow_android_dropDownVerticalOffset 1
-+int[] styleable LoadingImageView { 0x0, 0x0, 0x0 }
-+int styleable LoadingImageView_circleCrop 0
-+int styleable LoadingImageView_imageAspectRatio 1
-+int styleable LoadingImageView_imageAspectRatioAdjust 2
 +int[] styleable MenuGroup { 0x10101e0, 0x101000e, 0x10100d0, 0x10101de, 0x10101df, 0x1010194 }
 +int styleable MenuGroup_android_checkableBehavior 0
 +int styleable MenuGroup_android_enabled 1
@@ -2239,10 +1925,6 @@ index 0000000..434b80b
 +int styleable SearchView_submitBackground 14
 +int styleable SearchView_suggestionRowLayout 15
 +int styleable SearchView_voiceIcon 16
-+int[] styleable SignInButton { 0x0, 0x0, 0x0 }
-+int styleable SignInButton_buttonSize 0
-+int styleable SignInButton_colorScheme 1
-+int styleable SignInButton_scopeUris 2
 +int[] styleable SimpleDraweeView { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable SimpleDraweeView_actualImageResource 0
 +int styleable SimpleDraweeView_actualImageScaleType 1
@@ -2290,8 +1972,6 @@ index 0000000..434b80b
 +int styleable StateListDrawable_android_visible 5
 +int[] styleable StateListDrawableItem { 0x1010199 }
 +int styleable StateListDrawableItem_android_drawable 0
-+int[] styleable SwipeRefreshLayout { 0x0 }
-+int styleable SwipeRefreshLayout_swipeRefreshLayoutProgressSpinnerBackgroundColor 0
 +int[] styleable SwitchCompat { 0x1010125, 0x1010124, 0x1010142, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable SwitchCompat_android_textOff 0
 +int styleable SwitchCompat_android_textOn 1
@@ -2370,532 +2050,130 @@ index 0000000..434b80b
 +int styleable ViewStubCompat_android_inflatedId 1
 +int styleable ViewStubCompat_android_layout 2
 +int xml rn_dev_preferences 0x0
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 new file mode 100644
-index 0000000..54a0ad8
+index 0000000..1711898
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 @@ -0,0 +1 @@
-+#Tue Apr 21 23:02:03 ICT 2026
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
++#Tue Apr 21 23:02:02 ICT 2026
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
 new file mode 100644
-index 0000000..711c9ae
+index 0000000..1922bac
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
-@@ -0,0 +1,143 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <color name="aliceblue">#F0F8FF</color>
-+    <color name="antiquewhite">#FAEBD7</color>
-+    <color name="aqua">#00FFFF</color>
-+    <color name="aquamarine">#7FFFD4</color>
-+    <color name="azure">#F0FFFF</color>
-+    <color name="beige">#F5F5DC</color>
-+    <color name="bisque">#FFE4C4</color>
-+    <color name="black">#000000</color>
-+    <color name="blanchedalmond">#FFEBCD</color>
-+    <color name="blue">#0000FF</color>
-+    <color name="blueviolet">#8A2BE2</color>
-+    <color name="brown">#A52A2A</color>
-+    <color name="burlywood">#DEB887</color>
-+    <color name="cadetblue">#5F9EA0</color>
-+    <color name="chartreuse">#7FFF00</color>
-+    <color name="chocolate">#D2691E</color>
-+    <color name="coral">#FF7F50</color>
-+    <color name="cornflowerblue">#6495ED</color>
-+    <color name="cornsilk">#FFF8DC</color>
-+    <color name="crimson">#DC143C</color>
-+    <color name="cyan">#00FFFF</color>
-+    <color name="darkblue">#00008B</color>
-+    <color name="darkcyan">#008B8B</color>
-+    <color name="darkgoldenrod">#B8860B</color>
-+    <color name="darkgray">#A9A9A9</color>
-+    <color name="darkgreen">#006400</color>
-+    <color name="darkkhaki">#BDB76B</color>
-+    <color name="darkmagenta">#8B008B</color>
-+    <color name="darkolivegreen">#556B2F</color>
-+    <color name="darkorange">#FF8C00</color>
-+    <color name="darkorchid">#9932CC</color>
-+    <color name="darkred">#8B0000</color>
-+    <color name="darksalmon">#E9967A</color>
-+    <color name="darkseagreen">#8FBC8F</color>
-+    <color name="darkslateblue">#483D8B</color>
-+    <color name="darkslategray">#2F4F4F</color>
-+    <color name="darkturquoise">#00CED1</color>
-+    <color name="darkviolet">#9400D3</color>
-+    <color name="deeppink">#FF1493</color>
-+    <color name="deepskyblue">#00BFFF</color>
-+    <color name="dimgray">#696969</color>
-+    <color name="dodgerblue">#1E90FF</color>
-+    <color name="firebrick">#B22222</color>
-+    <color name="floralwhite">#FFFAF0</color>
-+    <color name="forestgreen">#228B22</color>
-+    <color name="fuchsia">#FF00FF</color>
-+    <color name="gainsboro">#DCDCDC</color>
-+    <color name="ghostwhite">#F8F8FF</color>
-+    <color name="gold">#FFD700</color>
-+    <color name="goldenrod">#DAA520</color>
-+    <color name="gray">#808080</color>
-+    <color name="green">#008000</color>
-+    <color name="greenyellow">#ADFF2F</color>
-+    <color name="honeydew">#F0FFF0</color>
-+    <color name="hotpink">#FF69B4</color>
-+    <color name="indianred">#CD5C5C</color>
-+    <color name="indigo">#4B0082</color>
-+    <color name="ivory">#FFFFF0</color>
-+    <color name="khaki">#F0E68C</color>
-+    <color name="lavender">#E6E6FA</color>
-+    <color name="lavenderblush">#FFF0F5</color>
-+    <color name="lawngreen">#7CFC00</color>
-+    <color name="lemonchiffon">#FFFACD</color>
-+    <color name="lightblue">#ADD8E6</color>
-+    <color name="lightcoral">#F08080</color>
-+    <color name="lightcyan">#E0FFFF</color>
-+    <color name="lightgoldenrodyellow">#FAFAD2</color>
-+    <color name="lightgreen">#90EE90</color>
-+    <color name="lightgrey">#D3D3D3</color>
-+    <color name="lightpink">#FFB6C1</color>
-+    <color name="lightsalmon">#FFA07A</color>
-+    <color name="lightseagreen">#20B2AA</color>
-+    <color name="lightskyblue">#87CEFA</color>
-+    <color name="lightslategray">#778899</color>
-+    <color name="lightsteelblue">#B0C4DE</color>
-+    <color name="lightyellow">#FFFFE0</color>
-+    <color name="lime">#00FF00</color>
-+    <color name="limegreen">#32CD32</color>
-+    <color name="linen">#FAF0E6</color>
-+    <color name="magenta">#FF00FF</color>
-+    <color name="maroon">#800000</color>
-+    <color name="mediumaquamarine">#66CDAA</color>
-+    <color name="mediumblue">#0000CD</color>
-+    <color name="mediumorchid">#BA55D3</color>
-+    <color name="mediumpurple">#9370DB</color>
-+    <color name="mediumseagreen">#3CB371</color>
-+    <color name="mediumslateblue">#7B68EE</color>
-+    <color name="mediumspringgreen">#00FA9A</color>
-+    <color name="mediumturquoise">#48D1CC</color>
-+    <color name="mediumvioletred">#C71585</color>
-+    <color name="midnightblue">#191970</color>
-+    <color name="mintcream">#F5FFFA</color>
-+    <color name="mistyrose">#FFE4E1</color>
-+    <color name="moccasin">#FFE4B5</color>
-+    <color name="navajowhite">#FFDEAD</color>
-+    <color name="navy">#000080</color>
-+    <color name="oldlace">#FDF5E6</color>
-+    <color name="olive">#808000</color>
-+    <color name="olivedrab">#6B8E23</color>
-+    <color name="orange">#FFA500</color>
-+    <color name="orangered">#FF4500</color>
-+    <color name="orchid">#DA70D6</color>
-+    <color name="palegoldenrod">#EEE8AA</color>
-+    <color name="palegreen">#98FB98</color>
-+    <color name="paleturquoise">#AFEEEE</color>
-+    <color name="palevioletred">#DB7093</color>
-+    <color name="papayawhip">#FFEFD5</color>
-+    <color name="peachpuff">#FFDAB9</color>
-+    <color name="peru">#CD853F</color>
-+    <color name="pink">#FFC0CB</color>
-+    <color name="plum">#DDA0DD</color>
-+    <color name="powderblue">#B0E0E6</color>
-+    <color name="purple">#800080</color>
-+    <color name="red">#FF0000</color>
-+    <color name="rosybrown">#BC8F8F</color>
-+    <color name="royalblue">#4169E1</color>
-+    <color name="saddlebrown">#8B4513</color>
-+    <color name="salmon">#FA8072</color>
-+    <color name="sandybrown">#F4A460</color>
-+    <color name="seagreen">#2E8B57</color>
-+    <color name="seashell">#FFF5EE</color>
-+    <color name="sienna">#A0522D</color>
-+    <color name="silver">#C0C0C0</color>
-+    <color name="skyblue">#87CEEB</color>
-+    <color name="slateblue">#6A5ACD</color>
-+    <color name="slategray">#708090</color>
-+    <color name="snow">#FFFAFA</color>
-+    <color name="springgreen">#00FF7F</color>
-+    <color name="steelblue">#4682B4</color>
-+    <color name="tan">#D2B48C</color>
-+    <color name="teal">#008080</color>
-+    <color name="thistle">#D8BFD8</color>
-+    <color name="tomato">#FF6347</color>
-+    <color name="turquoise">#40E0D0</color>
-+    <color name="violet">#EE82EE</color>
-+    <color name="wheat">#F5DEB3</color>
-+    <color name="white">#FFFFFF</color>
-+    <color name="whitesmoke">#F5F5F5</color>
-+    <color name="yellow">#FFFF00</color>
-+    <color name="yellowgreen">#9ACD32</color>
-+</resources>
-\ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
-new file mode 100644
-index 0000000..18c7986
---- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/res"><file path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/res/values/colors.xml" qualifiers=""><color name="white">#FFFFFF</color><color name="ivory">#FFFFF0</color><color name="lightyellow">#FFFFE0</color><color name="yellow">#FFFF00</color><color name="snow">#FFFAFA</color><color name="floralwhite">#FFFAF0</color><color name="lemonchiffon">#FFFACD</color><color name="cornsilk">#FFF8DC</color><color name="seashell">#FFF5EE</color><color name="lavenderblush">#FFF0F5</color><color name="papayawhip">#FFEFD5</color><color name="blanchedalmond">#FFEBCD</color><color name="mistyrose">#FFE4E1</color><color name="bisque">#FFE4C4</color><color name="moccasin">#FFE4B5</color><color name="navajowhite">#FFDEAD</color><color name="peachpuff">#FFDAB9</color><color name="gold">#FFD700</color><color name="pink">#FFC0CB</color><color name="lightpink">#FFB6C1</color><color name="orange">#FFA500</color><color name="lightsalmon">#FFA07A</color><color name="darkorange">#FF8C00</color><color name="coral">#FF7F50</color><color name="hotpink">#FF69B4</color><color name="tomato">#FF6347</color><color name="orangered">#FF4500</color><color name="deeppink">#FF1493</color><color name="fuchsia">#FF00FF</color><color name="magenta">#FF00FF</color><color name="red">#FF0000</color><color name="oldlace">#FDF5E6</color><color name="lightgoldenrodyellow">#FAFAD2</color><color name="linen">#FAF0E6</color><color name="antiquewhite">#FAEBD7</color><color name="salmon">#FA8072</color><color name="ghostwhite">#F8F8FF</color><color name="mintcream">#F5FFFA</color><color name="whitesmoke">#F5F5F5</color><color name="beige">#F5F5DC</color><color name="wheat">#F5DEB3</color><color name="sandybrown">#F4A460</color><color name="azure">#F0FFFF</color><color name="honeydew">#F0FFF0</color><color name="aliceblue">#F0F8FF</color><color name="khaki">#F0E68C</color><color name="lightcoral">#F08080</color><color name="palegoldenrod">#EEE8AA</color><color name="violet">#EE82EE</color><color name="darksalmon">#E9967A</color><color name="lavender">#E6E6FA</color><color name="lightcyan">#E0FFFF</color><color name="burlywood">#DEB887</color><color name="plum">#DDA0DD</color><color name="gainsboro">#DCDCDC</color><color name="crimson">#DC143C</color><color name="palevioletred">#DB7093</color><color name="goldenrod">#DAA520</color><color name="orchid">#DA70D6</color><color name="thistle">#D8BFD8</color><color name="lightgrey">#D3D3D3</color><color name="tan">#D2B48C</color><color name="chocolate">#D2691E</color><color name="peru">#CD853F</color><color name="indianred">#CD5C5C</color><color name="mediumvioletred">#C71585</color><color name="silver">#C0C0C0</color><color name="darkkhaki">#BDB76B</color><color name="rosybrown">#BC8F8F</color><color name="mediumorchid">#BA55D3</color><color name="darkgoldenrod">#B8860B</color><color name="firebrick">#B22222</color><color name="powderblue">#B0E0E6</color><color name="lightsteelblue">#B0C4DE</color><color name="paleturquoise">#AFEEEE</color><color name="greenyellow">#ADFF2F</color><color name="lightblue">#ADD8E6</color><color name="darkgray">#A9A9A9</color><color name="brown">#A52A2A</color><color name="sienna">#A0522D</color><color name="yellowgreen">#9ACD32</color><color name="darkorchid">#9932CC</color><color name="palegreen">#98FB98</color><color name="darkviolet">#9400D3</color><color name="mediumpurple">#9370DB</color><color name="lightgreen">#90EE90</color><color name="darkseagreen">#8FBC8F</color><color name="saddlebrown">#8B4513</color><color name="darkmagenta">#8B008B</color><color name="darkred">#8B0000</color><color name="blueviolet">#8A2BE2</color><color name="lightskyblue">#87CEFA</color><color name="skyblue">#87CEEB</color><color name="gray">#808080</color><color name="olive">#808000</color><color name="purple">#800080</color><color name="maroon">#800000</color><color name="aquamarine">#7FFFD4</color><color name="chartreuse">#7FFF00</color><color name="lawngreen">#7CFC00</color><color name="mediumslateblue">#7B68EE</color><color name="lightslategray">#778899</color><color name="slategray">#708090</color><color name="olivedrab">#6B8E23</color><color name="slateblue">#6A5ACD</color><color name="dimgray">#696969</color><color name="mediumaquamarine">#66CDAA</color><color name="cornflowerblue">#6495ED</color><color name="cadetblue">#5F9EA0</color><color name="darkolivegreen">#556B2F</color><color name="indigo">#4B0082</color><color name="mediumturquoise">#48D1CC</color><color name="darkslateblue">#483D8B</color><color name="steelblue">#4682B4</color><color name="royalblue">#4169E1</color><color name="turquoise">#40E0D0</color><color name="mediumseagreen">#3CB371</color><color name="limegreen">#32CD32</color><color name="darkslategray">#2F4F4F</color><color name="seagreen">#2E8B57</color><color name="forestgreen">#228B22</color><color name="lightseagreen">#20B2AA</color><color name="dodgerblue">#1E90FF</color><color name="midnightblue">#191970</color><color name="aqua">#00FFFF</color><color name="cyan">#00FFFF</color><color name="springgreen">#00FF7F</color><color name="lime">#00FF00</color><color name="mediumspringgreen">#00FA9A</color><color name="darkturquoise">#00CED1</color><color name="deepskyblue">#00BFFF</color><color name="darkcyan">#008B8B</color><color name="teal">#008080</color><color name="green">#008000</color><color name="darkgreen">#006400</color><color name="blue">#0000FF</color><color name="mediumblue">#0000CD</color><color name="darkblue">#00008B</color><color name="navy">#000080</color><color name="black">#000000</color></file></source><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><mergedItems/></merger>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><mergedItems/></merger>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 new file mode 100644
-index 0000000..3829975
+index 0000000..0962e64
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/debug/jniLibs"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/jniLibs"/></dataSet></merger>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
 new file mode 100644
-index 0000000..60e6ccd
+index 0000000..bad0d9d
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/debug/shaders"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/shaders"/></dataSet></merger>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/packageDebugAssets/merger.xml
 new file mode 100644
-index 0000000..5768b99
+index 0000000..8dd3868
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/incremental/packageDebugAssets/merger.xml
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/packageDebugAssets/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/assets"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/build/intermediates/shader_assets/debug/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/debug/assets"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/assets"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/intermediates/shader_assets/debug/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/assets"/></dataSet></merger>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/BuildConfig.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/BuildConfig.class
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/BuildConfig.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/BuildConfig.class
 new file mode 100644
-index 0000000..806a2aa
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/BuildConfig.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/JsonConvert$1.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/JsonConvert$1.class
+index 0000000..d783bbb
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/BuildConfig.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$1.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$1.class
 new file mode 100644
-index 0000000..bf1b4a6
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/JsonConvert$1.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/JsonConvert.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/JsonConvert.class
+index 0000000..a08ebed
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$1.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class
 new file mode 100644
-index 0000000..ef598fd
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/JsonConvert.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingHeadlessService.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingHeadlessService.class
+index 0000000..525cd58
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class
 new file mode 100644
-index 0000000..700b822
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingHeadlessService.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.class
+index 0000000..eee18b8
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class
 new file mode 100644
-index 0000000..3d38081
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingPackage.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingPackage.class
+index 0000000..f5f7388
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class
 new file mode 100644
-index 0000000..3a86327
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingPackage.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingReceiver.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingReceiver.class
+index 0000000..579450a
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class
 new file mode 100644
-index 0000000..b36a406
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingReceiver.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingSerializer.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingSerializer.class
+index 0000000..95d4de5
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class
 new file mode 100644
-index 0000000..e3221ce
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingSerializer.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingService.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingService.class
+index 0000000..e5004f3
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
 new file mode 100644
-index 0000000..d7b0109
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingService.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStore.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStore.class
-new file mode 100644
-index 0000000..8876ebf
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStore.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStoreHelper.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStoreHelper.class
-new file mode 100644
-index 0000000..bb303ab
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStoreHelper.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStoreImpl.class b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStoreImpl.class
-new file mode 100644
-index 0000000..63264e9
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/javac/debug/classes/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingStoreImpl.class differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/@react-native-firebase/messaging/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
-new file mode 100644
-index 0000000..34d21d0
+index 0000000..78ac5b8
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
-@@ -0,0 +1,142 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+@@ -0,0 +1,2 @@
 +R_DEF: Internal format may change without notice
 +local
-+color aliceblue
-+color antiquewhite
-+color aqua
-+color aquamarine
-+color azure
-+color beige
-+color bisque
-+color black
-+color blanchedalmond
-+color blue
-+color blueviolet
-+color brown
-+color burlywood
-+color cadetblue
-+color chartreuse
-+color chocolate
-+color coral
-+color cornflowerblue
-+color cornsilk
-+color crimson
-+color cyan
-+color darkblue
-+color darkcyan
-+color darkgoldenrod
-+color darkgray
-+color darkgreen
-+color darkkhaki
-+color darkmagenta
-+color darkolivegreen
-+color darkorange
-+color darkorchid
-+color darkred
-+color darksalmon
-+color darkseagreen
-+color darkslateblue
-+color darkslategray
-+color darkturquoise
-+color darkviolet
-+color deeppink
-+color deepskyblue
-+color dimgray
-+color dodgerblue
-+color firebrick
-+color floralwhite
-+color forestgreen
-+color fuchsia
-+color gainsboro
-+color ghostwhite
-+color gold
-+color goldenrod
-+color gray
-+color green
-+color greenyellow
-+color honeydew
-+color hotpink
-+color indianred
-+color indigo
-+color ivory
-+color khaki
-+color lavender
-+color lavenderblush
-+color lawngreen
-+color lemonchiffon
-+color lightblue
-+color lightcoral
-+color lightcyan
-+color lightgoldenrodyellow
-+color lightgreen
-+color lightgrey
-+color lightpink
-+color lightsalmon
-+color lightseagreen
-+color lightskyblue
-+color lightslategray
-+color lightsteelblue
-+color lightyellow
-+color lime
-+color limegreen
-+color linen
-+color magenta
-+color maroon
-+color mediumaquamarine
-+color mediumblue
-+color mediumorchid
-+color mediumpurple
-+color mediumseagreen
-+color mediumslateblue
-+color mediumspringgreen
-+color mediumturquoise
-+color mediumvioletred
-+color midnightblue
-+color mintcream
-+color mistyrose
-+color moccasin
-+color navajowhite
-+color navy
-+color oldlace
-+color olive
-+color olivedrab
-+color orange
-+color orangered
-+color orchid
-+color palegoldenrod
-+color palegreen
-+color paleturquoise
-+color palevioletred
-+color papayawhip
-+color peachpuff
-+color peru
-+color pink
-+color plum
-+color powderblue
-+color purple
-+color red
-+color rosybrown
-+color royalblue
-+color saddlebrown
-+color salmon
-+color sandybrown
-+color seagreen
-+color seashell
-+color sienna
-+color silver
-+color skyblue
-+color slateblue
-+color slategray
-+color snow
-+color springgreen
-+color steelblue
-+color tan
-+color teal
-+color thistle
-+color tomato
-+color turquoise
-+color violet
-+color wheat
-+color white
-+color whitesmoke
-+color yellow
-+color yellowgreen
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/@react-native-firebase/messaging/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
 new file mode 100644
-index 0000000..f2304f7
+index 0000000..1a5fbf4
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
-@@ -0,0 +1,70 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,8 @@
 +1<?xml version="1.0" encoding="utf-8"?>
 +2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-+3    package="io.invertase.firebase.messaging" >
++3    package="com.reactnativecommunity.cameraroll" >
 +4
 +5    <uses-sdk android:minSdkVersion="21" />
-+5-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
++5-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +6
-+7    <uses-permission android:name="android.permission.INTERNET" />
-+7-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:5:3-64
-+7-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:5:20-62
-+8    <uses-permission android:name="android.permission.WAKE_LOCK" />
-+8-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:6:3-65
-+8-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:6:20-63
-+9    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-+9-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:7:3-76
-+9-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:7:20-74
-+10
-+11    <application>
-+11-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:9:3-35:17
-+12        <service android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService" />
-+12-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:10:5-76
-+12-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:10:14-73
-+13        <service
-+13-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:11:5-16:15
-+14            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService"
-+14-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:11:14-65
-+15            android:exported="false" >
-+15-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:12:14-38
-+16            <intent-filter>
-+16-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:13:7-15:23
-+17                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-+17-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:14:9-69
-+17-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:14:17-67
-+18            </intent-filter>
-+19        </service>
-+20
-+21        <receiver
-+21-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:17:5-24:16
-+22            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver"
-+22-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:18:7-59
-+23            android:exported="true"
-+23-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:19:7-30
-+24            android:permission="com.google.android.c2dm.permission.SEND" >
-+24-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:20:7-67
-+25            <intent-filter>
-+25-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:21:7-23:23
-+26                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-+26-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:22:9-73
-+26-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:22:17-70
-+27            </intent-filter>
-+28        </receiver>
-+29
-+30        <meta-data
-+31            android:name="firebase_messaging_auto_init_enabled"
-+31-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:27:7-58
-+32            android:value="true" />
-+32-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:28:7-53
-+33        <meta-data
-+34            android:name="com.google.firebase.messaging.default_notification_channel_id"
-+34-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:30:7-83
-+35            android:value="" />
-+35-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:31:7-59
-+36        <meta-data
-+37            android:name="com.google.firebase.messaging.default_notification_color"
-+37-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:33:7-78
-+38            android:resource="@color/white" />
-+38-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:34:7-58
-+39    </application>
-+40
-+41</manifest>
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
++7</manifest>
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
 new file mode 100644
-index 0000000..5e66e1c
+index 0000000..450fa42
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
-@@ -0,0 +1,41 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+@@ -0,0 +1,7 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-+    package="io.invertase.firebase.messaging" >
++    package="com.reactnativecommunity.cameraroll" >
 +
 +    <uses-sdk android:minSdkVersion="21" />
 +
-+    <uses-permission android:name="android.permission.INTERNET" />
-+    <uses-permission android:name="android.permission.WAKE_LOCK" />
-+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-+
-+    <application>
-+        <service android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService" />
-+        <service
-+            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService"
-+            android:exported="false" >
-+            <intent-filter>
-+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-+            </intent-filter>
-+        </service>
-+
-+        <receiver
-+            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver"
-+            android:exported="true"
-+            android:permission="com.google.android.c2dm.permission.SEND" >
-+            <intent-filter>
-+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-+            </intent-filter>
-+        </receiver>
-+
-+        <meta-data
-+            android:name="firebase_messaging_auto_init_enabled"
-+            android:value="true" />
-+        <meta-data
-+            android:name="com.google.firebase.messaging.default_notification_channel_id"
-+            android:value="" />
-+        <meta-data
-+            android:name="com.google.firebase.messaging.default_notification_color"
-+            android:resource="@color/white" />
-+    </application>
-+
 +</manifest>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/navigation_json/debug/navigation.json b/node_modules/@react-native-firebase/messaging/android/build/intermediates/navigation_json/debug/navigation.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/navigation.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/navigation.json
 new file mode 100644
 index 0000000..0637a08
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/navigation_json/debug/navigation.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/navigation.json
 @@ -0,0 +1 @@
 +[]
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/packaged_manifests/debug/output-metadata.json b/node_modules/@react-native-firebase/messaging/android/build/intermediates/packaged_manifests/debug/output-metadata.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/packaged_manifests/debug/output-metadata.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/packaged_manifests/debug/output-metadata.json
 new file mode 100644
-index 0000000..70de5fb
+index 0000000..59ec1f5
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/packaged_manifests/debug/output-metadata.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/packaged_manifests/debug/output-metadata.json
 @@ -0,0 +1,18 @@
 +{
 +  "version": 3,
@@ -2903,7 +2181,7 @@ index 0000000..70de5fb
 +    "type": "PACKAGED_MANIFESTS",
 +    "kind": "Directory"
 +  },
-+  "applicationId": "io.invertase.firebase.messaging",
++  "applicationId": "com.reactnativecommunity.cameraroll",
 +  "variantName": "debug",
 +  "elements": [
 +    {
@@ -2916,167 +2194,17 @@ index 0000000..70de5fb
 +  "elementType": "File"
 +}
 \ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/packaged_res/debug/values/values.xml b/node_modules/@react-native-firebase/messaging/android/build/intermediates/packaged_res/debug/values/values.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..711c9ae
+index 0000000..647e918
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+new file mode 100644
+index 0000000..7de443d
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/packaged_res/debug/values/values.xml
-@@ -0,0 +1,143 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <color name="aliceblue">#F0F8FF</color>
-+    <color name="antiquewhite">#FAEBD7</color>
-+    <color name="aqua">#00FFFF</color>
-+    <color name="aquamarine">#7FFFD4</color>
-+    <color name="azure">#F0FFFF</color>
-+    <color name="beige">#F5F5DC</color>
-+    <color name="bisque">#FFE4C4</color>
-+    <color name="black">#000000</color>
-+    <color name="blanchedalmond">#FFEBCD</color>
-+    <color name="blue">#0000FF</color>
-+    <color name="blueviolet">#8A2BE2</color>
-+    <color name="brown">#A52A2A</color>
-+    <color name="burlywood">#DEB887</color>
-+    <color name="cadetblue">#5F9EA0</color>
-+    <color name="chartreuse">#7FFF00</color>
-+    <color name="chocolate">#D2691E</color>
-+    <color name="coral">#FF7F50</color>
-+    <color name="cornflowerblue">#6495ED</color>
-+    <color name="cornsilk">#FFF8DC</color>
-+    <color name="crimson">#DC143C</color>
-+    <color name="cyan">#00FFFF</color>
-+    <color name="darkblue">#00008B</color>
-+    <color name="darkcyan">#008B8B</color>
-+    <color name="darkgoldenrod">#B8860B</color>
-+    <color name="darkgray">#A9A9A9</color>
-+    <color name="darkgreen">#006400</color>
-+    <color name="darkkhaki">#BDB76B</color>
-+    <color name="darkmagenta">#8B008B</color>
-+    <color name="darkolivegreen">#556B2F</color>
-+    <color name="darkorange">#FF8C00</color>
-+    <color name="darkorchid">#9932CC</color>
-+    <color name="darkred">#8B0000</color>
-+    <color name="darksalmon">#E9967A</color>
-+    <color name="darkseagreen">#8FBC8F</color>
-+    <color name="darkslateblue">#483D8B</color>
-+    <color name="darkslategray">#2F4F4F</color>
-+    <color name="darkturquoise">#00CED1</color>
-+    <color name="darkviolet">#9400D3</color>
-+    <color name="deeppink">#FF1493</color>
-+    <color name="deepskyblue">#00BFFF</color>
-+    <color name="dimgray">#696969</color>
-+    <color name="dodgerblue">#1E90FF</color>
-+    <color name="firebrick">#B22222</color>
-+    <color name="floralwhite">#FFFAF0</color>
-+    <color name="forestgreen">#228B22</color>
-+    <color name="fuchsia">#FF00FF</color>
-+    <color name="gainsboro">#DCDCDC</color>
-+    <color name="ghostwhite">#F8F8FF</color>
-+    <color name="gold">#FFD700</color>
-+    <color name="goldenrod">#DAA520</color>
-+    <color name="gray">#808080</color>
-+    <color name="green">#008000</color>
-+    <color name="greenyellow">#ADFF2F</color>
-+    <color name="honeydew">#F0FFF0</color>
-+    <color name="hotpink">#FF69B4</color>
-+    <color name="indianred">#CD5C5C</color>
-+    <color name="indigo">#4B0082</color>
-+    <color name="ivory">#FFFFF0</color>
-+    <color name="khaki">#F0E68C</color>
-+    <color name="lavender">#E6E6FA</color>
-+    <color name="lavenderblush">#FFF0F5</color>
-+    <color name="lawngreen">#7CFC00</color>
-+    <color name="lemonchiffon">#FFFACD</color>
-+    <color name="lightblue">#ADD8E6</color>
-+    <color name="lightcoral">#F08080</color>
-+    <color name="lightcyan">#E0FFFF</color>
-+    <color name="lightgoldenrodyellow">#FAFAD2</color>
-+    <color name="lightgreen">#90EE90</color>
-+    <color name="lightgrey">#D3D3D3</color>
-+    <color name="lightpink">#FFB6C1</color>
-+    <color name="lightsalmon">#FFA07A</color>
-+    <color name="lightseagreen">#20B2AA</color>
-+    <color name="lightskyblue">#87CEFA</color>
-+    <color name="lightslategray">#778899</color>
-+    <color name="lightsteelblue">#B0C4DE</color>
-+    <color name="lightyellow">#FFFFE0</color>
-+    <color name="lime">#00FF00</color>
-+    <color name="limegreen">#32CD32</color>
-+    <color name="linen">#FAF0E6</color>
-+    <color name="magenta">#FF00FF</color>
-+    <color name="maroon">#800000</color>
-+    <color name="mediumaquamarine">#66CDAA</color>
-+    <color name="mediumblue">#0000CD</color>
-+    <color name="mediumorchid">#BA55D3</color>
-+    <color name="mediumpurple">#9370DB</color>
-+    <color name="mediumseagreen">#3CB371</color>
-+    <color name="mediumslateblue">#7B68EE</color>
-+    <color name="mediumspringgreen">#00FA9A</color>
-+    <color name="mediumturquoise">#48D1CC</color>
-+    <color name="mediumvioletred">#C71585</color>
-+    <color name="midnightblue">#191970</color>
-+    <color name="mintcream">#F5FFFA</color>
-+    <color name="mistyrose">#FFE4E1</color>
-+    <color name="moccasin">#FFE4B5</color>
-+    <color name="navajowhite">#FFDEAD</color>
-+    <color name="navy">#000080</color>
-+    <color name="oldlace">#FDF5E6</color>
-+    <color name="olive">#808000</color>
-+    <color name="olivedrab">#6B8E23</color>
-+    <color name="orange">#FFA500</color>
-+    <color name="orangered">#FF4500</color>
-+    <color name="orchid">#DA70D6</color>
-+    <color name="palegoldenrod">#EEE8AA</color>
-+    <color name="palegreen">#98FB98</color>
-+    <color name="paleturquoise">#AFEEEE</color>
-+    <color name="palevioletred">#DB7093</color>
-+    <color name="papayawhip">#FFEFD5</color>
-+    <color name="peachpuff">#FFDAB9</color>
-+    <color name="peru">#CD853F</color>
-+    <color name="pink">#FFC0CB</color>
-+    <color name="plum">#DDA0DD</color>
-+    <color name="powderblue">#B0E0E6</color>
-+    <color name="purple">#800080</color>
-+    <color name="red">#FF0000</color>
-+    <color name="rosybrown">#BC8F8F</color>
-+    <color name="royalblue">#4169E1</color>
-+    <color name="saddlebrown">#8B4513</color>
-+    <color name="salmon">#FA8072</color>
-+    <color name="sandybrown">#F4A460</color>
-+    <color name="seagreen">#2E8B57</color>
-+    <color name="seashell">#FFF5EE</color>
-+    <color name="sienna">#A0522D</color>
-+    <color name="silver">#C0C0C0</color>
-+    <color name="skyblue">#87CEEB</color>
-+    <color name="slateblue">#6A5ACD</color>
-+    <color name="slategray">#708090</color>
-+    <color name="snow">#FFFAFA</color>
-+    <color name="springgreen">#00FF7F</color>
-+    <color name="steelblue">#4682B4</color>
-+    <color name="tan">#D2B48C</color>
-+    <color name="teal">#008080</color>
-+    <color name="thistle">#D8BFD8</color>
-+    <color name="tomato">#FF6347</color>
-+    <color name="turquoise">#40E0D0</color>
-+    <color name="violet">#EE82EE</color>
-+    <color name="wheat">#F5DEB3</color>
-+    <color name="white">#FFFFFF</color>
-+    <color name="whitesmoke">#F5F5F5</color>
-+    <color name="yellow">#FFFF00</color>
-+    <color name="yellowgreen">#9ACD32</color>
-+</resources>
-\ No newline at end of file
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/@react-native-firebase/messaging/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
-new file mode 100644
-index 0000000..c517ade
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/@react-native-firebase/messaging/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
-new file mode 100644
-index 0000000..1002dae
---- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
-@@ -0,0 +1,1713 @@
-+io.invertase.firebase.messaging
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+@@ -0,0 +1,1446 @@
++com.reactnativecommunity.cameraroll
 +anim abc_fade_in
 +anim abc_fade_out
 +anim abc_grow_fade_in_from_bottom
@@ -3107,13 +2235,7 @@ index 0000000..1002dae
 +anim catalyst_push_up_out
 +anim catalyst_slide_down
 +anim catalyst_slide_up
-+anim fragment_close_enter
-+anim fragment_close_exit
-+anim fragment_fade_enter
-+anim fragment_fade_exit
 +anim fragment_fast_out_extra_slow_in
-+anim fragment_open_enter
-+anim fragment_open_exit
 +animator fragment_close_enter
 +animator fragment_close_exit
 +animator fragment_fade_enter
@@ -3196,7 +2318,6 @@ index 0000000..1002dae
 +attr buttonGravity
 +attr buttonIconDimen
 +attr buttonPanelSideLayout
-+attr buttonSize
 +attr buttonStyle
 +attr buttonStyleSmall
 +attr buttonTint
@@ -3206,7 +2327,6 @@ index 0000000..1002dae
 +attr checkMarkTintMode
 +attr checkboxStyle
 +attr checkedTextViewStyle
-+attr circleCrop
 +attr closeIcon
 +attr closeItemLayout
 +attr collapseContentDescription
@@ -3221,7 +2341,6 @@ index 0000000..1002dae
 +attr colorError
 +attr colorPrimary
 +attr colorPrimaryDark
-+attr colorScheme
 +attr colorSwitchThumbNormal
 +attr commitIcon
 +attr contentDescription
@@ -3232,7 +2351,6 @@ index 0000000..1002dae
 +attr contentInsetStart
 +attr contentInsetStartWithNavigation
 +attr controlBackground
-+attr coordinatorLayoutStyle
 +attr customNavigationLayout
 +attr defaultQueryHint
 +attr dialogCornerRadius
@@ -3253,7 +2371,6 @@ index 0000000..1002dae
 +attr drawableTintMode
 +attr drawableTopCompat
 +attr drawerArrowStyle
-+attr drawerLayoutStyle
 +attr dropDownListViewStyle
 +attr dropdownListPreferredItemHeight
 +attr editTextBackground
@@ -3288,24 +2405,15 @@ index 0000000..1002dae
 +attr iconTint
 +attr iconTintMode
 +attr iconifiedByDefault
-+attr imageAspectRatio
-+attr imageAspectRatioAdjust
 +attr imageButtonStyle
 +attr indeterminateProgressStyle
 +attr initialActivityCount
 +attr isAutofillInlineSuggestionTheme
 +attr isLightTheme
 +attr itemPadding
-+attr keylines
 +attr lStar
 +attr lastBaselineToBottomHeight
 +attr layout
-+attr layout_anchor
-+attr layout_anchorGravity
-+attr layout_behavior
-+attr layout_dodgeInsetEdges
-+attr layout_insetEdge
-+attr layout_keyline
 +attr lineHeight
 +attr listChoiceBackgroundIndicator
 +attr listChoiceIndicatorMultipleAnimated
@@ -3377,7 +2485,6 @@ index 0000000..1002dae
 +attr roundingBorderColor
 +attr roundingBorderPadding
 +attr roundingBorderWidth
-+attr scopeUris
 +attr searchHintIcon
 +attr searchIcon
 +attr searchViewStyle
@@ -3396,7 +2503,6 @@ index 0000000..1002dae
 +attr splitTrack
 +attr srcCompat
 +attr state_above_anchor
-+attr statusBarBackground
 +attr subMenuArrow
 +attr submitBackground
 +attr subtitle
@@ -3404,7 +2510,6 @@ index 0000000..1002dae
 +attr subtitleTextColor
 +attr subtitleTextStyle
 +attr suggestionRowLayout
-+attr swipeRefreshLayoutProgressSpinnerBackgroundColor
 +attr switchMinWidth
 +attr switchPadding
 +attr switchStyle
@@ -3492,124 +2597,32 @@ index 0000000..1002dae
 +color abc_tint_switch_track
 +color accent_material_dark
 +color accent_material_light
-+color aliceblue
 +color androidx_core_ripple_material_light
 +color androidx_core_secondary_text_default_material_light
-+color antiquewhite
-+color aqua
-+color aquamarine
-+color azure
 +color background_floating_material_dark
 +color background_floating_material_light
 +color background_material_dark
 +color background_material_light
-+color beige
-+color bisque
-+color black
-+color blanchedalmond
-+color blue
-+color blueviolet
 +color bright_foreground_disabled_material_dark
 +color bright_foreground_disabled_material_light
 +color bright_foreground_inverse_material_dark
 +color bright_foreground_inverse_material_light
 +color bright_foreground_material_dark
 +color bright_foreground_material_light
-+color brown
-+color burlywood
 +color button_material_dark
 +color button_material_light
-+color cadetblue
 +color catalyst_logbox_background
 +color catalyst_redbox_background
-+color chartreuse
-+color chocolate
-+color common_google_signin_btn_text_dark
-+color common_google_signin_btn_text_dark_default
-+color common_google_signin_btn_text_dark_disabled
-+color common_google_signin_btn_text_dark_focused
-+color common_google_signin_btn_text_dark_pressed
-+color common_google_signin_btn_text_light
-+color common_google_signin_btn_text_light_default
-+color common_google_signin_btn_text_light_disabled
-+color common_google_signin_btn_text_light_focused
-+color common_google_signin_btn_text_light_pressed
-+color common_google_signin_btn_tint
-+color coral
-+color cornflowerblue
-+color cornsilk
-+color crimson
-+color cyan
-+color darkblue
-+color darkcyan
-+color darkgoldenrod
-+color darkgray
-+color darkgreen
-+color darkkhaki
-+color darkmagenta
-+color darkolivegreen
-+color darkorange
-+color darkorchid
-+color darkred
-+color darksalmon
-+color darkseagreen
-+color darkslateblue
-+color darkslategray
-+color darkturquoise
-+color darkviolet
-+color deeppink
-+color deepskyblue
 +color dim_foreground_disabled_material_dark
 +color dim_foreground_disabled_material_light
 +color dim_foreground_material_dark
 +color dim_foreground_material_light
-+color dimgray
-+color dodgerblue
 +color error_color_material_dark
 +color error_color_material_light
-+color firebrick
-+color floralwhite
 +color foreground_material_dark
 +color foreground_material_light
-+color forestgreen
-+color fuchsia
-+color gainsboro
-+color ghostwhite
-+color gold
-+color goldenrod
-+color gray
-+color green
-+color greenyellow
 +color highlighted_text_material_dark
 +color highlighted_text_material_light
-+color honeydew
-+color hotpink
-+color indianred
-+color indigo
-+color ivory
-+color khaki
-+color lavender
-+color lavenderblush
-+color lawngreen
-+color lemonchiffon
-+color lightblue
-+color lightcoral
-+color lightcyan
-+color lightgoldenrodyellow
-+color lightgreen
-+color lightgrey
-+color lightpink
-+color lightsalmon
-+color lightseagreen
-+color lightskyblue
-+color lightslategray
-+color lightsteelblue
-+color lightyellow
-+color lime
-+color limegreen
-+color linen
-+color magenta
-+color maroon
 +color material_blue_grey_800
 +color material_blue_grey_900
 +color material_blue_grey_950
@@ -3622,40 +2635,8 @@ index 0000000..1002dae
 +color material_grey_800
 +color material_grey_850
 +color material_grey_900
-+color mediumaquamarine
-+color mediumblue
-+color mediumorchid
-+color mediumpurple
-+color mediumseagreen
-+color mediumslateblue
-+color mediumspringgreen
-+color mediumturquoise
-+color mediumvioletred
-+color midnightblue
-+color mintcream
-+color mistyrose
-+color moccasin
-+color navajowhite
-+color navy
 +color notification_action_color_filter
 +color notification_icon_bg_color
-+color notification_material_background_media_default_color
-+color oldlace
-+color olive
-+color olivedrab
-+color orange
-+color orangered
-+color orchid
-+color palegoldenrod
-+color palegreen
-+color paleturquoise
-+color palevioletred
-+color papayawhip
-+color peachpuff
-+color peru
-+color pink
-+color plum
-+color powderblue
 +color primary_dark_material_dark
 +color primary_dark_material_light
 +color primary_material_dark
@@ -3664,48 +2645,20 @@ index 0000000..1002dae
 +color primary_text_default_material_light
 +color primary_text_disabled_material_dark
 +color primary_text_disabled_material_light
-+color purple
-+color red
 +color ripple_material_dark
 +color ripple_material_light
-+color rosybrown
-+color royalblue
-+color saddlebrown
-+color salmon
-+color sandybrown
-+color seagreen
-+color seashell
 +color secondary_text_default_material_dark
 +color secondary_text_default_material_light
 +color secondary_text_disabled_material_dark
 +color secondary_text_disabled_material_light
-+color sienna
-+color silver
-+color skyblue
-+color slateblue
-+color slategray
-+color snow
-+color springgreen
-+color steelblue
 +color switch_thumb_disabled_material_dark
 +color switch_thumb_disabled_material_light
 +color switch_thumb_material_dark
 +color switch_thumb_material_light
 +color switch_thumb_normal_material_dark
 +color switch_thumb_normal_material_light
-+color tan
-+color teal
-+color thistle
-+color tomato
 +color tooltip_background_dark
 +color tooltip_background_light
-+color turquoise
-+color violet
-+color wheat
-+color white
-+color whitesmoke
-+color yellow
-+color yellowgreen
 +dimen abc_action_bar_content_inset_material
 +dimen abc_action_bar_content_inset_with_nav
 +dimen abc_action_bar_default_height_material
@@ -3795,7 +2748,6 @@ index 0000000..1002dae
 +dimen compat_control_corner_material
 +dimen compat_notification_large_icon_max_height
 +dimen compat_notification_large_icon_max_width
-+dimen def_drawer_elevation
 +dimen disabled_alpha_material_dark
 +dimen disabled_alpha_material_light
 +dimen highlight_alpha_material_colored
@@ -3916,27 +2868,6 @@ index 0000000..1002dae
 +drawable btn_radio_off_to_on_mtrl_animation
 +drawable btn_radio_on_mtrl
 +drawable btn_radio_on_to_off_mtrl_animation
-+drawable common_full_open_on_phone
-+drawable common_google_signin_btn_icon_dark
-+drawable common_google_signin_btn_icon_dark_focused
-+drawable common_google_signin_btn_icon_dark_normal
-+drawable common_google_signin_btn_icon_dark_normal_background
-+drawable common_google_signin_btn_icon_disabled
-+drawable common_google_signin_btn_icon_light
-+drawable common_google_signin_btn_icon_light_focused
-+drawable common_google_signin_btn_icon_light_normal
-+drawable common_google_signin_btn_icon_light_normal_background
-+drawable common_google_signin_btn_text_dark
-+drawable common_google_signin_btn_text_dark_focused
-+drawable common_google_signin_btn_text_dark_normal
-+drawable common_google_signin_btn_text_dark_normal_background
-+drawable common_google_signin_btn_text_disabled
-+drawable common_google_signin_btn_text_light
-+drawable common_google_signin_btn_text_light_focused
-+drawable common_google_signin_btn_text_light_normal
-+drawable common_google_signin_btn_text_light_normal_background
-+drawable googleg_disabled_color_18
-+drawable googleg_standard_color_18
 +drawable notification_action_background
 +drawable notification_bg
 +drawable notification_bg_low
@@ -3995,7 +2926,6 @@ index 0000000..1002dae
 +id accessibility_role
 +id accessibility_state
 +id accessibility_value
-+id action0
 +id action_bar
 +id action_bar_activity_content
 +id action_bar_container
@@ -4016,47 +2946,31 @@ index 0000000..1002dae
 +id actions
 +id activity_chooser_view_content
 +id add
-+id adjust_height
-+id adjust_width
 +id alertTitle
-+id all
 +id async
-+id auto
 +id autofill_inline_suggestion_end_icon
 +id autofill_inline_suggestion_start_icon
 +id autofill_inline_suggestion_subtitle
 +id autofill_inline_suggestion_title
 +id blocking
-+id bottom
 +id buttonPanel
-+id cancel_action
 +id catalyst_redbox_title
 +id center
 +id centerCrop
 +id centerInside
-+id center_horizontal
-+id center_vertical
 +id checkbox
 +id checked
 +id chronometer
-+id clip_horizontal
-+id clip_vertical
 +id content
 +id contentPanel
 +id custom
 +id customPanel
-+id dark
 +id decor_content_parent
 +id default_activity_button
 +id dialog_button
 +id edit_query
-+id end
-+id end_padder
 +id expand_activities_button
 +id expanded_menu
-+id fill
-+id fill_horizontal
-+id fill_vertical
 +id fitBottomStart
 +id fitCenter
 +id fitEnd
@@ -4070,7 +2984,6 @@ index 0000000..1002dae
 +id home
 +id icon
 +id icon_group
-+id icon_only
 +id image
 +id info
 +id italic
@@ -4079,14 +2992,10 @@ index 0000000..1002dae
 +id item3
 +id item4
 +id labelled_by
-+id left
-+id light
 +id line1
 +id line3
 +id listMode
 +id list_item
-+id media_actions
-+id media_controller_compat_view_tag
 +id message
 +id multiply
 +id none
@@ -4102,7 +3011,6 @@ index 0000000..1002dae
 +id progress_horizontal
 +id radio
 +id react_test_id
-+id right
 +id right_icon
 +id right_side
 +id rn_frame_file
@@ -4136,9 +3044,6 @@ index 0000000..1002dae
 +id src_atop
 +id src_in
 +id src_over
-+id standard
-+id start
-+id status_bar_latest_event_content
 +id submenuarrow
 +id submit_area
 +id tabMode
@@ -4163,7 +3068,6 @@ index 0000000..1002dae
 +id title
 +id titleDividerNoCustom
 +id title_template
-+id top
 +id topPanel
 +id unchecked
 +id uniform
@@ -4174,13 +3078,11 @@ index 0000000..1002dae
 +id view_tree_saved_state_registry_owner
 +id view_tree_view_model_store_owner
 +id visible_removing_fragment_view_tag
-+id wide
 +id wrap_content
 +integer abc_config_activityDefaultDur
 +integer abc_config_activityShortDur
 +integer cancel_button_image_alpha
 +integer config_tooltipAnimTime
-+integer google_play_services_version
 +integer react_native_dev_server_port
 +integer react_native_inspector_proxy_port
 +integer status_bar_notification_info_maxnum
@@ -4225,17 +3127,8 @@ index 0000000..1002dae
 +layout fps_view
 +layout notification_action
 +layout notification_action_tombstone
-+layout notification_media_action
-+layout notification_media_cancel_action
-+layout notification_template_big_media
-+layout notification_template_big_media_custom
-+layout notification_template_big_media_narrow
-+layout notification_template_big_media_narrow_custom
 +layout notification_template_custom_big
 +layout notification_template_icon_group
-+layout notification_template_lines_media
-+layout notification_template_media
-+layout notification_template_media_custom
 +layout notification_template_part_chronometer
 +layout notification_template_part_time
 +layout redbox_item_frame
@@ -4247,7 +3140,6 @@ index 0000000..1002dae
 +layout support_simple_spinner_dropdown_item
 +menu example_menu
 +menu example_menu2
-+raw firebase_common_keep
 +string abc_action_bar_home_description
 +string abc_action_bar_up_description
 +string abc_action_menu_overflow_description
@@ -4307,25 +3199,6 @@ index 0000000..1002dae
 +string catalyst_settings
 +string catalyst_settings_title
 +string combobox_description
-+string common_google_play_services_enable_button
-+string common_google_play_services_enable_text
-+string common_google_play_services_enable_title
-+string common_google_play_services_install_button
-+string common_google_play_services_install_text
-+string common_google_play_services_install_title
-+string common_google_play_services_notification_channel_name
-+string common_google_play_services_notification_ticker
-+string common_google_play_services_unknown_issue
-+string common_google_play_services_unsupported_text
-+string common_google_play_services_update_button
-+string common_google_play_services_update_text
-+string common_google_play_services_update_title
-+string common_google_play_services_updating_text
-+string common_google_play_services_wear_update_text
-+string common_open_on_phone
-+string common_signin_button_text
-+string common_signin_button_text_long
-+string fcm_fallback_notification_channel_label
 +string header_description
 +string image_description
 +string imagebutton_description
@@ -4597,14 +3470,9 @@ index 0000000..1002dae
 +style TextAppearance_AppCompat_Widget_TextView_SpinnerItem
 +style TextAppearance_Compat_Notification
 +style TextAppearance_Compat_Notification_Info
-+style TextAppearance_Compat_Notification_Info_Media
 +style TextAppearance_Compat_Notification_Line2
-+style TextAppearance_Compat_Notification_Line2_Media
-+style TextAppearance_Compat_Notification_Media
 +style TextAppearance_Compat_Notification_Time
-+style TextAppearance_Compat_Notification_Time_Media
 +style TextAppearance_Compat_Notification_Title
-+style TextAppearance_Compat_Notification_Title_Media
 +style TextAppearance_Widget_AppCompat_ExpandedMenu_Item
 +style TextAppearance_Widget_AppCompat_Toolbar_Subtitle
 +style TextAppearance_Widget_AppCompat_Toolbar_Title
@@ -4730,7 +3598,6 @@ index 0000000..1002dae
 +style Widget_Autofill_InlineSuggestionTitle
 +style Widget_Compat_NotificationActionContainer
 +style Widget_Compat_NotificationActionText
-+style Widget_Support_CoordinatorLayout
 +style redboxButton
 +styleable ActionBar background backgroundSplit backgroundStacked contentInsetEnd contentInsetEndWithActions contentInsetLeft contentInsetRight contentInsetStart contentInsetStartWithNavigation customNavigationLayout displayOptions divider elevation height hideOnContentScroll homeAsUpIndicator homeLayout icon indeterminateProgressStyle itemPadding logo navigationMode popupTheme progressBarPadding progressBarStyle subtitle subtitleTextStyle title titleTextStyle
 +styleable ActionBarLayout android_layout_gravity
@@ -4754,10 +3621,7 @@ index 0000000..1002dae
 +styleable CheckedTextView android_checkMark checkMarkCompat checkMarkTint checkMarkTintMode
 +styleable ColorStateListItem alpha android_alpha android_color android_lStar lStar
 +styleable CompoundButton android_button buttonCompat buttonTint buttonTintMode
-+styleable CoordinatorLayout keylines statusBarBackground
-+styleable CoordinatorLayout_Layout android_layout_gravity layout_anchor layout_anchorGravity layout_behavior layout_dodgeInsetEdges layout_insetEdge layout_keyline
 +styleable DrawerArrowToggle arrowHeadLength arrowShaftLength barLength color drawableSize gapBetweenBars spinBars thickness
-+styleable DrawerLayout elevation
 +styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery fontProviderSystemFontFamily
 +styleable FontFamilyFont android_font android_fontStyle android_fontVariationSettings android_fontWeight android_ttcIndex font fontStyle fontVariationSettings fontWeight ttcIndex
 +styleable Fragment android_id android_name android_tag
@@ -4768,7 +3632,6 @@ index 0000000..1002dae
 +styleable LinearLayoutCompat android_baselineAligned android_baselineAlignedChildIndex android_gravity android_orientation android_weightSum divider dividerPadding measureWithLargestChild showDividers
 +styleable LinearLayoutCompat_Layout android_layout_gravity android_layout_height android_layout_weight android_layout_width
 +styleable ListPopupWindow android_dropDownHorizontalOffset android_dropDownVerticalOffset
-+styleable LoadingImageView circleCrop imageAspectRatio imageAspectRatioAdjust
 +styleable MenuGroup android_checkableBehavior android_enabled android_id android_menuCategory android_orderInCategory android_visible
 +styleable MenuItem actionLayout actionProviderClass actionViewClass alphabeticModifiers android_alphabeticShortcut android_checkable android_checked android_enabled android_icon android_id android_menuCategory android_numericShortcut android_onClick android_orderInCategory android_title android_titleCondensed android_visible contentDescription iconTint iconTintMode numericModifiers showAsAction tooltipText
 +styleable MenuView android_headerBackground android_horizontalDivider android_itemBackground android_itemIconDisabledAlpha android_itemTextAppearance android_verticalDivider android_windowAnimationStyle preserveIconSpacing subMenuArrow
@@ -4776,12 +3639,10 @@ index 0000000..1002dae
 +styleable PopupWindowBackgroundState state_above_anchor
 +styleable RecycleListView paddingBottomNoButtons paddingTopNoTitle
 +styleable SearchView android_focusable android_imeOptions android_inputType android_maxWidth closeIcon commitIcon defaultQueryHint goIcon iconifiedByDefault layout queryBackground queryHint searchHintIcon searchIcon submitBackground suggestionRowLayout voiceIcon
-+styleable SignInButton buttonSize colorScheme scopeUris
 +styleable SimpleDraweeView actualImageResource actualImageScaleType actualImageUri backgroundImage fadeDuration failureImage failureImageScaleType overlayImage placeholderImage placeholderImageScaleType pressedStateOverlayImage progressBarAutoRotateInterval progressBarImage progressBarImageScaleType retryImage retryImageScaleType roundAsCircle roundBottomEnd roundBottomLeft roundBottomRight roundBottomStart roundTopEnd roundTopLeft roundTopRight roundTopStart roundWithOverlayColor roundedCornerRadius roundingBorderColor roundingBorderPadding roundingBorderWidth viewAspectRatio
 +styleable Spinner android_dropDownWidth android_entries android_popupBackground android_prompt popupTheme
 +styleable StateListDrawable android_constantSize android_dither android_enterFadeDuration android_exitFadeDuration android_variablePadding android_visible
 +styleable StateListDrawableItem android_drawable
-+styleable SwipeRefreshLayout swipeRefreshLayoutProgressSpinnerBackgroundColor
 +styleable SwitchCompat android_textOff android_textOn android_thumb showText splitTrack switchMinWidth switchPadding switchTextAppearance thumbTextPadding thumbTint thumbTintMode track trackTint trackTintMode
 +styleable TextAppearance android_fontFamily android_shadowColor android_shadowDx android_shadowDy android_shadowRadius android_textColor android_textColorHint android_textColorLink android_textFontWeight android_textSize android_textStyle android_typeface fontFamily fontVariationSettings textAllCaps textLocale
 +styleable Toolbar android_gravity android_minHeight buttonGravity collapseContentDescription collapseIcon contentInsetEnd contentInsetEndWithActions contentInsetLeft contentInsetRight contentInsetStart contentInsetStartWithNavigation logo logoDescription maxButtonHeight menu navigationContentDescription navigationIcon popupTheme subtitle subtitleTextAppearance subtitleTextColor title titleMargin titleMarginBottom titleMarginEnd titleMarginStart titleMarginTop titleMargins titleTextAppearance titleTextColor
@@ -4789,138 +3650,68 @@ index 0000000..1002dae
 +styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 +styleable ViewStubCompat android_id android_inflatedId android_layout
 +xml rn_dev_preferences
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/@react-native-firebase/messaging/android/build/outputs/logs/manifest-merger-debug-report.txt
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/@react-native-community/cameraroll/android/build/outputs/logs/manifest-merger-debug-report.txt
 new file mode 100644
-index 0000000..56defc9
+index 0000000..f060c59
 --- /dev/null
-+++ b/node_modules/@react-native-firebase/messaging/android/build/outputs/logs/manifest-merger-debug-report.txt
-@@ -0,0 +1,90 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,25 @@
 +-- Merging decision tree log ---
-+meta-data#firebase_messaging_auto_init_enabled
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:26:5-28:55
-+	android:value
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:28:7-53
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:27:7-58
-+meta-data#com.google.firebase.messaging.default_notification_channel_id
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:29:5-31:62
-+	android:value
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:31:7-59
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:30:7-83
-+meta-data#com.google.firebase.messaging.default_notification_color
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:32:5-34:61
-+	android:resource
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:34:7-58
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:33:7-78
 +manifest
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:2:1-36:12
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:2:1-36:12
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:2:1-36:12
++ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:1-5:12
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:1-5:12
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:1-5:12
 +	package
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:3:11-52
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
++		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:3:11-56
++		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +	xmlns:android
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:2:11-69
-+uses-permission#android.permission.INTERNET
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:5:3-64
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:5:20-62
-+uses-permission#android.permission.WAKE_LOCK
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:6:3-65
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:6:20-63
-+uses-permission#android.permission.ACCESS_NETWORK_STATE
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:7:3-76
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:7:20-74
-+application
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:9:3-35:17
-+service#io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:10:5-76
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:10:14-73
-+service#io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:11:5-16:15
-+	android:exported
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:12:14-38
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:11:14-65
-+intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:13:7-15:23
-+action#com.google.firebase.MESSAGING_EVENT
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:14:9-69
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:14:17-67
-+receiver#io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:17:5-24:16
-+	android:exported
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:19:7-30
-+	android:permission
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:20:7-67
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:18:7-59
-+intent-filter#action:name:com.google.android.c2dm.intent.RECEIVE
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:21:7-23:23
-+action#com.google.android.c2dm.intent.RECEIVE
-+ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:22:9-73
-+	android:name
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml:22:17-70
++		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:11-69
 +uses-sdk
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +	android:targetSdkVersion
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +	android:minSdkVersion
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-diff --git a/node_modules/@react-native-firebase/messaging/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/@react-native-firebase/messaging/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
++		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/@react-native-community/cameraroll/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..1c5ace8
-Binary files /dev/null and b/node_modules/@react-native-firebase/messaging/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
-diff --git a/node_modules/@react-native-firebase/messaging/android/src/main/java/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.java b/node_modules/@react-native-firebase/messaging/android/src/main/java/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.java
-index efe88d2..b7cd5d4 100644
---- a/node_modules/@react-native-firebase/messaging/android/src/main/java/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.java
-+++ b/node_modules/@react-native-firebase/messaging/android/src/main/java/io/invertase/firebase/messaging/ReactNativeFirebaseMessagingModule.java
-@@ -29,7 +29,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
- import com.facebook.react.bridge.ReactMethod;
- import com.facebook.react.bridge.ReadableMap;
- import com.google.android.gms.tasks.Tasks;
--import com.google.firebase.iid.FirebaseInstanceId;
-+//import com.google.firebase.iid.FirebaseInstanceId;
- import com.google.firebase.messaging.FirebaseMessaging;
- import com.google.firebase.messaging.RemoteMessage;
+index 0000000..f3650c0
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/src/main/java/com/reactnativecommunity/cameraroll/CameraRollModule.java b/node_modules/@react-native-community/cameraroll/android/src/main/java/com/reactnativecommunity/cameraroll/CameraRollModule.java
+index 5761fec..80450f5 100644
+--- a/node_modules/@react-native-community/cameraroll/android/src/main/java/com/reactnativecommunity/cameraroll/CameraRollModule.java
++++ b/node_modules/@react-native-community/cameraroll/android/src/main/java/com/reactnativecommunity/cameraroll/CameraRollModule.java
+@@ -647,7 +647,11 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
+                 + photoUri.toString(),
+             e);
+       }
+-      retriever.release();
++      try {
++        retriever.release();
++      } catch (IOException e) {
++        e.printStackTrace();
++      }
+     }
  
-@@ -107,8 +107,9 @@ public class ReactNativeFirebaseMessagingModule extends ReactNativeFirebaseModul
- 
-   @ReactMethod
-   public void getToken(String authorizedEntity, String scope, Promise promise) {
--    Tasks
--      .call(getExecutor(), () -> FirebaseInstanceId.getInstance().getToken(authorizedEntity, scope))
-+//    Tasks
-+//      .call(getExecutor(), () -> FirebaseInstanceId.getInstance().getToken(authorizedEntity, scope))
-+    Tasks.call(getExecutor(), () -> Tasks.await(FirebaseMessaging.getInstance().getToken()))
-       .addOnCompleteListener(task -> {
-         if (task.isSuccessful()) {
-           promise.resolve(task.getResult());
-@@ -122,7 +123,8 @@ public class ReactNativeFirebaseMessagingModule extends ReactNativeFirebaseModul
-   public void deleteToken(String authorizedEntity, String scope, Promise promise) {
-     Tasks
-       .call(getExecutor(), () -> {
--        FirebaseInstanceId.getInstance().deleteToken(authorizedEntity, scope);
-+//        FirebaseInstanceId.getInstance().deleteToken(authorizedEntity, scope);
-+        Tasks.await(FirebaseMessaging.getInstance().deleteToken());
-         return null;
-       })
-       .addOnCompleteListener(task -> {
+     if (photoDescriptor != null) {
+@@ -710,7 +714,11 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
+                     + photoUri.toString(),
+                 e);
+           }
+-          retriever.release();
++          try {
++            retriever.release();
++          } catch (IOException e) {
++            e.printStackTrace();
++          }
+         } else {
+           BitmapFactory.Options options = new BitmapFactory.Options();
+           // Set inJustDecodeBounds to true so we don't actually load the Bitmap in memory,
