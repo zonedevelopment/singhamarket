@@ -1,117 +1,8 @@
 diff --git a/node_modules/react-native-reanimated/android/build.gradle b/node_modules/react-native-reanimated/android/build.gradle
-index 90b206e..41f11af 100644
+index 90b206e..574c7e2 100644
 --- a/node_modules/react-native-reanimated/android/build.gradle
 +++ b/node_modules/react-native-reanimated/android/build.gradle
-@@ -1,14 +1,118 @@
-+//def safeExtGet(prop, fallback) {
-+//    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
-+//}
-+//
-+//buildscript {
-+//    if (project == rootProject) {
-+//        // The Android Gradle plugin is only required when opening the android folder stand-alone.
-+//        // This avoids unnecessary downloads and potential conflicts when the library is included as a
-+//        // module dependency in an application project.
-+//        repositories {
-+//            google()
-+//            jcenter()
-+//        }
-+//        dependencies {
-+//            classpath 'com.android.tools.build:gradle:3.5.2'
-+//        }
-+//    }
-+//}
-+//
-+//plugins {
-+//    id('com.android.library')
-+//    id('maven-publish')
-+//}
-+//
-+//android {
-+//    compileSdkVersion safeExtGet('compileSdkVersion', 28)
-+//    buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
-+//    defaultConfig {
-+//        minSdkVersion safeExtGet('minSdkVersion', 16)
-+//        targetSdkVersion safeExtGet('targetSdkVersion', 28)
-+//        versionCode 1
-+//        versionName "1.0"
-+//    }
-+//    lintOptions {
-+//        abortOnError false
-+//    }
-+//}
-+//
-+//repositories {
-+//    mavenLocal()
-+//    maven {
-+//        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-+//        url "$rootDir/../node_modules/react-native/android"
-+//    }
-+//    maven {
-+//        // Android JSC is installed from npm
-+//        url "$rootDir/../node_modules/jsc-android/dist"
-+//    }
-+//    google()
-+//    jcenter()
-+//}
-+//
-+//dependencies {
-+//    //noinspection GradleDynamicVersion
-+////    implementation 'com.facebook.react:react-native:+'  // From node_modules
-+//    implementation "com.facebook.react:react-native:0.62.2"
-+//    implementation "androidx.transition:transition:1.1.0"
-+//}
-+//
-+//afterEvaluate { project ->
-+//
-+//    task androidJavadoc(type: Javadoc) {
-+//        source = android.sourceSets.main.java.srcDirs
-+//        classpath += files(android.bootClasspath)
-+//        classpath += files(project.getConfigurations().getByName('compile').asList())
-+//        include '**/*.java'
-+//    }
-+//
-+//    task androidJavadocJar(type: Jar, dependsOn: androidJavadoc) {
-+//        archiveClassifier = 'javadoc'
-+//        from androidJavadoc.destinationDir
-+//    }
-+//
-+//    task androidSourcesJar(type: Jar) {
-+//        archiveClassifier = 'sources'
-+//        from android.sourceSets.main.java.srcDirs
-+//        include '**/*.java'
-+//    }
-+//
-+//    android.libraryVariants.all { variant ->
-+//        def compileTask
-+//        if (variant.hasProperty('javaCompileProvider')){
-+//            compileTask = variant.javaCompileProvider.get()
-+//        }else{
-+//            compileTask = variant.javaCompile
-+//        }
-+//
-+//        def name = variant.name.capitalize()
-+//        task "jar${name}"(type: Jar, dependsOn: compileTask) {
-+//            from compileTask.destinationDir
-+//        }
-+//    }
-+//
-+//    artifacts {
-+//        archives androidSourcesJar
-+//        archives androidJavadocJar
-+//    }
-+//
-+//    publishing {
-+//        publications {
-+//            maven(MavenPublication) {
-+//                artifact androidSourcesJar
-+//            }
-+//        }
-+//    }
-+//}
- def safeExtGet(prop, fallback) {
-     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
- }
+@@ -4,11 +4,9 @@ def safeExtGet(prop, fallback) {
  
  buildscript {
      if (project == rootProject) {
@@ -124,14 +15,24 @@ index 90b206e..41f11af 100644
              jcenter()
          }
          dependencies {
-@@ -25,12 +129,14 @@ plugins {
+@@ -19,18 +17,19 @@ buildscript {
+ 
+ plugins {
+     id('com.android.library')
+-    id('maven-publish')
+ }
+ 
  android {
-     compileSdkVersion safeExtGet('compileSdkVersion', 28)
-     buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
+-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+-    buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
++    compileSdkVersion safeExtGet('compileSdkVersion', 31)
++    buildToolsVersion safeExtGet('buildToolsVersion', '31.0.0')
 +
      defaultConfig {
-         minSdkVersion safeExtGet('minSdkVersion', 16)
-         targetSdkVersion safeExtGet('targetSdkVersion', 28)
+-        minSdkVersion safeExtGet('minSdkVersion', 16)
+-        targetSdkVersion safeExtGet('targetSdkVersion', 28)
++        minSdkVersion safeExtGet('minSdkVersion', 21)
++        targetSdkVersion safeExtGet('targetSdkVersion', 31)
          versionCode 1
          versionName "1.0"
      }
@@ -139,7 +40,7 @@ index 90b206e..41f11af 100644
      lintOptions {
          abortOnError false
      }
-@@ -39,67 +145,70 @@ android {
+@@ -39,67 +38,21 @@ android {
  repositories {
      mavenLocal()
      maven {
@@ -158,7 +59,7 @@ index 90b206e..41f11af 100644
  dependencies {
 -    //noinspection GradleDynamicVersion
 -    implementation 'com.facebook.react:react-native:+'  // From node_modules
-+    implementation "com.facebook.react:react-native:0.62.2"
++    implementation 'com.facebook.react:react-native:0.68.6'
      implementation "androidx.transition:transition:1.1.0"
  }
  
@@ -208,69 +109,20 @@ index 90b206e..41f11af 100644
 -            }
 -        }
 -    }
-+    // Disabled old javadoc / publishing tasks for compatibility with newer Gradle
++    // Disable old javadoc/publishing tasks for Gradle compatibility
  }
-+
-+//afterEvaluate { project ->
-+//
-+//    task androidJavadoc(type: Javadoc) {
-+//        source = android.sourceSets.main.java.srcDirs
-+//        classpath += files(android.bootClasspath)
-+//        classpath += files(project.getConfigurations().getByName('compileClasspath').asList())
-+//        include '**/*.java'
-+//        failOnError false
-+//    }
-+//
-+//    task androidJavadocJar(type: Jar, dependsOn: androidJavadoc) {
-+//        archiveClassifier = 'javadoc'
-+//        from androidJavadoc.destinationDir
-+//    }
-+//
-+//    task androidSourcesJar(type: Jar) {
-+//        archiveClassifier = 'sources'
-+//        from android.sourceSets.main.java.srcDirs
-+//        include '**/*.java'
-+//    }
-+//
-+//    android.libraryVariants.all { variant ->
-+//        def compileTask
-+//        if (variant.hasProperty('javaCompileProvider')) {
-+//            compileTask = variant.javaCompileProvider.get()
-+//        } else {
-+//            compileTask = variant.javaCompile
-+//        }
-+//
-+//        def name = variant.name.capitalize()
-+//        task "jar${name}"(type: Jar, dependsOn: compileTask) {
-+//            from compileTask.destinationDir
-+//        }
-+//    }
-+//
-+//    artifacts {
-+//        archives androidSourcesJar
-+//        archives androidJavadocJar
-+//    }
-+//
-+//    publishing {
-+//        publications {
-+//            maven(MavenPublication) {
-+//                artifact androidSourcesJar
-+//            }
-+//        }
-+//    }
-+//}
 \ No newline at end of file
-diff --git a/node_modules/react-native-reanimated/android/build/.transforms/39920addaf51eceff56edeee5b32b7d1/results.bin b/node_modules/react-native-reanimated/android/build/.transforms/39920addaf51eceff56edeee5b32b7d1/results.bin
+diff --git a/node_modules/react-native-reanimated/android/build/.transforms/9a15f069644eb8ae20adae02c8782699/results.bin b/node_modules/react-native-reanimated/android/build/.transforms/9a15f069644eb8ae20adae02c8782699/results.bin
 new file mode 100644
 index 0000000..0d259dd
 --- /dev/null
-+++ b/node_modules/react-native-reanimated/android/build/.transforms/39920addaf51eceff56edeee5b32b7d1/results.bin
++++ b/node_modules/react-native-reanimated/android/build/.transforms/9a15f069644eb8ae20adae02c8782699/results.bin
 @@ -0,0 +1 @@
 +o/classes
-diff --git a/node_modules/react-native-reanimated/android/build/.transforms/39920addaf51eceff56edeee5b32b7d1/transformed/classes/classes.dex b/node_modules/react-native-reanimated/android/build/.transforms/39920addaf51eceff56edeee5b32b7d1/transformed/classes/classes.dex
+diff --git a/node_modules/react-native-reanimated/android/build/.transforms/9a15f069644eb8ae20adae02c8782699/transformed/classes/classes.dex b/node_modules/react-native-reanimated/android/build/.transforms/9a15f069644eb8ae20adae02c8782699/transformed/classes/classes.dex
 new file mode 100644
-index 0000000..b40ddc6
-Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/39920addaf51eceff56edeee5b32b7d1/transformed/classes/classes.dex differ
+index 0000000..f685640
+Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/.transforms/9a15f069644eb8ae20adae02c8782699/transformed/classes/classes.dex differ
 diff --git a/node_modules/react-native-reanimated/android/build/generated/source/buildConfig/debug/com/swmansion/reanimated/BuildConfig.java b/node_modules/react-native-reanimated/android/build/generated/source/buildConfig/debug/com/swmansion/reanimated/BuildConfig.java
 new file mode 100644
 index 0000000..86a5ce6
@@ -289,15 +141,17 @@ index 0000000..86a5ce6
 +}
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/react-native-reanimated/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
 new file mode 100644
-index 0000000..4540973
+index 0000000..8d24fa6
 --- /dev/null
 +++ b/node_modules/react-native-reanimated/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
-@@ -0,0 +1,7 @@
+@@ -0,0 +1,9 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 +    package="com.swmansion.reanimated" >
 +
-+    <uses-sdk android:minSdkVersion="21" />
++    <uses-sdk
++        android:minSdkVersion="21"
++        android:targetSdkVersion="31" />
 +
 +</manifest>
 \ No newline at end of file
@@ -328,19 +182,17 @@ index 0000000..0c0f867
 \ No newline at end of file
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/aar_main_jar/debug/classes.jar b/node_modules/react-native-reanimated/android/build/intermediates/aar_main_jar/debug/classes.jar
 new file mode 100644
-index 0000000..176bd30
+index 0000000..aba7f0a
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/aar_main_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/react-native-reanimated/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
 new file mode 100644
-index 0000000..776557e
+index 0000000..d8f70c0
 --- /dev/null
 +++ b/node_modules/react-native-reanimated/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
-@@ -0,0 +1,5 @@
+@@ -0,0 +1,3 @@
 +aarFormatVersion=1.0
 +aarMetadataVersion=1.0
 +minCompileSdk=1
-+minCompileSdkExtension=0
-+minAndroidGradlePluginVersion=1.0.0
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/react-native-reanimated/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
 new file mode 100644
 index 0000000..9e26dfe
@@ -354,18 +206,18 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-reanimated/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..e8ab2d5
+index 0000000..b62216c
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-reanimated/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
-index 0000000..04ad032
+index 0000000..4eea879
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/react-native-reanimated/android/build/intermediates/compile_symbol_list/debug/R.txt
 new file mode 100644
-index 0000000..ea31a21
+index 0000000..9bfb440
 --- /dev/null
 +++ b/node_modules/react-native-reanimated/android/build/intermediates/compile_symbol_list/debug/R.txt
-@@ -0,0 +1,1802 @@
+@@ -0,0 +1,1870 @@
 +int anim abc_fade_in 0x0
 +int anim abc_fade_out 0x0
 +int anim abc_grow_fade_in_from_bottom 0x0
@@ -436,6 +288,11 @@ index 0000000..ea31a21
 +int attr autoSizePresetSizes 0x0
 +int attr autoSizeStepGranularity 0x0
 +int attr autoSizeTextType 0x0
++int attr autofillInlineSuggestionChip 0x0
++int attr autofillInlineSuggestionEndIconStyle 0x0
++int attr autofillInlineSuggestionStartIconStyle 0x0
++int attr autofillInlineSuggestionSubtitle 0x0
++int attr autofillInlineSuggestionTitle 0x0
 +int attr background 0x0
 +int attr backgroundImage 0x0
 +int attr backgroundSplit 0x0
@@ -530,6 +387,7 @@ index 0000000..ea31a21
 +int attr imageButtonStyle 0x0
 +int attr indeterminateProgressStyle 0x0
 +int attr initialActivityCount 0x0
++int attr isAutofillInlineSuggestionTheme 0x0
 +int attr isLightTheme 0x0
 +int attr itemPadding 0x0
 +int attr keylines 0x0
@@ -851,6 +709,7 @@ index 0000000..ea31a21
 +int dimen abc_text_size_subtitle_material_toolbar 0x0
 +int dimen abc_text_size_title_material 0x0
 +int dimen abc_text_size_title_material_toolbar 0x0
++int dimen autofill_inline_suggestion_icon_size 0x0
 +int dimen compat_button_inset_horizontal_material 0x0
 +int dimen compat_button_inset_vertical_material 0x0
 +int dimen compat_button_padding_horizontal_material 0x0
@@ -974,6 +833,7 @@ index 0000000..ea31a21
 +int drawable abc_textfield_search_default_mtrl_alpha 0x0
 +int drawable abc_textfield_search_material 0x0
 +int drawable abc_vector_test 0x0
++int drawable autofill_inline_suggestion_chip_background 0x0
 +int drawable notification_action_background 0x0
 +int drawable notification_bg 0x0
 +int drawable notification_bg_low 0x0
@@ -989,7 +849,40 @@ index 0000000..ea31a21
 +int drawable redbox_top_border_background 0x0
 +int drawable tooltip_frame_dark 0x0
 +int drawable tooltip_frame_light 0x0
++int id accessibility_action_clickable_span 0x0
 +int id accessibility_actions 0x0
++int id accessibility_custom_action_0 0x0
++int id accessibility_custom_action_1 0x0
++int id accessibility_custom_action_10 0x0
++int id accessibility_custom_action_11 0x0
++int id accessibility_custom_action_12 0x0
++int id accessibility_custom_action_13 0x0
++int id accessibility_custom_action_14 0x0
++int id accessibility_custom_action_15 0x0
++int id accessibility_custom_action_16 0x0
++int id accessibility_custom_action_17 0x0
++int id accessibility_custom_action_18 0x0
++int id accessibility_custom_action_19 0x0
++int id accessibility_custom_action_2 0x0
++int id accessibility_custom_action_20 0x0
++int id accessibility_custom_action_21 0x0
++int id accessibility_custom_action_22 0x0
++int id accessibility_custom_action_23 0x0
++int id accessibility_custom_action_24 0x0
++int id accessibility_custom_action_25 0x0
++int id accessibility_custom_action_26 0x0
++int id accessibility_custom_action_27 0x0
++int id accessibility_custom_action_28 0x0
++int id accessibility_custom_action_29 0x0
++int id accessibility_custom_action_3 0x0
++int id accessibility_custom_action_30 0x0
++int id accessibility_custom_action_31 0x0
++int id accessibility_custom_action_4 0x0
++int id accessibility_custom_action_5 0x0
++int id accessibility_custom_action_6 0x0
++int id accessibility_custom_action_7 0x0
++int id accessibility_custom_action_8 0x0
++int id accessibility_custom_action_9 0x0
 +int id accessibility_hint 0x0
 +int id accessibility_label 0x0
 +int id accessibility_role 0x0
@@ -1017,6 +910,10 @@ index 0000000..ea31a21
 +int id add 0x0
 +int id alertTitle 0x0
 +int id async 0x0
++int id autofill_inline_suggestion_end_icon 0x0
++int id autofill_inline_suggestion_start_icon 0x0
++int id autofill_inline_suggestion_subtitle 0x0
++int id autofill_inline_suggestion_title 0x0
 +int id blocking 0x0
 +int id bottom 0x0
 +int id buttonPanel 0x0
@@ -1032,6 +929,7 @@ index 0000000..ea31a21
 +int id customPanel 0x0
 +int id decor_content_parent 0x0
 +int id default_activity_button 0x0
++int id dialog_button 0x0
 +int id edit_query 0x0
 +int id end 0x0
 +int id expand_activities_button 0x0
@@ -1053,6 +951,7 @@ index 0000000..ea31a21
 +int id image 0x0
 +int id info 0x0
 +int id italic 0x0
++int id labelled_by 0x0
 +int id left 0x0
 +int id line1 0x0
 +int id line3 0x0
@@ -1067,6 +966,9 @@ index 0000000..ea31a21
 +int id notification_main_column_container 0x0
 +int id parentPanel 0x0
 +int id parent_matrix 0x0
++int id pointer_enter 0x0
++int id pointer_leave 0x0
++int id pointer_move 0x0
 +int id progress_circular 0x0
 +int id progress_horizontal 0x0
 +int id radio 0x0
@@ -1110,6 +1012,11 @@ index 0000000..ea31a21
 +int id submenuarrow 0x0
 +int id submit_area 0x0
 +int id tabMode 0x0
++int id tag_accessibility_actions 0x0
++int id tag_accessibility_clickable_spans 0x0
++int id tag_accessibility_heading 0x0
++int id tag_accessibility_pane_title 0x0
++int id tag_screen_reader_focusable 0x0
 +int id tag_transition_group 0x0
 +int id tag_unhandled_key_event_manager 0x0
 +int id tag_unhandled_key_listeners 0x0
@@ -1168,6 +1075,8 @@ index 0000000..ea31a21
 +int layout abc_search_view 0x0
 +int layout abc_select_dialog_material 0x0
 +int layout abc_tooltip 0x0
++int layout autofill_inline_suggestion 0x0
++int layout custom_dialog 0x0
 +int layout dev_loading_view 0x0
 +int layout fps_view 0x0
 +int layout notification_action 0x0
@@ -1223,7 +1132,6 @@ index 0000000..ea31a21
 +int string abc_shareactionprovider_share_with_application 0x0
 +int string abc_toolbar_collapse_description 0x0
 +int string alert_description 0x0
-+int string button_description 0x0
 +int string catalyst_change_bundle_location 0x0
 +int string catalyst_copy_button 0x0
 +int string catalyst_debug 0x0
@@ -1231,9 +1139,9 @@ index 0000000..ea31a21
 +int string catalyst_debug_chrome_stop 0x0
 +int string catalyst_debug_connecting 0x0
 +int string catalyst_debug_error 0x0
-+int string catalyst_debug_nuclide 0x0
-+int string catalyst_debug_nuclide_error 0x0
++int string catalyst_debug_open 0x0
 +int string catalyst_debug_stop 0x0
++int string catalyst_devtools_open 0x0
 +int string catalyst_dismiss_button 0x0
 +int string catalyst_heap_capture 0x0
 +int string catalyst_hot_reloading 0x0
@@ -1241,7 +1149,9 @@ index 0000000..ea31a21
 +int string catalyst_hot_reloading_auto_enable 0x0
 +int string catalyst_hot_reloading_stop 0x0
 +int string catalyst_inspector 0x0
++int string catalyst_inspector_stop 0x0
 +int string catalyst_loading_from_url 0x0
++int string catalyst_open_flipper_error 0x0
 +int string catalyst_perf_monitor 0x0
 +int string catalyst_perf_monitor_stop 0x0
 +int string catalyst_reload 0x0
@@ -1264,7 +1174,6 @@ index 0000000..ea31a21
 +int string radiogroup_description 0x0
 +int string rn_tab_description 0x0
 +int string scrollbar_description 0x0
-+int string search_description 0x0
 +int string search_menu_title 0x0
 +int string spinbutton_description 0x0
 +int string state_busy_description 0x0
@@ -1273,6 +1182,7 @@ index 0000000..ea31a21
 +int string state_mixed_description 0x0
 +int string state_off_description 0x0
 +int string state_on_description 0x0
++int string state_unselected_description 0x0
 +int string status_bar_notification_info_overflow 0x0
 +int string summary_description 0x0
 +int string tablist_description 0x0
@@ -1442,8 +1352,6 @@ index 0000000..ea31a21
 +int style Base_Widget_AppCompat_Toolbar_Button_Navigation 0x0
 +int style CalendarDatePickerDialog 0x0
 +int style CalendarDatePickerStyle 0x0
-+int style ClockTimePickerDialog 0x0
-+int style ClockTimePickerStyle 0x0
 +int style DialogAnimationFade 0x0
 +int style DialogAnimationSlide 0x0
 +int style Platform_AppCompat 0x0
@@ -1475,8 +1383,6 @@ index 0000000..ea31a21
 +int style RtlUnderlay_Widget_AppCompat_ActionButton_Overflow 0x0
 +int style SpinnerDatePickerDialog 0x0
 +int style SpinnerDatePickerStyle 0x0
-+int style SpinnerTimePickerDialog 0x0
-+int style SpinnerTimePickerStyle 0x0
 +int style TextAppearance_AppCompat 0x0
 +int style TextAppearance_AppCompat_Body1 0x0
 +int style TextAppearance_AppCompat_Body2 0x0
@@ -1562,6 +1468,7 @@ index 0000000..ea31a21
 +int style Theme_AppCompat_Light_Dialog_MinWidth 0x0
 +int style Theme_AppCompat_Light_NoActionBar 0x0
 +int style Theme_AppCompat_NoActionBar 0x0
++int style Theme_AutofillInlineSuggestion 0x0
 +int style Theme_Catalyst 0x0
 +int style Theme_Catalyst_LogBox 0x0
 +int style Theme_Catalyst_RedBox 0x0
@@ -1642,6 +1549,12 @@ index 0000000..ea31a21
 +int style Widget_AppCompat_TextView_SpinnerItem 0x0
 +int style Widget_AppCompat_Toolbar 0x0
 +int style Widget_AppCompat_Toolbar_Button_Navigation 0x0
++int style Widget_Autofill 0x0
++int style Widget_Autofill_InlineSuggestionChip 0x0
++int style Widget_Autofill_InlineSuggestionEndIconStyle 0x0
++int style Widget_Autofill_InlineSuggestionStartIconStyle 0x0
++int style Widget_Autofill_InlineSuggestionSubtitle 0x0
++int style Widget_Autofill_InlineSuggestionTitle 0x0
 +int style Widget_Compat_NotificationActionContainer 0x0
 +int style Widget_Compat_NotificationActionText 0x0
 +int style Widget_Support_CoordinatorLayout 0x0
@@ -1867,6 +1780,13 @@ index 0000000..ea31a21
 +int styleable AppCompatTheme_windowMinWidthMajor 118
 +int styleable AppCompatTheme_windowMinWidthMinor 119
 +int styleable AppCompatTheme_windowNoTitle 120
++int[] styleable Autofill_InlineSuggestion { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
++int styleable Autofill_InlineSuggestion_autofillInlineSuggestionChip 0
++int styleable Autofill_InlineSuggestion_autofillInlineSuggestionEndIconStyle 1
++int styleable Autofill_InlineSuggestion_autofillInlineSuggestionStartIconStyle 2
++int styleable Autofill_InlineSuggestion_autofillInlineSuggestionSubtitle 3
++int styleable Autofill_InlineSuggestion_autofillInlineSuggestionTitle 4
++int styleable Autofill_InlineSuggestion_isAutofillInlineSuggestionTheme 5
 +int[] styleable ButtonBarLayout { 0x0 }
 +int styleable ButtonBarLayout_allowStacking 0
 +int[] styleable ColorStateListItem { 0x0, 0x101031f, 0x10101a5 }
@@ -2172,22 +2092,6 @@ diff --git a/node_modules/react-native-reanimated/android/build/intermediates/in
 new file mode 100644
 index 0000000..1c983fc
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug-mergeJavaRes/merge-state differ
-diff --git a/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
-new file mode 100644
-index 0000000..53d491d
---- /dev/null
-+++ b/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
-@@ -0,0 +1 @@
-+#Mon Apr 20 17:36:17 ICT 2026
-diff --git a/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
-new file mode 100644
-index 0000000..ad1ebdb
---- /dev/null
-+++ b/node_modules/react-native-reanimated/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
-@@ -0,0 +1,2 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><mergedItems/></merger>
-\ No newline at end of file
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-reanimated/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 new file mode 100644
 index 0000000..06a17ee
@@ -2214,6 +2118,22 @@ index 0000000..cdd1d7e
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/assets"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/intermediates/shader_assets/debug/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/debug/assets"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-reanimated/android/build/intermediates/incremental/packageDebugResources/compile-file-map.properties b/node_modules/react-native-reanimated/android/build/intermediates/incremental/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..f0b7c2a
+--- /dev/null
++++ b/node_modules/react-native-reanimated/android/build/intermediates/incremental/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Tue Apr 21 13:47:54 ICT 2026
+diff --git a/node_modules/react-native-reanimated/android/build/intermediates/incremental/packageDebugResources/merger.xml b/node_modules/react-native-reanimated/android/build/intermediates/incremental/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..4e5cf7f
+--- /dev/null
++++ b/node_modules/react-native-reanimated/android/build/intermediates/incremental/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/debug/res"/></dataSet><mergedItems/></merger>
 \ No newline at end of file
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/facebook/react/uimanager/UIManagerReanimatedHelper.class b/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/facebook/react/uimanager/UIManagerReanimatedHelper.class
 new file mode 100644
@@ -2245,7 +2165,7 @@ index 0000000..fef6899
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/swmansion/reanimated/NodesManager$OnAnimationFrame.class differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/swmansion/reanimated/NodesManager.class b/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/swmansion/reanimated/NodesManager.class
 new file mode 100644
-index 0000000..779e71a
+index 0000000..7f9ad0f
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/swmansion/reanimated/NodesManager.class differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/swmansion/reanimated/ReanimatedModule$1.class b/node_modules/react-native-reanimated/android/build/intermediates/javac/debug/classes/com/swmansion/reanimated/ReanimatedModule$1.class
 new file mode 100644
@@ -2621,33 +2541,38 @@ index 0000000..78ac5b8
 +local
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/react-native-reanimated/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
 new file mode 100644
-index 0000000..170c19c
+index 0000000..bb41cd9
 --- /dev/null
 +++ b/node_modules/react-native-reanimated/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,11 @@
 +1<?xml version="1.0" encoding="utf-8"?>
 +2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 +3    package="com.swmansion.reanimated" >
 +4
-+5    <uses-sdk android:minSdkVersion="21" />
-+5-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/AndroidManifest.xml
-+6
-+7</manifest>
++5    <uses-sdk
++6        android:minSdkVersion="21"
++6-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/AndroidManifest.xml
++7        android:targetSdkVersion="31" />
++7-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/AndroidManifest.xml
++8
++9</manifest>
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/merged_java_res/debug/feature-react-native-reanimated.jar b/node_modules/react-native-reanimated/android/build/intermediates/merged_java_res/debug/feature-react-native-reanimated.jar
 new file mode 100644
 index 0000000..15cb0ec
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/merged_java_res/debug/feature-react-native-reanimated.jar differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/react-native-reanimated/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
 new file mode 100644
-index 0000000..4540973
+index 0000000..8d24fa6
 --- /dev/null
 +++ b/node_modules/react-native-reanimated/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
-@@ -0,0 +1,7 @@
+@@ -0,0 +1,9 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 +    package="com.swmansion.reanimated" >
 +
-+    <uses-sdk android:minSdkVersion="21" />
++    <uses-sdk
++        android:minSdkVersion="21"
++        android:targetSdkVersion="31" />
 +
 +</manifest>
 \ No newline at end of file
@@ -2686,14 +2611,14 @@ index 0000000..5d1fae2
 \ No newline at end of file
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/react-native-reanimated/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..6b93e80
+index 0000000..c0c470d
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-reanimated/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/react-native-reanimated/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
 new file mode 100644
-index 0000000..474f91a
+index 0000000..06558aa
 --- /dev/null
 +++ b/node_modules/react-native-reanimated/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
-@@ -0,0 +1,1328 @@
+@@ -0,0 +1,1390 @@
 +com.swmansion.reanimated
 +anim abc_fade_in
 +anim abc_fade_out
@@ -2765,6 +2690,11 @@ index 0000000..474f91a
 +attr autoSizePresetSizes
 +attr autoSizeStepGranularity
 +attr autoSizeTextType
++attr autofillInlineSuggestionChip
++attr autofillInlineSuggestionEndIconStyle
++attr autofillInlineSuggestionStartIconStyle
++attr autofillInlineSuggestionSubtitle
++attr autofillInlineSuggestionTitle
 +attr background
 +attr backgroundImage
 +attr backgroundSplit
@@ -2859,6 +2789,7 @@ index 0000000..474f91a
 +attr imageButtonStyle
 +attr indeterminateProgressStyle
 +attr initialActivityCount
++attr isAutofillInlineSuggestionTheme
 +attr isLightTheme
 +attr itemPadding
 +attr keylines
@@ -3180,6 +3111,7 @@ index 0000000..474f91a
 +dimen abc_text_size_subtitle_material_toolbar
 +dimen abc_text_size_title_material
 +dimen abc_text_size_title_material_toolbar
++dimen autofill_inline_suggestion_icon_size
 +dimen compat_button_inset_horizontal_material
 +dimen compat_button_inset_vertical_material
 +dimen compat_button_padding_horizontal_material
@@ -3303,6 +3235,7 @@ index 0000000..474f91a
 +drawable abc_textfield_search_default_mtrl_alpha
 +drawable abc_textfield_search_material
 +drawable abc_vector_test
++drawable autofill_inline_suggestion_chip_background
 +drawable notification_action_background
 +drawable notification_bg
 +drawable notification_bg_low
@@ -3318,7 +3251,40 @@ index 0000000..474f91a
 +drawable redbox_top_border_background
 +drawable tooltip_frame_dark
 +drawable tooltip_frame_light
++id accessibility_action_clickable_span
 +id accessibility_actions
++id accessibility_custom_action_0
++id accessibility_custom_action_1
++id accessibility_custom_action_10
++id accessibility_custom_action_11
++id accessibility_custom_action_12
++id accessibility_custom_action_13
++id accessibility_custom_action_14
++id accessibility_custom_action_15
++id accessibility_custom_action_16
++id accessibility_custom_action_17
++id accessibility_custom_action_18
++id accessibility_custom_action_19
++id accessibility_custom_action_2
++id accessibility_custom_action_20
++id accessibility_custom_action_21
++id accessibility_custom_action_22
++id accessibility_custom_action_23
++id accessibility_custom_action_24
++id accessibility_custom_action_25
++id accessibility_custom_action_26
++id accessibility_custom_action_27
++id accessibility_custom_action_28
++id accessibility_custom_action_29
++id accessibility_custom_action_3
++id accessibility_custom_action_30
++id accessibility_custom_action_31
++id accessibility_custom_action_4
++id accessibility_custom_action_5
++id accessibility_custom_action_6
++id accessibility_custom_action_7
++id accessibility_custom_action_8
++id accessibility_custom_action_9
 +id accessibility_hint
 +id accessibility_label
 +id accessibility_role
@@ -3346,6 +3312,10 @@ index 0000000..474f91a
 +id add
 +id alertTitle
 +id async
++id autofill_inline_suggestion_end_icon
++id autofill_inline_suggestion_start_icon
++id autofill_inline_suggestion_subtitle
++id autofill_inline_suggestion_title
 +id blocking
 +id bottom
 +id buttonPanel
@@ -3361,6 +3331,7 @@ index 0000000..474f91a
 +id customPanel
 +id decor_content_parent
 +id default_activity_button
++id dialog_button
 +id edit_query
 +id end
 +id expand_activities_button
@@ -3382,6 +3353,7 @@ index 0000000..474f91a
 +id image
 +id info
 +id italic
++id labelled_by
 +id left
 +id line1
 +id line3
@@ -3396,6 +3368,9 @@ index 0000000..474f91a
 +id notification_main_column_container
 +id parentPanel
 +id parent_matrix
++id pointer_enter
++id pointer_leave
++id pointer_move
 +id progress_circular
 +id progress_horizontal
 +id radio
@@ -3439,6 +3414,11 @@ index 0000000..474f91a
 +id submenuarrow
 +id submit_area
 +id tabMode
++id tag_accessibility_actions
++id tag_accessibility_clickable_spans
++id tag_accessibility_heading
++id tag_accessibility_pane_title
++id tag_screen_reader_focusable
 +id tag_transition_group
 +id tag_unhandled_key_event_manager
 +id tag_unhandled_key_listeners
@@ -3497,6 +3477,8 @@ index 0000000..474f91a
 +layout abc_search_view
 +layout abc_select_dialog_material
 +layout abc_tooltip
++layout autofill_inline_suggestion
++layout custom_dialog
 +layout dev_loading_view
 +layout fps_view
 +layout notification_action
@@ -3552,7 +3534,6 @@ index 0000000..474f91a
 +string abc_shareactionprovider_share_with_application
 +string abc_toolbar_collapse_description
 +string alert_description
-+string button_description
 +string catalyst_change_bundle_location
 +string catalyst_copy_button
 +string catalyst_debug
@@ -3560,9 +3541,9 @@ index 0000000..474f91a
 +string catalyst_debug_chrome_stop
 +string catalyst_debug_connecting
 +string catalyst_debug_error
-+string catalyst_debug_nuclide
-+string catalyst_debug_nuclide_error
++string catalyst_debug_open
 +string catalyst_debug_stop
++string catalyst_devtools_open
 +string catalyst_dismiss_button
 +string catalyst_heap_capture
 +string catalyst_hot_reloading
@@ -3570,7 +3551,9 @@ index 0000000..474f91a
 +string catalyst_hot_reloading_auto_enable
 +string catalyst_hot_reloading_stop
 +string catalyst_inspector
++string catalyst_inspector_stop
 +string catalyst_loading_from_url
++string catalyst_open_flipper_error
 +string catalyst_perf_monitor
 +string catalyst_perf_monitor_stop
 +string catalyst_reload
@@ -3593,7 +3576,6 @@ index 0000000..474f91a
 +string radiogroup_description
 +string rn_tab_description
 +string scrollbar_description
-+string search_description
 +string search_menu_title
 +string spinbutton_description
 +string state_busy_description
@@ -3602,6 +3584,7 @@ index 0000000..474f91a
 +string state_mixed_description
 +string state_off_description
 +string state_on_description
++string state_unselected_description
 +string status_bar_notification_info_overflow
 +string summary_description
 +string tablist_description
@@ -3771,8 +3754,6 @@ index 0000000..474f91a
 +style Base_Widget_AppCompat_Toolbar_Button_Navigation
 +style CalendarDatePickerDialog
 +style CalendarDatePickerStyle
-+style ClockTimePickerDialog
-+style ClockTimePickerStyle
 +style DialogAnimationFade
 +style DialogAnimationSlide
 +style Platform_AppCompat
@@ -3804,8 +3785,6 @@ index 0000000..474f91a
 +style RtlUnderlay_Widget_AppCompat_ActionButton_Overflow
 +style SpinnerDatePickerDialog
 +style SpinnerDatePickerStyle
-+style SpinnerTimePickerDialog
-+style SpinnerTimePickerStyle
 +style TextAppearance_AppCompat
 +style TextAppearance_AppCompat_Body1
 +style TextAppearance_AppCompat_Body2
@@ -3891,6 +3870,7 @@ index 0000000..474f91a
 +style Theme_AppCompat_Light_Dialog_MinWidth
 +style Theme_AppCompat_Light_NoActionBar
 +style Theme_AppCompat_NoActionBar
++style Theme_AutofillInlineSuggestion
 +style Theme_Catalyst
 +style Theme_Catalyst_LogBox
 +style Theme_Catalyst_RedBox
@@ -3971,6 +3951,12 @@ index 0000000..474f91a
 +style Widget_AppCompat_TextView_SpinnerItem
 +style Widget_AppCompat_Toolbar
 +style Widget_AppCompat_Toolbar_Button_Navigation
++style Widget_Autofill
++style Widget_Autofill_InlineSuggestionChip
++style Widget_Autofill_InlineSuggestionEndIconStyle
++style Widget_Autofill_InlineSuggestionStartIconStyle
++style Widget_Autofill_InlineSuggestionSubtitle
++style Widget_Autofill_InlineSuggestionTitle
 +style Widget_Compat_NotificationActionContainer
 +style Widget_Compat_NotificationActionText
 +style Widget_Support_CoordinatorLayout
@@ -3990,6 +3976,7 @@ index 0000000..474f91a
 +styleable AppCompatTextHelper android_drawableBottom android_drawableEnd android_drawableLeft android_drawableRight android_drawableStart android_drawableTop android_textAppearance
 +styleable AppCompatTextView android_textAppearance autoSizeMaxTextSize autoSizeMinTextSize autoSizePresetSizes autoSizeStepGranularity autoSizeTextType firstBaselineToTopHeight fontFamily lastBaselineToBottomHeight lineHeight textAllCaps
 +styleable AppCompatTheme actionBarDivider actionBarItemBackground actionBarPopupTheme actionBarSize actionBarSplitStyle actionBarStyle actionBarTabBarStyle actionBarTabStyle actionBarTabTextStyle actionBarTheme actionBarWidgetTheme actionButtonStyle actionDropDownStyle actionMenuTextAppearance actionMenuTextColor actionModeBackground actionModeCloseButtonStyle actionModeCloseDrawable actionModeCopyDrawable actionModeCutDrawable actionModeFindDrawable actionModePasteDrawable actionModePopupWindowStyle actionModeSelectAllDrawable actionModeShareDrawable actionModeSplitBackground actionModeStyle actionModeWebSearchDrawable actionOverflowButtonStyle actionOverflowMenuStyle activityChooserViewStyle alertDialogButtonGroupStyle alertDialogCenterButtons alertDialogStyle alertDialogTheme android_windowAnimationStyle android_windowIsFloating autoCompleteTextViewStyle borderlessButtonStyle buttonBarButtonStyle buttonBarNegativeButtonStyle buttonBarNeutralButtonStyle buttonBarPositiveButtonStyle buttonBarStyle buttonStyle buttonStyleSmall checkboxStyle checkedTextViewStyle colorAccent colorBackgroundFloating colorButtonNormal colorControlActivated colorControlHighlight colorControlNormal colorError colorPrimary colorPrimaryDark colorSwitchThumbNormal controlBackground dialogCornerRadius dialogPreferredPadding dialogTheme dividerHorizontal dividerVertical dropDownListViewStyle dropdownListPreferredItemHeight editTextBackground editTextColor editTextStyle homeAsUpIndicator imageButtonStyle listChoiceBackgroundIndicator listDividerAlertDialog listMenuViewStyle listPopupWindowStyle listPreferredItemHeight listPreferredItemHeightLarge listPreferredItemHeightSmall listPreferredItemPaddingLeft listPreferredItemPaddingRight panelBackground panelMenuListTheme panelMenuListWidth popupMenuStyle popupWindowStyle radioButtonStyle ratingBarStyle ratingBarStyleIndicator ratingBarStyleSmall searchViewStyle seekBarStyle selectableItemBackground selectableItemBackgroundBorderless spinnerDropDownItemStyle spinnerStyle switchStyle textAppearanceLargePopupMenu textAppearanceListItem textAppearanceListItemSecondary textAppearanceListItemSmall textAppearancePopupMenuHeader textAppearanceSearchResultSubtitle textAppearanceSearchResultTitle textAppearanceSmallPopupMenu textColorAlertDialogListItem textColorSearchUrl toolbarNavigationButtonStyle toolbarStyle tooltipForegroundColor tooltipFrameBackground viewInflaterClass windowActionBar windowActionBarOverlay windowActionModeOverlay windowFixedHeightMajor windowFixedHeightMinor windowFixedWidthMajor windowFixedWidthMinor windowMinWidthMajor windowMinWidthMinor windowNoTitle
++styleable Autofill_InlineSuggestion autofillInlineSuggestionChip autofillInlineSuggestionEndIconStyle autofillInlineSuggestionStartIconStyle autofillInlineSuggestionSubtitle autofillInlineSuggestionTitle isAutofillInlineSuggestionTheme
 +styleable ButtonBarLayout allowStacking
 +styleable ColorStateListItem alpha android_alpha android_color
 +styleable CompoundButton android_button buttonTint buttonTintMode
@@ -4024,7 +4011,7 @@ index 0000000..474f91a
 +xml rn_dev_preferences
 diff --git a/node_modules/react-native-reanimated/android/build/outputs/aar/react-native-reanimated-debug.aar b/node_modules/react-native-reanimated/android/build/outputs/aar/react-native-reanimated-debug.aar
 new file mode 100644
-index 0000000..1e5c40c
+index 0000000..d3c8892
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/outputs/aar/react-native-reanimated-debug.aar differ
 diff --git a/node_modules/react-native-reanimated/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-reanimated/android/build/outputs/logs/manifest-merger-debug-report.txt
 new file mode 100644
@@ -4059,5 +4046,5 @@ index 0000000..6d7540c
 +		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-reanimated/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-reanimated/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..183a961
+index 0000000..5810664
 Binary files /dev/null and b/node_modules/react-native-reanimated/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
