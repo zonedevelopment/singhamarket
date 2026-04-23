@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "prefabPath": "/Users/zone-idea/.gradle/caches/modules-2/files-2.1/com.google.prefab/cli/2.1.0/aa32fec809c44fa531f01dcfb739b5b3304d3050/cli-2.1.0-all.jar",
+  "packages": [
+    "/Users/zone-idea/.gradle/caches/8.11.1/transforms/d0e3d9801e5f6391d63666c5ab8edee0/transformed/jetified-react-android-0.77.0-debug/prefab",
+    "/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/intermediates/prefab_package/debug/prefab",
+    "/Users/zone-idea/.gradle/caches/8.11.1/transforms/a46dbe7a51def451f078561a8c414b6e/transformed/jetified-hermes-android-0.77.0-debug/prefab",
+    "/Users/zone-idea/.gradle/caches/8.11.1/transforms/24635d1f7c9b630dbb5d636b999f2392/transformed/jetified-fbjni-0.7.0/prefab"
+  ]
+}

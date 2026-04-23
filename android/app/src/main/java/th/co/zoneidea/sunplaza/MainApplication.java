@@ -3,11 +3,11 @@ package th.co.zoneidea.sunplaza;
 import android.app.Application;
 import android.content.Context;
 
-//import com.facebook.react.BuildConfig;
+import th.co.zoneidea.sunplaza.BuildConfig;
 import com.dylanvann.fastimage.FastImageViewPackage;
-import com.facebook.react.BuildConfig;
-//import com.facebook.react.PackageList;
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.shell.MainReactPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -26,7 +26,9 @@ import com.swmansion.rnscreens.RNScreensPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import org.wonday.orientation.OrientationPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.facebook.react.soloader.OpenSourceMergedSoMapping;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -44,38 +46,14 @@ public class MainApplication extends Application implements ReactApplication {
           return BuildConfig.DEBUG;
         }
 
-//        @Override
-//        protected List<ReactPackage> getPackages() {
-//          @SuppressWarnings("UnnecessaryLocalVariable")
-//
-//          List<ReactPackage> packages = new PackageList(this).getPackages();
-//          // Packages that cannot be autolinked yet can be added manually here, for example:
-//          // packages.add(new MyReactNativePackage());
-//          return packages;
-//        }
-
-          @Override
-          protected List<ReactPackage> getPackages() {
-              return Arrays.<ReactPackage>asList(
-                      new MainReactPackage(),
-                      new RNPermissionsPackage(),
-                      new FastImageViewPackage(),
-                      new ImagePickerPackage(),
-                      new PickerPackage(),
-                      new RNCWebViewPackage(),
-                      new AsyncStoragePackage(),
-                      new CameraRollPackage(),
-                      new ReanimatedPackage(),
-                      new RNGestureHandlerPackage(),
-                      new RNScreensPackage(),
-                      new ReactNativeFirebaseAppPackage(),
-                      new RNFSPackage(),
-                      new SafeAreaContextPackage(),
-                      new OrientationPackage(),
-                      new ReactNativePushNotificationPackage(),
-                      new ReactNativeFirebaseMessagingPackage()
-              );
-          }
+        @Override
+        protected List<ReactPackage> getPackages() {
+          @SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
+          return packages;
+        }
 
         @Override
         protected String getJSMainModuleName() {
@@ -91,8 +69,16 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+//    SoLoader.init(this, /* native exopackage */ false);
+      try {
+          SoLoader.init(this, OpenSourceMergedSoMapping.INSTANCE);
+      } catch (IOException e) {
+          throw new RuntimeException(e);
+      }
+//    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+      if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+          DefaultNewArchitectureEntryPoint.load();
+      }
   }
 
   /**

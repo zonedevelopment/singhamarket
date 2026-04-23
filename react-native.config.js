@@ -4,7 +4,10 @@
 module.exports = {
     project: {
       ios: {},
-      android: {},
+      android: {
+        sourceDir: './android',
+        packageName: 'th.co.zoneidea.sunplaza',
+      },
     },
     assets: ['./assets/fonts/']
   };

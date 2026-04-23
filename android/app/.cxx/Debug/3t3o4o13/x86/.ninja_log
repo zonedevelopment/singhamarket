@@ -1,0 +1,21 @@
+# ninja log v5
+0	21	0	clean	e2ac721750ee4c46
+2	183	0	/Users/zone-idea/Documents/workspace/singhamarket/android/app/.cxx/Debug/3t3o4o13/x86/CMakeFiles/cmake.verify_globs	81a316a227ca790a
+1	59	0	/Users/zone-idea/Documents/workspace/singhamarket/android/app/.cxx/Debug/3t3o4o13/x86/CMakeFiles/cmake.verify_globs	81a316a227ca790a
+11	7588	1776862708585405572	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/react/renderer/components/RNCWebViewSpec/States.cpp.o	4c2ae0d8365ade8a
+5	7665	1776862708670327661	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/react/renderer/components/rnreanimated/States.cpp.o	ce9841e7951cfa16
+3	9254	1776862710245902459	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/react/renderer/components/rnreanimated/EventEmitters.cpp.o	51477eb562df2c13
+3	10497	1776862711490603522	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/react/renderer/components/rnreanimated/Props.cpp.o	f50be840b6db754
+5	10839	1776862711829711122	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/react/renderer/components/rnreanimated/rnreanimatedJSI-generated.cpp.o	d633711b44583d04
+3	10898	1776862711897011605	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/react/renderer/components/RNCWebViewSpec/RNCWebViewSpecJSI-generated.cpp.o	a24b93265beec14f
+4	10982	1776862711987713540	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/react/renderer/components/rnreanimated/ShadowNodes.cpp.o	1b9a3b11066d895d
+6	11548	1776862712531217814	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/RNCWebViewSpec-generated.cpp.o	8a1ae28b53772245
+2	11556	1776862712546059798	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/react/renderer/components/rnreanimated/ComponentDescriptors.cpp.o	e6f86ebda0ab6d42
+6	11561	1776862712545941885	rnreanimated_autolinked_build/CMakeFiles/react_codegen_rnreanimated.dir/rnreanimated-generated.cpp.o	8e7354d91c5dd6f
+10	12549	1776862713422005258	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/react/renderer/components/RNCWebViewSpec/ShadowNodes.cpp.o	9b5ce82f9f567f9e
+1	12670	1776862713643705163	CMakeFiles/appmodules.dir/OnLoad.cpp.o	2e74aec0f409f6b4
+8	13496	1776862714471120136	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/react/renderer/components/RNCWebViewSpec/EventEmitters.cpp.o	9cdf3fb4150e058c
+9	14075	1776862715046266463	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/react/renderer/components/RNCWebViewSpec/Props.cpp.o	b08d84fbc49eda53
+7	14915	1776862715886053166	RNCWebViewSpec_autolinked_build/CMakeFiles/react_codegen_RNCWebViewSpec.dir/react/renderer/components/RNCWebViewSpec/ComponentDescriptors.cpp.o	caec73889b6e6d9b
+1	15597	1776862716572254096	CMakeFiles/appmodules.dir/Users/zone-idea/Documents/workspace/singhamarket/android/app/build/generated/autolinking/src/main/jni/autolinking.cpp.o	51e82864cf2b289b
+15597	15936	1776862716913135233	/Users/zone-idea/Documents/workspace/singhamarket/android/app/build/intermediates/cxx/Debug/3t3o4o13/obj/x86/libappmodules.so	45874a52de3a34c2

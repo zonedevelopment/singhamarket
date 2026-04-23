@@ -1,14 +1,53 @@
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/results.bin b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/results.bin
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/results.bin b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/results.bin
+new file mode 100644
+index 0000000..7ed749e
+--- /dev/null
++++ b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/results.bin
+@@ -0,0 +1 @@
++o/bundleLibRuntimeToDirDebug
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/BuildConfig.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/BuildConfig.dex
+new file mode 100644
+index 0000000..ebf3214
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/BuildConfig.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.dex
+new file mode 100644
+index 0000000..3af1c1a
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.dex
+new file mode 100644
+index 0000000..927e85f
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.dex
+new file mode 100644
+index 0000000..7408f5a
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.dex
+new file mode 100644
+index 0000000..52ccf7a
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule.dex
+new file mode 100644
+index 0000000..3f3fe2a
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollModule.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollPackage.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollPackage.dex
+new file mode 100644
+index 0000000..6970f43
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/reactnativecommunity/cameraroll/CameraRollPackage.dex differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
+new file mode 100644
+index 0000000..212bc2d
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/ce7bcefecba36222716f533f08121ef1/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/de5a5da7c52d306a8e029d0a9989400d/results.bin b/node_modules/@react-native-community/cameraroll/android/build/.transforms/de5a5da7c52d306a8e029d0a9989400d/results.bin
 new file mode 100644
 index 0000000..0d259dd
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/results.bin
++++ b/node_modules/@react-native-community/cameraroll/android/build/.transforms/de5a5da7c52d306a8e029d0a9989400d/results.bin
 @@ -0,0 +1 @@
 +o/classes
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/transformed/classes/classes.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/transformed/classes/classes.dex
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/.transforms/de5a5da7c52d306a8e029d0a9989400d/transformed/classes/classes_dex/classes.dex b/node_modules/@react-native-community/cameraroll/android/build/.transforms/de5a5da7c52d306a8e029d0a9989400d/transformed/classes/classes_dex/classes.dex
 new file mode 100644
-index 0000000..897a5a1
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/73a8ffbbb515645c09c610e1d2d58696/transformed/classes/classes.dex differ
+index 0000000..0be08b7
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/.transforms/de5a5da7c52d306a8e029d0a9989400d/transformed/classes/classes_dex/classes.dex differ
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/cameraroll/BuildConfig.java b/node_modules/@react-native-community/cameraroll/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/cameraroll/BuildConfig.java
 new file mode 100644
 index 0000000..be91512
@@ -25,25 +64,25 @@ index 0000000..be91512
 +  public static final String LIBRARY_PACKAGE_NAME = "com.reactnativecommunity.cameraroll";
 +  public static final String BUILD_TYPE = "debug";
 +}
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
 new file mode 100644
-index 0000000..450fa42
+index 0000000..5be9ccb
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
 @@ -0,0 +1,7 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 +    package="com.reactnativecommunity.cameraroll" >
 +
-+    <uses-sdk android:minSdkVersion="21" />
++    <uses-sdk android:minSdkVersion="24" />
 +
 +</manifest>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
 new file mode 100644
 index 0000000..b97236b
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
 @@ -0,0 +1,18 @@
 +{
 +  "version": 3,
@@ -64,39 +103,40 @@ index 0000000..b97236b
 +  "elementType": "File"
 +}
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
 new file mode 100644
-index 0000000..776557e
+index 0000000..1211b1e
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
-@@ -0,0 +1,5 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
 +aarFormatVersion=1.0
 +aarMetadataVersion=1.0
 +minCompileSdk=1
 +minCompileSdkExtension=0
 +minAndroidGradlePluginVersion=1.0.0
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
 new file mode 100644
 index 0000000..9e26dfe
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
 @@ -0,0 +1 @@
 +{}
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
 new file mode 100644
-index 0000000..a21f29c
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/R.jar
+index 0000000..a0a3401
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
 new file mode 100644
-index 0000000..d13f32a
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/R.txt
+index 0000000..51d73ce
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
 new file mode 100644
-index 0000000..7c9d30e
+index 0000000..bee9e1e
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/R.txt
-@@ -0,0 +1,1953 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+@@ -0,0 +1,1984 @@
 +int anim abc_fade_in 0x0
 +int anim abc_fade_out 0x0
 +int anim abc_grow_fade_in_from_bottom 0x0
@@ -402,6 +442,7 @@ index 0000000..7c9d30e
 +int attr subtitleTextColor 0x0
 +int attr subtitleTextStyle 0x0
 +int attr suggestionRowLayout 0x0
++int attr swipeRefreshLayoutProgressSpinnerBackgroundColor 0x0
 +int attr switchMinWidth 0x0
 +int attr switchPadding 0x0
 +int attr switchStyle 0x0
@@ -503,6 +544,8 @@ index 0000000..7c9d30e
 +int color bright_foreground_material_light 0x0
 +int color button_material_dark 0x0
 +int color button_material_light 0x0
++int color call_notification_answer_color 0x0
++int color call_notification_decline_color 0x0
 +int color catalyst_logbox_background 0x0
 +int color catalyst_redbox_background 0x0
 +int color dim_foreground_disabled_material_dark 0x0
@@ -760,6 +803,13 @@ index 0000000..7c9d30e
 +int drawable btn_radio_off_to_on_mtrl_animation 0x0
 +int drawable btn_radio_on_mtrl 0x0
 +int drawable btn_radio_on_to_off_mtrl_animation 0x0
++int drawable ic_call_answer 0x0
++int drawable ic_call_answer_low 0x0
++int drawable ic_call_answer_video 0x0
++int drawable ic_call_answer_video_low 0x0
++int drawable ic_call_decline 0x0
++int drawable ic_call_decline_low 0x0
++int drawable ic_resume 0x0
 +int drawable notification_action_background 0x0
 +int drawable notification_bg 0x0
 +int drawable notification_bg_low 0x0
@@ -768,11 +818,15 @@ index 0000000..7c9d30e
 +int drawable notification_bg_normal 0x0
 +int drawable notification_bg_normal_pressed 0x0
 +int drawable notification_icon_background 0x0
++int drawable notification_oversize_large_icon_bg 0x0
 +int drawable notification_template_icon_bg 0x0
 +int drawable notification_template_icon_low_bg 0x0
 +int drawable notification_tile_bg 0x0
 +int drawable notify_panel_notification_icon_bg 0x0
++int drawable paused_in_debugger_background 0x0
++int drawable paused_in_debugger_dialog_background 0x0
 +int drawable redbox_top_border_background 0x0
++int drawable ripple_effect 0x0
 +int drawable test_level_drawable 0x0
 +int drawable tooltip_frame_dark 0x0
 +int drawable tooltip_frame_light 0x0
@@ -817,6 +871,7 @@ index 0000000..7c9d30e
 +int id accessibility_links 0x0
 +int id accessibility_role 0x0
 +int id accessibility_state 0x0
++int id accessibility_state_expanded 0x0
 +int id accessibility_value 0x0
 +int id action_bar 0x0
 +int id action_bar_activity_content 0x0
@@ -839,13 +894,16 @@ index 0000000..7c9d30e
 +int id activity_chooser_view_content 0x0
 +int id add 0x0
 +int id alertTitle 0x0
++int id alert_title 0x0
 +int id async 0x0
 +int id autofill_inline_suggestion_end_icon 0x0
 +int id autofill_inline_suggestion_start_icon 0x0
 +int id autofill_inline_suggestion_subtitle 0x0
 +int id autofill_inline_suggestion_title 0x0
 +int id blocking 0x0
++int id button 0x0
 +int id buttonPanel 0x0
++int id button_text 0x0
 +int id catalyst_redbox_title 0x0
 +int id center 0x0
 +int id centerCrop 0x0
@@ -861,8 +919,10 @@ index 0000000..7c9d30e
 +int id default_activity_button 0x0
 +int id dialog_button 0x0
 +int id edit_query 0x0
++int id edit_text_id 0x0
 +int id expand_activities_button 0x0
 +int id expanded_menu 0x0
++int id filter 0x0
 +int id fitBottomStart 0x0
 +int id fitCenter 0x0
 +int id fitEnd 0x0
@@ -873,22 +933,21 @@ index 0000000..7c9d30e
 +int id fps_text 0x0
 +int id fragment_container_view_tag 0x0
 +int id group_divider 0x0
++int id hide_ime_id 0x0
 +int id home 0x0
 +int id icon 0x0
 +int id icon_group 0x0
 +int id image 0x0
 +int id info 0x0
++int id invalidate_transform 0x0
 +int id italic 0x0
-+int id item1 0x0
-+int id item2 0x0
-+int id item3 0x0
-+int id item4 0x0
 +int id labelled_by 0x0
 +int id line1 0x0
 +int id line3 0x0
 +int id listMode 0x0
 +int id list_item 0x0
 +int id message 0x0
++int id mix_blend_mode 0x0
 +int id multiply 0x0
 +int id none 0x0
 +int id normal 0x0
@@ -914,6 +973,7 @@ index 0000000..7c9d30e
 +int id rn_redbox_report_button 0x0
 +int id rn_redbox_report_label 0x0
 +int id rn_redbox_stack 0x0
++int id role 0x0
 +int id screen 0x0
 +int id scrollIndicatorDown 0x0
 +int id scrollIndicatorUp 0x0
@@ -961,12 +1021,16 @@ index 0000000..7c9d30e
 +int id titleDividerNoCustom 0x0
 +int id title_template 0x0
 +int id topPanel 0x0
++int id transform 0x0
++int id transform_origin 0x0
 +int id unchecked 0x0
 +int id uniform 0x0
 +int id up 0x0
++int id use_hardware_layer 0x0
 +int id view_tag_instance_handle 0x0
 +int id view_tag_native_id 0x0
 +int id view_tree_lifecycle_owner 0x0
++int id view_tree_on_back_pressed_dispatcher_owner 0x0
 +int id view_tree_saved_state_registry_owner 0x0
 +int id view_tree_view_model_store_owner 0x0
 +int id visible_removing_fragment_view_tag 0x0
@@ -976,7 +1040,6 @@ index 0000000..7c9d30e
 +int integer cancel_button_image_alpha 0x0
 +int integer config_tooltipAnimTime 0x0
 +int integer react_native_dev_server_port 0x0
-+int integer react_native_inspector_proxy_port 0x0
 +int integer status_bar_notification_info_maxnum 0x0
 +int interpolator btn_checkbox_checked_mtrl_animation_interpolator_0 0x0
 +int interpolator btn_checkbox_checked_mtrl_animation_interpolator_1 0x0
@@ -1013,16 +1076,20 @@ index 0000000..7c9d30e
 +int layout abc_search_view 0x0
 +int layout abc_select_dialog_material 0x0
 +int layout abc_tooltip 0x0
++int layout alert_title_layout 0x0
 +int layout autofill_inline_suggestion 0x0
 +int layout custom_dialog 0x0
 +int layout dev_loading_view 0x0
 +int layout fps_view 0x0
++int layout ime_base_split_test_activity 0x0
++int layout ime_secondary_split_test_activity 0x0
 +int layout notification_action 0x0
 +int layout notification_action_tombstone 0x0
 +int layout notification_template_custom_big 0x0
 +int layout notification_template_icon_group 0x0
 +int layout notification_template_part_chronometer 0x0
 +int layout notification_template_part_time 0x0
++int layout paused_in_debugger_view 0x0
 +int layout redbox_item_frame 0x0
 +int layout redbox_item_title 0x0
 +int layout redbox_view 0x0
@@ -1030,8 +1097,6 @@ index 0000000..7c9d30e
 +int layout select_dialog_multichoice_material 0x0
 +int layout select_dialog_singlechoice_material 0x0
 +int layout support_simple_spinner_dropdown_item 0x0
-+int menu example_menu 0x0
-+int menu example_menu2 0x0
 +int string abc_action_bar_home_description 0x0
 +int string abc_action_bar_up_description 0x0
 +int string abc_action_menu_overflow_description 0x0
@@ -1060,34 +1125,37 @@ index 0000000..7c9d30e
 +int string abc_shareactionprovider_share_with_application 0x0
 +int string abc_toolbar_collapse_description 0x0
 +int string alert_description 0x0
++int string call_notification_answer_action 0x0
++int string call_notification_answer_video_action 0x0
++int string call_notification_decline_action 0x0
++int string call_notification_hang_up_action 0x0
++int string call_notification_incoming_text 0x0
++int string call_notification_ongoing_text 0x0
++int string call_notification_screening_text 0x0
 +int string catalyst_change_bundle_location 0x0
 +int string catalyst_copy_button 0x0
-+int string catalyst_debug 0x0
-+int string catalyst_debug_chrome 0x0
-+int string catalyst_debug_chrome_stop 0x0
 +int string catalyst_debug_connecting 0x0
 +int string catalyst_debug_error 0x0
 +int string catalyst_debug_open 0x0
-+int string catalyst_debug_stop 0x0
-+int string catalyst_devtools_open 0x0
++int string catalyst_debug_open_disabled 0x0
++int string catalyst_dev_menu_header 0x0
++int string catalyst_dev_menu_sub_header 0x0
 +int string catalyst_dismiss_button 0x0
 +int string catalyst_heap_capture 0x0
 +int string catalyst_hot_reloading 0x0
 +int string catalyst_hot_reloading_auto_disable 0x0
 +int string catalyst_hot_reloading_auto_enable 0x0
 +int string catalyst_hot_reloading_stop 0x0
-+int string catalyst_inspector 0x0
-+int string catalyst_inspector_stop 0x0
++int string catalyst_inspector_toggle 0x0
 +int string catalyst_loading_from_url 0x0
-+int string catalyst_open_flipper_error 0x0
++int string catalyst_open_debugger_error 0x0
 +int string catalyst_perf_monitor 0x0
 +int string catalyst_perf_monitor_stop 0x0
 +int string catalyst_reload 0x0
 +int string catalyst_reload_button 0x0
 +int string catalyst_reload_error 0x0
 +int string catalyst_report_button 0x0
-+int string catalyst_sample_profiler_disable 0x0
-+int string catalyst_sample_profiler_enable 0x0
++int string catalyst_sample_profiler_toggle 0x0
 +int string catalyst_settings 0x0
 +int string catalyst_settings_title 0x0
 +int string combobox_description 0x0
@@ -1283,6 +1351,7 @@ index 0000000..7c9d30e
 +int style CalendarDatePickerStyle 0x0
 +int style DialogAnimationFade 0x0
 +int style DialogAnimationSlide 0x0
++int style NoAnimationDialog 0x0
 +int style Platform_AppCompat 0x0
 +int style Platform_AppCompat_Light 0x0
 +int style Platform_ThemeOverlay_AppCompat 0x0
@@ -1409,6 +1478,7 @@ index 0000000..7c9d30e
 +int style Theme_FullScreenDialogAnimatedSlide 0x0
 +int style Theme_ReactNative_AppCompat_Light 0x0
 +int style Theme_ReactNative_AppCompat_Light_NoActionBar_FullScreen 0x0
++int style Theme_ReactNative_TextInput_DefaultBackground 0x0
 +int style Widget_AppCompat_ActionBar 0x0
 +int style Widget_AppCompat_ActionBar_Solid 0x0
 +int style Widget_AppCompat_ActionBar_TabBar 0x0
@@ -1925,38 +1995,37 @@ index 0000000..7c9d30e
 +int styleable SearchView_submitBackground 14
 +int styleable SearchView_suggestionRowLayout 15
 +int styleable SearchView_voiceIcon 16
-+int[] styleable SimpleDraweeView { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
++int[] styleable SimpleDraweeView { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable SimpleDraweeView_actualImageResource 0
-+int styleable SimpleDraweeView_actualImageScaleType 1
-+int styleable SimpleDraweeView_actualImageUri 2
-+int styleable SimpleDraweeView_backgroundImage 3
-+int styleable SimpleDraweeView_fadeDuration 4
-+int styleable SimpleDraweeView_failureImage 5
-+int styleable SimpleDraweeView_failureImageScaleType 6
-+int styleable SimpleDraweeView_overlayImage 7
-+int styleable SimpleDraweeView_placeholderImage 8
-+int styleable SimpleDraweeView_placeholderImageScaleType 9
-+int styleable SimpleDraweeView_pressedStateOverlayImage 10
-+int styleable SimpleDraweeView_progressBarAutoRotateInterval 11
-+int styleable SimpleDraweeView_progressBarImage 12
-+int styleable SimpleDraweeView_progressBarImageScaleType 13
-+int styleable SimpleDraweeView_retryImage 14
-+int styleable SimpleDraweeView_retryImageScaleType 15
-+int styleable SimpleDraweeView_roundAsCircle 16
-+int styleable SimpleDraweeView_roundBottomEnd 17
-+int styleable SimpleDraweeView_roundBottomLeft 18
-+int styleable SimpleDraweeView_roundBottomRight 19
-+int styleable SimpleDraweeView_roundBottomStart 20
-+int styleable SimpleDraweeView_roundTopEnd 21
-+int styleable SimpleDraweeView_roundTopLeft 22
-+int styleable SimpleDraweeView_roundTopRight 23
-+int styleable SimpleDraweeView_roundTopStart 24
-+int styleable SimpleDraweeView_roundWithOverlayColor 25
-+int styleable SimpleDraweeView_roundedCornerRadius 26
-+int styleable SimpleDraweeView_roundingBorderColor 27
-+int styleable SimpleDraweeView_roundingBorderPadding 28
-+int styleable SimpleDraweeView_roundingBorderWidth 29
-+int styleable SimpleDraweeView_viewAspectRatio 30
++int styleable SimpleDraweeView_actualImageUri 1
++int styleable SimpleDraweeView_backgroundImage 2
++int styleable SimpleDraweeView_fadeDuration 3
++int styleable SimpleDraweeView_failureImage 4
++int styleable SimpleDraweeView_failureImageScaleType 5
++int styleable SimpleDraweeView_overlayImage 6
++int styleable SimpleDraweeView_placeholderImage 7
++int styleable SimpleDraweeView_placeholderImageScaleType 8
++int styleable SimpleDraweeView_pressedStateOverlayImage 9
++int styleable SimpleDraweeView_progressBarAutoRotateInterval 10
++int styleable SimpleDraweeView_progressBarImage 11
++int styleable SimpleDraweeView_progressBarImageScaleType 12
++int styleable SimpleDraweeView_retryImage 13
++int styleable SimpleDraweeView_retryImageScaleType 14
++int styleable SimpleDraweeView_roundAsCircle 15
++int styleable SimpleDraweeView_roundBottomEnd 16
++int styleable SimpleDraweeView_roundBottomLeft 17
++int styleable SimpleDraweeView_roundBottomRight 18
++int styleable SimpleDraweeView_roundBottomStart 19
++int styleable SimpleDraweeView_roundTopEnd 20
++int styleable SimpleDraweeView_roundTopLeft 21
++int styleable SimpleDraweeView_roundTopRight 22
++int styleable SimpleDraweeView_roundTopStart 23
++int styleable SimpleDraweeView_roundWithOverlayColor 24
++int styleable SimpleDraweeView_roundedCornerRadius 25
++int styleable SimpleDraweeView_roundingBorderColor 26
++int styleable SimpleDraweeView_roundingBorderPadding 27
++int styleable SimpleDraweeView_roundingBorderWidth 28
++int styleable SimpleDraweeView_viewAspectRatio 29
 +int[] styleable Spinner { 0x1010262, 0x10100b2, 0x1010176, 0x101017b, 0x0 }
 +int styleable Spinner_android_dropDownWidth 0
 +int styleable Spinner_android_entries 1
@@ -1972,6 +2041,8 @@ index 0000000..7c9d30e
 +int styleable StateListDrawable_android_visible 5
 +int[] styleable StateListDrawableItem { 0x1010199 }
 +int styleable StateListDrawableItem_android_drawable 0
++int[] styleable SwipeRefreshLayout { 0x0 }
++int styleable SwipeRefreshLayout_swipeRefreshLayoutProgressSpinnerBackgroundColor 0
 +int[] styleable SwitchCompat { 0x1010125, 0x1010124, 0x1010142, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 +int styleable SwitchCompat_android_textOff 0
 +int styleable SwitchCompat_android_textOn 1
@@ -2052,19 +2123,19 @@ index 0000000..7c9d30e
 +int xml rn_dev_preferences 0x0
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 new file mode 100644
-index 0000000..1711898
+index 0000000..1967369
 --- /dev/null
 +++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 @@ -0,0 +1 @@
-+#Tue Apr 21 23:02:02 ICT 2026
++#Wed Apr 22 21:32:11 ICT 2026
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
 new file mode 100644
-index 0000000..1922bac
+index 0000000..d004741
 --- /dev/null
 +++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/res"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/rs/debug"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><mergedItems/></merger>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
 \ No newline at end of file
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 new file mode 100644
@@ -2086,124 +2157,130 @@ index 0000000..bad0d9d
 \ No newline at end of file
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/packageDebugAssets/merger.xml
 new file mode 100644
-index 0000000..8dd3868
+index 0000000..9deec63
 --- /dev/null
 +++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/incremental/packageDebugAssets/merger.xml
 @@ -0,0 +1,2 @@
 +<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/assets"/><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/intermediates/shader_assets/debug/out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/assets"/></dataSet></merger>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet></merger>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/BuildConfig.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/BuildConfig.class
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/BuildConfig.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/BuildConfig.class
 new file mode 100644
-index 0000000..d783bbb
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/BuildConfig.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$1.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$1.class
+index 0000000..8f20855
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/BuildConfig.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class
 new file mode 100644
-index 0000000..a08ebed
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$1.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class
+index 0000000..841e20b
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class
 new file mode 100644
-index 0000000..525cd58
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class
+index 0000000..f4275ed
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class
 new file mode 100644
-index 0000000..eee18b8
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class
+index 0000000..2f5d964
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class
 new file mode 100644
-index 0000000..f5f7388
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class
+index 0000000..c9d5646
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class
 new file mode 100644
-index 0000000..579450a
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class
+index 0000000..141112b
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class
 new file mode 100644
-index 0000000..95d4de5
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollModule.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class
-new file mode 100644
-index 0000000..e5004f3
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+index 0000000..bfe7cd4
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/reactnativecommunity/cameraroll/CameraRollPackage.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
 new file mode 100644
 index 0000000..78ac5b8
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
 @@ -0,0 +1,2 @@
 +R_DEF: Internal format may change without notice
 +local
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
 new file mode 100644
-index 0000000..1a5fbf4
+index 0000000..80f2b93
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
-@@ -0,0 +1,8 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
 +1<?xml version="1.0" encoding="utf-8"?>
 +2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 +3    package="com.reactnativecommunity.cameraroll" >
 +4
-+5    <uses-sdk android:minSdkVersion="21" />
-+5-->/Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
++5    <uses-sdk android:minSdkVersion="24" />
 +6
 +7</manifest>
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
 new file mode 100644
-index 0000000..450fa42
+index 0000000..5be9ccb
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
 @@ -0,0 +1,7 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 +    package="com.reactnativecommunity.cameraroll" >
 +
-+    <uses-sdk android:minSdkVersion="21" />
++    <uses-sdk android:minSdkVersion="24" />
 +
 +</manifest>
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/navigation.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/navigation.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
 new file mode 100644
 index 0000000..0637a08
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/navigation.json
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
 @@ -0,0 +1 @@
 +[]
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/packaged_manifests/debug/output-metadata.json b/node_modules/@react-native-community/cameraroll/android/build/intermediates/packaged_manifests/debug/output-metadata.json
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
 new file mode 100644
-index 0000000..59ec1f5
+index 0000000..08f4ebe
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/packaged_manifests/debug/output-metadata.json
-@@ -0,0 +1,18 @@
-+{
-+  "version": 3,
-+  "artifactType": {
-+    "type": "PACKAGED_MANIFESTS",
-+    "kind": "Directory"
-+  },
-+  "applicationId": "com.reactnativecommunity.cameraroll",
-+  "variantName": "debug",
-+  "elements": [
-+    {
-+      "type": "SINGLE",
-+      "filters": [],
-+      "attributes": [],
-+      "outputFile": "../../merged_manifest/debug/AndroidManifest.xml"
-+    }
-+  ],
-+  "elementType": "File"
-+}
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
 \ No newline at end of file
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/BuildConfig.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/BuildConfig.class
 new file mode 100644
-index 0000000..647e918
-Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
-diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+index 0000000..8f20855
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/BuildConfig.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class
 new file mode 100644
-index 0000000..7de443d
+index 0000000..841e20b
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$DeletePhotos.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class
+new file mode 100644
+index 0000000..f4275ed
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$GetMediaTask.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class
+new file mode 100644
+index 0000000..2f5d964
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll$1.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class
+new file mode 100644
+index 0000000..c9d5646
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule$SaveToCameraRoll.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule.class
+new file mode 100644
+index 0000000..141112b
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollModule.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollPackage.class b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollPackage.class
+new file mode 100644
+index 0000000..bfe7cd4
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/reactnativecommunity/cameraroll/CameraRollPackage.class differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
+new file mode 100644
+index 0000000..a3c0ebe
+Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
+diff --git a/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..fa9394b
 --- /dev/null
-+++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
-@@ -0,0 +1,1446 @@
++++ b/node_modules/@react-native-community/cameraroll/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1,1477 @@
 +com.reactnativecommunity.cameraroll
 +anim abc_fade_in
 +anim abc_fade_out
@@ -2510,6 +2587,7 @@ index 0000000..7de443d
 +attr subtitleTextColor
 +attr subtitleTextStyle
 +attr suggestionRowLayout
++attr swipeRefreshLayoutProgressSpinnerBackgroundColor
 +attr switchMinWidth
 +attr switchPadding
 +attr switchStyle
@@ -2611,6 +2689,8 @@ index 0000000..7de443d
 +color bright_foreground_material_light
 +color button_material_dark
 +color button_material_light
++color call_notification_answer_color
++color call_notification_decline_color
 +color catalyst_logbox_background
 +color catalyst_redbox_background
 +color dim_foreground_disabled_material_dark
@@ -2868,6 +2948,13 @@ index 0000000..7de443d
 +drawable btn_radio_off_to_on_mtrl_animation
 +drawable btn_radio_on_mtrl
 +drawable btn_radio_on_to_off_mtrl_animation
++drawable ic_call_answer
++drawable ic_call_answer_low
++drawable ic_call_answer_video
++drawable ic_call_answer_video_low
++drawable ic_call_decline
++drawable ic_call_decline_low
++drawable ic_resume
 +drawable notification_action_background
 +drawable notification_bg
 +drawable notification_bg_low
@@ -2876,11 +2963,15 @@ index 0000000..7de443d
 +drawable notification_bg_normal
 +drawable notification_bg_normal_pressed
 +drawable notification_icon_background
++drawable notification_oversize_large_icon_bg
 +drawable notification_template_icon_bg
 +drawable notification_template_icon_low_bg
 +drawable notification_tile_bg
 +drawable notify_panel_notification_icon_bg
++drawable paused_in_debugger_background
++drawable paused_in_debugger_dialog_background
 +drawable redbox_top_border_background
++drawable ripple_effect
 +drawable test_level_drawable
 +drawable tooltip_frame_dark
 +drawable tooltip_frame_light
@@ -2925,6 +3016,7 @@ index 0000000..7de443d
 +id accessibility_links
 +id accessibility_role
 +id accessibility_state
++id accessibility_state_expanded
 +id accessibility_value
 +id action_bar
 +id action_bar_activity_content
@@ -2947,13 +3039,16 @@ index 0000000..7de443d
 +id activity_chooser_view_content
 +id add
 +id alertTitle
++id alert_title
 +id async
 +id autofill_inline_suggestion_end_icon
 +id autofill_inline_suggestion_start_icon
 +id autofill_inline_suggestion_subtitle
 +id autofill_inline_suggestion_title
 +id blocking
++id button
 +id buttonPanel
++id button_text
 +id catalyst_redbox_title
 +id center
 +id centerCrop
@@ -2969,8 +3064,10 @@ index 0000000..7de443d
 +id default_activity_button
 +id dialog_button
 +id edit_query
++id edit_text_id
 +id expand_activities_button
 +id expanded_menu
++id filter
 +id fitBottomStart
 +id fitCenter
 +id fitEnd
@@ -2981,22 +3078,21 @@ index 0000000..7de443d
 +id fps_text
 +id fragment_container_view_tag
 +id group_divider
++id hide_ime_id
 +id home
 +id icon
 +id icon_group
 +id image
 +id info
++id invalidate_transform
 +id italic
-+id item1
-+id item2
-+id item3
-+id item4
 +id labelled_by
 +id line1
 +id line3
 +id listMode
 +id list_item
 +id message
++id mix_blend_mode
 +id multiply
 +id none
 +id normal
@@ -3022,6 +3118,7 @@ index 0000000..7de443d
 +id rn_redbox_report_button
 +id rn_redbox_report_label
 +id rn_redbox_stack
++id role
 +id screen
 +id scrollIndicatorDown
 +id scrollIndicatorUp
@@ -3069,12 +3166,16 @@ index 0000000..7de443d
 +id titleDividerNoCustom
 +id title_template
 +id topPanel
++id transform
++id transform_origin
 +id unchecked
 +id uniform
 +id up
++id use_hardware_layer
 +id view_tag_instance_handle
 +id view_tag_native_id
 +id view_tree_lifecycle_owner
++id view_tree_on_back_pressed_dispatcher_owner
 +id view_tree_saved_state_registry_owner
 +id view_tree_view_model_store_owner
 +id visible_removing_fragment_view_tag
@@ -3084,7 +3185,6 @@ index 0000000..7de443d
 +integer cancel_button_image_alpha
 +integer config_tooltipAnimTime
 +integer react_native_dev_server_port
-+integer react_native_inspector_proxy_port
 +integer status_bar_notification_info_maxnum
 +interpolator btn_checkbox_checked_mtrl_animation_interpolator_0
 +interpolator btn_checkbox_checked_mtrl_animation_interpolator_1
@@ -3121,16 +3221,20 @@ index 0000000..7de443d
 +layout abc_search_view
 +layout abc_select_dialog_material
 +layout abc_tooltip
++layout alert_title_layout
 +layout autofill_inline_suggestion
 +layout custom_dialog
 +layout dev_loading_view
 +layout fps_view
++layout ime_base_split_test_activity
++layout ime_secondary_split_test_activity
 +layout notification_action
 +layout notification_action_tombstone
 +layout notification_template_custom_big
 +layout notification_template_icon_group
 +layout notification_template_part_chronometer
 +layout notification_template_part_time
++layout paused_in_debugger_view
 +layout redbox_item_frame
 +layout redbox_item_title
 +layout redbox_view
@@ -3138,8 +3242,6 @@ index 0000000..7de443d
 +layout select_dialog_multichoice_material
 +layout select_dialog_singlechoice_material
 +layout support_simple_spinner_dropdown_item
-+menu example_menu
-+menu example_menu2
 +string abc_action_bar_home_description
 +string abc_action_bar_up_description
 +string abc_action_menu_overflow_description
@@ -3168,34 +3270,37 @@ index 0000000..7de443d
 +string abc_shareactionprovider_share_with_application
 +string abc_toolbar_collapse_description
 +string alert_description
++string call_notification_answer_action
++string call_notification_answer_video_action
++string call_notification_decline_action
++string call_notification_hang_up_action
++string call_notification_incoming_text
++string call_notification_ongoing_text
++string call_notification_screening_text
 +string catalyst_change_bundle_location
 +string catalyst_copy_button
-+string catalyst_debug
-+string catalyst_debug_chrome
-+string catalyst_debug_chrome_stop
 +string catalyst_debug_connecting
 +string catalyst_debug_error
 +string catalyst_debug_open
-+string catalyst_debug_stop
-+string catalyst_devtools_open
++string catalyst_debug_open_disabled
++string catalyst_dev_menu_header
++string catalyst_dev_menu_sub_header
 +string catalyst_dismiss_button
 +string catalyst_heap_capture
 +string catalyst_hot_reloading
 +string catalyst_hot_reloading_auto_disable
 +string catalyst_hot_reloading_auto_enable
 +string catalyst_hot_reloading_stop
-+string catalyst_inspector
-+string catalyst_inspector_stop
++string catalyst_inspector_toggle
 +string catalyst_loading_from_url
-+string catalyst_open_flipper_error
++string catalyst_open_debugger_error
 +string catalyst_perf_monitor
 +string catalyst_perf_monitor_stop
 +string catalyst_reload
 +string catalyst_reload_button
 +string catalyst_reload_error
 +string catalyst_report_button
-+string catalyst_sample_profiler_disable
-+string catalyst_sample_profiler_enable
++string catalyst_sample_profiler_toggle
 +string catalyst_settings
 +string catalyst_settings_title
 +string combobox_description
@@ -3391,6 +3496,7 @@ index 0000000..7de443d
 +style CalendarDatePickerStyle
 +style DialogAnimationFade
 +style DialogAnimationSlide
++style NoAnimationDialog
 +style Platform_AppCompat
 +style Platform_AppCompat_Light
 +style Platform_ThemeOverlay_AppCompat
@@ -3517,6 +3623,7 @@ index 0000000..7de443d
 +style Theme_FullScreenDialogAnimatedSlide
 +style Theme_ReactNative_AppCompat_Light
 +style Theme_ReactNative_AppCompat_Light_NoActionBar_FullScreen
++style Theme_ReactNative_TextInput_DefaultBackground
 +style Widget_AppCompat_ActionBar
 +style Widget_AppCompat_ActionBar_Solid
 +style Widget_AppCompat_ActionBar_TabBar
@@ -3639,10 +3746,11 @@ index 0000000..7de443d
 +styleable PopupWindowBackgroundState state_above_anchor
 +styleable RecycleListView paddingBottomNoButtons paddingTopNoTitle
 +styleable SearchView android_focusable android_imeOptions android_inputType android_maxWidth closeIcon commitIcon defaultQueryHint goIcon iconifiedByDefault layout queryBackground queryHint searchHintIcon searchIcon submitBackground suggestionRowLayout voiceIcon
-+styleable SimpleDraweeView actualImageResource actualImageScaleType actualImageUri backgroundImage fadeDuration failureImage failureImageScaleType overlayImage placeholderImage placeholderImageScaleType pressedStateOverlayImage progressBarAutoRotateInterval progressBarImage progressBarImageScaleType retryImage retryImageScaleType roundAsCircle roundBottomEnd roundBottomLeft roundBottomRight roundBottomStart roundTopEnd roundTopLeft roundTopRight roundTopStart roundWithOverlayColor roundedCornerRadius roundingBorderColor roundingBorderPadding roundingBorderWidth viewAspectRatio
++styleable SimpleDraweeView actualImageResource actualImageUri backgroundImage fadeDuration failureImage failureImageScaleType overlayImage placeholderImage placeholderImageScaleType pressedStateOverlayImage progressBarAutoRotateInterval progressBarImage progressBarImageScaleType retryImage retryImageScaleType roundAsCircle roundBottomEnd roundBottomLeft roundBottomRight roundBottomStart roundTopEnd roundTopLeft roundTopRight roundTopStart roundWithOverlayColor roundedCornerRadius roundingBorderColor roundingBorderPadding roundingBorderWidth viewAspectRatio
 +styleable Spinner android_dropDownWidth android_entries android_popupBackground android_prompt popupTheme
 +styleable StateListDrawable android_constantSize android_dither android_enterFadeDuration android_exitFadeDuration android_variablePadding android_visible
 +styleable StateListDrawableItem android_drawable
++styleable SwipeRefreshLayout swipeRefreshLayoutProgressSpinnerBackgroundColor
 +styleable SwitchCompat android_textOff android_textOn android_thumb showText splitTrack switchMinWidth switchPadding switchTextAppearance thumbTextPadding thumbTint thumbTintMode track trackTint trackTintMode
 +styleable TextAppearance android_fontFamily android_shadowColor android_shadowDx android_shadowDy android_shadowRadius android_textColor android_textColorHint android_textColorLink android_textFontWeight android_textSize android_textStyle android_typeface fontFamily fontVariationSettings textAllCaps textLocale
 +styleable Toolbar android_gravity android_minHeight buttonGravity collapseContentDescription collapseIcon contentInsetEnd contentInsetEndWithActions contentInsetLeft contentInsetRight contentInsetStart contentInsetStartWithNavigation logo logoDescription maxButtonHeight menu navigationContentDescription navigationIcon popupTheme subtitle subtitleTextAppearance subtitleTextColor title titleMargin titleMarginBottom titleMarginEnd titleMarginStart titleMarginTop titleMargins titleTextAppearance titleTextColor
@@ -3652,18 +3760,16 @@ index 0000000..7de443d
 +xml rn_dev_preferences
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/@react-native-community/cameraroll/android/build/outputs/logs/manifest-merger-debug-report.txt
 new file mode 100644
-index 0000000..f060c59
+index 0000000..bf04e51
 --- /dev/null
 +++ b/node_modules/@react-native-community/cameraroll/android/build/outputs/logs/manifest-merger-debug-report.txt
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,17 @@
 +-- Merging decision tree log ---
 +manifest
 +ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:1-5:12
 +INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:1-5:12
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:1-5:12
 +	package
 +		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:3:11-56
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +	xmlns:android
 +		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml:2:11-69
@@ -3671,19 +3777,13 @@ index 0000000..f060c59
 +INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
 +INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
-+INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +	android:targetSdkVersion
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 +	android:minSdkVersion
 +		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
-+		ADDED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
-+		INJECTED from /Users/zone-idea/Documents/workspace/singhamarket/node_modules/@react-native-community/cameraroll/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/@react-native-community/cameraroll/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/@react-native-community/cameraroll/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..f3650c0
+index 0000000..a38d749
 Binary files /dev/null and b/node_modules/@react-native-community/cameraroll/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/@react-native-community/cameraroll/android/src/main/java/com/reactnativecommunity/cameraroll/CameraRollModule.java b/node_modules/@react-native-community/cameraroll/android/src/main/java/com/reactnativecommunity/cameraroll/CameraRollModule.java
 index 5761fec..80450f5 100644

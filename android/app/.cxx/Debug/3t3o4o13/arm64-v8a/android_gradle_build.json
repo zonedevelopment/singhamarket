@@ -1,0 +1,54 @@
+{
+  "buildFiles": [
+    "/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-webview/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native/ReactAndroid/cmake-utils/default-app-setup/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/zone-idea/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/zone-idea/Documents/workspace/singhamarket/android/app/.cxx/Debug/3t3o4o13/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/zone-idea/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/zone-idea/Documents/workspace/singhamarket/android/app/.cxx/Debug/3t3o4o13/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "appmodules::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "appmodules",
+      "output": "/Users/zone-idea/Documents/workspace/singhamarket/android/app/build/intermediates/cxx/Debug/3t3o4o13/obj/arm64-v8a/libappmodules.so",
+      "runtimeFiles": [
+        "/Users/zone-idea/.gradle/caches/8.11.1/transforms/24635d1f7c9b630dbb5d636b999f2392/transformed/jetified-fbjni-0.7.0/prefab/modules/fbjni/libs/android.arm64-v8a/libfbjni.so",
+        "/Users/zone-idea/.gradle/caches/8.11.1/transforms/d0e3d9801e5f6391d63666c5ab8edee0/transformed/jetified-react-android-0.77.0-debug/prefab/modules/jsi/libs/android.arm64-v8a/libjsi.so",
+        "/Users/zone-idea/.gradle/caches/8.11.1/transforms/d0e3d9801e5f6391d63666c5ab8edee0/transformed/jetified-react-android-0.77.0-debug/prefab/modules/reactnative/libs/android.arm64-v8a/libreactnative.so"
+      ]
+    },
+    "react_codegen_RNCWebViewSpec::@eb48929f9f7453740a6c": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_RNCWebViewSpec"
+    },
+    "react_codegen_rnreanimated::@8afabad14bfffa3f8b9a": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_rnreanimated"
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/zone-idea/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/Users/zone-idea/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

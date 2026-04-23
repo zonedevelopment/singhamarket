@@ -1,0 +1,3 @@
+/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt
+/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native-webview/android/build/generated/source/codegen/jni/CMakeLists.txt
+/Users/zone-idea/Documents/workspace/singhamarket/node_modules/react-native/ReactAndroid/cmake-utils/default-app-setup/CMakeLists.txt

@@ -1,20 +1,28 @@
 apply plugin: "com.android.application"
-import com.android.build.OutputFile
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
+//import com.android.build.OutputFile
 
+def hermesEnabled = project.hasProperty("hermesEnabled") ? project.getProperty("hermesEnabled").toBoolean() : true
 project.ext.react = [
-        enableHermes: false,
+        enableHermes: hermesEnabled
 ]
+ext.hermesEnabled = hermesEnabled
 
-apply from: "../../node_modules/react-native/react.gradle"
+react {
+    autolinkLibrariesWithApp()
+}
 
 def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
-def jscFlavor = 'org.webkit:android-jsc:+'
-def enableHermes = project.ext.react.get("enableHermes", false)
+//def jscFlavor = 'org.webkit:android-jsc:+'
+//def enableHermes = project.ext.react.get("enableHermes", false)
 
 android {
     namespace "th.co.zoneidea.sunplaza"
     compileSdkVersion rootProject.ext.compileSdkVersion
+    ndkVersion rootProject.ext.ndkVersion
 
     defaultConfig {
         applicationId "th.co.zoneidea.sunplaza"
@@ -26,8 +34,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     splits {
@@ -68,21 +76,30 @@ android {
         }
     }
 
+//    packagingOptions {
+//        pickFirst "lib/armeabi-v7a/libc++_shared.so"
+//        pickFirst "lib/arm64-v8a/libc++_shared.so"
+//        pickFirst "lib/x86/libc++_shared.so"
+//        pickFirst "lib/x86_64/libc++_shared.so"
+//    }
     packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
+        jniLibs {
+            useLegacyPackaging true
+        }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {
-                output.versionCodeOverride = versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
-        }
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+//            def abi = output.getFilter(OutputFile.ABI)
+//            if (abi != null) {
+//                output.versionCodeOverride = versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+//            }
+//        }
+//    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
@@ -90,78 +107,17 @@ configurations.all {
     exclude group: 'com.google.firebase', module: 'firebase-iid'
 }
 
-//configurations.all {
-//    exclude group: 'com.google.firebase', module: 'firebase-iid'
-//
-//    resolutionStrategy.eachDependency { details ->
-//        if (details.requested.group == 'com.google.firebase' &&
-//                details.requested.name == 'firebase-messaging') {
-//            details.useVersion "25.0.1"
-//        }
-//    }
-//}
-
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation("com.facebook.react:react-android")
 
-//    implementation "com.facebook.react:react-native:+"
-//    implementation "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}"
-    implementation "com.facebook.react:react-android:${rootProject.ext.reactNativeVersion}"
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-
-    implementation project(':react-native-fast-image')
-    implementation project(':react-native-image-picker')
-    implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-webview')
-    implementation project(':@react-native-community_async-storage')
-    implementation project(':@react-native-community_cameraroll')
-    implementation project(':react-native-fs')
-    implementation project(':react-native-reanimated')
-    implementation project(':react-native-gesture-handler')
-    implementation project(':react-native-screens')
-    implementation project(':@react-native-firebase_app')
-//    implementation project(':@react-native-firebase_messaging')
-    implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
-    implementation project(':react-native-permissions')
-    implementation project(':react-native-safe-area-context')
-
-    implementation project(':react-native-orientation-locker')
-//    implementation project(':react-native-push-notification')
-    implementation(project(':react-native-push-notification')) {
-        exclude group: 'com.google.firebase', module: 'firebase-iid'
-    }
-    implementation project(':@react-native-firebase_messaging')
-
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-        exclude group: 'com.facebook.fbjni'
-    }
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group: 'com.facebook.flipper'
-    }
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group: 'com.facebook.flipper'
-    }
-
-    if (enableHermes) {
-        def hermesPath = "../../node_modules/hermes-engine/android/"
-        debugImplementation files(hermesPath + "hermes-debug.aar")
-        releaseImplementation files(hermesPath + "hermes-release.aar")
+    if (hermesEnabled) {
+        implementation("com.facebook.react:hermes-android")
     } else {
-        implementation jscFlavor
+        implementation("org.webkit:android-jsc:+")
     }
+
+    implementation("com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 }
 
-//task copyDownloadableDepsToLibs(type: Copy) {
-//    from configurations.implementation
-//    into 'libs'
-//}
-//task copyDownloadableDepsToLibs(type: Copy) {
-//    from configurations.compileClasspath
-//    into 'libs'
-//}
-
-//apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
-//applyNativeModulesAppBuildGradle(project)
-
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
