@@ -14,7 +14,7 @@ react {
     autolinkLibrariesWithApp()
 }
 
-def enableSeparateBuildPerCPUArchitecture = false
+//def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 //def jscFlavor = 'org.webkit:android-jsc:+'
 //def enableHermes = project.ext.react.get("enableHermes", false)
@@ -38,14 +38,14 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    splits {
-        abi {
-            reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false
-            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-        }
-    }
+//    splits {
+//        abi {
+//            reset()
+//            enable enableSeparateBuildPerCPUArchitecture
+//            universalApk false
+//            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+//        }
+//    }
 
     signingConfigs {
         debug {
@@ -84,7 +84,7 @@ android {
 //    }
     packagingOptions {
         jniLibs {
-            useLegacyPackaging true
+            useLegacyPackaging false
         }
     }
 
