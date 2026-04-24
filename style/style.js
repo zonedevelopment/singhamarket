@@ -89,6 +89,36 @@ const styles = StyleSheet.create({
         borderRadius: COMPONENT_HIGHT / 2,
         margin: 10,
     },
+    loginInputShadow: {
+        shadowColor: '#8F8F8F',
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.28,
+        shadowRadius: 12,
+        elevation: 9,
+    },
+    registerPanelShadow: {
+        shadowColor: '#8F8F8F',
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 10,
+        elevation: 8,
+    },
+    registerFieldShadow: {
+        shadowColor: '#8F8F8F',
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.24,
+        shadowRadius: 11,
+        elevation: 8,
+    },
     TextAreaWithIcon: {
         paddingLeft: 15,
         flexDirection: 'row',
@@ -198,6 +228,9 @@ const styles = StyleSheet.create({
     text12: {
         fontSize: 12
     },
+    regular: {
+        fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Regular' : 'SinghaEstate-Regular'
+    },
     fullWidth: {
         width: DEVICE_WIDTH
     },
@@ -240,6 +273,19 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 10,
         alignSelf: 'center'
+    },
+    pickerStyle: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: COMPONENT_HIGHT,
+        width: '95%',
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+        borderRadius: COMPONENT_HIGHT / 2,
+        margin: 10,
+        overflow: 'hidden',
     },
     hr: {
         width: '90%',

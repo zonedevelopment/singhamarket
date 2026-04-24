@@ -18,8 +18,8 @@ const httpServices = {
         });
     },
     post:function (url, data, header, callback) {
-        // console.log(url);
-        // console.log(data);
+        // console.log('url',url);
+        // console.log('data',data);
         let config = {
             headers: header
         };

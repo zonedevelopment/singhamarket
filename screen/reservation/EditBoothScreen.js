@@ -8,7 +8,6 @@ import {
     Alert,
     Dimensions,
     BackHandler,
-    Picker,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -32,6 +31,8 @@ import {
     CHECK_BOOTH_URL
 } from '../../utils/contants'
 
+import { Picker,CheckBox } from 'native-base';
+
 import styles from '../../style/style'
 import ic_plan from '../../assets/image/icon_plan_gold.png'
 
@@ -44,34 +45,99 @@ import {
 import Hepler from '../../utils/Helper'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class EditBoothScreen extends React.Component {
+    backHandlerSubscription = null
+
  
     state = {
         dayItem: {},
         dateSelected: [],
         ddlSelectedDate : '',
         listBooth : [],
+        boothChecked : [],
+        isFetching: false,
     }
 
-    async onSelectBooth(item) {
+    
+    Submit = () => {
         let { day } = this.props.route.params
         let arrDaySelected = this.props.reducer.date_selected
-        arrDaySelected.map((v,i) => {
-            if(v.date == day){
-                v['boothSelectID'] = item.booth_detail_id
-                v['boothSelectName'] = item.booth_name
-                v['boothSelectPrice'] = item.booth_amount
+        console.log(arrDaySelected)
+        let arrBoothChecked = this.state.boothChecked
+        this.props.openIndicator()
+        let arrDate = []
+        arrDate.push(day)
+
+        let formData = new FormData();
+        formData.append('booth_detail_id',JSON.stringify(arrBoothChecked))
+        formData.append('date',JSON.stringify(arrDate))
+        Hepler.post(BASE_URL + CHECK_BOOTH_URL,formData,HEADERFORMDATA,(results)=>{
+            console.log('CHECK_BOOTH_URL',results)
+            if (results.status == 'SUCCESS') {
+                results.data.map((vr,ir) => {
+                    arrDaySelected.map((vs,is) => {
+                        if(vs.date == vr.date){
+                            vs['ListBooth'] = vr.value
+                        }
+                    })
+                })
+                console.log('arrDaySelected' ,arrDaySelected)
+                this.props.saveDateSelected('save', arrDaySelected)
+                this.props.dismissIndicator()
+                this.props.navigation.navigate('Summary',{
+                    previous_screen : 'EditBooth'
+                })
+            } else {
+                Alert.alert(results.message)
+                this.props.dismissIndicator()
             }
         })
-        this.props.saveDateSelected('save', arrDaySelected)
-        this.props.navigation.navigate('Summary')
     }
+
+    CheckBooth = (item) =>{
+
+        let arr = this.state.listBooth
+        let Selected = this.state.boothChecked
+        let index = arr.findIndex(obj => obj.booth_detail_id == item.booth_detail_id)
+        if(arr[index].checked == true){
+            arr[index].checked = false
+            var SelectedIndex = Selected.indexOf(obj => obj.booth_id == item.booth_detail_id);
+            Selected.splice(SelectedIndex, 1);
+            this.setState({
+                listBooth : arr,
+                boothChecked : Selected,
+            })
+        }else{
+            if(Selected.length < this.props.reducer.LimitReservUserOfDay){
+                arr[index].checked = true
+                Selected.push({
+                    'booth_id' : item.booth_detail_id,
+                    'booth_name' : item.booth_name,
+                    'booth_amount' : item.booth_amount
+                })
+                this.setState({
+                    listBooth : arr,
+                    boothChecked : Selected,
+                })
+            }else{
+                Alert.alert('ไม่สามารถเลือกบูธได้เกิน ' + this.props.reducer.LimitReservUserOfDay + ' บูธต่อวัน')
+            }
+        }
+    }
+
 
     _renderItem = ({ item, index }) => {
         return (
             <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
                  <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                    <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
-                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
+                    {/* <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View> */}
+                     
+                    <CheckBox style={{ borderRadius: 10,marginRight:5}} checked={item.checked}  color={primaryColor} onPress={() =>{
+                        if(item.booth_status_id == "1"){
+                            this.CheckBooth(item)
+                        }
+                   
+                     }} />
+                    {/* <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text> */}
                     {
                         item.booth_detail_image != "" ?
                             <TouchableOpacity onPress={()=>{
@@ -86,13 +152,14 @@ class EditBoothScreen extends React.Component {
                     }
                 </View>
                 <View style={[styles.containerRow, { flex: 0.75, backgroundColor: item.booking_status_background_color, alignItems: 'center', padding: 5 }]}>
-                    <Text style={[styles.text14, { flex: 0.8, color: primaryColor, paddingLeft: 5, alignItems: 'center', justifyContent: 'flex-start' }]}>{item.product_cate_name}</Text>
+                    <Text style={[styles.text14, { flex: 0.8, color: primaryColor, paddingLeft: 5, alignItems: 'center', justifyContent: 'flex-start' }]}>{item.booth_name + ' : ' + item.product_cate_name}</Text>
                     {
                         item.booth_status_id == "1" ?
                             <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
-                                onPress={
-                                    () => this.onSelectBooth(item)
-                                }>
+                                // onPress={
+                                //     () => this.onSelectBooth(item)
+                                // }
+                                >
                                 <Text style={[styles.text14, { color: primaryColor }]}>{`ว่าง`}</Text>
                             </TouchableOpacity>
                             :
@@ -143,21 +210,22 @@ class EditBoothScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         let { day } = this.props.route.params
         this.setSelectedDate(day)
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
+
 
     componentWillReceiveProps(nextProps){
         const { day } = nextProps.route.params
-        // if(this.props.reducer.previous_screen == 'DaySelected'){
-        //     this.setSelectedDate(day)
-        //     this.props.setStatePreviousScreen('Booth')
-        // }
+      
     }
 
     setSelectedDate(itemValue){
@@ -166,7 +234,7 @@ class EditBoothScreen extends React.Component {
             this.props.openIndicator()
             let formData = new FormData();
             formData.append('building_id',this.props.reducer.reserverion_building_id)
-            formData.append('floor_id',this.props.reducer.reserverion_floor_id)
+            //formData.append('floor_id',this.props.reducer.reserverion_floor_id)
             formData.append('partners_id',this.props.reducer.userInfo.partners_id)
             formData.append('zone_id',this.props.reducer.reserverion_zone_id)
             formData.append('date',itemValue)
@@ -175,9 +243,17 @@ class EditBoothScreen extends React.Component {
             Hepler.post(BASE_URL + GET_BOOTH_URL,formData,HEADERFORMDATA,(results) => {
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
-                    this.setState({listBooth : results.data})
+                    this.setState({
+                        listBooth : results.data,
+                        boothChecked : [],
+                        isFetching: false,
+                    })
                     this.props.dismissIndicator()
                 } else {
+                    this.setState({
+                        boothChecked : [],
+                        isFetching: false,
+                    })
                     Alert.alert(results.message)
                     this.props.dismissIndicator()
                 }
@@ -185,25 +261,20 @@ class EditBoothScreen extends React.Component {
         }
     }
 
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.setSelectedDate(this.state.ddlSelectedDate)
+        })
+    }
+
     render() {
         const props = this.props.reducer
         let { day } = this.props.route.params
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 70 }]}>
+            
                 <View style={[styles.container, { padding: 15 }]}>
                     <View style={[styles.containerRow]}>
                         <Text style={[styles.text18, styles.bold, { flex: 0.6, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
@@ -263,6 +334,8 @@ class EditBoothScreen extends React.Component {
                             <FlatList
                                 data={this.state.listBooth}
                                 extraData={this.state}
+                                onRefresh={() => this.onRefresh()}
+                                refreshing={this.state.isFetching}
                                 keyExtractor={(item) => item.booth_detail_id}
                                 renderItem={this._renderItem} />
                         :
@@ -271,6 +344,17 @@ class EditBoothScreen extends React.Component {
                             </View>
                     }
                     
+                </View>
+                <View style={[styles.center, { padding: 5, bottom: 5, alignSelf: 'center' }]}>
+                    <TouchableOpacity style={[styles.mainButton, styles.center]}
+                        onPress={
+                            () => {
+                                this.Submit()
+                               // alert(JSON.stringify(this.state.boothChecked))
+                            }
+                        }>
+                        <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

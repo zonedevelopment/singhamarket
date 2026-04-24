@@ -37,6 +37,8 @@ const _maxDate = moment().add(2, 'years').format(_format)
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class CalendarScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     initialState = {
         [_today]: { disabled: false, disableTouchEvent: true }
@@ -105,12 +107,15 @@ class CalendarScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.props.saveDateSelected('clear', '')
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {

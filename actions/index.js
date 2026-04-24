@@ -31,9 +31,14 @@ import {
     OAUTHTOKEN,
     OAUTHTOKENHEADER,
     APIKEY,
-    APISECRET
+    APISECRET,
+    SET_TRANSACTION_SELECTED,
+    SET_AUDIT_VERIFY_BUILDING, 
+    SET_AUDIT_VERIFY_ZONE,
+    SET_CHARGE_SELECTED,
+    SET_AUDIT_HOME_BUILDING,
+    SET_CONSTANTS, 
 } from '../utils/contants'
-
 import Helper from '../utils/Helper'
 
 /**
@@ -90,6 +95,17 @@ export const clearUserInfo = (data) => ({
 /**
 * End
 */
+
+export const setConstants = (data) => ({
+    type: SET_CONSTANTS,
+    ChargeFines : data.ChargeFines, //// ค่าปรับเมื่อทำผิดกฏ
+    LimitReservUserOfDay : data.LimitReservUserOfDay, ///// จำนวนการจองสูงสุด ต่อ วัน/ผู้ใช้งาน
+    CartPaymentTimeOut : data.CartPaymentTimeOut, /// ms ระยะเวลาในการชำระเงิน
+    ChargeService2C2P : data.ChargeService2C2P, //////// ค่าบริการ 2C2P
+    personal_vat : data.personal_vat, // ดึงจาก base
+    company_vat : data.company_vat, /// ดึงจาก base
+    url_cancel_onetrust : data.url_cancel_onetrust,
+})
 
 
 /**
@@ -207,6 +223,12 @@ export const setStateBookingSelected = (data) => ({
     payload: data
 })
 
+export const setStateChargeSelected = (data) => ({
+    type: SET_CHARGE_SELECTED,
+    payload: data
+})
+
+
 export const setStateSelectedProduct = (data) => ({
     type: SET_PRODUCT_SELECTED,
     payload: data
@@ -258,6 +280,29 @@ export const setAuditReservDate = (data) => ({
     type: SET_AUDIT_RESERV_DATE,
     payload: data
 })
+export const setTransactionSelected = (data) => ({
+    type: SET_TRANSACTION_SELECTED,
+    payload: data
+})
+
+/// audit verify
+export const setAuditVerifyBuilding = (data) => ({
+    type: SET_AUDIT_VERIFY_BUILDING,
+    payload: data
+})
+export const setAuditVerifyZone = (data) => ({
+    type: SET_AUDIT_VERIFY_ZONE,
+    payload: data
+})
+
+/// audit home
+export const setAuditHomeBuilding = (data) => ({
+    type: SET_AUDIT_HOME_BUILDING,
+    payload: data
+})
+
+
+
 
  /**
 * End
@@ -266,7 +311,7 @@ export const setAuditReservDate = (data) => ({
 /**
  * SCB Open API
  */
-export function generateOauthToken() {
+export  function  generateOauthToken() {
     return (dispatch) => {
         let data = {
             'applicationKey': APIKEY,
@@ -275,6 +320,7 @@ export function generateOauthToken() {
         Helper.post(TOKEN, JSON.stringify(data), OAUTHTOKENHEADER, (results) => {
             let status = results.status
             let data   = results.data
+            console.log('TOKEN',results)
             if (status.code == 1000) {
                 dispatch(setStateOauthToken(data))
             }

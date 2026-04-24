@@ -44,6 +44,8 @@ import Gallery from 'react-native-image-gallery';
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class PlanScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         zone_id : '',
@@ -119,7 +121,10 @@ class PlanScreen extends React.Component {
     }
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
@@ -127,14 +132,14 @@ class PlanScreen extends React.Component {
         //console.log('building',this.props.reducer.building)
 
         
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
         const{ plan_image} = this.props.route.params
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -147,7 +152,7 @@ class PlanScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
 
                 {/* <ScrollView> */}
                       {/* <ScrollView style={{ width: DEVICE_WIDTH }} horizontal={true}  alwaysBounceVertical={true} showsHorizontalScrollIndicator={true}> */}

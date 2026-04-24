@@ -13,26 +13,17 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import Lightbox from 'react-native-lightbox'
-import { Picker } from 'native-base';
-import { NavigationBar } from 'navigationbar-react-native'
+import { Picker,CheckBox } from 'native-base';
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import {
-    darkColor,
-    grayColor,
     primaryColor,
-    secondaryColor,
-    emptyColor,
     pendingColor,
-    reservColor,
-    alpaGreen,
-    alpaYellow,
-    alpaRed,
     HEADERFORMDATA,
     BASE_URL,
     GET_BOOTH_URL,
     CHECK_BOOTH_URL,
-    SUBMIT_FAVERITE_URL
+    SUBMIT_FAVERITE_URL,
+    CHECK_LIMIT_RESERVATION_URL
 } from '../../utils/contants'
 
 import styles from '../../style/style'
@@ -47,20 +38,26 @@ import {
 import Hepler from '../../utils/Helper'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class BoothScreen extends React.Component {
+    backHandlerSubscription = null
+
  
     state = {
         dayItem: {},
         dateSelected: [],
         ddlSelectedDate : '',
         listBooth : [],
+        boothChecked : [],
         seeImage: false,
         imageURL: '',
+        plan_image: '',
         isFetching: false,
     }
 
-    async onSelectBooth(item) {
+    Submit = () => {
         let { ActionType } = this.props.route.params
         let arrDaySelected = this.props.reducer.date_selected
+        console.log('arrDaySelected',arrDaySelected)
+        let arrBoothChecked = this.state.boothChecked
         if(ActionType == 'CHECK_ALL'){
             this.props.openIndicator()
             let arrDate = []
@@ -68,23 +65,22 @@ class BoothScreen extends React.Component {
                 arrDate.push(v.date)
             })
             let formData = new FormData();
-            formData.append('booth_detail_id',item.booth_detail_id)
+            formData.append('booth_detail_id',JSON.stringify(arrBoothChecked))
             formData.append('date',JSON.stringify(arrDate))
-            await Hepler.post(BASE_URL + CHECK_BOOTH_URL,formData,HEADERFORMDATA,(results)=>{
+            Hepler.post(BASE_URL + CHECK_BOOTH_URL,formData,HEADERFORMDATA,(results)=>{
                 console.log('CHECK_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
                     results.data.map((vr,ir) => {
                         arrDaySelected.map((vs,is) => {
-                            if(vs.date == vr.date && vr.status == true){
-                                vs['boothSelectID'] = item.booth_detail_id
-                                vs['boothSelectName'] = item.booth_name
-                                vs['boothSelectPrice'] = item.booth_amount
+                            if(vs.date == vr.date){
+                                vs['ListBooth'] = vr.value
                             }
                         })
                     })
+                    arrDaySelected = arrDaySelected.filter(e => e.ListBooth.length > 0)
                     this.props.saveDateSelected('save', arrDaySelected)
                     this.props.dismissIndicator()
-                    this.props.navigation.navigate('Dayselect',{
+                    this.props.navigation.navigate('Summary',{
                         previous_screen : 'Booth'
                     })
                 } else {
@@ -92,26 +88,88 @@ class BoothScreen extends React.Component {
                     this.props.dismissIndicator()
                 }
             })
+        }
+    }
+
+    CheckBooth = (item) =>{
+        console.log('CheckBooth',item)
+        let arr = this.state.listBooth
+        let Selected = this.state.boothChecked
+        let index = arr.findIndex(obj => obj.booth_detail_id == item.booth_detail_id)
+        if(arr[index].checked == true){
+            arr[index].checked = false
+            var SelectedIndex = Selected.indexOf(obj => obj.booth_id == item.booth_detail_id);
+            Selected.splice(SelectedIndex, 1);
+            this.setState({
+                listBooth : arr,
+                boothChecked : Selected,
+            })
         }else{
-            arrDaySelected.map((v,i) => {
-                if(v.date == this.state.ddlSelectedDate){
-                    v['boothSelectID'] = item.booth_detail_id
-                    v['boothSelectName'] = item.booth_name
-                    v['boothSelectPrice'] = item.booth_amount
+            
+            this.props.openIndicator()
+            let formData = new FormData();
+            let arrDate = []
+            this.props.reducer.date_selected.map((v,i) => {
+                arrDate.push(v.date)
+            })
+            formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+            formData.append('date',JSON.stringify(arrDate))
+            formData.append('lengthSelected',JSON.stringify(Selected.length))
+            Hepler.post(BASE_URL + CHECK_LIMIT_RESERVATION_URL,formData,HEADERFORMDATA,(results)=>{
+                console.log('CHECK_LIMIT_RESERVATION_URL',results)
+                if (results.status == 'SUCCESS') {
+                    if(results.data == true){
+                        arr[index].checked = true
+                        Selected.push({
+                            'booth_id' : item.booth_detail_id,
+                            'booth_name' : item.booth_name,
+                            'booth_amount' : item.booth_amount
+                        })
+                        this.setState({
+                            listBooth : arr,
+                            boothChecked : Selected,
+                        })
+                    }else{
+                        Alert.alert(results.message)
+                    }
+                    this.props.dismissIndicator()
+                } else {
+                    Alert.alert(results.message)
+                    this.props.dismissIndicator()
                 }
             })
-            this.props.saveDateSelected('save', arrDaySelected)
-            this.props.navigation.navigate('Dayselect')
+
+            // if(Selected.length < this.props.reducer.LimitReservUserOfDay){
+            //     arr[index].checked = true
+            //     Selected.push({
+            //         'booth_id' : item.booth_detail_id,
+            //         'booth_name' : item.booth_name,
+            //         'booth_amount' : item.booth_amount
+            //     })
+            //     this.setState({
+            //         listBooth : arr,
+            //         boothChecked : Selected,
+            //     })
+            // }else{
+            //     Alert.alert('ไม่สามารถเลือกบูธได้เกิน ' + this.props.reducer.LimitReservUserOfDay + ' บูธต่อวัน')
+            // }
         }
     }
 
     _renderItem = ({ item, index }) => {
-        let see = false
         return (
-            <View key={index} style={[styles.containerRow, { padding: 5, height: 50, margin: -4 }]}>
-                <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
-                    <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View>
-                    <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text>
+            <View key={index} style={[styles.containerRow, { padding: 5, /*height: 50,*/ margin: -4 }]}>
+                <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'space-around', alignItems: 'center', padding: 5 }]}>
+                    {/* <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View> */}
+                   
+                    <CheckBox style={{ paddingLeft:6,paddingTop:3,borderRadius: 20,height:28,width:28}} checked={item.checked}  color={primaryColor} onPress={() =>{
+                        {
+                            if(item.booth_status_id == "1"){
+                                this.CheckBooth(item)
+                            }
+                        }
+                    }} />
+                    {/* <Text style={[styles.text14, { color: primaryColor }]}>{`${item.booth_name}`}</Text> */}
                     {
                         item.booth_detail_image != "" ?
                             <TouchableOpacity onPress={()=>{
@@ -126,12 +184,12 @@ class BoothScreen extends React.Component {
                     }
                 </View>
                 <View style={[styles.containerRow, { flex: 0.75, backgroundColor: item.booking_status_background_color, alignItems: 'center', padding: 5 }]}>
-                    <Text style={[styles.text14, { flex: 0.8, color: primaryColor, paddingLeft: 5, alignItems: 'center', justifyContent: 'flex-start' }]}>{item.product_cate_name}</Text>
+                    <Text style={[styles.text14, { flex: 0.8, color: primaryColor, paddingLeft: 5, alignItems: 'center', justifyContent: 'flex-start' }]}>{item.booth_name + ' : ' + item.product_cate_name}</Text>
                     {
                         item.booth_status_id == "1" ?
                             <TouchableOpacity style={[styles.circleGreen, styles.center, { flex: 0.25 }]}
                                 onPress={
-                                    () => this.onSelectBooth(item)
+                                    () => {}//this.onSelectBooth(item)
                                 }>
                                 <Text style={[styles.text14, { color: primaryColor }]}>{`ว่าง`}</Text>
                             </TouchableOpacity>
@@ -185,20 +243,26 @@ class BoothScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
+   
     componentDidMount() {
+      //  this.LoadAccessoire()
         let firstdateSelected = '';
-        const props = this.props.reducer
-        props.date_selected.map((v,i)=>{
+        this.props.reducer.date_selected.map((v,i)=>{
             if (i == 0) {
                 firstdateSelected = v.date
                 this.setState({ ddlSelectedDate: v.date })
             }
         })
         this.setSelectedDate(firstdateSelected)
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        const { planUrl } = this.props.route.params
+        this.setState({ plan_image: planUrl })
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     componentWillReceiveProps(nextProps){
@@ -245,7 +309,7 @@ class BoothScreen extends React.Component {
             let formData = new FormData();
             formData.append('building_id',this.props.reducer.reserverion_building_id)
             formData.append('partners_id',this.props.reducer.userInfo.partners_id)
-            formData.append('floor_id',this.props.reducer.reserverion_floor_id)
+           // formData.append('floor_id',this.props.reducer.reserverion_floor_id)
             formData.append('zone_id',this.props.reducer.reserverion_zone_id)
             formData.append('date',itemValue)
             formData.append('product_type_id',this.props.reducer.reserverion_product.type_id)
@@ -255,12 +319,14 @@ class BoothScreen extends React.Component {
                 if (results.status == 'SUCCESS') {
                     this.setState({
                         listBooth : results.data,
+                        boothChecked : [],
                         isFetching: false
                     })
                     this.props.dismissIndicator()
                 } else {
                     this.setState({
-                        isFetching: false
+                        isFetching: false,
+                        boothChecked : [],
                     })
                     Alert.alert(results.message)
                     this.props.dismissIndicator()
@@ -280,92 +346,80 @@ class BoothScreen extends React.Component {
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
-                <View style={[styles.container, { padding: 15 }]}>
-                    <View style={[styles.containerRow]}>
-                        <Text style={[styles.text18, styles.bold, { flex: 0.6, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
-                        <TouchableOpacity style={[styles.containerRow, { flex: 0.4, alignItems: 'center', justifyContent: 'flex-end' }]}
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 50 }]}>
+                <ScrollView >
+                    <View style={[styles.container, { padding: 15 }]}>
+                        <View style={[styles.containerRow]}>
+                            <Text style={[styles.text18, styles.bold, { flex: 0.6, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
+                            <TouchableOpacity style={[styles.containerRow, { flex: 0.4, alignItems: 'center', justifyContent: 'flex-end' }]}
+                                onPress={
+                                    () => this.props.navigation.push('Plan', {
+                                        plan_image: this.state.plan_image
+                                    })
+                                }>
+                                <Image source={ic_plan} style={{ width: 15, height: 15, resizeMode: 'contain' }} />
+                                <Text style={[styles.text14, { color: primaryColor, marginLeft: 2 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={[styles.marginBetweenVertical]}></View>
+                        <View style={{ padding: 10, height: 45, backgroundColor: '#f3f3f3' }}>
+                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <View style={[styles.circleGreen]}></View>
+                                <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`ว่าง`}</Text>
+                                <View style={[styles.circleYellow]}></View>
+                                <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`รอชำระเงิน`}</Text>
+                                <View style={[styles.circleRed]}></View>
+                                <Text style={[styles.text16, { marginLeft: 5 }]}>{`จองแล้ว`}</Text>
+                            </View>
+                        </View>
+                        <View style={[styles.marginBetweenVertical]}></View>
+                        <View style={[styles.containerRow]}>
+                            <View style={[styles.smallStatusButton, styles.center, { flex:0.2,backgroundColor: pendingColor }]}>
+                                <Text style={[{ fontSize: 10, color: 'white' }]}>{`แจ้งเตือน`}</Text>
+                            </View>
+                            <Text style={[styles.text14, { flex:0.8,color: primaryColor, marginLeft: 4 }]}>{`ท่านสามารถกดแจ้งเตือนที่บูธสีเหลือง เพื่อรับการแจ้งเตือนเมื่อบูธนี้ว่าง`}</Text>
+                        </View>
+                        <View style={[styles.marginBetweenVertical]}></View>
+                        <View style={[styles.containerRow, { padding: 5, height: 55 }]}>
+                            <View style={{ flex: 0.25, backgroundColor: primaryColor, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
+                                <Text style={[styles.text16, { color: 'white' }]}>{`Booth No.`}</Text>
+                            </View>
+                            <View style={{ width: 1, backgroundColor: 'white' }}></View>
+                            <View style={{ flex: 0.75, backgroundColor: primaryColor, justifyContent: 'center', padding: 5 }}>
+                                <Text style={[styles.text18, { color: 'white' }]}>{`รายละเอียด`}</Text>
+                            </View>
+                        </View>
+                        {
+                            this.state.listBooth.length > 0 ?
+                                <FlatList
+                                    data={this.state.listBooth}
+                                    extraData={this.state}
+                                    onRefresh={() => this.onRefresh()}
+                                    refreshing={this.state.isFetching}
+                                    keyExtractor={(item) => item.booth_detail_id}
+                                    renderItem={this._renderItem} />
+                            :
+                                <View style={[styles.containerRow, { padding: 5, height: 55,alignSelf:'center' }]}>
+                                    <Text style={[styles.text16,{textAlign:'center',color:primaryColor}]}>{'ไม่พบข้อมูลบูธขายของ'}</Text>
+                                </View>
+                        }
+
+                    </View>
+                    <View style={[styles.center, { padding: 5, alignSelf: 'center', bottom: 15 }]}>
+                        <TouchableOpacity style={[styles.mainButton, styles.center]}
                             onPress={
-                                () => this.props.navigation.push('Plan')
+                                () => {
+                                    if(this.state.boothChecked.length > 0){
+                                        this.Submit()
+                                    }else{
+                                        Alert.alert('กรุณาเลือกบูธขายของอย่างน้อย 1 รายการ')
+                                    }
+                                }
                             }>
-                            <Image source={ic_plan} style={{ width: 15, height: 15, resizeMode: 'contain' }} />
-                            <Text style={[styles.text14, { color: primaryColor, marginLeft: 2 }]}>{`ดูแปลนพื้นที่ขายของ`}</Text>
+                            <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                        <Picker
-                            selectedValue={this.state.ddlSelectedDate}
-                            style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                            onValueChange={(itemValue, itemIndex) => this.setSelectedDate(itemValue)} >
-                            <Picker.Item label="กรุณาเลือกวันที่ขายของ" value="" />
-                            {
-                                props.date_selected.map((v,i)=>{
-                                    return (
-                                        <Picker.Item label={moment(v.date).format('LL')} value={v.date} />
-                                    )
-                                })
-                            }
-                        </Picker>
-                    </View>
-
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={{ padding: 10, height: 45, backgroundColor: '#f3f3f3' }}>
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                            <View style={[styles.circleGreen]}></View>
-                            <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`ว่าง`}</Text>
-                            <View style={[styles.circleYellow]}></View>
-                            <Text style={[styles.text16, { marginLeft: 5, marginRight: 40 }]}>{`รอชำระเงิน`}</Text>
-                            <View style={[styles.circleRed]}></View>
-                            <Text style={[styles.text16, { marginLeft: 5 }]}>{`จองแล้ว`}</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={[styles.containerRow]}>
-                        <View style={[styles.smallStatusButton, styles.center, { flex:0.2,backgroundColor: pendingColor }]}>
-                            <Text style={[{ fontSize: 10, color: 'white' }]}>{`แจ้งเตือน`}</Text>
-                        </View>
-                        <Text style={[styles.text14, { flex:0.8,color: primaryColor, marginLeft: 4 }]}>{`ท่านสามารถกดแจ้งเตือนที่บูธสีเหลือง เพื่อรับการแจ้งเตือนเมื่อบูธนี้ว่าง`}</Text>
-                    </View>
-                    <View style={[styles.marginBetweenVertical]}></View>
-                    <View style={[styles.containerRow, { padding: 5, height: 55 }]}>
-                        <View style={{ flex: 0.25, backgroundColor: primaryColor, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
-                            <Text style={[styles.text16, { color: 'white' }]}>{`Booth No.`}</Text>
-                        </View>
-                        <View style={{ width: 1, backgroundColor: 'white' }}></View>
-                        <View style={{ flex: 0.75, backgroundColor: primaryColor, justifyContent: 'center', padding: 5 }}>
-                            <Text style={[styles.text18, { color: 'white' }]}>{`รายละเอียด`}</Text>
-                        </View>
-                    </View>
-                    {
-                        this.state.listBooth.length > 0 ?
-                            <FlatList
-                                data={this.state.listBooth}
-                                extraData={this.state}
-                                onRefresh={() => this.onRefresh()}
-                                refreshing={this.state.isFetching}
-                                keyExtractor={(item) => item.booth_detail_id}
-                                renderItem={this._renderItem} />
-                        :
-                            <View style={[styles.containerRow, { padding: 5, height: 55,alignSelf:'center' }]}>
-                                <Text style={[styles.text16,{textAlign:'center',color:primaryColor}]}>{'ไม่พบข้อมูลบูธขายของ'}</Text>
-                            </View>
-                    }
-                </View>
+                </ScrollView>
             </View>
         )
     }

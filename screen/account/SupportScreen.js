@@ -34,8 +34,11 @@ import {
     dismissIndicator,
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import { validateFormSecurity } from '../../utils/inputSecurity'
 
 class SupportScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         name : '',
@@ -47,6 +50,17 @@ class SupportScreen extends React.Component {
 
     SubmitData () {
         const props = this.props.reducer
+        const securityError = validateFormSecurity([
+            { label: 'ชื่อผู้ติดต่อ', value: this.state.name, checkSql: false },
+            { label: 'เบอร์โทรศัพท์', value: this.state.phone, checkSql: true },
+            { label: 'Email', value: this.state.email, checkSql: true },
+            { label: 'รายละเอียด', value: this.state.detail, checkSql: false },
+        ])
+
+        if (securityError) {
+            return Alert.alert(securityError)
+        }
+
         let formData = new FormData();
         formData.append('name',this.state.name)
         formData.append('phone',this.state.phone)
@@ -108,17 +122,20 @@ class SupportScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 85 }]}>
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -131,7 +148,7 @@ class SupportScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
                 <ScrollView
                     contentContainerStyle={{ flexGrow: 1 }}
                     keyboardShouldPersistTaps="always">
@@ -149,7 +166,7 @@ class SupportScreen extends React.Component {
                         <View style={[styles.marginBetweenVertical]}></View>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <Text style={[styles.text18, { color: primaryColor, alignSelf: 'center' }]}>{`สอบถาม/แจ้งเรื่องร้องเรียน`}</Text>
-                        <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                        <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                             <TextInput
                                 ref={(input) => { this.name = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -157,10 +174,11 @@ class SupportScreen extends React.Component {
                                 returnKeyType={'next'}
                                 value={this.state.name}
                                 blurOnSubmit={false}
+                                placeholderTextColor={'#7C7B7B'}
                                 onChangeText={(text) => this.setState({ name: text })}
                                 onSubmitEditing={() => this.phone.focus()} />
                         </View>
-                        <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                        <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                             <TextInput
                                 ref={(input) => { this.phone = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -169,10 +187,11 @@ class SupportScreen extends React.Component {
                                 keyboardType={'number-pad'}
                                 returnKeyType={'next'}
                                 blurOnSubmit={false}
+                                placeholderTextColor={'#7C7B7B'}
                                 onChangeText={(text) => this.setState({ phone: text })}
                                 onSubmitEditing={() => this.email.focus()} />
                         </View>
-                        <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                        <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                             <TextInput
                                 ref={(input) => { this.email = input; }}
                                 style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -180,10 +199,11 @@ class SupportScreen extends React.Component {
                                 returnKeyType={'next'}
                                 value={this.state.email}
                                 blurOnSubmit={false}
+                                placeholderTextColor={'#7C7B7B'}
                                 onChangeText={(text) => this.setState({ email: text })}
                                 onSubmitEditing={() => this.detail.focus()} />
                         </View>
-                        <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center', height: 120 }]}>
+                        <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', height: 120 }]}>
                             <TextInput
                                 ref={(input) => { this.detail = input; }}
                                 style={{ width: '100%', height: 100, alignSelf: 'flex-start', color: 'black', textAlignVertical: 'top' }}
@@ -193,6 +213,7 @@ class SupportScreen extends React.Component {
                                 value={this.state.detail}
                                 numberOfLines={3}
                                 blurOnSubmit={false}
+                                placeholderTextColor={'#7C7B7B'}
                                 onChangeText={(text) => this.setState({ detail: text })} />
                         </View>
                         <View style={[styles.marginBetweenVertical]}></View>

@@ -1,0 +1,91 @@
+diff --git a/node_modules/react-native-elements/src/checkbox/CheckBox.js b/node_modules/react-native-elements/src/checkbox/CheckBox.js
+index 709ea47..8fa1f62 100644
+--- a/node_modules/react-native-elements/src/checkbox/CheckBox.js
++++ b/node_modules/react-native-elements/src/checkbox/CheckBox.js
+@@ -7,16 +7,39 @@ import CheckBoxIcon from './CheckBoxIcon';
+ import { fonts, withTheme } from '../config';
+ 
+ const CheckBox = (props) => {
+-  const { theme, ...rest } = props;
+-
+   const {
+-    Component,
++    theme,
++    checked = false,
++    iconRight = false,
++    right = false,
++    center = false,
++    uncheckedColor = '#bfbfbf',
++    checkedIcon = 'check-square-o',
++    uncheckedIcon = 'square-o',
++    size = 24,
++    Component = TouchableOpacity,
++    titleProps = {},
++    ...rest
++  } = props;
++
++  const resolvedProps = {
++    theme,
+     checked,
+     iconRight,
+-    title,
+-    titleProps,
+-    center,
+     right,
++    center,
++    uncheckedColor,
++    checkedIcon,
++    uncheckedIcon,
++    size,
++    Component,
++    titleProps,
++    ...rest,
++  };
++
++  const {
++    title,
+     containerStyle,
+     textStyle,
+     wrapperStyle,
+@@ -54,7 +77,9 @@ const CheckBox = (props) => {
+           wrapperStyle && wrapperStyle,
+         ])}
+       >
+-        {!iconRight && <CheckBoxIcon {...props} checkedColor={checkedColor} />}
++        {!iconRight && (
++          <CheckBoxIcon {...resolvedProps} checkedColor={checkedColor} />
++        )}
+ 
+         {React.isValidElement(title)
+           ? title
+@@ -73,7 +98,9 @@ const CheckBox = (props) => {
+               </TextElement>
+             )}
+ 
+-        {iconRight && <CheckBoxIcon {...props} checkedColor={checkedColor} />}
++        {iconRight && (
++          <CheckBoxIcon {...resolvedProps} checkedColor={checkedColor} />
++        )}
+       </View>
+     </Component>
+   );
+@@ -95,19 +122,6 @@ CheckBox.propTypes = {
+   fontFamily: PropTypes.string,
+ };
+ 
+-CheckBox.defaultProps = {
+-  checked: false,
+-  iconRight: false,
+-  right: false,
+-  center: false,
+-  uncheckedColor: '#bfbfbf',
+-  checkedIcon: 'check-square-o',
+-  uncheckedIcon: 'square-o',
+-  size: 24,
+-  Component: TouchableOpacity,
+-  titleProps: {},
+-};
+-
+ const styles = {
+   wrapper: {
+     flexDirection: 'row',

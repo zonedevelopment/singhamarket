@@ -32,6 +32,8 @@ import Hepler from '../../utils/Helper'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class SuccessScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         floor_selectedIndex : 0,
@@ -74,19 +76,22 @@ class SuccessScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
 
     render() {
         const props = this.props
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
-                <NavigationBar
+            <View style={[styles.container, styles.backgroundPrimary, { paddingBottom: 60 }]}>
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -99,7 +104,7 @@ class SuccessScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <View style={[styles.marginBetweenVertical]}></View>
@@ -120,20 +125,12 @@ class SuccessScreen extends React.Component {
                         </View>
 
                         <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 20 }]}>
-                            <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, }]}
+                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor, }]}
                                 onPress={
                                     () => this.handleBack()
                                 }
                                 >
                                 <Text style={[styles.text18, { color: '#FFF' }]}>{`กลับสู่หน้าหลัก`}</Text>
-                            </TouchableOpacity>
-                            <View style={{padding:20}}></View>
-                            <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
-                                onPress={
-                                    () => this.handleBack()
-                                }
-                                >
-                                <Text style={[styles.text18, { color: '#FFF' }]}>{`ออกจากระบบ`}</Text>
                             </TouchableOpacity>
                         </View>
                  

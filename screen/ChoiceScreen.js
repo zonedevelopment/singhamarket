@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import RNExitApp from 'react-native-exit-app'
 import Carousel from 'react-native-banner-carousel'
 import Image from 'react-native-fast-image'
 
@@ -35,34 +36,53 @@ import styles from '../style/style'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class ChoiceScreen extends React.Component {
+    backHandlerSubscription = null
 
 
-    LoadBanner = () => {
+    state = {
+        isFetching : false,
+        ListNew : [],
+        ListBanner : [],
+    }
+
+    LoadData = () => {
         this.props.openIndicator()
         Hepler.post(BASE_URL + BANNER_URL,null,HEADERFORMDATA, (results) =>{
             console.log('BANNER_URL',results)
             if(results.status == 'SUCCESS'){
-                this.props.setStateBanner(results.data)
+                this.setState({
+                    ListBanner : results.data
+                })
             }else{
-                this.props.setStateBanner([])
+                this.setState({
+                    ListBanner : []
+                })
             }
-            this.props.dismissIndicator()
+            this.LoadNew();
         })
     }
 
-    LoadNews = () => {
-        this.props.openIndicator()
+    
+
+    LoadNew = () => {
         Hepler.post(BASE_URL + NEWS_URL,null,HEADERFORMDATA, (results) =>{
             console.log('NEWS_URL',results)
             if(results.status == 'SUCCESS'){
-                this.props.setStateNews(results.data)
+                this.setState({
+                    isFetching: false,
+                    ListNew : results.data
+                })
+                this.props.dismissIndicator()
             }else{
-                this.props.setStateNews([])
+                this.setState({
+                    ListNew : [],
+                    isFetching: false
+                })
+                this.props.dismissIndicator()
             }
-            this.props.dismissIndicator()
         })
+       
     }
-
 
     renderPage(value, index) {
         return (
@@ -100,13 +120,17 @@ class ChoiceScreen extends React.Component {
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
+            // this.props.navigation.pop();
+            RNExitApp.exitApp();
             return true;
         }
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
@@ -114,13 +138,22 @@ class ChoiceScreen extends React.Component {
         //this.LoadBanner()
         //this.LoadNews()
         //this.props.dismissIndicator()
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.LoadData()
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
     }
 
     render() {
         const props = this.props
-        const banner = props.reducer.banner
-        const news = props.reducer.news
+    
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
                 <Carousel
@@ -130,7 +163,7 @@ class ChoiceScreen extends React.Component {
                     index={0}
                     pageSize={DEVICE_WIDTH}>
                     {
-                        banner.map((value, index) => this.renderPage(value, index))
+                        this.state.ListBanner.map((value, index) => this.renderPage(value, index))
                     }
                 </Carousel>
                 <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 20 }]}>
@@ -148,12 +181,21 @@ class ChoiceScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.container, styles.topBorderRadius, { backgroundColor: '#FFF' }]}>
-                    <FlatList
-                        style={{ marginTop: 5 }}
-                        data={news}
-                        keyExtractor={(item) => item.id}
-                        renderItem={this._renderItem}
-                        numColumns={2} />
+                    {
+                        this.state.ListNew.length > 0 ?
+                            <FlatList
+                            style={{ marginTop: 5 }}
+                            data={this.state.ListNew}
+                            onRefresh={() => this.onRefresh()}
+                            refreshing={this.state.isFetching}
+                            keyExtractor={(item) => item.news_id}
+                            renderItem={this._renderItem}
+                            numColumns={2} />
+                        :
+                        <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' ,paddingTop:20}]}>
+                            <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการข่าว`}</Text>
+                        </View>
+                    }
                 </View>
             </View>
         )

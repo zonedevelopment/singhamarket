@@ -28,7 +28,8 @@ import {
     CHANGE_PASSWORD_URL,
     HEADERFORMDATA,
     KEY_LOGIN,
-    LOGIN_URL
+    LOGIN_URL,
+    KEY_PWD_TXT,
 } from '../../utils/contants'
 
 import styles from '../../style/style'
@@ -38,9 +39,12 @@ import {
     saveUserInfo,
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import { validateFormSecurity } from '../../utils/inputSecurity'
 import StorageServies from '../../utils/StorageServies'
 
 class ChangePasswordScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         passwordText : '',
@@ -81,16 +85,20 @@ class ChangePasswordScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     async componentDidMount() {
         let LOGIN = await StorageServies.get(KEY_LOGIN)
+        let PWD_TXT = await StorageServies.get(KEY_PWD_TXT)
         LOGIN = JSON.parse(LOGIN)
         this.setState({
-            passwordText :  LOGIN.password_text
+            passwordText :  PWD_TXT
         })
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     ChangePassword () {
@@ -98,6 +106,16 @@ class ChangePasswordScreen extends React.Component {
             Alert.alert('กรุณากรอกข้อมูลให้ครบ!')
             return false;
         }else{
+            const securityError = validateFormSecurity([
+                { label: 'รหัสผ่านเดิม', value: this.state.passwordOld, checkSql: false },
+                { label: 'รหัสผ่านใหม่', value: this.state.passwordNew, checkSql: false },
+                { label: 'ยืนยันรหัสผ่านใหม่', value: this.state.passwordNewConfirm, checkSql: false },
+            ])
+
+            if (securityError) {
+                return Alert.alert(securityError)
+            }
+
             if(this.state.passwordText != this.state.passwordOld.trim()){
                 alert(this.state.passwordText)
                 Alert.alert('รหัสผ่านเดิมไม่ถูกต้อง!')
@@ -156,7 +174,7 @@ class ChangePasswordScreen extends React.Component {
         const props = this.props.reducer
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -169,14 +187,14 @@ class ChangePasswordScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
                 <View style={[styles.container, { padding: 10 }]}>
                     <ScrollView
                         contentContainerStyle={{ flexGrow: 1, padding: 8 }}
                         keyboardShouldPersistTaps="always">
                         <View /* style={[styles.panelWhite]}*/>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`เปลี่ยนรหัสผ่าน`}</Text>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                            <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}> 
                                 <TextInput
                                     ref={(input) => { this.passwordOld = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -185,7 +203,7 @@ class ChangePasswordScreen extends React.Component {
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ passwordOld: text })} />
                             </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                            <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}> 
                                 <TextInput
                                     ref={(input) => { this.passwordNew = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
@@ -194,7 +212,7 @@ class ChangePasswordScreen extends React.Component {
                                     blurOnSubmit={false}
                                     onChangeText={(text) => this.setState({ passwordNew: text })} />
                             </View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                            <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}> 
                                 <TextInput
                                     ref={(input) => { this.passwordNewConfirm = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}

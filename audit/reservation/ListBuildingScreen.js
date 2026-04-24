@@ -32,15 +32,18 @@ import {
     openIndicator,
     dismissIndicator,
     setAuditReservBuilding,
-    setAuditReservFloor,
+  //  setAuditReservFloor,
     setAuditReservZone
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class ListBuildingScreen extends React.Component {
+    backHandlerSubscription = null
+
     state = {
-        ListData: []
+        ListData: [],
+        isFetching: false
     }
 
     
@@ -77,25 +80,33 @@ class ListBuildingScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.LoadData();
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     LoadData () {
         this.props.openIndicator()
-        Hepler.post(BASE_URL + GET_BUILDING_URL,null,HEADERFORMDATA,(results) => {
+        let formData = new FormData();
+        formData.append('ROLETYPE', 'ADMIN')
+        formData.append('ADMIN_ID', this.props.reducer.userInfo.userid)
+        Hepler.post(BASE_URL + GET_BUILDING_URL,formData,HEADERFORMDATA,(results) => {
             console.log('GET_BUILDING_URL',results)
             if(results.status == 'SUCCESS'){
                 this.setState({
-                    ListData : results.data
+                    ListData : results.data,
+                    isFetching: false
                 })
             }else{
                 this.setState({
-                    ListData : []
+                    ListData : [],
+                    isFetching: false
                 })
             }
             this.props.dismissIndicator()
@@ -108,11 +119,11 @@ class ListBuildingScreen extends React.Component {
             <TouchableOpacity style={{width:'90%',alignSelf: 'center' }} 
             onPress={ async()=>{
                 this.props.openIndicator()
-                await  this.props.setAuditReservFloor({
-                    selectedValue : '',
-                    selectedIndex : null,
-                    selectedName : '',
-                })
+                // await  this.props.setAuditReservFloor({
+                //     selectedValue : '',
+                //     selectedIndex : null,
+                //     selectedName : '',
+                // })
                 await this.props.setAuditReservZone({
                     selectedValue : '',
                     selectedIndex : null,
@@ -134,26 +145,19 @@ class ListBuildingScreen extends React.Component {
             </TouchableOpacity>
         )
     }
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
+    }
 
 
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 60 }]}>
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.containerRow,{width: '90%', marginLeft: 10}]}>
                         <Text style={[styles.text20, { color: primaryColor }]}>{`เลือกตลาดที่ต้องการขาย`}</Text>
@@ -164,6 +168,8 @@ class ListBuildingScreen extends React.Component {
                             <FlatList
                                 data={this.state.ListData}
                                 extraData={this.state}
+                                onRefresh={() => this.onRefresh()}
+                                refreshing={this.state.isFetching}
                                 keyExtractor={(item) => item.building_id}
                                 renderItem={this._renderListItem}
                             />
@@ -186,7 +192,7 @@ const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
     setAuditReservBuilding,
-    setAuditReservFloor,
+   // setAuditReservFloor,
     setAuditReservZone
 }
 

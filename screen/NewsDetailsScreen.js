@@ -7,11 +7,13 @@ import {
     Dimensions,
     BackHandler,
     ScrollView,
+    Linking,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import HTML from 'react-native-render-html'
+import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import Image from 'react-native-fast-image'
@@ -30,6 +32,8 @@ import styles from '../style/style'
 const { height, width } = Dimensions.get('window');
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class NewsDetailsScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         news_details : []
@@ -67,13 +71,16 @@ class NewsDetailsScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     async componentDidMount() {
         const{ news_details } = this.props.route.params
         await this.setState({ news_details : news_details })
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
 
@@ -113,28 +120,15 @@ class NewsDetailsScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container,{backgroundColor:'#FFFFFF'}]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
-                <View style={[styles.container, { alignItems: 'center' }]}>
+            <View style={[styles.container, {backgroundColor: primaryColor }]}>
+                
+                <View style={[styles.container, { alignItems: 'center', backgroundColor: 'white', paddingBottom: 40 }]}>
                     <ScrollView>
-                        <View>
+                        <View style={[styles.container]}>
                             <Lightbox activeProps={{
                                 resizeMode: 'contain',
                                 flex: 1,
-                                width: null,
+                                width: null
                             }}>
                                 <Image style={[styles.fullWidth, styles.bannerHeight, { resizeMode: "stretch" }]} source={{ uri: this.state.news_details.news_thumbs }} />
                             </Lightbox>
@@ -148,11 +142,15 @@ class NewsDetailsScreen extends React.Component {
                                 <Text style={[styles.text22, { color: primaryColor }]}>{this.state.news_details.news_title}</Text>
                             </View>
                             <View style={{padding:5}}/>
-                            <View style={[styles.container]}>
+                            {/* <View style={[styles.container]}>
                                 <Text style={[styles.text18, { color: secondaryColor }]}>{'อาคาร : ' + this.state.news_details.news_building}</Text>
-                            </View>
+                            </View> */}
                             <View>
-                                <HTML html={this.state.news_details.news_detail} imagesMaxWidth={DEVICE_WIDTH - 20} />
+                                <HTML 
+                                    html={this.state.news_details.news_detail} 
+                                    imagesMaxWidth={DEVICE_WIDTH - 20} 
+                                    onLinkPress={(evt, href) => { Linking.openURL(href); }}
+                                />
                             </View>
 
                             {
@@ -161,13 +159,20 @@ class NewsDetailsScreen extends React.Component {
                                         <View style={[styles.container]}>
                                             <Text style={[styles.text18, { color: primaryColor }]}>{'รูปภาพเพิ่มเติม'}</Text>
                                         </View>
-                                        <View style={[styles.container, styles.topBorderRadius]}>
-                                            <FlatList
-                                               // style={{ marginTop: 5 }}
-                                                data={this.state.news_details.news_gallery}
-                                                keyExtractor={(item) => item.gallery_id}
-                                                renderItem={this._renderItem}
-                                                numColumns={3} />
+                                        <View style={[styles.container, styles.topBorderRadius, { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }]}> 
+                                            {Array.isArray(this.state.news_details.news_gallery) ? this.state.news_details.news_gallery.map((item, index) => (
+                                                <View key={item.gallery_id || index} style={{ width: (DEVICE_WIDTH - 40) / 3, height: 100, marginBottom: 6 }}>
+                                                    <Lightbox activeProps={{
+                                                        resizeMode: 'contain',
+                                                        flex: 1,
+                                                        width: null,
+                                                    }}
+                                                    renderContent={() => this.renderCarousel(this.state.news_details.news_gallery, index)}
+                                                    underlayColor="white">
+                                                        <Image style={{ width: '100%', height: '100%', resizeMode: 'stretch' }} source={{ uri: item.gallery_image }} />
+                                                    </Lightbox>
+                                                </View>
+                                            )) : null}
                                         </View>
                                     </>
                                 :

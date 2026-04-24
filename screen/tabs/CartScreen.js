@@ -17,8 +17,11 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
+import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 var numeral = require('numeral')
 import {
     darkColor,
@@ -29,7 +32,7 @@ import {
     BASE_URL,
     GET_CART_URL,
     CANCEL_BOOKING_URL,
-    HEADERFORMDATA
+    HEADERFORMDATA, redColor
 } from '../../utils/contants'
 
 
@@ -40,16 +43,22 @@ import {
     dismissIndicator,
     setStateBookingSelected,
     setUserCountCartItem,
-    setStateMyCart
+    setStateMyCart,
+    setStateChargeSelected
 } from '../../actions'
 import styles from '../../style/style'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 35 : StatusBar.currentHeight;
 class CartScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         arrBooking: [],
         selectBooking: [],
+        arrCharge: [],
+        selectCharge: [],
         area_item: 0,
         total_area: 0,
         discount_price: 0,
@@ -57,6 +66,10 @@ class CartScreen extends React.Component {
         vat: 0,
         item_count: 0,
         total_final_price: 0,
+        isFetching : false,
+        charge_total : 0,
+
+        
     }
 
 
@@ -69,25 +82,49 @@ class CartScreen extends React.Component {
             console.log('GET_CART_URL', results)
             if (results.status == 'SUCCESS') {
                 this.setState({
-                    arrBooking: results.data,
+                    arrBooking: results.data.Cart,
                     selectBooking: [],
+                    arrCharge: results.data.Charge,
+                    selectCharge: [],
                     area_item: 0,
+                    item_count : 0,
                     total_area: 0,
                     discount_price: 0,
                     total_other_service: 0,
                     vat: 0,
                     total_final_price: 0,
+                    isFetching: false,
+                    charge_total:0,
                 })
-                this.props.setStateMyCart(results.data)
-                this.props.setUserCountCartItem(results.data.length)
-                if (results.data.length > 0) {
-                    results.data.map((item, index) => {
-                        this.onChecked(item, false)
+                this.props.setStateMyCart(results.data.Cart)
+                this.props.setUserCountCartItem(results.data.Cart.length + results.data.Charge.length)
+                if (results.data.Cart.length > 0) {
+                    results.data.Cart.map( async (item, index) => {
+                        await this.onChecked(item, false)
+                    })
+                }
+                if (results.data.Charge.length > 0) {
+                    results.data.Charge.map( async (item, index) => {
+                        await this.onCheckedCharge(item, false)
                     })
                 }
                 this.props.dismissIndicator()
             } else {
-                this.setState({ arrBooking: [] })
+                this.setState({ 
+                    arrBooking: [],
+                    selectBooking: [],
+                    arrCharge : [],
+                    selectCharge: [],
+                    area_item: 0,
+                    item_count : 0,
+                    total_area: 0,
+                    discount_price: 0,
+                    total_other_service: 0,
+                    vat: 0,
+                    total_final_price: 0,
+                    isFetching: false,
+                    charge_total:0,
+                 })
                 this.props.setStateMyCart([])
                 this.props.setUserCountCartItem(0)
                 Alert.alert(results.message)
@@ -113,8 +150,59 @@ class CartScreen extends React.Component {
         })
     }
 
+    _renderItemCharge  = ({ item, index }) => {
+        return (
+            <View key={index}>
+                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                    <View style={{ flex: 0.7 }}>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <CheckBox
+                                title={`เลือก`}
+                                checked={item.checked}
+                                textStyle={[styles.text14, { fontFamily: 'SinghaEstate-Regular', color: primaryColor }]}
+                                containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, borderColor: 'transparent', margin: -8, marginRight: -10, marginLeft: -10 }}
+                                onPress={
+                                    () => {
+                                       this.onCheckedCharge(item, item.checked);
+                                    }
+                                } />
+                         <Text style={[styles.text14, { color: 'red' ,fontFamily: 'SinghaEstate-Regular'}]}>{`ประเภทรายการ : ค่าปรับ`}</Text>
+                        </View>
+                    </View>
+                    <View style={{ flex: 0.35 }}>
+                        <View style={[styles.containerRow, { justifyContent: 'flex-end' }]}>
+                           
+                        </View>
+                    </View>
+                </View>
+                <View style={[styles.containerRow]}>
+                    <View style={{ flex: 0.17 }}>
+                        <View style={[styles.center, { width: 50, height: 50, backgroundColor: redColor, borderRadius: 10 }]}>
+                            <Text style={[styles.text12, { color:'white',textAlign: 'center', flexWrap: 'wrap' }]}>{item.booth_name}</Text>
+                        </View>
+                    </View>
+                    <View style={{ flex: 0.83 }}>
+                       
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text16]}>{`เลขที่การจอง ` + item.booking_id}</Text>
+                        </View>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(item.booking_detail_date).format('LL')}</Text>
+                        </View>
+                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                            <Text style={[styles.text14]}>{`ราคาค่าปรับ`}</Text>
+                            <Text style={[styles.text14]}>{numeral(item.audit_charge_total).format('0,0.00') + ` บาท`}</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={[styles.hr]}></View>
+            </View>
 
-    _renderItem = ({ item, index }) => {
+        )
+    }
+
+
+    _renderItemBooking = ({ item, index }) => { 
         return (
             <View key={index}>
                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
@@ -130,7 +218,7 @@ class CartScreen extends React.Component {
                                         this.onChecked(item, item.checked);
                                     }
                                 } />
-                            <Text style={[styles.text12, { color: 'red' }]}>{`เหลือเวลาในการจองอีก ` + item.Timelate + ` นาที`}</Text>
+                            <Text style={[styles.text12, { color: 'red' }]}>{`เหลือเวลาในการชำระเงิน` + moment(item.Timelate, "YYYY-MM-DD HH:mm").fromNow()}</Text>
                         </View>
                     </View>
                     <View style={{ flex: 0.35 }}>
@@ -168,13 +256,19 @@ class CartScreen extends React.Component {
                                             <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                                 <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.name_market}</Text>
                                                 <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.floor_name + ` / ` + valueDetails.zone_name}</Text>
+                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{/*valueDetails.floor_name + ` / ` + */valueDetails.zone_name}</Text>
                                             </View>
-                                            <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
-                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
-                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                                <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.product_type_name}</Text>
-                                            </View>
+                                            {
+                                                valueDetails.booth_detail_id != 0 ?
+                                                <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
+                                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
+                                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
+                                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{valueDetails.product_type_name}</Text>
+                                                </View>
+                                                :
+                                                null
+                                            }
+                                            
                                         </View>
                                         :
                                         null
@@ -182,19 +276,30 @@ class CartScreen extends React.Component {
 
                                 <View style={[styles.marginBetweenVertical]}></View>
                                 <View style={[styles.containerRow]}>
-                                    <View style={{ flex: 0.15 }}>
-                                        <View style={[styles.center, { width: 42, height: 42, backgroundColor: emptyColor, borderRadius: 10 }]}>
-                                            <Text style={[styles.text14, styles.bold, { textAlign: 'center' }]}>{valueDetails.boothname}</Text>
+                                    <View style={{ flex: 0.17 }}>
+                                        <View style={[styles.center, { width: 50, height: 50, backgroundColor: emptyColor, borderRadius: 10 }]}>
+                                            <Text style={[styles.text12, { textAlign: 'center', flexWrap: 'wrap' }]}>{valueDetails.boothname}</Text>
                                         </View>
                                     </View>
-                                    <View style={{ flex: 0.9 }}>
+                                    <View style={{ flex: 0.83 }}>
                                         <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                            <Text style={[styles.text16]}>{`วันที่ขาย ` + moment(valueDetails.booking_detail_date).format('LL')}</Text>
+                                            <Text style={[styles.text16]}>
+                                            {
+                                                valueDetails.booth_detail_id != 0 ?
+                                                `วันที่ขาย ` + moment(valueDetails.booking_detail_date).format('LL')
+                                                : 'บูธเรียกเก็บพิเศษ'
+                                            }
+                                            </Text>
                                         </View>
-                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                            <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
-                                            <Text style={[styles.text14]}>{numeral(valueDetails.boothprice).format('0,0.00') + ` บาท`}</Text>
-                                        </View>
+                                        {
+                                            valueDetails.booth_detail_id != 0 ?
+                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
+                                                <Text style={[styles.text14]}>{numeral(valueDetails.boothprice).format('0,0.00') + ` บาท`}</Text>
+                                            </View>
+                                            : <View></View>
+                                        }
+                                     
                                         {
                                             valueDetails.Service.map((vService, iService) => {
                                                 return (
@@ -218,49 +323,53 @@ class CartScreen extends React.Component {
         )
     }
 
-    ComponentLeft = () => {
-        return (
-            <View style={{ padding: 10 }}>
-
-            </View>
-        );
-    }
-
-    ComponentCenter = () => {
-        return (
-            <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[styles.text18, { color: 'white' }]}>{`ตะกร้าสินค้า`}</Text>
-            </View>
-        );
-    }
-
-    ComponentRight = () => {
-        return (
-            <View style={[{ padding: 10 }]}>
-
-            </View>
-        );
-    }
+  
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
+            // this.props.navigation.pop();
             return true;
         }
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
             this.props.setStateBookingSelected([])
+            this.props.setStateChargeSelected([])
             this.LoadData()
-            this.countItem()
         });
 
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    onCheckedCharge(item, checked){
+        let arr = this.state.arrCharge;
+        let index = arr.findIndex(k => k.booking_detail_id == item.booking_detail_id);
+        arr[index].checked = checked == true ? false : true;
+        this.setState({ arrCharge: arr });
+        let { total_final_price,charge_total } = this.state
+        if (checked == false) {
+            this.setState({
+                charge_total:  parseFloat(charge_total) +  parseFloat(item.audit_charge_total),
+                total_final_price : parseFloat(total_final_price) + parseFloat(item.audit_charge_total),
+                selectCharge: this.state.selectCharge.concat([item.booking_detail_id])
+            })
+        } else {
+            this.setState({
+                charge_total:  parseFloat(charge_total) -  parseFloat(item.audit_charge_total),
+                total_final_price : parseFloat(total_final_price) - parseFloat(item.audit_charge_total),
+                selectCharge: this.state.selectCharge.filter(function (values) {
+                    return values !== item.booking_detail_id
+                })
+            });
+        }
     }
 
     onChecked(item, checked) {
@@ -271,28 +380,39 @@ class CartScreen extends React.Component {
         let booking_id = item.booking_id;
         let index = arr.findIndex(k => k.booking_id == booking_id);
         arr[index].checked = checked == true ? false : true;
-        console.log('booking_id',booking_id)
-        console.log('arr',arr)
-        console.log('checked',checked)
-        console.log('index',index)
+        // console.log('booking_id',booking_id)
+        console.log('item check',item)
+        // console.log('checked',checked)
+        // console.log('index',index)
 
         ///// calculate money
-        let { total_area, area_item, total_other_service, discount_price } = this.state
+        let { total_area, area_item, total_other_service, discount_price,charge_total } = this.state
         let vat = 0;
         let vat_cut = 0;
         let total_final_price = 0;
+        let count = this.state.item_count
         if (checked == false) {
             total_area = parseFloat(total_area) + parseFloat(item.booking_total)
             discount_price = parseFloat(discount_price) + parseFloat(item.booking_coupon)
-            total_other_service = parseFloat(total_other_service) + parseFloat(item.booking_service_total)
-            //total_final_price = parseFloat(total_final_price) + parseFloat(item.booking_grand_total)
-            // count += item.Booking_Details.length
+
+            if(item.booking_total ==  0){ /// booking เรียกเก็บพิเศษค่าปรับล่าช้า
+                charge_total = parseFloat(charge_total) +  parseFloat(item.booking_service_total)
+            }else{ ////// booking เรียกเก็บปกติทั่วไป
+                total_other_service = parseFloat(total_other_service) + parseFloat(item.booking_service_total) 
+            }
+
+            count += item.Booking_Details.length
         } else {
             total_area = parseFloat(total_area) - parseFloat(item.booking_total)
             discount_price = parseFloat(discount_price) - parseFloat(item.booking_coupon)
-            total_other_service = parseFloat(total_other_service) - parseFloat(item.booking_service_total)
-            //total_final_price = parseFloat(total_final_price) - parseFloat(item.booking_grand_total)
-            // count -= item.Booking_Details.length
+ 
+            if(item.booking_total ==  0){ /// booking เรียกเก็บพิเศษค่าปรับล่าช้า
+                charge_total = parseFloat(charge_total) -  parseFloat(item.booking_service_total)
+            }else{ ////// booking เรียกเก็บปกติทั่วไป
+                total_other_service = parseFloat(total_other_service) - parseFloat(item.booking_service_total) 
+            }
+
+            count -= item.Booking_Details.length
         }
 
 
@@ -304,6 +424,8 @@ class CartScreen extends React.Component {
             vat = ((parseFloat(vat_cut) - parseFloat(discount_price)) * reducer.company_vat) / 100
             total_final_price = (parseFloat(total_area) - parseFloat(vat)) + parseFloat(total_other_service) - parseFloat(discount_price)
         }
+
+        total_final_price = total_final_price + charge_total
         // total_final_price = parseFloat(total_area) + parseFloat(total_other_service) + parseFloat(vat) - parseFloat(discount_price)
 
         this.setState({
@@ -313,8 +435,9 @@ class CartScreen extends React.Component {
             total_other_service: total_other_service,
             discount_price: discount_price,
             vat: vat,
-            // item_count: count,
-            total_final_price: total_final_price
+            item_count: count,
+            total_final_price: total_final_price,
+            charge_total:  parseFloat(charge_total) 
         })
 
         if (checked == false) {
@@ -330,49 +453,47 @@ class CartScreen extends React.Component {
         }
     }
 
-    countItem() {
-        let arr = this.state.arrBooking;
-        let count = 0;
-        arr.map((v, i) => {
-            count += v.Booking_Details.length
-        })
 
-        this.setState({ item_count: count })
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
     }
 
     render() {
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
-                <StatusBar backgroundColor={primaryColor} />
-                <View style={[styles.container, { alignItems: 'center' }]}>
+            <View style={[styles.container, { paddingBottom: 50 }]}>
+                <View style={[styles.container, { alignItems: 'center', backgroundColor: 'white' }]}>
                     {
-                        this.state.arrBooking.length > 0 ?
+                        this.state.arrBooking.length == 0 && this.state.arrCharge.length == 0 ?
+                            <View style={[styles.container, styles.center]}>
+                                <Text style={[styles.text16, styles.bold, { textAlign: 'center', color: styles.primaryColor }]}>{`ไม่มีรายการสินค้าหรือค่าปรับ!`}</Text>
+                            </View>
+                            :
                             <ScrollView
-                                refreshControl={
-                                    <RefreshControl refreshing={false} onRefresh={this.LoadData} />
-                                }>
+                            refreshControl={
+                                <RefreshControl refreshing={false} onRefresh={this.LoadData} />
+                            }>
                                 <View style={{ width: DEVICE_WIDTH - 20, padding: 10 }}>
                                     <FlatList
                                         data={this.state.arrBooking}
                                         keyExtractor={(item) => item.booking_id}
                                         extraData={this.state}
-                                        renderItem={this._renderItem} />
+                                        onRefresh={() => this.onRefresh()}
+                                        refreshing={this.state.isFetching}
+                                        renderItem={this._renderItemBooking} />
+
+                                    <FlatList
+                                        data={this.state.arrCharge}
+                                        keyExtractor={(item) => item.booking_detail_id}
+                                        extraData={this.state}
+                                        onRefresh={() => this.onRefresh()}
+                                        refreshing={this.state.isFetching}
+                                        renderItem={this._renderItemCharge} />
+
                                     <View style={[styles.hr]}></View>
-                                    <View style={[styles.marginBetweenVertical]}></View>
                                     <View style={[styles.container]}>
                                         <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                         <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
@@ -388,6 +509,11 @@ class CartScreen extends React.Component {
                                             <Text style={[styles.text16]}>{`ค่าบริการเสริม`}</Text>
                                             <Text style={[styles.text16]}>{numeral(this.state.total_other_service).format('0,0.00') + ` บาท`}</Text>
                                         </View>
+                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
+                                            <Text style={[styles.text16]}>{`ค่าปรับ`}</Text>
+                                            <Text style={[styles.text16]}>{numeral(this.state.charge_total).format('0,0.00') + ` บาท`}</Text>
+                                        </View>
+                                        
                                         {
                                             this.props.reducer.userInfo.partners_type == 2 ?
                                                 <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
@@ -408,11 +534,13 @@ class CartScreen extends React.Component {
                                             <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: secondaryColor }]}
                                                 onPress={
                                                     async () => {
-                                                        if (this.state.selectBooking.length == 0) {
+                                                        if (this.state.selectBooking.length == 0 && this.state.selectCharge.length == 0) {
                                                             alert('กรุณาเลือกรายการมากกว่า 1 รายการ!')
                                                         } else {
                                                             await this.props.setStateBookingSelected(this.state.selectBooking)
-                                                            this.props.navigation.navigate('ConfirmReserv')
+                                                            await this.props.setStateChargeSelected(this.state.selectCharge)
+                                                            
+                                                            this.props.navigation.navigate('Paymentchannel')
                                                         }
                                                     }
                                                 }>
@@ -422,10 +550,7 @@ class CartScreen extends React.Component {
                                     </View>
                                 </View>
                             </ScrollView>
-                            :
-                            <View style={[styles.container, styles.center]}>
-                                <Text style={[styles.text16, styles.bold, { textAlign: 'center', color: styles.primaryColor }]}>{`ไม่มีรายการในตะกร้าสินค้า!`}</Text>
-                            </View>
+                        
                     }
                 </View>
             </View>
@@ -442,7 +567,8 @@ const mapDispatchToProps = {
     dismissIndicator,
     setStateBookingSelected,
     setStateMyCart,
-    setUserCountCartItem
+    setUserCountCartItem,
+    setStateChargeSelected
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartScreen)

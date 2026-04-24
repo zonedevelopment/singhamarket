@@ -1,0 +1,66 @@
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js
+index cb17a80..acd7af9 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js
+@@ -54,9 +54,15 @@ function useWindowDimensions() {
+       window: _reactNative.Dimensions.get('window')
+     });
+ 
+-    _reactNative.Dimensions.addEventListener('change', onChange);
++    const subscription = _reactNative.Dimensions.addEventListener('change', onChange);
+ 
+-    return () => _reactNative.Dimensions.removeEventListener('change', onChange);
++    return () => {
++      if (subscription && typeof subscription.remove === 'function') {
++        subscription.remove();
++      } else {
++        _reactNative.Dimensions.removeEventListener('change', onChange);
++      }
++    };
+   }, []);
+   return dimensions;
+ }
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js b/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js
+index 8dc4415..62ce098 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js
+@@ -39,8 +39,14 @@ export default function useWindowDimensions() {
+     onChange({
+       window: Dimensions.get('window')
+     });
+-    Dimensions.addEventListener('change', onChange);
+-    return () => Dimensions.removeEventListener('change', onChange);
++    const subscription = Dimensions.addEventListener('change', onChange);
++    return () => {
++      if (subscription && typeof subscription.remove === 'function') {
++        subscription.remove();
++      } else {
++        Dimensions.removeEventListener('change', onChange);
++      }
++    };
+   }, []);
+   return dimensions;
+ }
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx b/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx
+index 8000a59..ae35146 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx
+@@ -28,9 +28,15 @@ export default function useWindowDimensions() {
+     // So make sure to update the dimensions
+     onChange({ window: Dimensions.get('window') });
+ 
+-    Dimensions.addEventListener('change', onChange);
+-
+-    return () => Dimensions.removeEventListener('change', onChange);
++    const subscription = Dimensions.addEventListener('change', onChange);
++
++    return () => {
++      if (subscription && typeof subscription.remove === 'function') {
++        subscription.remove();
++      } else {
++        Dimensions.removeEventListener('change', onChange);
++      }
++    };
+   }, []);
+ 
+   return dimensions;

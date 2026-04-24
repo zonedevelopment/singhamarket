@@ -14,6 +14,7 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import HTML from 'react-native-render-html'
+import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { CheckBox } from 'react-native-elements'
@@ -40,6 +41,8 @@ import OpenURLButton from '../components/OpenURLButton'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class RegisterConditionScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         type: 1,
@@ -82,13 +85,16 @@ class RegisterConditionScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     async componentDidMount() {
         await this.LoadAgreement(1)
        
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     onCheckLicense(value) {
@@ -132,8 +138,8 @@ class RegisterConditionScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
-                <NavigationBar
+            <View style={[styles.container, styles.backgroundPrimary, { paddingBottom: 40 }]}>
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -141,16 +147,17 @@ class RegisterConditionScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
+                        marginTop: DeviceInfo.hasNotch() ? 20 : 0
                     }]}
                     statusBarStyle={{
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
-                    <ScrollView>
-                        <View style={[styles.panelWhite, styles.shadow,{ zIndex:1000}]}>
+                    <ScrollView style={[styles.panelWhite, styles.registerPanelShadow]}>
+                        <View style={[{ zIndex:1000, paddingBottom: 20 }]}>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: this.state.type == 1 ? secondaryColor : grayColor }]}
                                     onPress={
@@ -215,10 +222,13 @@ class RegisterConditionScreen extends React.Component {
                                         if (this.state.type == 1) {
                                             this.props.navigation.navigate('Registerperson', {
                                                 apptype: this.state.apptype //ส่งค่า UAT ไปเช็คที่ฟอร์มสมัครเพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+                                                ,licenseAgree : this.state.licenseAgree
+                                                ,privacyAgree : this.state.privacyAgree
                                             })
                                         } else if (this.state.type == 2) {
                                             this.props.navigation.navigate('Registercompany', {
                                                 apptype: this.state.apptype //ส่งค่า UAT ไปเช็คที่ฟอร์มสมัครเพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+                                                ,licenseAgree : this.state.licenseAgree
                                             })
                                         }
                                     }

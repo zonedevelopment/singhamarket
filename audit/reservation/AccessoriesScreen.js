@@ -37,6 +37,8 @@ import ic_image from '../../assets/image/icon_photo.png'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class AccessoriesScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         ListAccessoire : []
@@ -137,12 +139,15 @@ class AccessoriesScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.LoadData()
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
 

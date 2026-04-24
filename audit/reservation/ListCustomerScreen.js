@@ -34,6 +34,8 @@ import Hepler from '../../utils/Helper'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class ListCustomerScreen extends React.Component {
+    backHandlerSubscription = null
+
     state = {
         keySearch:'',
         ListData: []
@@ -73,12 +75,15 @@ class ListCustomerScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.LoadData();
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     LoadData () {
@@ -122,8 +127,8 @@ class ListCustomerScreen extends React.Component {
         const props = this.props
         const filter = this.state.ListData.filter(createFilter(this.state.keySearch, ['name_customer', 'name', 'lastname']))
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 60 }]}>
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -136,7 +141,7 @@ class ListCustomerScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.containerRow,{width: '90%', marginLeft: 10}]}>
                         <Text style={[styles.text20, { color: primaryColor }]}>{`รายชื่อลูกค้า`}</Text>

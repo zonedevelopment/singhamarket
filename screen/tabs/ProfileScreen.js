@@ -8,10 +8,12 @@ import {
     Dimensions,
     BackHandler,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Linking 
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import VersionCheck from 'react-native-version-check'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 
@@ -37,6 +39,8 @@ import ic_support from '../../assets/image/icon_chat.png'
 import ic_logout from '../../assets/image/icon_logout_gold.png'
 
 class ProfileScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     ComponentLeft = () => {
         return (
@@ -64,17 +68,20 @@ class ProfileScreen extends React.Component {
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
+            // this.props.navigation.pop();
             return true;
         }
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
@@ -84,7 +91,7 @@ class ProfileScreen extends React.Component {
 
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -97,15 +104,15 @@ class ProfileScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
+                    }} /> */}
                 <ScrollView>
                     <View style={[styles.container]}>
                         {
                             userInfo.partners_type == 1 ?
                                 <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
-                                onPress={
-                                    () => this.props.navigation.navigate('Personal')
-                                }>
+                                    onPress={
+                                        () => this.props.navigation.navigate('Personal')
+                                    }>
                                     <Image source={ic_profile} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                                     <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลส่วนตัว`}</Text>
                                     <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
@@ -114,9 +121,9 @@ class ProfileScreen extends React.Component {
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
-                                onPress={
-                                    () => this.props.navigation.navigate('Company')
-                                }>
+                                    onPress={
+                                        () => this.props.navigation.navigate('Company')
+                                    }>
                                     <Image source={ic_company} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                                     <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>
                                     <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
@@ -144,6 +151,7 @@ class ProfileScreen extends React.Component {
                                 <Icon name='chevron-right' size={14} color={primaryColor} />
                             </View>
                         </TouchableOpacity>
+                       
                         <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
                             onPress={
                                 () => this.props.navigation.navigate('Support')
@@ -155,23 +163,42 @@ class ProfileScreen extends React.Component {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
-                        onPress={
-                            async () => {
-                                this.props.navigation.reset({
-                                    index: 0,
-                                    routes: [{name: 'Building'}],
-                                });
-                                await StorageServies.clear()
-                                await this.props.saveUserInfo([])
-                                this.props.navigation.navigate('Choice')
-                            }
-                        }>
+                            onPress={
+                                () => {
+                                   Linking.openURL(props.url_cancel_onetrust)
+                                    .catch(err => {
+                                        console.error("Failed opening page because: ", err)
+                                        alert('Failed to open page')
+                                    })
+                                }
+                            }>
+                            <Image source={ic_support} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
+                            <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ใช้สิทธิ์ร้องเรียนเกี่ยวกับข้อมูลส่วนบุคคล`}</Text>
+                            <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
+                                <Icon name='chevron-right' size={14} color={primaryColor} />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
+                            onPress={
+                                async () => {
+                                    // this.props.navigation.reset({
+                                    //     index: 0,
+                                    //     routes: [{name: 'Building'}],
+                                    // });
+                                    await StorageServies.clear()
+                                    await this.props.saveUserInfo([])
+                                    this.props.navigation.navigate('Choice')
+                                }
+                            }>
                             <Image source={ic_logout} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
                             <Text style={[styles.text16, { flex: 0.7, color: primaryColor }]}>{`ออกจากระบบ`}</Text>
                             <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
                                 <Icon name='chevron-right' size={14} color={primaryColor} />
                             </View>
                         </TouchableOpacity>
+                        <View style={[styles.container, { padding: 10, alignItems: 'flex-end', marginTop: 10 }]}>
+                            <Text style={[styles.text14, { flex: 0.7, color: primaryColor }]}>{`Version ${VersionCheck.getCurrentVersion()}`}</Text>
+                        </View>
                     </View>
                 </ScrollView>
             </View>

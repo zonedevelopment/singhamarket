@@ -41,10 +41,13 @@ import Hepler from '../utils/Helper'
 const DEVICE_WIDTH = Dimensions.get('screen').width
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class HistoryDetailScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         data : [],
         service : [],
+        slip : [],
     }
 
     ComponentLeft = () => {
@@ -79,33 +82,22 @@ class HistoryDetailScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     async componentDidMount() {
-        const { data,service } = this.props.route.params
-        await this.setState({ data : data,service:service })
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        const { data,service,slip } = this.props.route.params
+        await this.setState({ data : data,service:service,slip:slip })
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
         const props = this.props.reducer
         return (
             <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <Text style={[styles.text20, { color: primaryColor }]}>{`วันที่ขายของ ` + moment(this.state.data.booking_detail_date).format('LL')}</Text>
@@ -143,6 +135,32 @@ class HistoryDetailScreen extends React.Component {
                         }
                         {/* <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ไฟฟ้าและแสงสว่าง x2`}</Text>
                         <Text style={[styles.text16, { paddingLeft: 5 }]}>{`- ไฟฟ้าไม่เกิน 8,000 วัตต์`}</Text> */}
+                    </View>
+                    <View style={{ padding: 5 }}>
+                        <Text style={[styles.text16, styles.bold]}>{`ใบเสร็จ`}</Text>
+                        <View>
+                            {
+                                this.state.slip.map((v, i) => {
+                                    return (
+                                        <View style={[styles.containerRow]}>
+                                            <Text style={[styles.text16 , { alignSelf: 'flex-start', flex: 0.6,paddingLeft: 5  }]}>- {v.trans_id}</Text>
+                                            <TouchableOpacity style={{ flex: 0.4, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}
+                                                onPress={
+                                                    () => {
+                                                        if (v.slip_url != '') {
+                                                            this.props.navigation.navigate('Slip', {
+                                                                slipUrl: v.slip_url
+                                                            })
+                                                        }
+                                                    }
+                                                }>
+                                                <Text style={[styles.text16, styles.bold, { color: primaryColor, marginLeft: 2 }]}>{`คลิกเพื่อดูใบเสร็จ`}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                })
+                            } 
+                        </View>
                     </View>
                 </View>
                 <View style={{ position: 'absolute', bottom: 5, alignSelf: 'center', padding: 10 }}>

@@ -1,7 +1,7 @@
 import messaging from '@react-native-firebase/messaging'
 import {Platform} from 'react-native'
 import Helper from './Helper'
-import {BASE_URL,HEADERFORMDATA,RegisterFCMToken,KEY_LOGIN } from './contants'
+import {BASE_URL,HEADERFORMDATA,RegisterFCMToken,KEY_LOGIN,KEY_ROLE,UpdateAdminFCMToken } from './contants'
 import StorageServies from './StorageServies'
 class FCMService {
     register = (onRegister,onNotificaion,onOpenNotification) => {
@@ -86,7 +86,7 @@ class FCMService {
             if(remoteMessage){
                 let notification = null
                 if(Platform.OS === 'ios'){
-                    notification = remoteMessage.data.notification
+                    notification = remoteMessage.notification
                 } else {
                     notification = remoteMessage.notification
                 }
@@ -109,14 +109,26 @@ class FCMService {
 
     UpdateToken = async (token) => {
         let LOGIN = await StorageServies.get(KEY_LOGIN)
+        let ROLE = await StorageServies.get(KEY_ROLE)
         if(LOGIN != null){
             LOGIN = JSON.parse(LOGIN)
-            let formData = new FormData();
-            formData.append('token', token)
-            formData.append('partners_id', LOGIN.partners_id)
-            Helper.post(BASE_URL + RegisterFCMToken,formData,HEADERFORMDATA,(results) => {
-                console.log('RegisterFCMToken',results)
-            })
+            if (ROLE == 'USER') {
+                let formData = new FormData();
+                formData.append('token', token)
+                formData.append('partners_id', LOGIN.partners_id)
+                Helper.post(BASE_URL + RegisterFCMToken,formData,HEADERFORMDATA,(results) => {
+                    console.log('RegisterFCMToken',results)
+                })
+            }
+            if (ROLE == 'AUDIT' || ROLE == 'ADMIN') {
+                let formData = new FormData();
+                formData.append('token', token)
+                formData.append('userid', LOGIN.userid)
+                Helper.post(BASE_URL + UpdateAdminFCMToken,formData,HEADERFORMDATA,(results) => {
+                    console.log('UpdateAdminFCMToken',results)
+                })
+            }
+       
         }
     }
 }

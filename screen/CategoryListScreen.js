@@ -13,6 +13,7 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
+import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
@@ -35,6 +36,7 @@ import Hepler from '../utils/Helper'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class CategoryListScreen extends React.Component {
+    backHandlerSubscription = null
 
     state = {
         type_id: '',
@@ -115,17 +117,19 @@ class CategoryListScreen extends React.Component {
             this.props.navigation.pop();
             return true;
         }
+
+        return false;
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
-    }
-
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     async componentDidMount() {
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
         const{ typeId,RegisType } = this.props.route.params
         await this.setState({ type_id : typeId ,RegisType:RegisType})
         this.LoadData(typeId)
@@ -142,8 +146,8 @@ class CategoryListScreen extends React.Component {
     render() {
 
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
+            <View style={[styles.container, { backgroundColor: primaryColor }]}>
+                {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
                     componentRight={this.ComponentRight}
@@ -151,15 +155,16 @@ class CategoryListScreen extends React.Component {
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
+                        marginTop: DeviceInfo.hasNotch() ? 20 : 0
                     }]}
                     statusBarStyle={{
                         backgroundColor: primaryColor,
                         elevation: 0,
                         shadowOpacity: 0,
-                    }} />
-                <View style={[styles.container, { padding: 10 }]}>
+                    }} /> */}
+                <View style={[styles.container, { padding: 10, backgroundColor: 'white' }]}>
                     <View style={[styles.marginBetweenVertical]}></View>
-                    <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกประเภท${this.state.type_id == 1 ? 'อาหาร' : 'สินค้า'}ที่ต้องการขาย`}</Text>
+                    <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกหมวดหมู่สินค้าที่ต้องการขาย`}</Text>
                     <View style={[styles.marginBetweenVertical]}></View>
                   
                     <FlatList

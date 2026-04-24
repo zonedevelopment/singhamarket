@@ -1,6 +1,6 @@
 import PushNotification from 'react-native-push-notification'
 import PushNotificaionIOS from '@react-native-community/push-notification-ios'
-import {Platform, PushNotificationIOS} from 'react-native'
+import {Platform} from 'react-native'
 
 class LocalNotificaionService {
     configuere = (onOpenNotification) => {
@@ -64,7 +64,7 @@ class LocalNotificaionService {
             /// Android Only Propoties
             ...this.buildAndroidNotification(id,title,message,data,option),
             /// IOS Only Propoties
-            //...this.buildIOSNotificaion(id,title,message,data,option),
+            ...this.buildIOSNotification(id,title,message,data,option),
              /// IOS and Android  Propoties
             title : title || '',
             message : message || '',

@@ -1,0 +1,236 @@
+import React from 'react'
+import {
+    View,
+    Text,
+    Image,
+    FlatList,
+    Dimensions,
+    BackHandler,
+    TouchableOpacity
+} from 'react-native'
+import moment from 'moment'
+import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+
+import {
+    darkColor,
+    grayColor,
+    redColor,
+    primaryColor,
+    secondaryColor
+} from '../utils/contants'
+
+import styles from '../style/style'
+import TabIcon from '../components/TabIcon'
+
+/**
+ * Main tab
+ */
+import Homescreen from './tab/HomeScreen'
+import Homedetailsscreen from './Home/HomeDetailsScreen'
+import Homeboothreportscreen from './Home/HomeBoothReportScreen'
+import Homeboothreportdetailsscreen from './Home/HomeBoothReportDetailsScreen'
+
+
+import Reservscreen from './tab/ReservationScreen'
+import Listcustometscreen from './reservation/ListCustomerScreen'
+import Listbuildingscreen from './reservation/ListBuildingScreen';
+
+import Customerscreen from './tab/CustomerScreen'
+import Customerdetailsscreen from './Customer/CustomerDetailsScreen'
+import Customerhistorydetailsscreen from './Customer/CustomerHistoryDetailsScreen'
+
+
+import Notificationscreen from './tab/NotificationScreen'
+
+import Calendarscreen from './reservation/CalendarScreen'
+import Boothscreen from './reservation/BoothScreen'
+import Dayselectedscreen from './reservation/DaySelectedScreen'
+import Accessoriesscreen from './reservation/AccessoriesScreen'
+import Summaryscreen from './reservation/SummaryScreen'
+import Editboothscreen from './reservation/EditBoothScreen'
+import Bookingsuccessscreen from './reservation/BookingSuccessScreen'
+/**
+ * End
+ */
+
+import ic_home_active from '../assets/image/icon_home_gold.png'
+import ic_store_active from '../assets/image/icon_market_gold.png'
+import ic_cart_active from '../assets/image/icon_cart_gold.png'
+import ic_plan_active from '../assets/image/icon_plan_gold.png'
+import ic_bell_active from '../assets/image/icon_noti_gold.png'
+import ic_profile_active from '../assets/image/icon_user_gold.png'
+
+import ic_home_inactive from '../assets/image/icon_home.png'
+import ic_store_inactive from '../assets/image/icon_market.png'
+import ic_cart_inactive from '../assets/image/icon_cart.png'
+import ic_plan_inactive from '../assets/image/icon_plan.png'
+import ic_bell_inactive from '../assets/image/icon_noti.png'
+import ic_profile_inactive from '../assets/image/icon_user.png'
+
+const Stack = createStackNavigator();
+
+
+const Home = function AccStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='Home'>
+            <Stack.Screen name="Home" component={Homescreen} />
+            <Stack.Screen name="HomeDetails" component={Homedetailsscreen} />
+            <Stack.Screen name="HomeBoothReport" component={Homeboothreportscreen} />
+            <Stack.Screen name="HomeBoothReportDetails" component={Homeboothreportdetailsscreen} />
+        </Stack.Navigator>
+    )
+}
+
+const Reserv = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='ReservHome'>
+            <Stack.Screen name="ReservHome" component={Reservscreen} />
+            <Stack.Screen name="ReservListCustomer" component={Listcustometscreen} />
+            <Stack.Screen name="ReservListBuilding" component={Listbuildingscreen} />
+            <Stack.Screen name="ReservCalendarAudit" component={Calendarscreen} />
+            <Stack.Screen name="ReservBoothAudit" component={Boothscreen} />
+            <Stack.Screen name="ReservDaySelectedAudit" component={Dayselectedscreen} />
+            <Stack.Screen name="ReservAccessoriesAudit" component={Accessoriesscreen} />
+            <Stack.Screen name="ReservSummaryAudit" component={Summaryscreen} />
+            <Stack.Screen name="ReservEditBoothAudit" component={Editboothscreen} />
+            <Stack.Screen name="ReservSuccessAudit" component={Bookingsuccessscreen} />
+            
+        </Stack.Navigator>
+    );
+}
+
+
+
+const Customer = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='MainAuditCustomer'>
+            <Stack.Screen name="MainAuditCustomer" component={Customerscreen} />
+            <Stack.Screen name="AuditCustomerDetails" component={Customerdetailsscreen} />
+            <Stack.Screen name="AuditHistoryDetails" component={Customerhistorydetailsscreen} />
+        </Stack.Navigator>
+    );
+}
+
+const Notification = function MyStack() {
+    return (
+        <Stack.Navigator
+            headerMode='none'
+            initialRouteName='AuditNotification'>
+            <Stack.Screen name="AuditNotification" component={Notificationscreen} />
+        </Stack.Navigator>
+    );
+}
+
+
+
+// const props = this.props
+const Tab = createBottomTabNavigator()
+const tabMain = (countItem) => {
+    let Role = 'Audit'
+    return (
+        <Tab.Navigator
+            initialRouteName="Home"
+            tabBarOptions={{
+                activeTintColor: secondaryColor,
+                inactiveTintColor: 'white',
+                labelStyle: {
+                    fontSize: 12
+                },
+                style: {
+                    justifyContent: 'center',
+                    backgroundColor: primaryColor,
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20
+                }
+            }}>
+            <Tab.Screen
+                name="Home"
+                component={Home}
+                options={{
+                    tabBarLabel: 'หน้าแรก',
+                    tabBarIcon: ({ focused, color }) => (
+                        <View>
+                            {
+                                focused ?
+                                    <Image source={ic_home_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_home_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
+                        </View>
+                    ),
+                }} />
+
+            <Tab.Screen
+                name="Reserv"
+                component={Reserv}
+                options={{
+                    tabBarLabel: 'จองพื้นที่',
+                    tabBarIcon: ({ focused, color }) => (
+                        <View>
+                            {
+                                focused ?
+                                    <Image source={ic_store_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_store_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
+                        </View>
+                    ),
+                }} />
+            <Tab.Screen
+                name="Noti"
+                component={Notification}
+                options={{
+                    tabBarLabel: 'แจ้งเตือน',
+                    tabBarIcon: ({ focused, color }) => (
+                        <View>
+                            <TabIcon focused={focused} Controller={'Noti'} Role={Role} />
+                            {/* {
+                                focused ?
+                                    <Image source={ic_bell_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_bell_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
+                            <View style={[styles.center, { position: 'absolute', top: -2, right: -10, width: 18, height: 18, borderRadius: 10, backgroundColor: redColor }]}>
+                                <Text style={{ color: 'white', fontSize: 10 }}>{`1`}</Text>
+                            </View> */}
+                        </View>
+                    ),
+                }} />
+            <Tab.Screen
+                name="AdminCustomer"
+                component={Customer}
+                options={{
+                    tabBarLabel: 'รายชื่อลูกค้า',
+                    tabBarIcon: ({ focused, color }) => (
+                        <View>
+                            {
+                                focused ?
+                                    <Image source={ic_profile_active} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                                    :
+                                    <Image source={ic_profile_inactive} style={{ width: 18, height: 18, resizeMode: 'contain' }} />
+                            }
+                        </View>
+                    ),
+                }} />
+        </Tab.Navigator>
+    )
+}
+
+const mapStateToProps = (state) => ({
+    reducer: state.fetchReducer
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(tabMain)

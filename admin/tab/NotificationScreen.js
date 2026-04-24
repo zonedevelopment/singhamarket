@@ -24,6 +24,8 @@ import {
 import styles from '../../style/style'
 
 class NotificationScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         ListData : [
@@ -56,62 +58,22 @@ class NotificationScreen extends React.Component {
         )
     }
 
-    ComponentLeft = () => {
-        return (
-            <View style={[{ padding: 10 }]}>
-
-            </View>
-        );
-    }
-
-    ComponentCenter = () => {
-        return (
-            <View style={[styles.center, styles.backgroundPrimary]}>
-                <Text style={[styles.text18, { color: 'white' }]}>{`แจ้งเตือน`}</Text>
-            </View>
-        );
-    }
-
-    ComponentRight = () => {
-        return (
-            <View style={[{ padding: 10 }]}>
-
-            </View>
-        );
-    }
-
-    handleBack = () => {
-        if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
-            return true;
-        }
-    };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 60 }]}>
+                
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.containerRow,{width: '90%', marginLeft: 10}]}>
                         <Text style={[styles.text20, { color: primaryColor }]}>{`รายการแจ้งเตือน`}</Text>

@@ -27,6 +27,8 @@ import styles from '../../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class DaySelectedScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     _renderItem = ({ item, index }) => {
         return (
@@ -85,11 +87,14 @@ class DaySelectedScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {

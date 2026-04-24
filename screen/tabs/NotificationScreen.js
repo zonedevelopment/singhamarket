@@ -35,6 +35,8 @@ import {
 import styles from '../../style/style'
 
 class NotificationScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         ListData : [],
@@ -46,7 +48,13 @@ class NotificationScreen extends React.Component {
             <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 10 }}>
                 <TouchableOpacity style={[styles.containerRow, { alignItems: 'center', justifyContent: 'space-between' }]}
                     onPress={
-                        () => null
+                        () => {
+                            if (item.slip_url) {
+                                this.props.navigation.navigate('Slip', {
+                                    slipUrl: item.slip_url
+                                })
+                            }
+                        }
                     }>
                     <View style={[styles.containerRow]}>
                         <View style={{ flex: 0.15 }}>
@@ -92,7 +100,7 @@ class NotificationScreen extends React.Component {
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.pop();
+            // this.props.navigation.pop();
             return true;
         }
     };
@@ -130,31 +138,22 @@ class NotificationScreen extends React.Component {
     }
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        this.LoadData()
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.props.navigation.addListener('focus', () => {
+            this.LoadData()
+        });
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 75 }]}>
                 <View style={[styles.container, { padding: 10 }]}>
                     {
                         this.state.ListData.length > 0 ?

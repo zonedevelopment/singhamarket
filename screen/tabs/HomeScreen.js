@@ -16,16 +16,33 @@ import {
     grayColor,
     primaryColor,
     secondaryColor,
-    KEY_LOGIN
+    HEADERFORMDATA,
+    BANNER_URL,
+    BASE_URL,
+    KEY_LOGIN,
+    NEWS_URL,
 } from '../../utils/contants'
-
 import styles from '../../style/style'
 import StorageServies from '../../utils/StorageServies'
 
+import {
+    openIndicator,
+    setStateNews,
+    dismissIndicator,
+} from '../../actions'
+
+import Hepler from '../../utils/Helper'
+
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class HomeScreen extends React.Component {
+    backHandlerSubscription = null
 
 
+    state = {
+        isFetching: false,
+        ListNew : [],
+        ListBanner : []
+    }
 
     renderPage(value, index) {
         return (
@@ -41,6 +58,47 @@ class HomeScreen extends React.Component {
             </View>
         );
     }
+
+    LoadData = () => {
+        this.props.openIndicator()
+        Hepler.post(BASE_URL + BANNER_URL,null,HEADERFORMDATA, (results) =>{
+            console.log('BANNER_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.setState({
+                    ListBanner : results.data
+                })
+            }else{
+                this.setState({
+                    ListBanner : []
+                })
+            }
+            this.LoadNew();
+        })
+    }
+
+    
+
+    LoadNew = () => {
+        Hepler.post(BASE_URL + NEWS_URL,null,HEADERFORMDATA, (results) =>{
+            console.log('NEWS_URL',results)
+            if(results.status == 'SUCCESS'){
+                this.setState({
+                    isFetching: false,
+                    ListNew : results.data
+                })
+                this.props.dismissIndicator()
+            }else{
+                this.setState({
+                    ListNew : [],
+                    isFetching: false
+                })
+                this.props.dismissIndicator()
+            }
+        })
+       
+    }
+
+    
 
     _renderItem = ({ item, index }) => {
         return (
@@ -60,22 +118,44 @@ class HomeScreen extends React.Component {
             </TouchableOpacity>
         )
     }
+
+    handleBack = () => {
+        if (this.props.navigation.isFocused()) {
+            return true;
+        }
+    };
     
-
-    componentDidMount(){
-
+    componentWillUnmount() {
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
+    componentDidMount(){
+        // this.setState({
+        //     ListData : this.props.reducer.news
+        // })
+
+        this.LoadData()
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
+    }
 
 
     render() {
 
         const props = this.props
-        const banner = props.reducer.banner
-        const news = props.reducer.news
 
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 70 }]}>
                 <Carousel
                     autoplay
                     autoplayTimeout={5000}
@@ -83,20 +163,28 @@ class HomeScreen extends React.Component {
                     index={0}
                     pageSize={DEVICE_WIDTH}>
                     {
-                        banner.map((value, index) => this.renderPage(value, index))
+                        this.state.ListBanner.map((value, index) => this.renderPage(value, index))
                     }
                 </Carousel>
                 <View style={[styles.container, { paddingTop: 15 }]}>
                     <View>
                         <Text style={[styles.text18, { paddingLeft: 10 }]}>{`ข่าวสารและโปรโมชั่น`}</Text>
                     </View>
-
-                    <FlatList
-                        style={{ marginTop: 5 }}
-                        data={news}
-                        keyExtractor={(item) => item.news_id}
-                        renderItem={this._renderItem}
-                        numColumns={2} />
+                    {
+                        this.state.ListNew.length > 0 ?
+                            <FlatList
+                            style={{ marginTop: 5 }}
+                            data={this.state.ListNew}
+                            onRefresh={() => this.onRefresh()}
+                            refreshing={this.state.isFetching}
+                            keyExtractor={(item) => item.news_id}
+                            renderItem={this._renderItem}
+                            numColumns={2} />
+                        :
+                        <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' ,paddingTop:20}]}>
+                            <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการข่าว`}</Text>
+                        </View>
+                    }
                 </View>
             </View>
         )
@@ -108,7 +196,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    openIndicator,
+    setStateNews,
+    dismissIndicator,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

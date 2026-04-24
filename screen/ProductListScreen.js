@@ -13,6 +13,7 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
+import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
@@ -36,6 +37,8 @@ import styles from '../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class ProductListScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         type_id: '',
@@ -116,14 +119,14 @@ class ProductListScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
-
-    componentDidMount() {
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
         const { typeId, product,RegisType,category_id ,category_name} = this.props.route.params
         this.setState({ 
             type_id: typeId, 
@@ -133,25 +136,15 @@ class ProductListScreen extends React.Component {
         })
     }
 
+    onSelectProduct(index, value) {
+        this.setState({ productSelected: [value] })
+    }
+
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
-                <View style={[styles.container, { padding: 10 }]}>
+            <View style={[styles.container, { backgroundColor: primaryColor }]}>
+                <View style={[styles.container, { padding: 10, backgroundColor: 'white' }]}>
                     <View style={[styles.marginBetweenVertical]}></View>
                     <Text style={[styles.text20, styles.bold, { color: primaryColor }]}>{`เลือกประเภท${this.state.type_id == 1 ? 'อาหาร' : 'สินค้า'}ที่ต้องการขาย`}</Text>
                     <View style={[styles.marginBetweenVertical]}></View>
@@ -164,19 +157,44 @@ class ProductListScreen extends React.Component {
                         <Icon name='search' size={16} color={`#fff`} />
                     </View>
                     <View style={[styles.marginBetweenVertical]}></View>
-                    {
-                        this.state.productList.length > 0 ?
-                            <FlatList
-                            style={{ marginTop: 5, paddingBottom: 60 }}
-                            data={this.state.productList}
-                            keyExtractor={(item) => item.product_id}
-                            renderItem={this._renderItem} />
-                        :
-                            <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
-                                <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
-                            </View>
-                    }
-                    
+
+                    <ScrollView>
+
+                        {
+                            this.state.productList.length > 0 ?
+                                // <FlatList
+                                // style={{ marginTop: 5, paddingBottom: 60 }}
+                                // data={this.state.productList}
+                                // keyExtractor={(item) => item.product_id}
+                                // renderItem={this._renderItem} />
+                                <RadioGroup
+                                    size={20}
+                                    thickness={2}
+                                    color={primaryColor}
+                                    style={{marginTop: 5, paddingBottom: 60,  }}
+                                    highlightColor='transparent'
+                                    onSelect={(index, value) => this.onSelectProduct(index, value)}>
+                                    {
+                                        this.state.productList.map((v,i) => {
+                                            return (
+                                                <RadioButton
+                                                    value={v}
+                                                    color={primaryColor}
+                                                    style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor}} 
+                                                    >
+                                                    <Text style={[styles.text16, { color: primaryColor }]}>{v.product_name}</Text>
+                                                </RadioButton>
+                                            )
+                                        })
+                                    }
+                                </RadioGroup>
+                            :
+                                <View style={[styles.center, { justifyContent : 'center', alignSelf: 'center' }]}>
+                                    <Text style={[styles.text18, { color: primaryColor }]}>{`ไม่พบรายการ`}</Text>
+                                </View>
+                        }
+                        
+                    </ScrollView>
                 </View>
                 {
                     this.state.productSelected.length > 0 ?

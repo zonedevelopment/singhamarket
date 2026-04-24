@@ -17,21 +17,27 @@ import {
     secondaryColor,
     BASE_URL,
     GET_BUILDING_URL,
+    GET_CART_URL,
     HEADERFORMDATA
 } from '../../utils/contants'
 
 import {
     openIndicator,
     dismissIndicator,
-    setStateBuilding
+    setStateBuilding,
+    setUserCountCartItem
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 import styles from '../../style/style'
+import { ScrollView } from 'react-native-gesture-handler'
 
 class ReservationScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         isFetching : false,
+        ChargeStatus : "Pass",
     }
 
     _renderItem = ({ item, index }) => {
@@ -82,32 +88,60 @@ class ReservationScreen extends React.Component {
 
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
-            this.props.navigation.navigate('Home')
+            // this.props.navigation.navigate('Home')
             return true;
         }
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-        this.LoadData()
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.props.navigation.addListener('focus', () => {
+            this.LoadData()
+            this.GetMyCart()
+        });
+    }
+
+    GetMyCart () {
+        let formData = new FormData();
+        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+        Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
+            console.log('GET_CART_URL',results)
+            if (results.status == 'SUCCESS') {
+                //this.props.setStateMyCart(results.data.Cart)
+                this.props.setUserCountCartItem(results.data.Cart.length + results.data.Charge.length)
+            } else {
+                //this.props.setStateMyCart([])
+                this.props.setUserCountCartItem(0)
+                Alert.alert(results.message)
+            }
+        })
     }
 
     LoadData() {
         this.props.openIndicator()
-        Hepler.post(BASE_URL + GET_BUILDING_URL,null,HEADERFORMDATA,(results) => {
+        let formData = new FormData()
+        formData.append('partners_id', this.props.reducer.userInfo.partners_id)
+        Hepler.post(BASE_URL + GET_BUILDING_URL,formData,HEADERFORMDATA,(results) => {
             console.log('GET_BUILDING_URL',results)
             if(results.status == 'SUCCESS'){
                 this.props.setStateBuilding(results.data)
+                this.setState({
+                    ChargeStatus : results.Charge,
+                    isFetching: false
+                })
             }else{
                 this.props.setStateBuilding([])
+                this.setState({
+                    isFetching: false
+                })
             }
-            this.setState({
-                isFetching: false
-            })
             this.props.dismissIndicator()
         })
     }
@@ -127,34 +161,36 @@ class ReservationScreen extends React.Component {
         const building = props.building
 
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={{
-                        backgroundColor: 'transparent',
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
-                <View style={[styles.container, { alignItems: 'center' }]}>
+            <View style={{ flex: 1 }}>
+                <View style={[styles.container, styles.backgroundPrimary, { alignItems: 'center', paddingBottom: 70, flex: 1 }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <Text style={[styles.text26, { color: 'white' }]}>{`เลือกสถานที่ที่ท่านต้องการ`}</Text>
                     <Text style={[styles.text22, { color: 'white'}]}>{`กรุณาเลือกตึกที่ท่านต้องการไปขายของ`}</Text>
                     <View style={[styles.container]}>
-                        <FlatList
-                            style={{ marginTop: 5 }}
-                            data={building}
-                            onRefresh={() => this.onRefresh()}
-                            refreshing={this.state.isFetching}
-                            keyExtractor={(item) => item.building_id}
-                            renderItem={this._renderItem} />
+                        
+                    {
+                        this.state.ChargeStatus != "Pass" ?
+                            <View style={{paddingTop:50}}>
+                                <View style={{ height: 15 }}></View>
+                                <Text style={[styles.text22,{ color: 'white',alignSelf: 'center', justifyContent: 'center' }]}>
+                                    ไม่สามารถจองพื้นทีร้านค้าได้
+                            </Text>
+                                <Text style={[styles.text22,{ color: 'white',alignSelf: 'center', justifyContent: 'center' }]}>
+                                    กรุณาชำระค่าปรับให้เรียบร้อยก่อนค่ะ!
+                            </Text>
+                            </View>
+                            :
+                            <FlatList
+                                style={{ marginTop: 5 }}
+                                data={building}
+                                onRefresh={() => this.onRefresh()}
+                                refreshing={this.state.isFetching}
+                                keyExtractor={(item) => item.building_id}
+                                renderItem={this._renderItem} />
+                    }
+                        
                     </View>
+                    {/* </View> */}
                 </View>
             </View>
         )
@@ -168,7 +204,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     openIndicator,
     dismissIndicator,
-    setStateBuilding
+    setStateBuilding,
+    setUserCountCartItem
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReservationScreen)

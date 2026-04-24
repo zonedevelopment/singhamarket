@@ -1,4 +1,4 @@
-
+const environment = "DEVELOPMENT"; /// "PRODUCTION"; "DEVELOPMENT"; "SENDBOX";
 /**
  * Color
  */
@@ -24,6 +24,7 @@ export const greenColor         = '#4ec084'
  */
 export const KEY_LOGIN = 'KEY_LOGIN';
 export const KEY_ROLE = 'KEY_ROLE';
+export const KEY_PWD_TXT = 'KEY_PWD_TXT'
   /**
   * End
   */
@@ -46,7 +47,10 @@ export const SAVE_BANNER          = 'SAVE_BANNER'
 export const SAVE_NEWS            = 'SAVE_NEWS'
 export const SAVE_BUILDING        = 'SAVE_BUILDING'
 
+export const URL_CANCEL_ONETRUST = 'URL_CANCEL_ONETRUST'
+
 /// reservation user
+export const SET_CONSTANTS        = 'SET_CONSTANTS'
 export const SET_BUILDING_ID_SELECTED = 'SET_BUILDING_ID_SELECTED'
 export const SET_FLOOR_ID_SELECTED = 'SET_FLOOR_ID_SELECTED'
 export const SET_ZONE_ID_SELECTED = 'SET_ZONE_ID_SELECTED'
@@ -56,6 +60,8 @@ export const SET_ZONE_NAME_SELECTED = 'SET_ZONE_NAME_SELECTED'
 export const SET_PREVIOUS_SCREEN = 'SET_PREVIOUS_SCREEN'
 export const SET_BOOKINGID_SELECTED = 'SET_BOOKINGID_SELECTED'
 export const SET_PRODUCT_SELECTED = 'SET_PRODUCT_SELECTED'
+export const SET_TRANSACTION_SELECTED = 'SET_TRANSACTION_SELECTED'
+export const SET_CHARGE_SELECTED = 'SET_CHARGE_SELECTED'
 
 /// reservation audit
 export const SET_AUDIT_RESERV_PARTNERS = 'SET_AUDIT_RESERV_PARTNERS'
@@ -63,6 +69,15 @@ export const SET_AUDIT_RESERV_BUILDING = 'SET_AUDIT_RESERV_BUILDING'
 export const SET_AUDIT_RESERV_FLOOR = 'SET_AUDIT_RESERV_FLOOR'
 export const SET_AUDIT_RESERV_ZONE = 'SET_AUDIT_RESERV_ZONE'
 export const SET_AUDIT_RESERV_DATE = 'SET_AUDIT_RESERV_DATE'
+
+
+///// verift audit
+export const SET_AUDIT_VERIFY_BUILDING = 'SET_AUDIT_VERIFY_BUILDING'
+export const SET_AUDIT_VERIFY_ZONE = 'SET_AUDIT_VERIFY_ZONE'
+
+/// home audit
+export const SET_AUDIT_HOME_BUILDING = 'SET_AUDIT_HOME_BUILDING'
+
 
 ///// count nontification
 export const SET_MY_CART = 'SET_MY_CART'
@@ -74,57 +89,88 @@ export const SET_MY_CART = 'SET_MY_CART'
 /**
  * API
  */
-export const BASE_URL                 = 'https://benz.ots.co.th'
-export const LOGIN_URL                = '/singha/api/Login'
-export const BANNER_URL               = '/singha/api/Banner'
-export const NEWS_URL                 = '/singha/api/News'
-export const PROVINCE_URL             = '/singha/api/Province'
-export const DISTRICT_URL             = '/singha/api/District'
-export const SUBDISTRICT_URL          = '/singha/api/SubDistrict'
-export const ACCESSORY_URL            = '/singha/api/Accessory'
-export const PRODUCT_CATEGORY_URL     = '/singha/api/ProductCategory'
-export const REGISTER_PERSONAL_URL    = '/singha/api/RegisterPersonal'
-export const REGISTER_COMPANY_URL     = '/singha/api/RegisterCompany'
-export const GET_AGREEMENT_REGISTER   = '/singha/api/GetAgreementRegister'
-export const CHECK_REGISTER_URL       = '/singha/api/CheckRegister'
-export const GET_BUILDING_URL         = '/singha/api/GetBuilding'
-export const GET_BOOTH_URL            = '/singha/api/GetBooth'
-export const CHECK_BOOTH_URL          = '/singha/api/CheckBoothStatus'
-export const GET_ACCESSOIRES_URL      = '/singha/api/Accessory'
-export const SUBMIT_BOOKING_URL       = '/singha/api/BookingSubmit'
-export const CHECK_DISCOUNT_URL       = '/singha/api/CheckDiscount'
-export const GET_CONFIRMRESERVATION_URL = '/singha/api/GetConfirmReservation'
-export const GET_CART_URL             = '/singha/api/GetCart'
-export const GET_PLAN_URL             = '/singha/api/GetPlan'
-export const UPDATE_PROFILE_PERSONAL  = '/singha/api/UpdateProfilePersonal'
-export const UPDATE_PROFILE_COMPANY   = '/singha/api/UpdateProfileCompany'
-export const CHANGE_PASSWORD_URL      = '/singha/api/ChangePassword'
-export const CONTACT_SUPPORT_URL      = '/singha/api/SupportSubmit'
-export const GET_HISTORY_URL          = '/singha/api/GetHistory'
-export const CHECK_IN_HISTORY_URL     = '/singha/api/CheckInHistory'
-export const GET_FAVERITE_URL         = '/singha/api/GetFaveriteBooth'
-export const SUBMIT_FAVERITE_URL      = '/singha/api/SubmitFaveriteBooth'
-export const CANCEL_FAVERITE_URL      = '/singha/api/CancelFaveriteBooth'
-export const RegisterFCMToken         = '/singha/api/RegisterFCMToken'
-export const GET_CUSTOMER_URL         = '/singha/api/GetCustomer'
-export const SYSTEMLOGIN_URL          = '/singha/api/SystemLogin'
-export const GET_NOTIFICATION_URL     = '/singha/api/GetNotification'
-export const CANCEL_BOOKING_URL     = '/singha/api/CancelBooking'
-export const UNSUBSCRIBE_PARTNERS_URL     = '/singha/api/UnSubscribePartners'
+//export const BASE_URL                 = 'https://benz.ots.co.th/singha'
+export const BASE_URL                 = 'https://sunplaz.singhaestate.co.th'
+// export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
+export const API_PATH                 = '/dev_api'
 
-export const CREATE_TRANSACTION_URL   = '/singha/api/CreateTransactionPayment'
+export const GET_TIMEOUT_SUMMARY_URL  = `${API_PATH}/GetTimeoutSummary`
+export const CONSTANTS_URL            = `${API_PATH}/GetConstants`
+export const GET_PAYMENT_CHANNEL_URL  = `${API_PATH}/GetPaymentChannel`
+export const LOGIN_URL                = `${API_PATH}/Login`
+export const FORGET_PASSWORD_URL      = `${API_PATH}/ForgetPassword`
+export const BANNER_URL               = `${API_PATH}/Banner`
+export const NEWS_URL                 = `${API_PATH}/News`
+export const PROVINCE_URL             = `${API_PATH}/Province`
+export const DISTRICT_URL             = `${API_PATH}/District`
+export const SUBDISTRICT_URL          = `${API_PATH}/SubDistrict`
+export const ACCESSORY_URL            = `${API_PATH}/Accessory`
+export const PRODUCT_TYPE_URL         = `${API_PATH}/GetProductType`
+export const PRODUCT_CATEGORY_URL     = `${API_PATH}/ProductCategory`
+export const REGISTER_PERSONAL_URL    = `${API_PATH}/RegisterPersonal`
+export const REGISTER_COMPANY_URL     = `${API_PATH}/RegisterCompany`
+export const GET_AGREEMENT_REGISTER   = `${API_PATH}/GetAgreementRegister`
+export const CHECK_REGISTER_URL       = `${API_PATH}/CheckRegister`
+export const GET_BUILDING_URL         = `${API_PATH}/GetBuilding`
+export const GET_BOOTH_URL            = `${API_PATH}/GetBooth`
+export const CHECK_BOOTH_URL          = `${API_PATH}/CheckBoothStatus`
+export const GET_ACCESSOIRES_URL      = `${API_PATH}/Accessory`
+export const SUBMIT_BOOKING_URL       = `${API_PATH}/BookingSubmit`
+export const CHECK_DISCOUNT_URL       = `${API_PATH}/CheckDiscount`
+export const GET_CONFIRMRESERVATION_URL = `${API_PATH}/GetConfirmReservation`
+export const GET_CART_URL             = `${API_PATH}/GetCart`
+export const CHECK_BOOTH_HOLIDAY_URL  = `${API_PATH}/CheckHoliday`
+export const GET_PLAN_URL             = `${API_PATH}/GetPlan`
+export const UPDATE_PROFILE_PERSONAL  = `${API_PATH}/UpdateProfilePersonal`
+export const UPDATE_PROFILE_COMPANY   = `${API_PATH}/UpdateProfileCompany`
+export const CHANGE_PASSWORD_URL      = `${API_PATH}/ChangePassword`
+export const CONTACT_SUPPORT_URL      = `${API_PATH}/SupportSubmit`
+export const GET_HISTORY_URL          = `${API_PATH}/GetHistory`
+export const CHECK_IN_HISTORY_URL     = `${API_PATH}/CheckInHistory`
+export const GET_FAVERITE_URL         = `${API_PATH}/GetFaveriteBooth`
+export const SUBMIT_FAVERITE_URL      = `${API_PATH}/SubmitFaveriteBooth`
+export const CANCEL_FAVERITE_URL      = `${API_PATH}/CancelFaveriteBooth`
+export const RegisterFCMToken         = `${API_PATH}/RegisterFCMToken`
+export const UpdateAdminFCMToken      = `${API_PATH}/UpdateAdminFCMToken`
+export const GET_CUSTOMER_URL         = `${API_PATH}/GetCustomer`
+export const SYSTEMLOGIN_URL          = `${API_PATH}/SystemLogin`
+export const GET_NOTIFICATION_URL     = `${API_PATH}/GetNotification`
+export const CANCEL_BOOKING_URL       = `${API_PATH}/CancelBooking`
+export const UNSUBSCRIBE_PARTNERS_URL     = `${API_PATH}/UnSubscribePartners`
+export const CHECK_BLOCK_ZONE_URL     = `${API_PATH}/CheckBlockZone`
+export const CHECK_LIMIT_RESERVATION_URL  = `${API_PATH}/CheckLimitResv`
+export const GET_CONDITION_CALENDAR_URL   = `${API_PATH}/GetConditionCalendar`
+
+
+export const CREATE_TRANSACTION_URL   = `${API_PATH}/CreateTransactionPayment`
+export const GET_SLIP_PAYMENT_URL     = `${API_PATH}/GetSlipPayment`
+
+export const AUDIT_GET_VERIFY_MAIN      = `${API_PATH}/audit/LoadMainAudit`
+export const AUDIT_CHECKED_SUBMIT_MAIN  = `${API_PATH}/audit/AuditSubmitMain`
+export const AUDIT_GET_DETAILS_VERIFY   = `${API_PATH}/audit/LoadDetailsAudit`
+export const AUDIT_CHECKED_SUBMIT_DETAILS = `${API_PATH}/audit/AuditSubmitDetails`
+export const AUDIT_CUTING_SUBMIT        = `${API_PATH}/audit/AuditSubmitCuting`
+
+
+export const AUDIT_HOME_DASHBOARD   = `${API_PATH}/audit/LoadHomeDashBoard`
+export const AUDIT_HOME_BOOTH       = `${API_PATH}/audit/LoadHomeBooth`
+export const AUDIT_CUSTOMER_BOOTH   = `${API_PATH}/audit/LoadCustomerBooth`
+
+export const AUDIT_LIST_BOOKING_SLIP  = `${API_PATH}/audit/LoadListBookingSlip`
+export const AUDIT_SUBMIT_UPLOAD_SLIP = `${API_PATH}/audit/SubmitAuditUploadSlip`
+export const AUDIT_NOTIFICATION_URL   = `${API_PATH}/audit/GetNotification`
 
 
 /**
- * SCB Open API
+ * SCB Open API /////////////////////////////////////////////////
+ * SENDBOX
  */
-export const OAUTHTOKEN               = 'OAUTHTOKEN'
-export const AUTHORIZE                = 'https://api-sandbox.partners.scb/partners/sandbox/v2/oauth/authorize'
-export const TOKEN                    = 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token'
-export const QRCODECREATE             = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create'
-export const PAYMENTTRANSACTION       = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/billpayment/transactions/'
-
-export const AUTHORIZEHEADER = {
+const OAUTHTOKEN_SENDBOX               = 'OAUTHTOKEN'
+const AUTHORIZE_SENDBOX                = 'https://api-sandbox.partners.scb/partners/sandbox/v2/oauth/authorize'
+const TOKEN_SENDBOX                    = 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token'
+const QRCODECREATE_SENDBOX             = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create'
+const PAYMENTTRANSACTION_SENDBOX       = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/billpayment/transactions/'
+const AUTHORIZEHEADER_SENDBOX = {
   'apikey': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
   'apisecret': 'abe9a0dd09bb482fa27be9eabe452efe',
   'resourceOwnerId': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
@@ -133,16 +179,128 @@ export const AUTHORIZEHEADER = {
   'endState': 'mobile_app',
   'accept-language': 'EN'
 }
-
-export const OAUTHTOKENHEADER = {
+const OAUTHTOKENHEADER_SENDBOX = {
   'content-type': 'application/json',
-  'resourceOwnerId': 'l75d40fdc697664d2c8d0736bdfe4b57e7',
-  'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
+  'resourceOwnerId': APIKEY_SENDBOX,
+  'requestUId': requestUId_SENDBOX,
   'accept-language': 'EN'
 }
+const APIKEY_SENDBOX                   = 'l75d40fdc697664d2c8d0736bdfe4b57e7'
+const APISECRET_SENDBOX                = 'abe9a0dd09bb482fa27be9eabe452efe'
+const BILLER_ID_SENDBOX                = '227843582030123'
+const requestUId_SENDBOX                   = 'c385f890-ba04-4973-9939-98ce407ed740'
+const REF3_SENDBOX                      = 'GFD'
 
-export const APIKEY                   = 'l75d40fdc697664d2c8d0736bdfe4b57e7'
-export const APISECRET                = 'abe9a0dd09bb482fa27be9eabe452efe'
+/**
+ * SCB Open API /////////////////////////////////////////////////
+ * UAT
+ */
+
+const OAUTHTOKEN_UAT               = 'OAUTHTOKEN'
+const AUTHORIZE_UAT                = 'https://api-sandbox.partners.scb/partners/sandbox/v2/oauth/authorize'
+const TOKEN_UAT                    = 'https://api-uat.partners.scb/partners/v1/oauth/token'
+const QRCODECREATE_UAT             = 'https://api-uat.partners.scb/partners/v1/payment/qrcode/create'
+const PAYMENTTRANSACTION_UAT       = 'https://api-uat.partners.scb/partners/v1/payment/billpayment/transactions/'
+const QR30_INQUIRY_UAT             ='https://api-uat.partners.scb/partners/v1/payment/billpayment/inquiry'
+const AUTHORIZEHEADER_UAT = {
+  'apikey': APIKEY_UAT,
+  'apisecret': APISECRET_UAT,
+  'resourceOwnerId': APIKEY_UAT,
+  'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
+  'response-channel': 'mobile',
+  'endState': 'mobile_app',
+  'accept-language': 'EN'
+}
+const OAUTHTOKENHEADER_UAT = {
+  'content-type': 'application/json',
+  'resourceOwnerId': APIKEY_UAT,
+  'requestUId': requestUId_UAT,
+  'accept-language': 'EN'
+}
+const APIKEY_UAT                   = 'l7f329b707a0714fcf8ee03ee6163f5712'
+const APISECRET_UAT                = 'd9bbf66538ee4c57a1d0ef1281361718'
+const BILLER_ID_UAT                = '311040039475180'
+const requestUId_UAT                 = 'c385f890-ba04-4973-9939-98ce407ed740'
+const REF3_UAT                      ='MAF'
+
+
+/**
+ * SCB Open API /////////////////////////////////////////////////
+ * PROD
+ */
+const OAUTHTOKEN_PROD               = 'OAUTHTOKEN'
+const AUTHORIZE_PROD                = 'https://api.partners.scb/partners/v1/oauth/authorize'
+const TOKEN_PROD                   = 'https://api.partners.scb/partners/v1/oauth/token'
+const QRCODECREATE_PROD            = 'https://api.partners.scb/partners/v1/payment/qrcode/create'
+const PAYMENTTRANSACTION_PROD     = 'https://api.partners.scb/partners/v1/payment/billpayment/transactions/'
+const QR30_INQUIRY_PROD             ='https://api.partners.scb/partners/v1/payment/billpayment/inquiry'
+const AUTHORIZEHEADER_PROD = {
+  'apikey': APIKEY_PROD,
+  'apisecret': APISECRET_PROD,
+  'resourceOwnerId': APIKEY_PROD,
+  'requestUId': 'c385f890-ba04-4973-9939-98ce407ed740',
+  'response-channel': 'mobile',
+  'endState': 'mobile_app',
+  'accept-language': 'EN'
+}
+const OAUTHTOKENHEADER_PROD = {
+  'content-type': 'application/json',
+  'resourceOwnerId': APIKEY_PROD,
+  'requestUId': requestUId_PROD,
+  'accept-language': 'EN'
+}
+const APIKEY_PROD                   = 'l72f430e812f8245cca37dc2c527447a39'
+const APISECRET_PROD                = '9ea6191c93aa4fd6aac092491b05073d'
+const BILLER_ID_PROD                = '010555612487501'
+const requestUId_PROD                = 'c385f890-ba04-4973-9939-98ce407ed740'
+const REF3_PROD                      ='MAF'
+
+
+
+// QR SCB SENDBOX เปิด-ปิด โคดเอา
+// export const OAUTHTOKEN               = OAUTHTOKEN_SENDBOX
+// export const AUTHORIZE                = AUTHORIZE_SENDBOX
+// export const TOKEN                    = TOKEN_SENDBOX
+// export const QRCODECREATE             = QRCODECREATE_SENDBOX
+// export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_SENDBOX
+// export const AUTHORIZEHEADER = AUTHORIZEHEADER_SENDBOX
+// export const OAUTHTOKENHEADER = OAUTHTOKENHEADER_SENDBOX
+// export const APIKEY                   = APIKEY_SENDBOX
+// export const APISECRET                = APISECRET_SENDBOX
+// export const BILLER_ID                = BILLER_ID_SENDBOX
+// export const REQUESTUID           = requestUId_SENDBOX
+// export const REF3                 = REF3_SENDBOX
+
+// ///// QR SCB UAT เปิด-ปิด โคดเอา
+export const OAUTHTOKEN               = OAUTHTOKEN_UAT
+export const AUTHORIZE                = AUTHORIZE_UAT
+export const TOKEN                    = TOKEN_UAT
+export const QRCODECREATE             = QRCODECREATE_UAT
+export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_UAT
+export const QR30_INQUIRY             = QR30_INQUIRY_UAT
+export const AUTHORIZEHEADER = AUTHORIZEHEADER_UAT
+export const OAUTHTOKENHEADER = OAUTHTOKENHEADER_UAT
+export const APIKEY                   = APIKEY_UAT
+export const APISECRET                = APISECRET_UAT
+export const BILLER_ID                = BILLER_ID_UAT
+export const REQUESTUID           = requestUId_UAT
+export const REF3                 = REF3_UAT
+
+///// QR SCB PROD เปิด-ปิด โคดเอา
+// export const OAUTHTOKEN               = OAUTHTOKEN_PROD
+// export const AUTHORIZE                = AUTHORIZE_PROD
+// export const TOKEN                    = TOKEN_PROD
+// export const QRCODECREATE             = QRCODECREATE_PROD
+// export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_PROD
+// export const QR30_INQUIRY             = QR30_INQUIRY_PROD
+// export const AUTHORIZEHEADER = AUTHORIZEHEADER_PROD
+// export const OAUTHTOKENHEADER = OAUTHTOKENHEADER_PROD
+// export const APIKEY                   = APIKEY_PROD
+// export const APISECRET                = APISECRET_PROD
+// export const BILLER_ID                = BILLER_ID_PROD
+// export const REQUESTUID           = requestUId_PROD
+// export const REF3                 = REF3_PROD
+
 /**
  * End
  */
@@ -154,6 +312,8 @@ export const PRIVATEKEY = 'MIAGCSqGSIb3DQEHA6CAMIACAQAxggGoMIIBpAIBADCBizB+MQswC
 export const MERCHANTID = 'JT04';
 export const SECRETKEY = 'QnmrnH6QE23N';
 export const PRODUCTIONMODE = false;
+export const REQUEST_FORM_URL_2C2P   = '/api/FormRequest2C2P'
+
 
 export const HEADERFORMDATA = {
   'Content-Type': 'multipart/form-data'

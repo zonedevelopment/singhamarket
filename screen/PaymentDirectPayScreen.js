@@ -33,6 +33,7 @@ import {
     QRCODECREATE,
     CREATE_TRANSACTION_URL,
     BASE_URL,
+    REQUEST_FORM_URL_2C2P,
     HEADERFORMDATA,
     PRIVATEKEY,
     MERCHANTID,
@@ -51,6 +52,8 @@ import Helper from '../utils/Helper'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class PaymentDirectPayScreen extends React.Component {
+    backHandlerSubscription = null
+
 
     state = {
         booking_id: [],
@@ -112,7 +115,10 @@ class PaymentDirectPayScreen extends React.Component {
     }
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
   
@@ -122,14 +128,14 @@ class PaymentDirectPayScreen extends React.Component {
         //this.props.openIndicator()
         const { amount, booking_id,TransID ,partners_id} = this.props.route.params
 
-        let url = 'https://benz.ots.co.th/singha/api/FormRequest2C2P' + "?amount=" + numeral(amount).format('0.00')
+        let url = BASE_URL + REQUEST_FORM_URL_2C2P + "?amount=" + numeral(amount).format('0.00')
             + "&TransID=" + TransID
             + "&partners_id=" + partners_id;
         this.setState({
             url: url
         });
         //this.props.dismissIndicator()
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
@@ -140,20 +146,7 @@ class PaymentDirectPayScreen extends React.Component {
 
         return (
             <View style={[styles.container, { backgroundColor: primaryColor }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+          
                    
                  <WebView 
                     source={{ uri: this.state.url }} 

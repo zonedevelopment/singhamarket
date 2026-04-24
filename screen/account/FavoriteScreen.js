@@ -35,6 +35,8 @@ import {
 import Hepler from '../../utils/Helper'
 
 class FavoriteScreen extends React.Component {
+    backHandlerSubscription = null
+
 
 
     constructor(props) {
@@ -61,7 +63,7 @@ class FavoriteScreen extends React.Component {
                             <Text style={[styles.text16, styles.bold, { color: primaryColor }]}>{item.market_name}</Text>
                             <Text style={[styles.text14]}>{`บูธ ` + item.boothname}</Text>
                             <Text style={[styles.text14]}>{`วันที่ ` + moment(item.booking_detail_date).format('LL')}</Text>
-                            <Text style={[styles.text14, { color: redColor}]}>{`เหลือเวลาในการจอง 10:00 นาที`}</Text>
+                            {/* <Text style={[styles.text14, { color: redColor}]}>{`เหลือเวลาในการจอง 10:00 นาที`}</Text> */}
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -108,12 +110,15 @@ class FavoriteScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.LoadData()
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     onCancel(item){
@@ -163,21 +168,7 @@ class FavoriteScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 70 }]}>
                 <View style={[styles.container, { padding: 10 }]}>
                 <Text style={[styles.text22, { color: primaryColor }]}>{`รายการบูธที่สนใจ`}</Text>
                 <View style={{ borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }}></View>

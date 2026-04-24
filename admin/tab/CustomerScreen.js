@@ -7,6 +7,7 @@ import {
     ScrollView,
     TextInput,
     BackHandler,
+    Alert,
     TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -31,44 +32,19 @@ import {
     saveUserInfo
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import ComponentRightSignOut from '../../components/ComponentRightSignOut'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
 class CustomerScreen extends React.Component {
+    backHandlerSubscription = null
+
     state = {
         keySearch: '',
-        ListData: []
+        ListData: [],
+        isFetching: false,
     }
 
     
-    ComponentLeft = () => {
-        return (
-            <View style={{ padding: 10 }}>
-
-            </View>
-        );
-    }
-
-    ComponentCenter = () => {
-        return (
-            <View style={[styles.center]}>
-                <Text style={[styles.text18, { color: 'white'}]}>{`รายชื่อลูกค้า`}</Text>
-            </View>
-        );
-    }
-
-    ComponentRight = () => {
-        return (
-            <TouchableOpacity style={{ padding: 10,alignItems:'center',flex:0.2}} onPress={ async () => {
-                await StorageServies.clear()
-                await this.props.saveUserInfo([])
-                this.props.navigation.navigate('Choice')
-            }}>
-                <Icon name='sign-out' size={20} color='white' />
-                <Text style={{fontSize:8,color:'white'}}>{'Logout'}</Text>
-            </TouchableOpacity>
-        );
-    }
-
     handleBack = () => {
         if (this.props.navigation.isFocused()) {
             this.props.navigation.navigate('AuditCustomer')
@@ -77,12 +53,15 @@ class CustomerScreen extends React.Component {
     };
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+        if (this.backHandlerSubscription) {
+            this.backHandlerSubscription.remove();
+            this.backHandlerSubscription = null;
+        }
     }
 
     componentDidMount() {
         this.LoadData();
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     LoadData () {
@@ -91,15 +70,29 @@ class CustomerScreen extends React.Component {
             this.props.dismissIndicator()
             if (results.status == 'SUCCESS') {
                 this.setState({
-                    ListData : results.data
+                    ListData : results.data,
+                    isFetching: false
                 })
                 //Alert.alert(results.message)
             } else {
+                this.setState({
+                    ListData : [],
+                    isFetching: false
+                })
                 Alert.alert(results.message)
                 this.setState({ListData : []})
             }
         })
     }
+
+    onRefresh() {
+        this.setState({
+            isFetching: true
+        },() => {
+            this.LoadData()
+        })
+    }
+
     
     _renderListItem = ({ item }) => {
         return (
@@ -107,6 +100,12 @@ class CustomerScreen extends React.Component {
             onPress={ async()=>{
                 // await this.props.setAuditReservPartners(item)
                 // this.props.navigation.goBack()
+                this.props.navigation.navigate('AuditCustomerDetails',{
+                    partners_id : item.partners_id,
+                    name_customer : item.name_customer,
+                    phone : item.phone,
+                    lineid : item.lineid,
+                })
             }}>
                 <View style={{ flexDirection: 'row',paddingTop:10,paddingBottom:10}}>
                     <View style={{flex: 0.9}} >
@@ -125,21 +124,8 @@ class CustomerScreen extends React.Component {
         const props = this.props
         const filter = this.state.ListData.filter(createFilter(this.state.keySearch, ['name_customer', 'name', 'lastname']))
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} />
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 60 }]}>
+             
                 <View style={[styles.container, { padding: 10 }]}>
                     <View style={[styles.containerRow,{width: '90%', marginLeft: 10}]}>
                         <Text style={[styles.text20, { color: primaryColor }]}>{`รายชื่อลูกค้า`}</Text>
@@ -169,6 +155,8 @@ class CustomerScreen extends React.Component {
                             <FlatList
                                 data={filter}
                                 extraData={this.state}
+                                onRefresh={() => this.onRefresh()}
+                                refreshing={this.state.isFetching}
                                 keyExtractor={(item) => item.partners_id}
                                 renderItem={this._renderListItem}
                             />
