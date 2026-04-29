@@ -64,6 +64,7 @@ import Historydetailscreen from './screen/HistoryDetailScreen'
 import NewsDetailsScreen from './screen/NewsDetailsScreen'
 import ConfirmReservscreen from './screen/reservation/ConfirmReservScreen'
 import Paymentdirectpayscreen from './screen/PaymentDirectPayScreen'
+import ForgetPasswordScreen from './screen/ForgetPasswordScreen'
 
 
 ////////// audit
@@ -93,6 +94,7 @@ function MyStack() {
         <Stack.Screen name="Productlist" component={Productscreen} />
         <Stack.Screen name="Historydetail" component={Historydetailscreen} />
         <Stack.Screen name="NewsDetails" component={NewsDetailsScreen} />
+        <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
 
         <Stack.Screen name="ConfirmReserv" component={ConfirmReservscreen} />
         <Stack.Screen name="PaymentDirect" component={Paymentdirectpayscreen} />

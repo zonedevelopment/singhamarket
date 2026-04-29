@@ -447,7 +447,7 @@ class ReservationScreen extends React.Component {
                                     }}>
                                     {
                                         this.state.dayNamesShort.map((day, idx) => (
-                                            <TouchableOpacity style={{}} onPress={() => {
+                                            <TouchableOpacity key={day.dayid} style={{}} onPress={() => {
                                                 this.CheckAllDayName(day)
                                             }}>
                                                 <Text allowFontScaling={false}

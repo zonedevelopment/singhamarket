@@ -90,7 +90,7 @@ export const SET_MY_CART = 'SET_MY_CART'
  * API
  */
 //export const BASE_URL                 = 'https://benz.ots.co.th/singha'
-export const BASE_URL                 = 'https://sunplaz.singhaestate.co.th'
+export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
 // export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
 export const API_PATH                 = '/dev_api'
 
@@ -278,13 +278,13 @@ export const TOKEN                    = TOKEN_UAT
 export const QRCODECREATE             = QRCODECREATE_UAT
 export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_UAT
 export const QR30_INQUIRY             = QR30_INQUIRY_UAT
-export const AUTHORIZEHEADER = AUTHORIZEHEADER_UAT
-export const OAUTHTOKENHEADER = OAUTHTOKENHEADER_UAT
+export const AUTHORIZEHEADER          = AUTHORIZEHEADER_UAT
+export const OAUTHTOKENHEADER         = OAUTHTOKENHEADER_UAT
 export const APIKEY                   = APIKEY_UAT
 export const APISECRET                = APISECRET_UAT
 export const BILLER_ID                = BILLER_ID_UAT
-export const REQUESTUID           = requestUId_UAT
-export const REF3                 = REF3_UAT
+export const REQUESTUID               = requestUId_UAT
+export const REF3                     = REF3_UAT
 
 ///// QR SCB PROD เปิด-ปิด โคดเอา
 // export const OAUTHTOKEN               = OAUTHTOKEN_PROD

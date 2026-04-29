@@ -1,3 +1,40 @@
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useIsKeyboardShown.js b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useIsKeyboardShown.js
+index a51d93b..3261d2a 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useIsKeyboardShown.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useIsKeyboardShown.js
+@@ -20,25 +20,15 @@ function useIsKeyboardShown() {
+ 
+     const handleKeyboardHide = () => setIsKeyboardShown(false);
+ 
+-    if (_reactNative.Platform.OS === 'ios') {
+-      _reactNative.Keyboard.addListener('keyboardWillShow', handleKeyboardShow);
+-
+-      _reactNative.Keyboard.addListener('keyboardWillHide', handleKeyboardHide);
+-    } else {
+-      _reactNative.Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
+-
+-      _reactNative.Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+-    }
++    const showListener = _reactNative.Platform.OS === 'ios' ? _reactNative.Keyboard.addListener('keyboardWillShow', handleKeyboardShow) : _reactNative.Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
++    const hideListener = _reactNative.Platform.OS === 'ios' ? _reactNative.Keyboard.addListener('keyboardWillHide', handleKeyboardHide) : _reactNative.Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+ 
+     return () => {
+-      if (_reactNative.Platform.OS === 'ios') {
+-        _reactNative.Keyboard.removeListener('keyboardWillShow', handleKeyboardShow);
+-
+-        _reactNative.Keyboard.removeListener('keyboardWillHide', handleKeyboardHide);
+-      } else {
+-        _reactNative.Keyboard.removeListener('keyboardDidShow', handleKeyboardShow);
+-
+-        _reactNative.Keyboard.removeListener('keyboardDidHide', handleKeyboardHide);
++      if (showListener && showListener.remove) {
++        showListener.remove();
++      }
++      if (hideListener && hideListener.remove) {
++        hideListener.remove();
+       }
+     };
+   }, []);
 diff --git a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js
 index cb17a80..acd7af9 100644
 --- a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/utils/useWindowDimensions.js
@@ -20,6 +57,43 @@ index cb17a80..acd7af9 100644
    }, []);
    return dimensions;
  }
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useIsKeyboardShown.js b/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useIsKeyboardShown.js
+index 5352853..88badee 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useIsKeyboardShown.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useIsKeyboardShown.js
+@@ -7,21 +7,19 @@ export default function useIsKeyboardShown() {
+ 
+     const handleKeyboardHide = () => setIsKeyboardShown(false);
+ 
+-    if (Platform.OS === 'ios') {
+-      Keyboard.addListener('keyboardWillShow', handleKeyboardShow);
+-      Keyboard.addListener('keyboardWillHide', handleKeyboardHide);
+-    } else {
+-      Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
+-      Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+-    }
++    const showListener = Platform.OS === 'ios'
++      ? Keyboard.addListener('keyboardWillShow', handleKeyboardShow)
++      : Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
++    const hideListener = Platform.OS === 'ios'
++      ? Keyboard.addListener('keyboardWillHide', handleKeyboardHide)
++      : Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+ 
+     return () => {
+-      if (Platform.OS === 'ios') {
+-        Keyboard.removeListener('keyboardWillShow', handleKeyboardShow);
+-        Keyboard.removeListener('keyboardWillHide', handleKeyboardHide);
+-      } else {
+-        Keyboard.removeListener('keyboardDidShow', handleKeyboardShow);
+-        Keyboard.removeListener('keyboardDidHide', handleKeyboardHide);
++      if (showListener && showListener.remove) {
++        showListener.remove();
++      }
++      if (hideListener && hideListener.remove) {
++        hideListener.remove();
+       }
+     };
+   }, []);
 diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js b/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js
 index 8dc4415..62ce098 100644
 --- a/node_modules/@react-navigation/bottom-tabs/lib/module/utils/useWindowDimensions.js
@@ -41,6 +115,43 @@ index 8dc4415..62ce098 100644
    }, []);
    return dimensions;
  }
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/utils/useIsKeyboardShown.tsx b/node_modules/@react-navigation/bottom-tabs/src/utils/useIsKeyboardShown.tsx
+index 4ab974c..f4d8b13 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/utils/useIsKeyboardShown.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/utils/useIsKeyboardShown.tsx
+@@ -8,21 +8,19 @@ export default function useIsKeyboardShown() {
+     const handleKeyboardShow = () => setIsKeyboardShown(true);
+     const handleKeyboardHide = () => setIsKeyboardShown(false);
+ 
+-    if (Platform.OS === 'ios') {
+-      Keyboard.addListener('keyboardWillShow', handleKeyboardShow);
+-      Keyboard.addListener('keyboardWillHide', handleKeyboardHide);
+-    } else {
+-      Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
+-      Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+-    }
++    const showListener = Platform.OS === 'ios'
++      ? Keyboard.addListener('keyboardWillShow', handleKeyboardShow)
++      : Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
++    const hideListener = Platform.OS === 'ios'
++      ? Keyboard.addListener('keyboardWillHide', handleKeyboardHide)
++      : Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+ 
+     return () => {
+-      if (Platform.OS === 'ios') {
+-        Keyboard.removeListener('keyboardWillShow', handleKeyboardShow);
+-        Keyboard.removeListener('keyboardWillHide', handleKeyboardHide);
+-      } else {
+-        Keyboard.removeListener('keyboardDidShow', handleKeyboardShow);
+-        Keyboard.removeListener('keyboardDidHide', handleKeyboardHide);
++      if (showListener && showListener.remove) {
++        showListener.remove();
++      }
++      if (hideListener && hideListener.remove) {
++        hideListener.remove();
+       }
+     };
+   }, []);
 diff --git a/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx b/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx
 index 8000a59..ae35146 100644
 --- a/node_modules/@react-navigation/bottom-tabs/src/utils/useWindowDimensions.tsx

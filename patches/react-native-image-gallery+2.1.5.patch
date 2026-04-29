@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-image-gallery/src/Gallery.js b/node_modules/react-native-image-gallery/src/Gallery.js
-index 5cc4835..3839870 100644
+index 5cc4835..852e38f 100644
 --- a/node_modules/react-native-image-gallery/src/Gallery.js
 +++ b/node_modules/react-native-image-gallery/src/Gallery.js
 @@ -1,9 +1,10 @@
@@ -14,8 +14,34 @@ index 5cc4835..3839870 100644
  
  const DEFAULT_FLAT_LIST_PROPS = {
      windowSize: 3
+@@ -45,6 +46,7 @@ export default class Gallery extends PureComponent {
+     constructor (props) {
+         super(props);
+ 
++        this.galleryViewPagerRef = React.createRef();
+         this.renderPage = this.renderPage.bind(this);
+         this.onPageSelected = this.onPageSelected.bind(this);
+         this.onPageScrollStateChanged = this.onPageScrollStateChanged.bind(this);
+@@ -209,7 +211,7 @@ export default class Gallery extends PureComponent {
+     }
+ 
+     getViewPagerInstance () {
+-        return this.refs['galleryViewPager'];
++        return this.galleryViewPagerRef.current;
+     }
+ 
+     onPageSelected (page) {
+@@ -275,7 +277,7 @@ export default class Gallery extends PureComponent {
+             <ViewPager
+               {...this.props}
+               flatListProps={flatListProps}
+-              ref={'galleryViewPager'}
++              ref={this.galleryViewPagerRef}
+               scrollViewStyle={this.props.scrollViewStyle}
+               scrollEnabled={false}
+               renderPage={this.renderPage}
 diff --git a/node_modules/react-native-image-gallery/src/libraries/TransformableImage/index.js b/node_modules/react-native-image-gallery/src/libraries/TransformableImage/index.js
-index 8ff8469..66cec09 100644
+index 8ff8469..e1ac409 100644
 --- a/node_modules/react-native-image-gallery/src/libraries/TransformableImage/index.js
 +++ b/node_modules/react-native-image-gallery/src/libraries/TransformableImage/index.js
 @@ -1,7 +1,8 @@
@@ -28,8 +54,34 @@ index 8ff8469..66cec09 100644
  
  export default class TransformableImage extends PureComponent {
      static propTypes = {
+@@ -36,6 +37,7 @@ export default class TransformableImage extends PureComponent {
+     constructor (props) {
+         super(props);
+ 
++        this.viewTransformerRef = React.createRef();
+         this.onLayout = this.onLayout.bind(this);
+         this.onLoad = this.onLoad.bind(this);
+         this.onLoadStart = this.onLoadStart.bind(this);
+@@ -129,7 +131,7 @@ export default class TransformableImage extends PureComponent {
+     }
+ 
+     getViewTransformerInstance () {
+-        return this.refs['viewTransformer'];
++        return this.viewTransformerRef.current;
+     }
+ 
+     renderError () {
+@@ -176,7 +178,7 @@ export default class TransformableImage extends PureComponent {
+ 
+         return (
+             <ViewTransformer
+-              ref={'viewTransformer'}
++              ref={this.viewTransformerRef}
+               key={'viewTransformer#' + keyAccumulator} // when image source changes, we should use a different node to avoid reusing previous transform state
+               enableTransform={enableTransform && imageLoaded} // disable transform until image is loaded
+               enableScale={enableScale}
 diff --git a/node_modules/react-native-image-gallery/src/libraries/ViewPager/index.js b/node_modules/react-native-image-gallery/src/libraries/ViewPager/index.js
-index b786ad1..5793037 100644
+index b786ad1..41c9bac 100644
 --- a/node_modules/react-native-image-gallery/src/libraries/ViewPager/index.js
 +++ b/node_modules/react-native-image-gallery/src/libraries/ViewPager/index.js
 @@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
@@ -47,3 +99,70 @@ index b786ad1..5793037 100644
  
  const MIN_FLING_VELOCITY = 0.5;
  
+@@ -59,6 +59,7 @@ export default class ViewPager extends PureComponent {
+         this.onResponderMove = this.onResponderMove.bind(this);
+         this.onResponderRelease = this.onResponderRelease.bind(this);
+         this.getItemLayout = this.getItemLayout.bind(this);
++        this.innerFlatListRef = React.createRef();
+ 
+         this.scroller = this.createScroller();
+     }
+@@ -71,7 +72,7 @@ export default class ViewPager extends PureComponent {
+                 }
+             } else {
+                 const curX = this.scroller.getCurrX();
+-                this.refs['innerFlatList'] && this.refs['innerFlatList'].scrollToOffset({ offset: curX, animated: false });
++                this.innerFlatListRef.current && this.innerFlatListRef.current.scrollToOffset({ offset: curX, animated: false });
+ 
+                 let position = Math.floor(curX / (this.state.width + this.props.pageMargin));
+                 position = this.validPage(position);
+@@ -222,8 +223,8 @@ export default class ViewPager extends PureComponent {
+         if (immediate) {
+             InteractionManager.runAfterInteractions(() => {
+                 this.scroller.startScroll(this.scroller.getCurrX(), 0, finalX - this.scroller.getCurrX(), 0, 0);
+-                this.refs['innerFlatList'] && this.refs['innerFlatList'].scrollToOffset({offset: finalX, animated: false});
+-                this.refs['innerFlatList'] && this.refs['innerFlatList'].recordInteraction();
++                this.innerFlatListRef.current && this.innerFlatListRef.current.scrollToOffset({offset: finalX, animated: false});
++                this.innerFlatListRef.current && this.innerFlatListRef.current.recordInteraction();
+             });
+         } else {
+             this.scroller.startScroll(this.scroller.getCurrX(), 0, finalX - this.scroller.getCurrX(), 0, 400);
+@@ -318,7 +319,7 @@ export default class ViewPager extends PureComponent {
+                 <FlatList
+                   {...this.props.flatListProps}
+                   style={[{ flex: 1 }, scrollViewStyle]}
+-                  ref={'innerFlatList'}
++                  ref={this.innerFlatListRef}
+                   keyExtractor={this.keyExtractor}
+                   scrollEnabled={false}
+                   horizontal={true}
+diff --git a/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js b/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js
+index f919e99..88c9023 100644
+--- a/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js
++++ b/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js
+@@ -50,6 +50,7 @@ export default class ViewTransformer extends React.Component {
+             pageY: 0
+         };
+         this._viewPortRect = new Rect(); // A holder to avoid new too much
++        this.innerViewRef = React.createRef();
+ 
+         this.onLayout = this.onLayout.bind(this);
+         this.cancelAnimation = this.cancelAnimation.bind(this);
+@@ -133,7 +134,7 @@ export default class ViewTransformer extends React.Component {
+             <View
+               {...this.props}
+               {...gestureResponder}
+-              ref={'innerViewRef'}
++              ref={this.innerViewRef}
+               onLayout={this.onLayout}>
+                  <View
+                    style={{
+@@ -161,7 +162,7 @@ export default class ViewTransformer extends React.Component {
+     }
+ 
+     measureLayout () {
+-        let handle = ReactNative.findNodeHandle(this.refs['innerViewRef']);
++        let handle = ReactNative.findNodeHandle(this.innerViewRef.current);
+         NativeModules.UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+             if (typeof pageX === 'number' && typeof pageY === 'number') { // avoid undefined values on Android devices
+                 if (this.state.pageX !== pageX || this.state.pageY !== pageY) {

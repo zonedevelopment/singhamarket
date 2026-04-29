@@ -10,7 +10,7 @@ import {
     Dimensions,
     BackHandler,
     TouchableOpacity,
-    KeyboardAvoidingView 
+    KeyboardAvoidingView
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -56,14 +56,14 @@ class LoginScreen extends React.Component {
     state = {
         username: '',
         password: '',
-        Icon : 'eye-slash',
-        showPassword : true,
+        Icon: 'eye-slash',
+        showPassword: true,
     }
 
     _changeIcon = () => {
         this.setState(prevState => ({
-            Icon : prevState.Icon === 'eye' ? 'eye-slash' : 'eye',
-            showPassword : !prevState.showPassword
+            Icon: prevState.Icon === 'eye' ? 'eye-slash' : 'eye',
+            showPassword: !prevState.showPassword
         }))
     }
 
@@ -106,7 +106,7 @@ class LoginScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log('token',this.props.reducer.token)
+        console.log('token', this.props.reducer.token)
         this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
@@ -115,9 +115,9 @@ class LoginScreen extends React.Component {
         let userName = this.state.username
         let passWord = this.state.password
         let token = this.props.reducer.token
-        if(userName.trim() == '' || passWord.trim() == ''){
+        if (userName.trim() == '' || passWord.trim() == '') {
             return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
-        }else{
+        } else {
             const securityError = validateFormSecurity([
                 { label: 'ชื่อผู้ใช้งาน', value: userName, checkSql: true },
                 { label: 'รหัสผ่าน', value: passWord, checkSql: false },
@@ -131,13 +131,13 @@ class LoginScreen extends React.Component {
             let formData = new FormData();
             formData.append('USERNAME', userName.trim())
             formData.append('PASSWORD', passWord.trim())
-            Hepler.post(BASE_URL + LOGIN_URL,formData,HEADERFORMDATA,(results) => {
-                console.log('LOGIN_URL',results)
+            Hepler.post(BASE_URL + LOGIN_URL, formData, HEADERFORMDATA, (results) => {
+                console.log('LOGIN_URL', results)
                 if (results.status == 'SUCCESS') {
                     try {
-                    StorageServies.set(KEY_ROLE,'USER')
-                    StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
-                    StorageServies.set(KEY_PWD_TXT, passWord.trim())
+                        StorageServies.set(KEY_ROLE, 'USER')
+                        StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
+                        StorageServies.set(KEY_PWD_TXT, passWord.trim())
                     } catch (error) {
                         console.log('KEY_LOGIN', error)
                     }
@@ -148,11 +148,45 @@ class LoginScreen extends React.Component {
                     let formData = new FormData();
                     formData.append('token', token)
                     formData.append('partners_id', results.data.partners_id)
-                    Hepler.post(BASE_URL + RegisterFCMToken,formData,HEADERFORMDATA,(results) => {
-                        console.log('RegisterFCMToken',results)
+                    Hepler.post(BASE_URL + RegisterFCMToken, formData, HEADERFORMDATA, (results) => {
+                        console.log('RegisterFCMToken', results)
                     })
                     this.GetMyCart(results.data.partners_id)
                     //this.props.navigation.navigate('Main')
+                } else if (results.status == 'MUST_RESET_PASSWORD') {
+                    Alert.alert(
+                        'คำเตือน!',
+                        results.message,
+                        [
+                            {
+                                text: 'ตกลง', onPress: () => {
+                                    try {
+                                        StorageServies.set(KEY_ROLE, 'USER')
+                                        StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
+                                        StorageServies.set(KEY_PWD_TXT, passWord.trim())
+                                    } catch (error) {
+                                        console.log('KEY_LOGIN', error)
+                                    }
+
+                                    this.props.saveUserInfo(results.data)
+
+                                    /// update token
+                                    let formData = new FormData();
+                                    formData.append('token', token)
+                                    formData.append('partners_id', results.data.partners_id)
+                                    Hepler.post(BASE_URL + RegisterFCMToken, formData, HEADERFORMDATA, (results) => {
+                                        console.log('RegisterFCMToken', results)
+                                    })
+                                    this.GetMyCart(results.data.partners_id)
+                                }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                    this.props.dismissIndicator()
+                } else if (results.status == 'WAITING_FOR_APPROVE') {
+                    Alert.alert(results.message)
+                    this.props.dismissIndicator()
                 } else {
                     this.props.dismissIndicator()
                     Alert.alert(results.message)
@@ -164,9 +198,9 @@ class LoginScreen extends React.Component {
     CheckAuditAdminLogin() {
         let userName = this.state.username
         let passWord = this.state.password
-        if(userName.trim() == '' || passWord.trim() == ''){
+        if (userName.trim() == '' || passWord.trim() == '') {
             return Alert.alert('กรุณากรอก ชื่อผู้ใช้งาน และ รหัสผ่าน ให้ครบ!')
-        }else{
+        } else {
             const securityError = validateFormSecurity([
                 { label: 'ชื่อผู้ใช้งาน', value: userName, checkSql: true },
                 { label: 'รหัสผ่าน', value: passWord, checkSql: false },
@@ -180,24 +214,24 @@ class LoginScreen extends React.Component {
             let formData = new FormData();
             formData.append('USERNAME', userName.trim())
             formData.append('PASSWORD', passWord.trim())
-            Hepler.post(BASE_URL + SYSTEMLOGIN_URL,formData,HEADERFORMDATA,(results) => {
-                console.log('SYSTEMLOGIN_URL',results)
+            Hepler.post(BASE_URL + SYSTEMLOGIN_URL, formData, HEADERFORMDATA, (results) => {
+                console.log('SYSTEMLOGIN_URL', results)
                 this.props.dismissIndicator()
                 if (results.status == 'SUCCESS') {
-                    if(results.data.role == 'AUDIT'){
-                        StorageServies.set(KEY_ROLE,results.data.role)
-                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                    if (results.data.role == 'AUDIT') {
+                        StorageServies.set(KEY_ROLE, results.data.role)
+                        StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
                         StorageServies.set(KEY_PWD_TXT, passWord.trim())
                         this.props.saveUserInfo(results.data)
                         this.props.navigation.navigate('AuditMain')
-                    }else{
-                        StorageServies.set(KEY_ROLE,results.data.role)
-                        StorageServies.set(KEY_LOGIN,JSON.stringify(results.data))
+                    } else {
+                        StorageServies.set(KEY_ROLE, results.data.role)
+                        StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
                         StorageServies.set(KEY_PWD_TXT, passWord.trim())
                         this.props.saveUserInfo(results.data)
                         this.props.navigation.navigate('AdminMain')
                     }
-                   
+
                 } else {
                     Alert.alert(results.message)
                 }
@@ -205,11 +239,11 @@ class LoginScreen extends React.Component {
         }
     }
 
-    GetMyCart (partners_id) {
+    GetMyCart(partners_id) {
         let formData = new FormData();
-        formData.append('partners_id',partners_id)
-        Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
-            console.log('GET_CART_URL',results)
+        formData.append('partners_id', partners_id)
+        Hepler.post(BASE_URL + GET_CART_URL, formData, HEADERFORMDATA, (results) => {
+            console.log('GET_CART_URL', results)
             if (results.status == 'SUCCESS') {
                 this.props.setStateMyCart(results.data.Cart)
                 this.props.setUserCountCartItem(results.data.Cart.length + results.data.Charge.length)
@@ -227,78 +261,78 @@ class LoginScreen extends React.Component {
             <View style={[styles.container, styles.backgroundPrimary]}>
                 <View style={[styles.container, styles.center]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
-                    <ScrollView style={{ flex: 1}} keyboardShouldPersistTaps="never">
+                    <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="never">
                         <KeyboardAvoidingView behavior="padding">
-                        <View style={[styles.panelWhite, styles.shadow]}>
-                            <Text style={[styles.text20, { color: primaryColor, alignSelf: 'center' }]}>{`เข้าสู่ระบบ`}</Text>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.loginInputShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                
-                                <Image source={ic_user} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
-                                <TextInput
-                                    ref={(input) => { this.username = input; }}
-                                    style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black', paddingLeft: 5 }}
-                                    placeholder='Username'
-                                    autoCapitalize={false}
-                                    returnKeyType={'next'}
-                                    blurOnSubmit={false}
-                                    placeholderTextColor={'#7C7B7B'}
-                                    value={this.state.username}
-                                    onChangeText={(text) => {
-                                        if(/^[a-zA-Z0-9.]+$/.test(text) || text == ''){
-                                            this.setState({ username: text })
-                                        }
-                                    }}
-                                    onSubmitEditing={() => this.password.focus()} />
-                            </View>
-                            <View style={[styles.loginInputShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
-                                <Image source={ic_lock} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
-                                <TextInput
-                                    ref={(input) => { this.password = input; }}
-                                    style={{ width: '80%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
-                                    placeholder='Password'
-                                    autoCapitalize={false}
-                                    returnKeyType={'done'}
-                                    placeholderTextColor={'#7C7B7B'}
-                                    secureTextEntry={this.state.showPassword}
-                                    blurOnSubmit={false}
-                                    value={this.state.password}
-                                    onChangeText={(text) => this.setState({ password: text })}
-                                    onSubmitEditing={() => this.CheckLogin()} />
-                                <TouchableOpacity style={{right:10}} onPress={() => {this._changeIcon()}}>
-                                    <Icon name={this.state.Icon} size={20} color={primaryColor} />
+                            <View style={[styles.panelWhite, styles.shadow]}>
+                                <Text style={[styles.text20, { color: primaryColor, alignSelf: 'center' }]}>{`เข้าสู่ระบบ`}</Text>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <View style={[styles.loginInputShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+
+                                    <Image source={ic_user} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
+                                    <TextInput
+                                        ref={(input) => { this.username = input; }}
+                                        style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black', paddingLeft: 5 }}
+                                        placeholder='Username'
+                                        autoCapitalize={false}
+                                        returnKeyType={'next'}
+                                        blurOnSubmit={false}
+                                        placeholderTextColor={'#7C7B7B'}
+                                        value={this.state.username}
+                                        onChangeText={(text) => {
+                                            if (/^[a-zA-Z0-9.]+$/.test(text) || text == '') {
+                                                this.setState({ username: text })
+                                            }
+                                        }}
+                                        onSubmitEditing={() => this.password.focus()} />
+                                </View>
+                                <View style={[styles.loginInputShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                    <Image source={ic_lock} style={{ width: 20, height: 20, resizeMode: 'contain', marginLeft: 5 }} />
+                                    <TextInput
+                                        ref={(input) => { this.password = input; }}
+                                        style={{ width: '80%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                        placeholder='Password'
+                                        autoCapitalize={false}
+                                        returnKeyType={'done'}
+                                        placeholderTextColor={'#7C7B7B'}
+                                        secureTextEntry={this.state.showPassword}
+                                        blurOnSubmit={false}
+                                        value={this.state.password}
+                                        onChangeText={(text) => this.setState({ password: text })}
+                                        onSubmitEditing={() => this.CheckLogin()} />
+                                    <TouchableOpacity style={{ right: 10 }} onPress={() => { this._changeIcon() }}>
+                                        <Icon name={this.state.Icon} size={20} color={primaryColor} />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <View style={{ width: '100%', alignItems: 'flex-end' }}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.push('ForgetPassword')}>
+                                        <Text style={[styles.text14, { color: primaryColor, alignSelf: 'center', textDecorationLine: 'underline' }]}>{`ลืมรหัสผ่าน?`}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <TouchableOpacity style={[styles.mainButton, styles.center]}
+                                    onPress={
+                                        () => this.CheckLogin()
+                                    }>
+                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
+                                </TouchableOpacity>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <TouchableOpacity style={[styles.mainButton2, styles.center, { width: DEVICE_WIDTH - 70 }]}
+                                    onPress={
+                                        () => this.CheckAuditAdminLogin()
+                                    }>
+                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`Audit/Admin`}</Text>
+                                </TouchableOpacity>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <View style={[styles.marginBetweenVertical]}></View>
+                                <Text style={[styles.text14, { alignSelf: 'center' }]}>{`ถ้าท่านยังไม่ได้เป็นสมาชิก สมัครสมาชิกได้เลยค่ะ`}</Text>
+                                <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}
+                                    onPress={
+                                        () => this.props.navigation.navigate('Registercondition')
+                                    }>
+                                    <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={{ width: '100%', alignItems: 'flex-end' }}>
-                                <TouchableOpacity onPress={()=>this.props.navigation.push('ForgetPassword')}>
-                                    <Text style={[styles.text14, { color: primaryColor, alignSelf: 'center', textDecorationLine: 'underline' }]}>{`ลืมรหัสผ่าน?`}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <TouchableOpacity style={[styles.mainButton, styles.center]}
-                                onPress={
-                                    () => this.CheckLogin()
-                                }>
-                                <Text style={[styles.text18, { color: '#FFF' }]}>{`เข้าสู่ระบบ`}</Text>
-                            </TouchableOpacity>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <TouchableOpacity style={[styles.mainButton2, styles.center, { width: DEVICE_WIDTH - 70 }]}
-                                onPress={
-                                    () => this.CheckAuditAdminLogin()
-                                }>
-                                <Text style={[styles.text18, { color: '#FFF' }]}>{`Audit/Admin`}</Text>
-                            </TouchableOpacity>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.marginBetweenVertical]}></View>
-                            <Text style={[styles.text14, { alignSelf: 'center' }]}>{`ถ้าท่านยังไม่ได้เป็นสมาชิก สมัครสมาชิกได้เลยค่ะ`}</Text>
-                            <TouchableOpacity style={[styles.mainButton, styles.center, { backgroundColor: grayColor }]}
-                                onPress={
-                                    () => this.props.navigation.navigate('Registercondition')
-                                }>
-                                <Text style={[styles.text18, { color: '#FFF' }]}>{`สมัครสมาชิก`}</Text>
-                            </TouchableOpacity>
-                        </View>
                         </KeyboardAvoidingView>
                     </ScrollView>
                 </View>

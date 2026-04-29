@@ -329,7 +329,7 @@ class SummaryScreen extends React.Component {
     }
 
 
-    Reservation = () => {
+    Reservation = async() => {
         this.props.setStateBookingSelected([])
         this.props.openIndicator()
         let total_final_price = parseFloat(this.state.total_area) + parseFloat(this.state.total_other_service)
@@ -347,7 +347,7 @@ class SummaryScreen extends React.Component {
         formData.append('booking_vat_company',this.state.vat)
         formData.append('booking_grand_total',total_final_price)
         formData.append('BookingItems',JSON.stringify(this.props.reducer.date_selected))
-        Hepler.post(BASE_URL + SUBMIT_BOOKING_URL,formData,HEADERFORMDATA,(results) => {
+        await Hepler.post(BASE_URL + SUBMIT_BOOKING_URL,formData,HEADERFORMDATA, async (results) => {
             console.log('SUBMIT_BOOKING_URL',results)
             if (results.status == 'SUCCESS') {
                 this.props.saveDateSelected('save',[])
@@ -355,7 +355,7 @@ class SummaryScreen extends React.Component {
                 //// count item cart
                 let formData1 = new FormData();
                 formData1.append('partners_id', this.props.reducer.userInfo.partners_id)
-                Hepler.post(BASE_URL + GET_CART_URL, formData1,HEADERFORMDATA,(results1 ) => {
+                await Hepler.post(BASE_URL + GET_CART_URL, formData1,HEADERFORMDATA,(results1 ) => {
                     console.log('GET_CART_URL',results1)
                     if (results1.status == 'SUCCESS') {
                         this.props.setStateMyCart(results1.data)
@@ -422,7 +422,7 @@ class SummaryScreen extends React.Component {
                                 renderItem={this._renderItem} />
                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                 <Text style={[styles.text16, { textAlign: 'center' }]}>{`โค้ดส่วนลด`}</Text>
-                                <View style={[styles.shadow, styles.inputWithIcon, { width: '70%' }]}>
+                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { width: '70%' }]}>
                                     <TextInput
                                         ref={(input) => { this.discount_coupon = input; }}
                                         style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}

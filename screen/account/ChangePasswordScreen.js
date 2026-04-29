@@ -128,6 +128,7 @@ class ChangePasswordScreen extends React.Component {
             const props = this.props.reducer
             let formData = new FormData();
             formData.append('password',this.state.passwordNew)
+            formData.append('token',props.userInfo.token)
             formData.append('partners_id',props.userInfo.partners_id)
             this.props.openIndicator()
             Hepler.post(BASE_URL + CHANGE_PASSWORD_URL,formData,HEADERFORMDATA,(results)=>{

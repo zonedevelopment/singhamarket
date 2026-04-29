@@ -18,6 +18,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 var RNFS = require('react-native-fs')
 import ViewShot from "react-native-view-shot"
+import { NavigationBar } from 'navigationbar-react-native'
 import { request, check, PERMISSIONS, RESULTS, checkNotifications, requestNotifications, requestMultiple } from 'react-native-permissions'
 
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
@@ -104,16 +105,16 @@ class PaymentChannelScreen extends React.Component {
         total_final_price: 0,
         discount_coupon: '',
         BoothCount: 0,
-        charge_total : 0,
+        charge_total: 0,
 
         appState: '',
 
-        paymentChannel : [],
+        paymentChannel: [],
 
-        ListBooking :[],
-        ListCharge : [],
+        ListBooking: [],
+        ListCharge: [],
 
-        qrExpire : '',
+        qrExpire: '',
     }
 
     captureQR = async () => {
@@ -172,7 +173,7 @@ class PaymentChannelScreen extends React.Component {
             console.log('GET_PAYMENT_CHANNEL_URL', results)
             if (results.status == 'SUCCESS') {
                 this.setState({
-                    paymentChannel : results.data
+                    paymentChannel: results.data
                 })
                 this.props.dismissIndicator()
             } else {
@@ -234,17 +235,17 @@ class PaymentChannelScreen extends React.Component {
                     "ref1": TransID,
                     "ref2": that.props.reducer.userInfo.partners_id,
                     "ref3": REF3,
-                    "numberOfTime":1,
+                    "numberOfTime": 1,
                     "expiryDate": results.expiryDate,
                 });
                 that.setState({
-                    qrExpire : results.expiryDate,
+                    qrExpire: results.expiryDate,
                 })
             } else {
                 Alert.alert(results.message)
                 this.props.dismissIndicator()
                 this.setState({
-                    qrExpire : '',
+                    qrExpire: '',
                 })
                 this.props.navigation.goBack()
             }
@@ -401,18 +402,18 @@ class PaymentChannelScreen extends React.Component {
                 let arrBooking = []
                 ///// ค่าจอง
                 results.data.Cart.map((vBooking, iBooking) => {
-              //      console.log('vBooking', vBooking)
+                    //      console.log('vBooking', vBooking)
                     total_area += parseFloat(vBooking.booking_total)
                     area_item += vBooking.Booking_Details.length
                     discount_price += parseFloat(vBooking.booking_coupon)
 
-                    if(vBooking.booking_total == 0){ /// ค่าปรับล่าช้า
+                    if (vBooking.booking_total == 0) { /// ค่าปรับล่าช้า
                         total_Charge += parseFloat(vBooking.booking_service_total)
-                    }else{ // อุปกรณ์เสริมปกติ
+                    } else { // อุปกรณ์เสริมปกติ
                         total_other_service += parseFloat(vBooking.booking_service_total)
                     }
-                    
-                    vBooking.Booking_Details.map((v,i)=>{
+
+                    vBooking.Booking_Details.map((v, i) => {
                         arrBooking.push(v)
                     })
                 })
@@ -430,15 +431,15 @@ class PaymentChannelScreen extends React.Component {
 
                 //// ค่าปรับ
                 results.data.Charge.map((vCharge, iCharge) => {
-                    console.log('Charge',vCharge)
+                    console.log('Charge', vCharge)
                     total_Charge += parseFloat(vCharge.audit_charge_total)
                     total_final_price += parseFloat(vCharge.audit_charge_total)
                 })
 
                 this.setState({
-                    ListBooking : arrBooking,
-                    ListCharge : results.data.Charge,
-                    charge_total : total_Charge,
+                    ListBooking: arrBooking,
+                    ListCharge: results.data.Charge,
+                    charge_total: total_Charge,
                     total_area: total_area,// - ((total_area * 7) / 107),
                     area_item: area_item,
                     total_other_service: total_other_service,
@@ -462,41 +463,54 @@ class PaymentChannelScreen extends React.Component {
 
         return (
             <View style={[styles.container, { backgroundColor: primaryColor }]}>
-
+                <NavigationBar
+                    componentLeft={this.ComponentLeft}
+                    componentCenter={this.ComponentCenter}
+                    componentRight={this.ComponentRight}
+                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
+                        backgroundColor: primaryColor,
+                        elevation: 0,
+                        shadowOpacity: 0,
+                    }]}
+                    statusBarStyle={{
+                        backgroundColor: primaryColor,
+                        elevation: 0,
+                        shadowOpacity: 0,
+                    }} />
                 <View style={[{ alignItems: 'center' }]}>
                     <Text style={[styles.text20, { color: 'white' }]}>{`เลือกช่องทางการชำระเงิน`}</Text>
                     <View style={[styles.panelWhite, styles.shadow, { height: DEVICE_HEIGHT / 1.3 }]}>
                         {
                             channel.map((v, i) => {
                                 return (
-                                        <TouchableOpacity key={i} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
-                                            onPress={() => {
-                                                if (v.channel_code == "QRCODE") {
-                                                    this.CreateTransactionQRCode()
-                                                } else {
-                                                    this.CreateTransaction2C2P()
-                                                }
+                                    <TouchableOpacity key={i} style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor }]}
+                                        onPress={() => {
+                                            if (v.channel_code == "QRCODE") {
+                                                this.CreateTransactionQRCode()
+                                            } else {
+                                                this.CreateTransaction2C2P()
                                             }
-                                            }>
-                                            <Image source={i == 1 ? ic_credit_card : ic_banking } style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
-                                            <Text style={[styles.text14, { flex: 0.8, color: primaryColor }]}>{`${v.channel_name}`}</Text>
-                                            <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
-                                                <Icon name='chevron-right' size={14} color={primaryColor} />
-                                            </View>
-                                        </TouchableOpacity>
-                                    )
+                                        }
+                                        }>
+                                        <Image source={i == 1 ? ic_credit_card : ic_banking} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />
+                                        <Text style={[styles.text14, { flex: 0.8, color: primaryColor }]}>{`${v.channel_name}`}</Text>
+                                        <View style={{ flex: 0.2, alignItems: 'flex-end' }}>
+                                            <Icon name='chevron-right' size={14} color={primaryColor} />
+                                        </View>
+                                    </TouchableOpacity>
+                                )
                             })
                         }
 
 
                         <ScrollView>
-                            <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1 /*, alignItems: 'center'*/ }} style={{ padding:2,flex: 1,backgroundColor:'#FFFFFF'}} >
+                            <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1 /*, alignItems: 'center'*/ }} style={{ padding: 2, flex: 1, backgroundColor: '#FFFFFF' }} >
                                 <View style={[styles.marginBetweenVertical]}></View>
                                 {
                                     this.state.ListBooking.map((valueBooking, i) => {
                                         return (
                                             <View>
-                                                <View style={[styles.containerRow,{paddingLeft:10,paddingRight:10}]}>
+                                                <View style={[styles.containerRow, { paddingLeft: 10, paddingRight: 10 }]}>
                                                     <View style={{ flex: 0.17 }}>
                                                         <View style={[styles.center, { width: 45, height: 45, backgroundColor: emptyColor, borderRadius: 10 }]}>
                                                             <Text style={[styles.text12, { textAlign: 'center', flexWrap: 'wrap' }]}>{valueBooking.boothname}</Text>
@@ -504,33 +518,33 @@ class PaymentChannelScreen extends React.Component {
                                                     </View>
                                                     {
                                                         valueBooking.booth_detail_id != 0 ?
-                                                        <View style={{ flex: 0.83 , justifyContent: 'center'}}>
-                                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                                                <Text style={[styles.text14]}>{`วันที่ขาย ` + moment(valueBooking.booking_detail_date).format('LL')}</Text>
+                                                            <View style={{ flex: 0.83, justifyContent: 'center' }}>
+                                                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                                    <Text style={[styles.text14]}>{`วันที่ขาย ` + moment(valueBooking.booking_detail_date).format('LL')}</Text>
+                                                                </View>
+                                                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                                    <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
+                                                                    <Text style={[styles.text14]}>{numeral(valueBooking.boothprice).format('0,0.00') + ` บาท`}</Text>
+                                                                </View>
                                                             </View>
-                                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                                                <Text style={[styles.text14]}>{`ค่าบริการพื้นที่`}</Text>
-                                                                <Text style={[styles.text14]}>{numeral(valueBooking.boothprice).format('0,0.00') + ` บาท`}</Text>
+                                                            :
+                                                            <View style={{ flex: 0.83, justifyContent: 'center' }}>
+                                                                <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                                    <Text style={[styles.text14]}>{`บูธเรียกเก็บพิเศษ`}</Text>
+                                                                </View>
+                                                                {
+                                                                    valueBooking.Service.map((vService, iService) => {
+                                                                        return (
+                                                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                                                                <Text style={[styles.text14]}>{vService.service_name + ' x' + vService.qty}</Text>
+                                                                                <Text style={[styles.text14]}>{numeral(parseFloat(vService.service_item_price) * parseFloat(vService.qty)).format('0,0.00') + ` บาท`}</Text>
+                                                                            </View>
+                                                                        )
+                                                                    })
+                                                                }
                                                             </View>
-                                                        </View>
-                                                        :
-                                                        <View style={{ flex: 0.83 , justifyContent: 'center'}}>
-                                                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                                                <Text style={[styles.text14]}>{`บูธเรียกเก็บพิเศษ`}</Text>
-                                                            </View>
-                                                            {
-                                                                valueBooking.Service.map((vService, iService) => {
-                                                                    return (
-                                                                        <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
-                                                                            <Text style={[styles.text14]}>{vService.service_name + ' x' + vService.qty}</Text>
-                                                                            <Text style={[styles.text14]}>{numeral(parseFloat(vService.service_item_price) * parseFloat(vService.qty)).format('0,0.00') + ` บาท`}</Text>
-                                                                        </View>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </View>
                                                     }
-                                                    
+
                                                 </View>
                                                 <View style={[styles.marginBetweenVertical]}></View>
                                             </View>
@@ -540,12 +554,12 @@ class PaymentChannelScreen extends React.Component {
 
                                 {
                                     this.state.ListCharge.map((vCharge, i) => {
-                                        return ( 
+                                        return (
                                             <View>
-                                                <View style={[styles.containerRow,{paddingLeft:10,paddingRight:10}]}>
+                                                <View style={[styles.containerRow, { paddingLeft: 10, paddingRight: 10 }]}>
                                                     <View style={{ flex: 0.17 }}>
                                                         <View style={[styles.center, { width: 45, height: 45, backgroundColor: redColor, borderRadius: 10 }]}>
-                                                            <Text style={[styles.text12, { color:'white',textAlign: 'center', flexWrap: 'wrap' }]}>{vCharge.booth_name}</Text>
+                                                            <Text style={[styles.text12, { color: 'white', textAlign: 'center', flexWrap: 'wrap' }]}>{vCharge.booth_name}</Text>
                                                         </View>
                                                     </View>
                                                     <View style={{ flex: 0.83 }}>
@@ -563,23 +577,23 @@ class PaymentChannelScreen extends React.Component {
                                         )
                                     })
                                 }
-                                            
+
                                 {
                                     this.state.qrBase64 != '' ?
                                         <View style={[styles.container, styles.center]} >
                                             {/* <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1, alignItems: 'center' }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}> */}
-                                                <View style={{ padding: 10, backgroundColor: 'white' }}>
-                                                    <Image source={{ uri: `data:image/png;base64,${this.state.qrBase64}` }} style={{ width: 200, height: 200, resizeMode: 'contain' }} />
-                                                </View>
+                                            <View style={{ padding: 10, backgroundColor: 'white' }}>
+                                                <Image source={{ uri: `data:image/png;base64,${this.state.qrBase64}` }} style={{ width: 200, height: 200, resizeMode: 'contain' }} />
+                                            </View>
                                             {/* </ViewShot> */}
                                         </View>
                                         :
                                         <View style={{ height: 160 }}></View>
                                 }
-                              
+
                                 {
                                     this.props.reducer.userInfo.partners_type == 1 ? //// บุคคลธรรมดา
-                                        <View style={[{flex:1,paddingLeft:10,paddingRight:10}]}>
+                                        <View style={[{ flex: 1, paddingLeft: 10, paddingRight: 10 }]}>
                                             <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                                 <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.state.area_item}</Text>
@@ -597,15 +611,15 @@ class PaymentChannelScreen extends React.Component {
                                                 <Text style={[styles.text16]}>{`ค่าปรับ`}</Text>
                                                 <Text style={[styles.text16]}>{numeral(this.state.charge_total).format('0,0.00') + ` บาท`}</Text>
                                             </View>
-                                            
+
                                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                                 <Text style={[styles.text16, styles.bold]}>{`ยอดที่ต้องชำระ(รวม Vat ` + this.props.reducer.personal_vat + `%)`}</Text>
                                                 <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                             </View>
-                                            
+
                                         </View>
                                         : //// นิติบุคคล
-                                        <View style={[styles.container,{paddingLeft:10,paddingRight:10}]}>
+                                        <View style={[styles.container, { paddingLeft: 10, paddingRight: 10 }]}>
                                             <Text style={[styles.text16, styles.bold]}>{`ยอดชำระทั้งหมด`}</Text>
                                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                                 <Text style={[styles.text16]}>{`ค่าบริการพื้นที่ x ` + this.state.area_item}</Text>
@@ -635,16 +649,16 @@ class PaymentChannelScreen extends React.Component {
                                                 <Text style={[styles.text16, styles.bold]}>{`ยอดที่ต้องชำระ`}</Text>
                                                 <Text style={[styles.text16, styles.bold]}>{numeral(this.state.total_final_price).format('0,0.00') + ` บาท`}</Text>
                                             </View>
-                                            
+
                                         </View>
-                                        
+
                                 }
                                 {
                                     this.state.qrBase64 != '' ?
-                                        <View style={[styles.containerRow,{paddingLeft:10,paddingRight:10}]}>
-                                            <Text style={[styles.text14,{color:'red'}]}>{`*กรุณาทำรายการภายในระยะเวลา ` + moment(this.state.qrExpire).format('LT') + ` น.`}</Text>
+                                        <View style={[styles.containerRow, { paddingLeft: 10, paddingRight: 10 }]}>
+                                            <Text style={[styles.text14, { color: 'red' }]}>{`*กรุณาทำรายการภายในระยะเวลา ` + moment(this.state.qrExpire).format('LT') + ` น.`}</Text>
                                         </View>
-                                    :
+                                        :
                                         <View></View>
                                 }
                                 <View>

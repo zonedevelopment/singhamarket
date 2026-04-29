@@ -101,7 +101,7 @@ class ForgetPasswordScreen extends React.Component {
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <Text style={[styles.text20, { color: primaryColor, alignSelf: 'center' }]}>{`ลืมรหัสผ่าน`}</Text>
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.shadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                                <View style={[styles.loginInputShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
                                     ref={(input) => { this.email = input; }}
                                     style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black', paddingLeft: 5 }}
