@@ -64,6 +64,12 @@ class ProfilePersonalScreen extends React.Component {
 
 
     state = {
+        firstName: '',
+        lastName: '',
+        citizenId: '',
+        firstNameLocked: false,
+        lastNameLocked: false,
+        citizenIdLocked: false,
         phoneNumber: '',
         lineid: '',
         email: '',
@@ -273,6 +279,11 @@ class ProfilePersonalScreen extends React.Component {
     onUpdateProfile() {
         const props = this.props.reducer
         const securityError = validateFormSecurity([
+            ...(IS_IOS ? [
+                { label: 'ชื่อ', value: this.state.firstName, checkSql: false },
+                { label: 'นามสกุล', value: this.state.lastName, checkSql: false },
+                { label: 'เลขประจำตัวประชาชน', value: this.state.citizenId, checkSql: true },
+            ] : []),
             { label: 'ที่อยู่', value: this.state.address, checkSql: false },
             { label: 'ซอย', value: this.state.Soi, checkSql: false },
             { label: 'ถนน', value: this.state.Road, checkSql: false },
@@ -285,7 +296,16 @@ class ProfilePersonalScreen extends React.Component {
             return Alert.alert(securityError)
         }
 
+        if (IS_IOS && (!this.state.firstName || !this.state.lastName || this.state.citizenId.length !== 13)) {
+            return Alert.alert('กรุณากรอกชื่อ นามสกุล และเลขประจำตัวประชาชน 13 หลักให้ครบ')
+        }
+
         let formData = new FormData();
+        if (IS_IOS) {
+            formData.append('name', this.state.firstName)
+            formData.append('lastname', this.state.lastName)
+            formData.append('idcard', this.state.citizenId)
+        }
         formData.append('address', this.state.address)
         formData.append('Soi', this.state.Soi)
         formData.append('Road', this.state.Road)
@@ -304,13 +324,22 @@ class ProfilePersonalScreen extends React.Component {
         Hepler.post(BASE_URL + UPDATE_PROFILE_PERSONAL, formData, HEADERFORMDATA, (results) => {
             console.log('UPDATE_PROFILE_PERSONAL', results)
             if (results.status == 'SUCCESS') {
+                if (IS_IOS) {
+                    this.setState({
+                        firstNameLocked: true,
+                        lastNameLocked: true,
+                        citizenIdLocked: true,
+                    })
+                }
                 this.props.dismissIndicator()
                 Alert.alert(
-                    '',
-                    results.message,
+                    'อัพเดทข้อมูลสำเร็จ',
+                    'กรุณาเข้าสู่ระบบใหม่อีกครั้ง เพื่อปรับปรุงข้อมูล',
                     [
-                        { text: 'OK', onPress: () => this.RefreshLogin() },
-                    ]
+                        { text: 'ยกเลิก', style: 'cancel' },
+                        { text: 'ออกจากระบบ', style: 'destructive', onPress: () => this.Logout() },
+                    ],
+                    { cancelable: false }
                 );
             } else {
                 Alert.alert(results.message)
@@ -412,6 +441,12 @@ class ProfilePersonalScreen extends React.Component {
         this.LoadProvince()
         this.props.saveProductType(typeof props.userInfo === 'undefined' ? [] : props.userInfo.product)
         this.setState({
+            firstName: props.userInfo.name || '',
+            lastName: props.userInfo.lastname || '',
+            citizenId: props.userInfo.citizenid || props.userInfo.idcard || '',
+            firstNameLocked: Boolean(props.userInfo.name),
+            lastNameLocked: Boolean(props.userInfo.lastname),
+            citizenIdLocked: Boolean(props.userInfo.citizenid || props.userInfo.idcard),
             phoneNumber: props.userInfo.phone,
             lineid: props.userInfo.lineid,
             email: props.userInfo.email,
@@ -467,7 +502,12 @@ class ProfilePersonalScreen extends React.Component {
         return (
             <View>
                 {showLabel ? <Text style={[styles.text18, { color: primaryColor }]}>{label}</Text> : null}
-                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                <View style={[
+                    styles.registerFieldShadow,
+                    styles.inputWithIcon,
+                    { alignSelf: 'center' },
+                    IS_IOS && !editable ? { backgroundColor: '#eee' } : null,
+                ]}>
                     <TextInput
                         ref={inputRef}
                         style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: primaryColor }}
@@ -566,34 +606,48 @@ class ProfilePersonalScreen extends React.Component {
                     ) : null}
                     <ScrollView
                         style={IS_IOS ? [styles.panelWhite, styles.registerPanelShadow] : null}
-                        contentContainerStyle={{ flexGrow: 1, padding: 8 }}
+                        contentContainerStyle={{ flexGrow: 1, padding: 8, paddingBottom: IS_IOS ? 130 : 8 }}
                         keyboardShouldPersistTaps="always"
+                        scrollEnabled={!IS_IOS || !(this.state.provinceOpen || this.state.districtOpen || this.state.subDistrictOpen)}
                         onTouchStart={this.closeAllDropdowns}>
                         <TouchableWithoutFeedback onPress={this.closeAllDropdowns}>
                             <View /* style={[styles.panelWhite]}*/>
                                 {IS_IOS ? null : <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลส่วนตัว`}</Text>}
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                                {IS_IOS ? this.renderInputField('ชื่อ', this.state.firstName, (firstName) => this.setState({ firstName }), {
+                                    placeholder: 'ชื่อ (จำเป็น)',
+                                    editable: !this.state.firstNameLocked,
+                                }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                     <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อ : ' + props.userInfo.name}</Text>
-                                </View>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                                </View>}
+                                {IS_IOS ? this.renderInputField('นามสกุล', this.state.lastName, (lastName) => this.setState({ lastName }), {
+                                    placeholder: 'นามสกุล (จำเป็น)',
+                                    editable: !this.state.lastNameLocked,
+                                }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                     <Text style={[styles.text16, { color: primaryColor }]}>{'นามสกุล : ' + props.userInfo.lastname}</Text>
-                                </View>
+                                </View>}
 
 
 
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                                {IS_IOS ? this.renderInputField('เลขประจำตัวประชาชน', this.state.citizenId, (citizenId) => this.setState({ citizenId: citizenId.replace(/[^0-9]/g, '') }), {
+                                    keyboardType: 'number-pad',
+                                    maxLength: 13,
+                                    placeholder: 'เลขประจำตัวประชาชน (จำเป็น)',
+                                    editable: !this.state.citizenIdLocked,
+                                }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                     <Text style={[styles.text16, { color: primaryColor }]}>{'เลขประจำตัวประชาชน : ' + props.userInfo.citizenid}</Text>
-                                </View>
+                                </View>}
                                 {this.renderInputField('เบอร์โทรศัพท์', this.state.phoneNumber, (text) => this.setState({ phoneNumber: text.replace(/[^0-9\-]+/g, '') }), {
                                     inputRef: (input) => { this.phone = input },
                                     keyboardType: 'phone-pad',
                                     maxLength: 10,
+                                    placeholder: IS_IOS ? 'เบอร์โทรศัพท์ (จำเป็น)' : 'เบอร์โทรศัพท์',
                                 })}
                                 {this.renderInputField('Line ID', this.state.lineid, (text) => this.setState({ lineid: text }), {
                                     inputRef: (input) => { this.line = input },
                                 })}
                                 {this.renderInputField('อีเมล', this.state.email, (text) => this.setState({ email: text }), {
                                     inputRef: (input) => { this.email = input },
+                                    placeholder: IS_IOS ? 'อีเมล (จำเป็น)' : 'อีเมล',
                                     onBlur: () => {
                                         let e = this.state.email
                                         if (!EmailValidator.validate(e)) {
@@ -613,6 +667,7 @@ class ProfilePersonalScreen extends React.Component {
                                 })}
                                 {this.renderInputField('ที่อยู่', this.state.address, (text) => this.setState({ address: text }), {
                                     inputRef: (input) => { this.address = input },
+                                    placeholder: IS_IOS ? 'ที่อยู่ (จำเป็น)' : 'ที่อยู่',
                                 })}
                                 {this.renderInputField('ซอย', this.state.Soi, (text) => this.setState({ Soi: text }), {
                                     inputRef: (input) => { this.Soi = input },
@@ -625,7 +680,7 @@ class ProfilePersonalScreen extends React.Component {
                                     open: this.state.provinceOpen,
                                     value: this.state.ProvinceSelected,
                                     items: this.state.ProvinceData,
-                                    placeholder: 'กรุณาเลือกจังหวัด',
+                                    placeholder: IS_IOS ? 'กรุณาเลือกจังหวัด (จำเป็น)' : 'กรุณาเลือกจังหวัด',
                                     zIndex: 3000,
                                     setOpen: (provinceOpen) => this.setState({ provinceOpen }),
                                     onChangeValue: (provinceId) => this.LoadDistrict(provinceId),
@@ -635,7 +690,7 @@ class ProfilePersonalScreen extends React.Component {
                                     open: this.state.districtOpen,
                                     value: this.state.DistrictSelected,
                                     items: this.state.DistrictData,
-                                    placeholder: 'กรุณาเลือกอำเภอ',
+                                    placeholder: IS_IOS ? 'กรุณาเลือกอำเภอ (จำเป็น)' : 'กรุณาเลือกอำเภอ',
                                     zIndex: 2000,
                                     disabled: this.state.DistrictData.length === 0,
                                     setOpen: (districtOpen) => this.setState({ districtOpen }),
@@ -646,7 +701,7 @@ class ProfilePersonalScreen extends React.Component {
                                     open: this.state.subDistrictOpen,
                                     value: this.state.SubDistrictSelected,
                                     items: this.state.SubDistrictData,
-                                    placeholder: 'กรุณาเลือกตำบล',
+                                    placeholder: IS_IOS ? 'กรุณาเลือกตำบล (จำเป็น)' : 'กรุณาเลือกตำบล',
                                     zIndex: 1000,
                                     disabled: this.state.SubDistrictData.length === 0,
                                     setOpen: (subDistrictOpen) => this.setState({ subDistrictOpen }),
@@ -661,6 +716,7 @@ class ProfilePersonalScreen extends React.Component {
                                 {this.renderInputField('รหัสไปรษณีย์', this.state.Zipcode, (text) => this.setState({ Zipcode: text }), {
                                     inputRef: (input) => { this.Zipcode = input },
                                     editable: false,
+                                    placeholder: IS_IOS ? 'รหัสไปรษณีย์ (จำเป็น)' : 'รหัสไปรษณีย์',
                                 })}
 
                                 <View style={[styles.marginBetweenVertical]}></View>

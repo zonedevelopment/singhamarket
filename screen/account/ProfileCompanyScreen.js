@@ -64,6 +64,10 @@ class ProfileCompanyScreen extends React.Component {
 
 
     state = {
+        companyName: '',
+        taxId: '',
+        companyNameLocked: false,
+        taxIdLocked: false,
         branch_code: '',
         branch_name: '',
         name: '',
@@ -179,6 +183,10 @@ class ProfileCompanyScreen extends React.Component {
         this.LoadProvince()
         this.props.saveProductType(typeof props.userInfo === 'undefined' ? [] : props.userInfo.product)
         this.setState({
+            companyName: props.userInfo.name_customer || props.userInfo.compname || '',
+            taxId: props.userInfo.numbertax || props.userInfo.compid || '',
+            companyNameLocked: Boolean(props.userInfo.name_customer || props.userInfo.compname),
+            taxIdLocked: Boolean(props.userInfo.numbertax || props.userInfo.compid),
             branch_code: props.userInfo.branch_code,
             branch_name: props.userInfo.branch_name,
             name: props.userInfo.name,
@@ -212,6 +220,10 @@ class ProfileCompanyScreen extends React.Component {
     onUpdateProfile() {
         const props = this.props.reducer
         const securityError = validateFormSecurity([
+            ...(IS_IOS ? [
+                { label: 'ชื่อนิติบุคคล', value: this.state.companyName, checkSql: false },
+                { label: 'เลขประจำตัวผู้เสียภาษี', value: this.state.taxId, checkSql: true },
+            ] : []),
             { label: 'ที่อยู่', value: this.state.address, checkSql: false },
             { label: 'ซอย', value: this.state.Soi, checkSql: false },
             { label: 'ถนน', value: this.state.Road, checkSql: false },
@@ -228,7 +240,15 @@ class ProfileCompanyScreen extends React.Component {
             return Alert.alert(securityError)
         }
 
+        if (IS_IOS && (!this.state.companyName || this.state.taxId.length !== 13)) {
+            return Alert.alert('กรุณากรอกชื่อนิติบุคคลและเลขประจำตัวผู้เสียภาษี 13 หลักให้ครบ')
+        }
+
         let formData = new FormData();
+        if (IS_IOS) {
+            formData.append('compname', this.state.companyName)
+            formData.append('compid', this.state.taxId)
+        }
         formData.append('address', this.state.address)
         formData.append('Soi', this.state.Soi)
         formData.append('Road', this.state.Road)
@@ -253,13 +273,21 @@ class ProfileCompanyScreen extends React.Component {
         Hepler.post(BASE_URL + UPDATE_PROFILE_COMPANY, formData, HEADERFORMDATA, (results) => {
             console.log('UPDATE_PROFILE_PERSONAL', results)
             if (results.status == 'SUCCESS') {
+                if (IS_IOS) {
+                    this.setState({
+                        companyNameLocked: true,
+                        taxIdLocked: true,
+                    })
+                }
                 this.props.dismissIndicator()
                 Alert.alert(
-                    '',
-                    results.message,
+                    'อัพเดทข้อมูลสำเร็จ',
+                    'กรุณาเข้าสู่ระบบใหม่อีกครั้ง เพื่อปรับปรุงข้อมูล',
                     [
-                        { text: 'OK', onPress: () => this.RefreshLogin() },
-                    ]
+                        { text: 'ยกเลิก', style: 'cancel' },
+                        { text: 'ออกจากระบบ', style: 'destructive', onPress: () => this.Logout() },
+                    ],
+                    { cancelable: false }
                 );
             } else {
                 Alert.alert(results.message)
@@ -496,7 +524,12 @@ class ProfileCompanyScreen extends React.Component {
         return (
             <View>
                 {showLabel ? <Text style={[styles.text18, { color: primaryColor }]}>{label}</Text> : null}
-                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                <View style={[
+                    styles.registerFieldShadow,
+                    styles.inputWithIcon,
+                    { alignSelf: 'center' },
+                    IS_IOS && !editable ? { backgroundColor: '#eee' } : null,
+                ]}>
                     <TextInput
                         ref={inputRef}
                         style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: primaryColor }}
@@ -595,21 +628,30 @@ class ProfileCompanyScreen extends React.Component {
                     ) : null}
                     <ScrollView
                         style={IS_IOS ? [styles.panelWhite, styles.registerPanelShadow] : null}
-                        contentContainerStyle={{ flexGrow: 1, padding: 8 }}
+                        contentContainerStyle={{ flexGrow: 1, padding: 8, paddingBottom: IS_IOS ? 130 : 8 }}
                         keyboardShouldPersistTaps="never"
-                        onPressIn={this.closeAllDropdowns}
+                        scrollEnabled={!IS_IOS || !(this.state.provinceOpen || this.state.districtOpen || this.state.subDistrictOpen)}
                         onTouchStart={this.closeAllDropdowns}>
                         <TouchableWithoutFeedback onPress={this.closeAllDropdowns} accessible={false}>
                         <View>
                             {IS_IOS ? null : <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>}
-                            <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                            {IS_IOS ? this.renderInputField('ชื่อนิติบุคคล', this.state.companyName, (companyName) => this.setState({ companyName }), {
+                                placeholder: 'ชื่อนิติบุคคล (จำเป็น)',
+                                editable: !this.state.companyNameLocked,
+                            }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                 <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อนิติบุคคล : ' + props.userInfo.name_customer}</Text>
-                            </View>
-                            <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
+                            </View>}
+                            {IS_IOS ? this.renderInputField('เลขประจำตัวผู้เสียภาษี', this.state.taxId, (taxId) => this.setState({ taxId: taxId.replace(/[^0-9]/g, '') }), {
+                                keyboardType: 'number-pad',
+                                maxLength: 13,
+                                placeholder: 'เลขประจำตัวผู้เสียภาษี (จำเป็น)',
+                                editable: !this.state.taxIdLocked,
+                            }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                 <Text style={[styles.text16, { color: primaryColor }]}>{'เลขประจำตัวเสียภาษีอากร : ' + props.userInfo.numbertax}</Text>
-                            </View>
+                            </View>}
                             {this.renderInputField('ที่อยู่', this.state.address, (text) => this.setState({ address: text }), {
                                 inputRef: (input) => { this.address = input },
+                                placeholder: IS_IOS ? 'ที่อยู่ (จำเป็น)' : 'ที่อยู่',
                             })}
                             {this.renderInputField('ซอย', this.state.Soi, (text) => this.setState({ Soi: text }), {
                                 inputRef: (input) => { this.Soi = input },
@@ -622,7 +664,7 @@ class ProfileCompanyScreen extends React.Component {
                                 open: this.state.provinceOpen,
                                 value: this.state.ProvinceSelected,
                                 items: this.state.ProvinceData,
-                                placeholder: 'กรุณาเลือกจังหวัด',
+                                placeholder: IS_IOS ? 'กรุณาเลือกจังหวัด (จำเป็น)' : 'กรุณาเลือกจังหวัด',
                                 zIndex: 3000,
                                 setOpen: (provinceOpen) => this.setState({ provinceOpen }),
                                 onChangeValue: (provinceId) => this.LoadDistrict(provinceId),
@@ -632,7 +674,7 @@ class ProfileCompanyScreen extends React.Component {
                                 open: this.state.districtOpen,
                                 value: this.state.DistrictSelected,
                                 items: this.state.DistrictData,
-                                placeholder: 'กรุณาเลือกอำเภอ',
+                                placeholder: IS_IOS ? 'กรุณาเลือกอำเภอ (จำเป็น)' : 'กรุณาเลือกอำเภอ',
                                 zIndex: 2000,
                                 disabled: this.state.DistrictData.length === 0,
                                 setOpen: (districtOpen) => this.setState({ districtOpen }),
@@ -643,7 +685,7 @@ class ProfileCompanyScreen extends React.Component {
                                 open: this.state.subDistrictOpen,
                                 value: this.state.SubDistrictSelected,
                                 items: this.state.SubDistrictData,
-                                placeholder: 'กรุณาเลือกตำบล',
+                                placeholder: IS_IOS ? 'กรุณาเลือกตำบล (จำเป็น)' : 'กรุณาเลือกตำบล',
                                 zIndex: 1000,
                                 disabled: this.state.SubDistrictData.length === 0,
                                 setOpen: (subDistrictOpen) => this.setState({ subDistrictOpen }),
@@ -658,26 +700,32 @@ class ProfileCompanyScreen extends React.Component {
                             {this.renderInputField('รหัสไปรษณีย์', this.state.Zipcode, (text) => this.setState({ Zipcode: text }), {
                                 inputRef: (input) => { this.Zipcode = input },
                                 editable: false,
+                                placeholder: IS_IOS ? 'รหัสไปรษณีย์ (จำเป็น)' : 'รหัสไปรษณีย์',
                             })}
                             {this.renderInputField('รหัสสาขา', this.state.branch_code, (text) => this.setState({ branch_code: text }), {
                                 inputRef: (input) => { this.branch_code = input },
+                                placeholder: IS_IOS ? 'รหัสสาขา (จำเป็น)' : 'รหัสสาขา',
                             })}
                             {this.renderInputField('ชื่อสาขา', this.state.branch_name, (text) => this.setState({ branch_name: text }), {
                                 inputRef: (input) => { this.branch_name = input },
+                                placeholder: IS_IOS ? 'ชื่อสาขา (จำเป็น)' : 'ชื่อสาขา',
                             })}
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลผู้มาติดต่อ`}</Text>
                             {this.renderInputField('ชื่อ-นามสกุล', this.state.name, (text) => this.setState({ name: text }), {
                                 inputRef: (input) => { this.name = input },
+                                placeholder: IS_IOS ? 'ชื่อ-นามสกุลผู้มาติดต่อ (จำเป็น)' : 'ชื่อ-นามสกุล',
                             })}
                             {this.renderInputField('เบอร์โทรศัพท์', this.state.phone, (text) => this.setState({ phone: text.replace(/[^0-9\-]+/g, '') }), {
                                 inputRef: (input) => { this.phone = input },
                                 keyboardType: 'phone-pad',
                                 maxLength: 10,
+                                placeholder: IS_IOS ? 'เบอร์โทรศัพท์ผู้มาติดต่อ (จำเป็น)' : 'เบอร์โทรศัพท์',
                             })}
                             {this.renderInputField('อีเมล์', this.state.email, (text) => this.setState({ email: text }), {
                                 inputRef: (input) => { this.email = input },
                                 keyboardType: 'email-address',
+                                placeholder: IS_IOS ? 'อีเมลผู้มาติดต่อ (จำเป็น)' : 'อีเมล์',
                                 onBlur: () => {
                                     let e = this.state.email
                                     if (!EmailValidator.validate(e)) {
@@ -702,11 +750,13 @@ class ProfileCompanyScreen extends React.Component {
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลเจ้าหน้าที่บัญชี`}</Text>
                             {this.renderInputField('ชื่อ-นามสกุล', this.state.accountname, (text) => this.setState({ accountname: text }), {
                                 inputRef: (input) => { this.accountname = input },
+                                placeholder: IS_IOS ? 'ชื่อ-นามสกุลเจ้าหน้าที่บัญชี (จำเป็น)' : 'ชื่อ-นามสกุล',
                             })}
                             {this.renderInputField('เบอร์โทรศัพท์', this.state.accountphone, (text) => this.setState({ accountphone: text.replace(/[^0-9\-]+/g, '') }), {
                                 inputRef: (input) => { this.accountphone = input },
                                 keyboardType: 'phone-pad',
                                 maxLength: 10,
+                                placeholder: IS_IOS ? 'เบอร์โทรศัพท์เจ้าหน้าที่บัญชี (จำเป็น)' : 'เบอร์โทรศัพท์',
                             })}
 
 

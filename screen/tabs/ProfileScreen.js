@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    Alert,
     View,
     Text,
     Image,
@@ -10,9 +11,11 @@ import {
     ScrollView,
     TouchableOpacity,
     Linking 
+    ,Platform
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import { CommonActions } from '@react-navigation/native'
 import VersionCheck from 'react-native-version-check'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
@@ -82,6 +85,25 @@ class ProfileScreen extends React.Component {
 
     componentDidMount() {
         this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    getRootNavigation = () => {
+        let navigation = this.props.navigation
+        while (navigation.getParent && navigation.getParent()) {
+            navigation = navigation.getParent()
+        }
+        return navigation
+    }
+
+    resetToChoice = async () => {
+        await StorageServies.clear()
+        await this.props.saveUserInfo([])
+        this.getRootNavigation().dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: Platform.OS === 'ios' ? 'MainIOS' : 'Choice' }],
+            })
+        )
     }
 
     render() {
@@ -180,14 +202,16 @@ class ProfileScreen extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.containerRow, { height: 50, alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 0.3, borderBottomColor: grayColor, padding: 5 }]}
                             onPress={
-                                async () => {
-                                    // this.props.navigation.reset({
-                                    //     index: 0,
-                                    //     routes: [{name: 'Building'}],
-                                    // });
-                                    await StorageServies.clear()
-                                    await this.props.saveUserInfo([])
-                                    this.props.navigation.navigate('Choice')
+                                () => {
+                                    Alert.alert(
+                                        'ออกจากระบบ',
+                                        'ต้องการออกจากระบบหรือไม่',
+                                        [
+                                            { text: 'ยกเลิก', style: 'cancel' },
+                                            { text: 'ตกลง', onPress: () => this.resetToChoice() },
+                                        ],
+                                        { cancelable: true }
+                                    )
                                 }
                             }>
                             <Image source={ic_logout} style={{ flex: 0.1, width: 20, height: 20, resizeMode: 'contain' }} />

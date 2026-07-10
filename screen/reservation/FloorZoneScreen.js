@@ -8,6 +8,7 @@ import {
     ScrollView,
     Dimensions,
     BackHandler,
+    Platform,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -44,6 +45,7 @@ import {
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 import styles from '../../style/style'
+import { getIncompleteProfile, isAuthenticatedUser } from '../../utils/profileCompletion'
 
 import ic_plan from '../../assets/image/icon_plan_gold.png'
 const _format = 'YYYY-MM-DD'
@@ -194,12 +196,20 @@ class FloorZoneScreen extends React.Component {
 
 
     onSelectZone(index, value) {
+        const userInfo = this.props.reducer.userInfo || {}
+        if (Platform.OS === 'ios' && !isAuthenticatedUser(userInfo)) {
+            this.setState({
+                zone_selectedIndex: index,
+                zone_selectedValue: value,
+            })
+            return
+        }
         this.props.openIndicator()
         console.log('zone_id', value);
-        console.log('partners_type_id', this.props.reducer.userInfo.partners_type);
+        console.log('partners_type_id', userInfo.partners_type);
         let formData = new FormData();
         formData.append('zone_id', value)
-        formData.append('partners_type_id', this.props.reducer.userInfo.partners_type)
+        formData.append('partners_type_id', userInfo.partners_type)
         Hepler.post(BASE_URL + CHECK_BLOCK_ZONE_URL, formData, HEADERFORMDATA, (results) => {
             console.log('CHECK_BLOCK_ZONE_URL', results)
             if (results.status == 'SUCCESS') {
@@ -270,14 +280,18 @@ class FloorZoneScreen extends React.Component {
             const { building_data } = this.props.route.params
             // let index = this.props.reducer.building.findIndex(p => p.building_id == building_data.building_id)
             const props = this.props.reducer
+            const userInfo = props.userInfo || {}
+            const productType = userInfo.product_type || {}
             this.props.setStateSelectedProduct({
-                cate_id: typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.cate_id,
-                cate_name: typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.category_name,
-                type_id: typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_id,
-                type_name: typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_name,
-                product: typeof props.userInfo === 'undefined' ? [] : props.userInfo.product
+                cate_id: productType.cate_id || '',
+                cate_name: productType.category_name || '',
+                type_id: productType.type_id || '',
+                type_name: productType.type_name || '',
+                product: userInfo.product || []
             })
-            this.LoadConditionCalendar(typeof props.userInfo === 'undefined' ? '' : props.userInfo.product_type.type_id)
+            if (!(Platform.OS === 'ios' && !isAuthenticatedUser(userInfo))) {
+                this.LoadConditionCalendar(productType.type_id || '')
+            }
             this.setState({
                 // index: index,
                 //floor : this.props.reducer.building[index].building_floor,
@@ -468,6 +482,31 @@ class FloorZoneScreen extends React.Component {
                                             'คำเตือน!',
                                             'กรุณาเลือกวันที่ท่านต้องการขายของ!'
                                         );
+                                    } else if (Platform.OS === 'ios' && !isAuthenticatedUser(props.userInfo || {})) {
+                                        Alert.alert(
+                                            'กรุณาเข้าสู่ระบบ',
+                                            'ต้องเข้าสู่ระบบหรือสมัครสมาชิกก่อนดำเนินการจองต่อ',
+                                            [
+                                                { text: 'ยกเลิก', style: 'cancel' },
+                                                { text: 'สมัครสมาชิก', onPress: () => this.props.navigation.navigate('Registercondition') },
+                                                { text: 'เข้าสู่ระบบ', onPress: () => this.props.navigation.navigate('Login') },
+                                            ]
+                                        )
+                                    } else if (Platform.OS === 'ios' && !getIncompleteProfile(props.userInfo || {}).complete) {
+                                        const profileStatus = getIncompleteProfile(props.userInfo || {})
+                                        Alert.alert(
+                                            'กรุณากรอกข้อมูลให้ครบ',
+                                            `ข้อมูลที่ยังไม่ครบ: ${profileStatus.missingFields.join(', ')}`,
+                                            [
+                                                { text: 'ยกเลิก', style: 'cancel' },
+                                                {
+                                                    text: 'อัพเดทข้อมูล',
+                                                    onPress: () => this.props.navigation.getParent().navigate('AccountIOS', {
+                                                        screen: profileStatus.profileRoute,
+                                                    }),
+                                                },
+                                            ]
+                                        )
                                     } else {
                                         this.props.openIndicator()
                                         this.props.setStateSelectedBuildingID(this.state.building_id)

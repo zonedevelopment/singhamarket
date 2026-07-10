@@ -28,7 +28,9 @@ const IOSSelectField = ({
     }
 
     return (
-        <View style={{ zIndex, opacity: disabled ? 0.6 : 1 }}>
+        <View
+            style={{ zIndex, opacity: disabled ? 0.6 : 1 }}
+            onTouchStart={(event) => event.stopPropagation()}>
             <SelectList
                 data={normalizedOptions}
                 save='key'

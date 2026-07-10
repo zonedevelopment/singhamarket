@@ -13,7 +13,8 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { Picker,CheckBox } from 'native-base';
+import { Picker } from '@react-native-picker/picker'
+import { CheckBox } from 'native-base'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import {
     primaryColor,

@@ -8,7 +8,9 @@ import {
     Alert,
     Dimensions,
     BackHandler,
+    Platform,
     ScrollView,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -41,6 +43,7 @@ import {
 import Hepler from '../../utils/Helper'
 import { validateFormSecurity } from '../../utils/inputSecurity'
 import StorageServies from '../../utils/StorageServies'
+import IOSBackButtonOverlay from '../../components/IOSBackButtonOverlay'
 
 class ChangePasswordScreen extends React.Component {
     backHandlerSubscription = null
@@ -174,27 +177,21 @@ class ChangePasswordScreen extends React.Component {
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
-                {/* <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} /> */}
-                <View style={[styles.container, { padding: 10 }]}>
+            <SafeAreaView style={[styles.container, Platform.OS === 'ios' ? styles.formPageBackground : { backgroundColor: 'white' }]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
+                <View style={[styles.container, Platform.OS === 'ios' ? { alignItems: 'center', paddingTop: 12 } : { padding: 10 }]}>
+                    {Platform.OS === 'ios' ? (
+                        <View style={styles.formHeaderBlock}>
+                            <Text style={styles.formHeaderTitle}>{`เปลี่ยนรหัสผ่าน`}</Text>
+                            <Text style={styles.formHeaderBrand}>{`SUN PLAZA`}</Text>
+                        </View>
+                    ) : null}
                     <ScrollView
+                        style={Platform.OS === 'ios' ? [styles.panelWhite, styles.registerPanelShadow] : null}
                         contentContainerStyle={{ flexGrow: 1, padding: 8 }}
                         keyboardShouldPersistTaps="always">
                         <View /* style={[styles.panelWhite]}*/>
-                            <Text style={[styles.text22, { color: primaryColor }]}>{`เปลี่ยนรหัสผ่าน`}</Text>
+                            {Platform.OS === 'ios' ? null : <Text style={[styles.text22, { color: primaryColor }]}>{`เปลี่ยนรหัสผ่าน`}</Text>}
                             <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}> 
                                 <TextInput
                                     ref={(input) => { this.passwordOld = input; }}
@@ -235,7 +232,7 @@ class ChangePasswordScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

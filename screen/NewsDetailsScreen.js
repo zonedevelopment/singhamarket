@@ -6,7 +6,9 @@ import {
     FlatList,
     Dimensions,
     BackHandler,
+    Platform,
     ScrollView,
+    SafeAreaView,
     Linking,
     TouchableOpacity
 } from 'react-native'
@@ -28,9 +30,12 @@ import {
 } from '../utils/contants'
 
 import styles from '../style/style'
+import IOSBackButtonOverlay from '../components/IOSBackButtonOverlay'
 
 const { height, width } = Dimensions.get('window');
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IOS_TOP_MEDIA_PADDING = Platform.OS === 'ios' ? 12 : 0
+
 class NewsDetailsScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -120,9 +125,10 @@ class NewsDetailsScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, {backgroundColor: primaryColor }]}>
+            <SafeAreaView style={[styles.container, {backgroundColor: primaryColor }]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
                 
-                <View style={[styles.container, { alignItems: 'center', backgroundColor: 'white', paddingBottom: 40 }]}>
+                <View style={[styles.container, { alignItems: 'center', backgroundColor: 'white', paddingBottom: 40, paddingTop: IOS_TOP_MEDIA_PADDING }]}>
                     <ScrollView>
                         <View style={[styles.container]}>
                             <Lightbox activeProps={{
@@ -186,7 +192,7 @@ class NewsDetailsScreen extends React.Component {
 
                     </ScrollView>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

@@ -52,6 +52,7 @@ import { value } from 'numeral'
 import { color } from 'react-native-reanimated'
 import IOSBackButtonOverlay from '../components/IOSBackButtonOverlay'
 import IOSSelectField from '../components/IOSSelectField'
+import IOSRegistrationForm from '../components/IOSRegistrationForm'
 
 const VALIDATION_FIELD = {
     compname: {
@@ -303,9 +304,11 @@ class RegisterCompanyScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.LoadProvince()
+        if (Platform.OS !== 'ios') {
+            this.LoadProvince()
+        }
         this.LoadProductType()
-        const { apptype, licenseAgree } = this.props.route.params //รับค่า UAT เพื่อซ่อนช่องเลขบัตรประชาชน เพราะไม่ผ่าน ios
+        const { apptype, licenseAgree } = this.props.route.params || {}
 
         this.setState({
             apptype: apptype,
@@ -370,6 +373,9 @@ class RegisterCompanyScreen extends React.Component {
     }
 
     validateFields() {
+        if (Platform.OS === 'ios') {
+            return this.validateIOSFields()
+        }
         const fields = this.state;
         const names = Object.keys(fields);
         for (const name of names) {
@@ -475,6 +481,37 @@ class RegisterCompanyScreen extends React.Component {
         );
 
         /// insert api
+    }
+
+    validateIOSFields = () => {
+        const fields = this.state
+        if (!fields.username.trim() || !fields.password.trim()) {
+            return Alert.alert('กรุณากรอก Username และ Password ให้ครบ')
+        }
+        if (!fields.productCate) {
+            return Alert.alert('กรุณาเลือกประเภทสินค้า')
+        }
+        if (this.props.reducer.product_type.length === 0) {
+            return Alert.alert('กรุณาเลือกหมวดหมู่สินค้าที่ต้องการขาย')
+        }
+        if (!fields.validate_username) {
+            return Alert.alert('กรุณาตรวจสอบ Username หรือ Username นี้มีผู้ใช้งานแล้ว')
+        }
+        const securityError = validateFormSecurity([
+            { label: 'ชื่อผู้ใช้งาน', value: fields.username, checkSql: true },
+            { label: 'รหัสผ่าน', value: fields.password, checkSql: false },
+        ])
+        if (securityError) {
+            return Alert.alert(securityError)
+        }
+        const passwordPolicyError = validatePasswordPolicy({ password: fields.password, username: fields.username })
+        if (passwordPolicyError) {
+            return Alert.alert(passwordPolicyError)
+        }
+        Alert.alert('ยืนยัน', 'ยืนยันสมัครสมาชิก?', [
+            { text: 'ยกเลิก', style: 'cancel' },
+            { text: 'ตกลง', onPress: this.onSubmit },
+        ])
     }
 
     onSubmit = () => {
@@ -599,6 +636,34 @@ class RegisterCompanyScreen extends React.Component {
         const props = this.props.reducer
         const productSelected = props.product_type
 
+        if (Platform.OS === 'ios') {
+            return (
+                <IOSRegistrationForm
+                    accountTypeLabel='ลงทะเบียนแบบนิติบุคคล'
+                    productTypes={this.state.ProductType}
+                    selectedProducts={productSelected}
+                    username={this.state.username}
+                    password={this.state.password}
+                    passwordHint={PASSWORD_POLICY_HINT}
+                    onBack={this.handleBack}
+                    onUsernameChange={(username) => this.setState({ username, validate_username: false })}
+                    onUsernameBlur={() => this.CheckUserName()}
+                    onPasswordChange={(password) => this.setState({ password })}
+                    passwordRef={(input) => { this.password = input }}
+                    onSelectProductType={(index, value) => this.onSelectProductCategory(index, value)}
+                    onOpenProductCategories={() => {
+                        if (this.state.productCate > 0) {
+                            this.props.navigation.navigate('Categoryscreen', { typeId: this.state.productCate, RegisType: 'Company' })
+                        } else {
+                            Alert.alert('กรุณาเลือกประเภทสินค้าก่อน')
+                        }
+                    }}
+                    onSubmit={() => this.validateFields()}
+                    onLogin={() => this.props.navigation.navigate('Login')}
+                />
+            )
+        }
+
         return (
             <SafeAreaView style={[styles.container, styles.formPageBackground]}>
                 <IOSBackButtonOverlay onPress={this.handleBack} />
@@ -609,6 +674,7 @@ class RegisterCompanyScreen extends React.Component {
                         style={[styles.panelWhite, styles.registerPanelShadow]}
                         contentContainerStyle={{ flexGrow: 1 }}
                         keyboardShouldPersistTaps='handled'
+                        scrollEnabled={Platform.OS !== 'ios' || !this.state.openDropdown}
                         onTouchStart={this.closeIOSDropdown}>
                         <View style={{ paddingBottom: 20 }}>
                             {Platform.OS === 'ios' ? null : <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>}

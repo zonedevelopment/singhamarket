@@ -44,6 +44,10 @@ subprojects { subproject ->
                             details.requested.name == "firebase-messaging") {
                         details.useVersion rootProject.ext.firebaseMessagingVersion
                     }
+                    if (details.requested.group == "com.github.yalantis" &&
+                            details.requested.name == "ucrop") {
+                        details.useVersion "2.2.2-native"
+                    }
                 }
             }
         }

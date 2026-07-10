@@ -31,7 +31,8 @@ import {
     CHECK_BOOTH_URL
 } from '../../utils/contants'
 
-import { Picker,CheckBox } from 'native-base';
+import { Picker } from '@react-native-picker/picker'
+import { CheckBox } from 'native-base'
 
 import styles from '../../style/style'
 import ic_plan from '../../assets/image/icon_plan_gold.png'

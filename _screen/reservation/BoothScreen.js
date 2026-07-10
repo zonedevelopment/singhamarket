@@ -14,7 +14,7 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import Lightbox from 'react-native-lightbox'
-import { Picker } from 'native-base';
+import { Picker } from '@react-native-picker/picker';
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import {

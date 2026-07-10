@@ -4,6 +4,8 @@ import {
     Text,
     FlatList,
     Dimensions,
+    Alert,
+    Platform,
     BackHandler,
     TouchableOpacity
 } from 'react-native'
@@ -109,8 +111,13 @@ class ReservationScreen extends React.Component {
     }
 
     GetMyCart () {
+        const userInfo = this.props.reducer.userInfo || {}
+        if (Platform.OS === 'ios' && !userInfo.partners_id) {
+            this.props.setUserCountCartItem(0)
+            return
+        }
         let formData = new FormData();
-        formData.append('partners_id',this.props.reducer.userInfo.partners_id)
+        formData.append('partners_id', userInfo.partners_id)
         Hepler.post(BASE_URL + GET_CART_URL,formData,HEADERFORMDATA,(results) => {
             console.log('GET_CART_URL',results)
             if (results.status == 'SUCCESS') {
@@ -126,8 +133,9 @@ class ReservationScreen extends React.Component {
 
     LoadData() {
         this.props.openIndicator()
+        const userInfo = this.props.reducer.userInfo || {}
         let formData = new FormData()
-        formData.append('partners_id', this.props.reducer.userInfo.partners_id)
+        formData.append('partners_id', userInfo.partners_id || '')
         Hepler.post(BASE_URL + GET_BUILDING_URL,formData,HEADERFORMDATA,(results) => {
             console.log('GET_BUILDING_URL',results)
             if(results.status == 'SUCCESS'){

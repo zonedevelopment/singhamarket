@@ -8,6 +8,7 @@ import {
     ScrollView,
     Dimensions,
     BackHandler,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -33,6 +34,7 @@ import {
 
 import styles from '../style/style'
 import Hepler from '../utils/Helper'
+import IOSBackButtonOverlay from '../components/IOSBackButtonOverlay'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class CategoryListScreen extends React.Component {
@@ -146,7 +148,8 @@ class CategoryListScreen extends React.Component {
     render() {
 
         return (
-            <View style={[styles.container, { backgroundColor: primaryColor }]}>
+            <SafeAreaView style={[styles.container, { backgroundColor: primaryColor }]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
                 {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
@@ -175,7 +178,7 @@ class CategoryListScreen extends React.Component {
                         keyExtractor={(item) => item.category_id}
                         renderItem={this._renderItem} />
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

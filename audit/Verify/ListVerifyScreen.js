@@ -13,7 +13,7 @@ import {
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
-import { Picker } from "native-base"
+import { Picker } from '@react-native-picker/picker'
 import ImagePicker from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image'
 import { connect } from 'react-redux'

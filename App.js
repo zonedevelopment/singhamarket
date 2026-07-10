@@ -54,6 +54,7 @@ import Splashscreen from './screen/SplashScreen'
 import Choicescreen from './screen/ChoiceScreen'
 import Loginscreen from './screen/LoginScreen'
 import Mainscreen from './screen/MainScreen'
+import MainIOSScreen from './screen/MainIOSScreen'
 import PaymentChannelscreen from './screen/PaymentChannelScreen'
 import Registerconditionsreen from './screen/RegisterConditionScreen'
 import RegisterPersonscreen from './screen/RegisterPersonScreen'
@@ -87,6 +88,7 @@ function MyStack() {
         <Stack.Screen name="Choice" component={Choicescreen} />
         <Stack.Screen name="Login" component={Loginscreen} />
         <Stack.Screen name="Main" component={Mainscreen}  />
+        <Stack.Screen name="MainIOS" component={MainIOSScreen} />
         <Stack.Screen name="Registerperson" component={RegisterPersonscreen} />
         <Stack.Screen name="Registercompany" component={RegisterCompanyscreen} />
         <Stack.Screen name="Registercondition" component={Registerconditionsreen} />

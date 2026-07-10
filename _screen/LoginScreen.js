@@ -8,6 +8,8 @@ import {
     TextInput,
     Dimensions,
     BackHandler,
+    Platform,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -45,6 +47,8 @@ import ic_user from '../assets/image/icon_user_login.png'
 import ic_lock from '../assets/image/icon_password.png'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IOS_LOGIN_TOP_PADDING = Platform.OS === 'ios' ? 20 : 0
+
 class LoginScreen extends React.Component {
     backHandlerSubscription = null;
 
@@ -214,7 +218,7 @@ class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
+            <SafeAreaView style={[styles.container, styles.backgroundPrimary]}>
                 <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
@@ -229,7 +233,13 @@ class LoginScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} />
-                <View style={[styles.container, styles.center]}>
+                <View
+                    style={[
+                        styles.container,
+                        Platform.OS === 'ios'
+                            ? { alignItems: 'center', justifyContent: 'flex-start', paddingTop: IOS_LOGIN_TOP_PADDING }
+                            : styles.center
+                    ]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <View style={[styles.panelWhite, styles.shadow]}>
                         <Text style={[styles.text20, { color: primaryColor, alignSelf: 'center' }]}>{`เข้าสู่ระบบ`}</Text>
@@ -300,7 +310,7 @@ class LoginScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

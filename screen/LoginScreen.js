@@ -9,11 +9,14 @@ import {
     ScrollView,
     Dimensions,
     BackHandler,
+    Platform,
+    SafeAreaView,
     TouchableOpacity,
     KeyboardAvoidingView
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import { CommonActions } from '@react-navigation/native'
 import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
@@ -47,8 +50,11 @@ import { validateFormSecurity } from '../utils/inputSecurity'
 import styles from '../style/style'
 import ic_user from '../assets/image/icon_user_login.png'
 import ic_lock from '../assets/image/icon_password.png'
+import IOSBackButtonOverlay from '../components/IOSBackButtonOverlay'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IOS_LOGIN_TOP_PADDING = Platform.OS === 'ios' ? 20 : 0
+
 class LoginScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -108,6 +114,15 @@ class LoginScreen extends React.Component {
     componentDidMount() {
         console.log('token', this.props.reducer.token)
         this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    resetToRootScreen(routeName) {
+        this.props.navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: routeName }],
+            })
+        )
     }
 
 
@@ -223,13 +238,13 @@ class LoginScreen extends React.Component {
                         StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
                         StorageServies.set(KEY_PWD_TXT, passWord.trim())
                         this.props.saveUserInfo(results.data)
-                        this.props.navigation.navigate('AuditMain')
+                        this.resetToRootScreen('AuditMain')
                     } else {
                         StorageServies.set(KEY_ROLE, results.data.role)
                         StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
                         StorageServies.set(KEY_PWD_TXT, passWord.trim())
                         this.props.saveUserInfo(results.data)
-                        this.props.navigation.navigate('AdminMain')
+                        this.resetToRootScreen('AdminMain')
                     }
 
                 } else {
@@ -247,19 +262,26 @@ class LoginScreen extends React.Component {
             if (results.status == 'SUCCESS') {
                 this.props.setStateMyCart(results.data.Cart)
                 this.props.setUserCountCartItem(results.data.Cart.length + results.data.Charge.length)
-                this.props.navigation.replace('Main')
+                this.resetToRootScreen('Main')
             } else {
                 this.props.setStateMyCart([])
                 this.props.setUserCountCartItem(0)
-                this.props.navigation.replace('Main')
+                this.resetToRootScreen('Main')
                 Alert.alert(results.message)
             }
         })
     }
     render() {
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
-                <View style={[styles.container, styles.center]}>
+            <SafeAreaView style={[styles.container, styles.backgroundPrimary]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
+                <View
+                    style={[
+                        styles.container,
+                        Platform.OS === 'ios'
+                            ? { alignItems: 'center', justifyContent: 'flex-start', paddingTop: IOS_LOGIN_TOP_PADDING }
+                            : styles.center
+                    ]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="never">
                         <KeyboardAvoidingView behavior="padding">
@@ -336,7 +358,7 @@ class LoginScreen extends React.Component {
                         </KeyboardAvoidingView>
                     </ScrollView>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

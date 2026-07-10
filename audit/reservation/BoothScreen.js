@@ -4,7 +4,6 @@ import {
     Text,
     Image,
     FlatList,
-    ScrollView,
     Alert,
     Dimensions,
     BackHandler, 
@@ -368,10 +367,18 @@ class BoothScreen extends React.Component {
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 50 }]}>
-                <ScrollView>
-                    <View style={[styles.container, { padding: 15 }]}>
-                        <View style={[styles.containerRow]}>
+            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 50 }]}> 
+                <FlatList
+                    data={this.state.listBooth}
+                    extraData={this.state}
+                    onRefresh={() => this.onRefresh()}
+                    refreshing={this.state.isFetching}
+                    keyExtractor={(item, index) => `${item.booth_detail_id || 'booth'}-${index}`}
+                    renderItem={this._renderItem}
+                    contentContainerStyle={{ padding: 15, paddingBottom: 30 }}
+                    ListHeaderComponent={(
+                        <View>
+                        <View style={[styles.containerRow]}> 
                             <Text style={[styles.text18, styles.bold, { flex: 0.6, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
                         </View>
                         <View style={[styles.marginBetweenVertical]}></View>
@@ -387,7 +394,7 @@ class BoothScreen extends React.Component {
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <View style={[styles.containerRow, { padding: 5, height: 55 }]}>
+                            <View style={[styles.containerRow, { padding: 5, height: 55 }]}> 
                                 <View style={{ flex: 0.25, backgroundColor: primaryColor, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
                                     <Text style={[styles.text16, { color: 'white' }]}>{`Booth No.`}</Text>
                                 </View>
@@ -396,22 +403,15 @@ class BoothScreen extends React.Component {
                                     <Text style={[styles.text18, { color: 'white' }]}>{`รายละเอียด`}</Text>
                                 </View>
                             </View>
-                            {
-                                this.state.listBooth.length > 0 ?
-                                    <FlatList
-                                        data={this.state.listBooth}
-                                        extraData={this.state}
-                                        onRefresh={() => this.onRefresh()}
-                                        refreshing={this.state.isFetching}
-                                        keyExtractor={(item) => item.booth_detail_id}
-                                        renderItem={this._renderItem} />
-                                :
-                                    <View style={[styles.containerRow, { padding: 5, height: 55,alignSelf:'center' }]}>
-                                        <Text style={[styles.text16,{textAlign:'center',color:primaryColor}]}>{'ไม่พบข้อมูลบูธขายของ'}</Text>
-                                    </View>
-                            }
-                    </View>
-                    <View style={[styles.center, { padding: 5, bottom: 5, alignSelf: 'center' , bottom: 15}]}>
+                        </View>
+                    )}
+                    ListEmptyComponent={(
+                        <View style={[styles.containerRow, { padding: 5, height: 55, alignSelf: 'center' }]}> 
+                            <Text style={[styles.text16, { textAlign: 'center', color: primaryColor }]}>{`ไม่พบข้อมูลบูธขายของ`}</Text>
+                        </View>
+                    )}
+                    ListFooterComponent={(
+                    <View style={[styles.center, { padding: 5, bottom: 5, alignSelf: 'center' , bottom: 15}]}> 
                         <TouchableOpacity style={[styles.mainButton, styles.center]}
                             onPress={
                                 () => {
@@ -426,9 +426,8 @@ class BoothScreen extends React.Component {
                             <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>
                         </TouchableOpacity>
                     </View>
-                </ScrollView>
-
-                
+                    )}
+                />
             </View>
         )
     }

@@ -137,7 +137,7 @@ index b786ad1..41c9bac 100644
                    scrollEnabled={false}
                    horizontal={true}
 diff --git a/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js b/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js
-index f919e99..88c9023 100644
+index f919e99..c712204 100644
 --- a/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js
 +++ b/node_modules/react-native-image-gallery/src/libraries/ViewTransformer/index.js
 @@ -50,6 +50,7 @@ export default class ViewTransformer extends React.Component {
@@ -166,3 +166,13 @@ index f919e99..88c9023 100644
          NativeModules.UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
              if (typeof pageX === 'number' && typeof pageY === 'number') { // avoid undefined values on Android devices
                  if (this.state.pageX !== pageX || this.state.pageY !== pageY) {
+@@ -375,7 +376,8 @@ export default class ViewTransformer extends React.Component {
+             {
+                 toValue: 1,
+                 duration: duration,
+-                easing: Easing.inOut(Easing.ease)
++                easing: Easing.inOut(Easing.ease),
++                useNativeDriver: false
+             }
+         ).start();
+     }

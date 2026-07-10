@@ -1,4 +1,4 @@
-const environment = "DEVELOPMENT"; /// "PRODUCTION"; "DEVELOPMENT"; "SENDBOX";
+const environment = "PRODUCTION"; /// "PRODUCTION"; "DEVELOPMENT"; "SENDBOX";
 /**
  * Color
  */
@@ -92,7 +92,8 @@ export const SET_MY_CART = 'SET_MY_CART'
 //export const BASE_URL                 = 'https://benz.ots.co.th/singha'
 export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
 // export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
-export const API_PATH                 = '/dev_api'
+export const API_PATH                 = '/api'
+// export const API_PATH                 = '/dev_api'
 
 export const GET_TIMEOUT_SUMMARY_URL  = `${API_PATH}/GetTimeoutSummary`
 export const CONSTANTS_URL            = `${API_PATH}/GetConstants`
@@ -272,34 +273,34 @@ const REF3_PROD                      ='MAF'
 // export const REF3                 = REF3_SENDBOX
 
 // ///// QR SCB UAT เปิด-ปิด โคดเอา
-export const OAUTHTOKEN               = OAUTHTOKEN_UAT
-export const AUTHORIZE                = AUTHORIZE_UAT
-export const TOKEN                    = TOKEN_UAT
-export const QRCODECREATE             = QRCODECREATE_UAT
-export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_UAT
-export const QR30_INQUIRY             = QR30_INQUIRY_UAT
-export const AUTHORIZEHEADER          = AUTHORIZEHEADER_UAT
-export const OAUTHTOKENHEADER         = OAUTHTOKENHEADER_UAT
-export const APIKEY                   = APIKEY_UAT
-export const APISECRET                = APISECRET_UAT
-export const BILLER_ID                = BILLER_ID_UAT
-export const REQUESTUID               = requestUId_UAT
-export const REF3                     = REF3_UAT
+// export const OAUTHTOKEN               = OAUTHTOKEN_UAT
+// export const AUTHORIZE                = AUTHORIZE_UAT
+// export const TOKEN                    = TOKEN_UAT
+// export const QRCODECREATE             = QRCODECREATE_UAT
+// export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_UAT
+// export const QR30_INQUIRY             = QR30_INQUIRY_UAT
+// export const AUTHORIZEHEADER          = AUTHORIZEHEADER_UAT
+// export const OAUTHTOKENHEADER         = OAUTHTOKENHEADER_UAT
+// export const APIKEY                   = APIKEY_UAT
+// export const APISECRET                = APISECRET_UAT
+// export const BILLER_ID                = BILLER_ID_UAT
+// export const REQUESTUID               = requestUId_UAT
+// export const REF3                     = REF3_UAT
 
 ///// QR SCB PROD เปิด-ปิด โคดเอา
-// export const OAUTHTOKEN               = OAUTHTOKEN_PROD
-// export const AUTHORIZE                = AUTHORIZE_PROD
-// export const TOKEN                    = TOKEN_PROD
-// export const QRCODECREATE             = QRCODECREATE_PROD
-// export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_PROD
-// export const QR30_INQUIRY             = QR30_INQUIRY_PROD
-// export const AUTHORIZEHEADER = AUTHORIZEHEADER_PROD
-// export const OAUTHTOKENHEADER = OAUTHTOKENHEADER_PROD
-// export const APIKEY                   = APIKEY_PROD
-// export const APISECRET                = APISECRET_PROD
-// export const BILLER_ID                = BILLER_ID_PROD
-// export const REQUESTUID           = requestUId_PROD
-// export const REF3                 = REF3_PROD
+export const OAUTHTOKEN               = OAUTHTOKEN_PROD
+export const AUTHORIZE                = AUTHORIZE_PROD
+export const TOKEN                    = TOKEN_PROD
+export const QRCODECREATE             = QRCODECREATE_PROD
+export const PAYMENTTRANSACTION       = PAYMENTTRANSACTION_PROD
+export const QR30_INQUIRY             = QR30_INQUIRY_PROD
+export const AUTHORIZEHEADER = AUTHORIZEHEADER_PROD
+export const OAUTHTOKENHEADER = OAUTHTOKENHEADER_PROD
+export const APIKEY                   = APIKEY_PROD
+export const APISECRET                = APISECRET_PROD
+export const BILLER_ID                = BILLER_ID_PROD
+export const REQUESTUID           = requestUId_PROD
+export const REF3                 = REF3_PROD
 
 /**
  * End

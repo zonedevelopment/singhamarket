@@ -28,9 +28,13 @@ android {
         applicationId "th.co.zoneidea.sunplaza"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 47
-        versionName "1.1.0"
+        versionCode 52
+        versionName "1.1.5"
         multiDexEnabled true
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
 
     compileOptions {
@@ -82,9 +86,9 @@ android {
 //        pickFirst "lib/x86/libc++_shared.so"
 //        pickFirst "lib/x86_64/libc++_shared.so"
 //    }
-    packagingOptions {
+    packaging {
         jniLibs {
-            useLegacyPackaging false
+            useLegacyPackaging = true
         }
     }
 

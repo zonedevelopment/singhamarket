@@ -6,6 +6,8 @@ import {
     FlatList,
     Dimensions,
     BackHandler,
+    Platform,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -35,6 +37,8 @@ import {
 import styles from '../style/style'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IOS_TOP_MEDIA_PADDING = Platform.OS === 'ios' ? 12 : 0
+
 class ChoiceScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -155,8 +159,9 @@ class ChoiceScreen extends React.Component {
         const props = this.props
     
         return (
-            <View style={[styles.container, styles.backgroundPrimary]}>
+            <SafeAreaView style={[styles.container, styles.backgroundPrimary]}>
                 <Carousel
+                    containerCustomStyle={Platform.OS === 'ios' ? { paddingTop: IOS_TOP_MEDIA_PADDING } : null}
                     autoplay
                     autoplayTimeout={5000}
                     loop
@@ -197,7 +202,7 @@ class ChoiceScreen extends React.Component {
                         </View>
                     }
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

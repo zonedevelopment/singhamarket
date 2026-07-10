@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-banner-carousel/out/Carousel.js b/node_modules/react-native-banner-carousel/out/Carousel.js
+index c270b5f..d0d3e6a 100644
+--- a/node_modules/react-native-banner-carousel/out/Carousel.js
++++ b/node_modules/react-native-banner-carousel/out/Carousel.js
+@@ -295,7 +295,8 @@ Carousel.defaultProps = {
+         return react_native_1.Animated.spring(animate, {
+             toValue: toValue,
+             friction: 10,
+-            tension: 50
++            tension: 50,
++            useNativeDriver: false
+         });
+     }
+ };

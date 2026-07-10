@@ -11,7 +11,7 @@ import {
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
-import { Picker } from "native-base"
+import { Picker } from '@react-native-picker/picker'
 import { connect } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
 import { NavigationBar } from 'navigationbar-react-native'

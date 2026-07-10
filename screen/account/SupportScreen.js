@@ -9,6 +9,8 @@ import {
     Dimensions,
     ScrollView,
     BackHandler,
+    Platform,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -35,6 +37,7 @@ import {
 } from '../../actions'
 import Hepler from '../../utils/Helper'
 import { validateFormSecurity } from '../../utils/inputSecurity'
+import IOSBackButtonOverlay from '../../components/IOSBackButtonOverlay'
 
 class SupportScreen extends React.Component {
     backHandlerSubscription = null
@@ -134,26 +137,20 @@ class SupportScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 85 }]}>
-                {/* <NavigationBar
-                    componentLeft={this.ComponentLeft}
-                    componentCenter={this.ComponentCenter}
-                    componentRight={this.ComponentRight}
-                    navigationBarStyle={[styles.bottomRightRadius, styles.bottomLeftRadius, {
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }]}
-                    statusBarStyle={{
-                        backgroundColor: primaryColor,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                    }} /> */}
+            <SafeAreaView style={[styles.container, Platform.OS === 'ios' ? styles.formPageBackground : { backgroundColor: 'white', paddingBottom: 85 }]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
+                {Platform.OS === 'ios' ? (
+                    <View style={styles.formHeaderBlock}>
+                        <Text style={styles.formHeaderTitle}>{`แจ้งเรื่องร้องเรียน/ติดต่อเรา`}</Text>
+                        <Text style={styles.formHeaderBrand}>{`SUN PLAZA`}</Text>
+                    </View>
+                ) : null}
                 <ScrollView
+                    style={Platform.OS === 'ios' ? [styles.panelWhite, styles.registerPanelShadow, { alignSelf: 'center', flex: 1 }] : null}
                     contentContainerStyle={{ flexGrow: 1 }}
                     keyboardShouldPersistTaps="always">
                     <View style={[styles.container, styles.center, { padding: 5 }]}>
-                        <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
+                        {Platform.OS === 'ios' ? null : <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>}
                         <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`คุณสามารถติดต่อเราได้ที่`}</Text>
                         <View style={[styles.marginBetweenVertical]}></View>
                         <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`SINGHA ESTATE`}</Text>
@@ -233,7 +230,7 @@ class SupportScreen extends React.Component {
                         </View>
                     </View>
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         )
     }
 }

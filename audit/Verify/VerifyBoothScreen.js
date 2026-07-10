@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import ImagePicker from 'react-native-image-picker';
-import { Picker } from "native-base"
+import { Picker } from '@react-native-picker/picker'
 import { connect } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'

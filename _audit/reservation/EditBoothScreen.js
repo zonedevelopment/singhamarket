@@ -8,9 +8,9 @@ import {
     Alert,
     Dimensions,
     BackHandler,
-    Picker,
     TouchableOpacity
 } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'

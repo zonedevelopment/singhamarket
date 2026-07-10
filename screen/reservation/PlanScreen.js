@@ -9,6 +9,7 @@ import {
     Dimensions,
     BackHandler,
     ImageBackground,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -38,6 +39,7 @@ import {
 import Hepler from '../../utils/Helper'
 
 import styles from '../../style/style'
+import IOSBackButtonOverlay from '../../components/IOSBackButtonOverlay'
 
 import plan1 from '../../assets/image/plan_plaza1.jpg'
 import Gallery from 'react-native-image-gallery';
@@ -138,7 +140,8 @@ class PlanScreen extends React.Component {
     render() {
         const{ plan_image} = this.props.route.params
         return (
-            <View style={[styles.container, { backgroundColor: 'white' }]}>
+            <SafeAreaView style={[styles.container, { backgroundColor: 'white' }]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
                 {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
@@ -181,8 +184,8 @@ class PlanScreen extends React.Component {
                     {/* </ScrollView> */}
            
                 {/* </ScrollView> */}
-              
-            </View>
+             
+            </SafeAreaView>
         )
     }
 }

@@ -8,6 +8,9 @@ import {
     Dimensions,
     BackHandler,
     ScrollView,
+    Platform,
+    SafeAreaView,
+    Alert,
     Linking,
     TouchableOpacity
 } from 'react-native'
@@ -38,8 +41,11 @@ import Hepler from '../utils/Helper'
 import styles from '../style/style'
 
 import OpenURLButton from '../components/OpenURLButton'
+import IOSBackButtonOverlay from '../components/IOSBackButtonOverlay'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IOS_LOGO_TOP_PADDING = Platform.OS === 'ios' ? 20 : 0
+
 class RegisterConditionScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -138,7 +144,8 @@ class RegisterConditionScreen extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, styles.backgroundPrimary, { paddingBottom: 40 }]}>
+            <SafeAreaView style={[styles.container, styles.backgroundPrimary, { paddingBottom: 40 }]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
                 {/* <NavigationBar
                     componentLeft={this.ComponentLeft}
                     componentCenter={this.ComponentCenter}
@@ -154,7 +161,7 @@ class RegisterConditionScreen extends React.Component {
                         elevation: 0,
                         shadowOpacity: 0,
                     }} /> */}
-                <View style={[styles.container, { alignItems: 'center' }]}>
+                <View style={[styles.container, Platform.OS === 'ios' ? { alignItems: 'center', paddingTop: IOS_LOGO_TOP_PADDING } : { alignItems: 'center' }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <ScrollView style={[styles.panelWhite, styles.registerPanelShadow]}>
                         <View style={[{ zIndex:1000, paddingBottom: 20 }]}>
@@ -189,7 +196,7 @@ class RegisterConditionScreen extends React.Component {
                                                 onPress={() => this.onCheckLicense(!this.state.licenseAgree)} />
                                             <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ยอมรับข้อตกลงและเงื่อนไขในการจองตลาด `}</Text>
                                         </View>
-                                        <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}>
+                                        {Platform.OS === 'ios' ? null : <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center' }]}> 
                                             <CheckBox
                                                 center
                                                 containerStyle={{ flex: 0.05, backgroundColor: 'transparent', borderWidth: 0, margin: 0, alignSelf: 'flex-end', marginRight: -5 }}
@@ -197,7 +204,7 @@ class RegisterConditionScreen extends React.Component {
                                                 checked={this.state.privacyAgree}
                                                 onPress={() => this.onCheckPrivacy(!this.state.privacyAgree)} />
                                             <Text style={[styles.text14, { flex: 1, textAlign: 'left', marginLeft: -5 }]}>{`ให้การยินยอมในการเปิดเผยข้อมูล `}</Text>
-                                        </View>
+                                        </View>}
                                     </View>
                                 :
                                     <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
@@ -238,7 +245,7 @@ class RegisterConditionScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

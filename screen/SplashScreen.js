@@ -8,6 +8,7 @@ import {
     AppState
 } from 'react-native'
 import { connect } from 'react-redux'
+import { CommonActions } from '@react-navigation/native'
 import RNExitApp from 'react-native-exit-app'
 import VersionCheck from 'react-native-version-check'
 
@@ -107,6 +108,23 @@ class SplashScreen extends React.Component {
         }
     }
 
+    resetToRootScreen(routeName) {
+        this.props.navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: routeName }],
+            })
+        )
+    }
+
+    getUserMainRoute() {
+        return 'Main'
+    }
+
+    getGuestRoute() {
+        return Platform.OS === 'ios' ? 'MainIOS' : 'Choice'
+    }
+
 
 
 
@@ -156,7 +174,7 @@ class SplashScreen extends React.Component {
                         Alert.alert(results.message)
                         StorageServies.clear()
                         this.props.saveUserInfo([])
-                        this.props.navigation.navigate('Choice')
+                        this.resetToRootScreen(this.getGuestRoute())
                     }
                 })
             }
@@ -169,12 +187,12 @@ class SplashScreen extends React.Component {
                     if (results.status == 'SUCCESS') {
                         StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
                         this.props.saveUserInfo(results.data)
-                        this.props.navigation.replace('AuditMain')
+                        this.resetToRootScreen('AuditMain')
                     } else {
                         Alert.alert(results.message)
                         StorageServies.clear()
                         this.props.saveUserInfo([])
-                        this.props.navigation.navigate('Choice')
+                    this.resetToRootScreen(this.getGuestRoute())
                     }
                 })
             }
@@ -188,17 +206,17 @@ class SplashScreen extends React.Component {
                     if (results.status == 'SUCCESS') {
                         StorageServies.set(KEY_LOGIN, JSON.stringify(results.data))
                         this.props.saveUserInfo(results.data)
-                        this.props.navigation.replace('AdminMain')
+                        this.resetToRootScreen('AdminMain')
                     } else {
                         Alert.alert(results.message)
                         StorageServies.clear()
                         this.props.saveUserInfo([])
-                        this.props.navigation.navigate('Choice')
+                    this.resetToRootScreen(this.getGuestRoute())
                     }
                 })
             }
         } else {
-            this.props.navigation.replace('Choice')
+            this.resetToRootScreen(this.getGuestRoute())
         }
     }
 
@@ -230,11 +248,11 @@ class SplashScreen extends React.Component {
             if (results.status == 'SUCCESS') {
                 this.props.setStateMyCart(results.data.Cart)
                 this.props.setUserCountCartItem(results.data.Cart.length + results.data.Charge.length)
-                this.props.navigation.replace('Main')
+                this.resetToRootScreen(this.getUserMainRoute())
             } else {
                 this.props.setStateMyCart([])
                 this.props.setUserCountCartItem(0)
-                this.props.navigation.replace('Main')
+                this.resetToRootScreen(this.getUserMainRoute())
                 Alert.alert(results.message)
             }
         })

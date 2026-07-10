@@ -21,6 +21,7 @@ import {
     primaryColor,
     secondaryColor,
     emptyColor,
+    reservColor,
     SUBMIT_BOOKING_URL,
     BASE_URL,
     HEADERFORMDATA,
@@ -46,6 +47,7 @@ import Hepler from '../../utils/Helper'
 
 class SummaryScreen extends React.Component {
     backHandlerSubscription = null
+    focusSubscription = null
 
 
     state = {
@@ -100,6 +102,10 @@ class SummaryScreen extends React.Component {
     }
 
     componentWillUnmount() {
+        if (this.focusSubscription) {
+            this.focusSubscription();
+            this.focusSubscription = null;
+        }
         if (this.backHandlerSubscription) {
             this.backHandlerSubscription.remove();
             this.backHandlerSubscription = null;
@@ -107,28 +113,29 @@ class SummaryScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.props.navigation.addListener('focus', () => {
+        this.focusSubscription = this.props.navigation.addListener('focus', () => {
             this.calculate()
         });
         this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     calculate() {
-        // console.log('arrCart',this.props.reducer.audit_reserv_date)
-        const props = this.props
-        const reducer = props.reducer
-        //props.openIndicator()
+        const reducer = this.props.reducer
         let total_area = 0
         let total_service = 0
         let vat3 = 0
         let total_price = 0
         let {discount_price} = this.state
-        reducer.audit_reserv_date.map((vDate, iDate) => {
-            vDate.ListBooth.map((valueBooth, indexBooth) => {
+
+        const arrDate = []
+
+        ;(reducer.audit_reserv_date || []).map((vDate) => {
+            const listBooth = Array.isArray(vDate.ListBooth) ? vDate.ListBooth : []
+            listBooth.map((valueBooth) => {
                 if(valueBooth.status == true){
-                    total_area += parseFloat(valueBooth.amount)
-                    valueBooth.other_service.map((vs, is) => {
-                        total_service += vs.qty * parseFloat(vs.service_price)
+                    total_area += parseFloat(valueBooth.amount || 0)
+                    ;(valueBooth.other_service || []).map((vs) => {
+                        total_service += (vs.qty || 0) * parseFloat(vs.service_price || 0)
                     })
                 }
             })
@@ -138,7 +145,7 @@ class SummaryScreen extends React.Component {
             vat3 = (parseFloat(total_area) + parseFloat(total_service)) * reducer.personal_vat / 100
             total_price = parseFloat(total_area) + parseFloat(total_service) - parseFloat(discount_price)
         } else { /// นิติบุคคล
-            vat_cut = parseFloat(total_area) - ((parseFloat(total_area) * parseFloat(reducer.personal_vat)) / (100 + parseFloat(reducer.personal_vat)))
+            const vat_cut = parseFloat(total_area) - ((parseFloat(total_area) * parseFloat(reducer.personal_vat)) / (100 + parseFloat(reducer.personal_vat)))
             vat3 = ((parseFloat(vat_cut) - parseFloat(discount_price)) * reducer.company_vat) / 100
             total_price = (parseFloat(total_area) - parseFloat(vat3)) + parseFloat(total_service)
         }
@@ -171,9 +178,11 @@ class SummaryScreen extends React.Component {
                     <Text style={[styles.text16,{fontWeight:'bold',color: primaryColor}]}>{`วันที่ขาย ` + moment(item.date).format('LL')}</Text>
                 </View>
                 {
-                    item.ListBooth.map((valueBooth, indexBooth) => {
+                    (item.ListBooth || []).map((valueBooth, indexBooth) => {
                         return (
-                            <View style={[styles.containerRow,{marginBottom:5}]}>
+                            <View
+                                key={`${item.date}-${valueBooth.booth_id || valueBooth.booth_detail_id || indexBooth}`}
+                                style={[styles.containerRow,{marginBottom:5}]}> 
                                 
                                 <View style={{ flex: 0.15 }}>
                                     <View style={[styles.center, { alignItems: 'center', width: 42, height: 42, backgroundColor: valueBooth.status == false ? reservColor : emptyColor, borderRadius: 10 }]}>
@@ -205,9 +214,11 @@ class SummaryScreen extends React.Component {
                                             <Text style={[styles.text14]}>{`${numeral(valueBooth.amount).format('0,0.00')} บาท`}</Text>
                                         </View>
                                         {
-                                            valueBooth.other_service.map((v, i) => {
+                                            (valueBooth.other_service || []).map((v, i) => {
                                                 return (
-                                                    <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center'/*,borderBottomColor: '#ddd', borderBottomWidth: 0.5*/}]}>
+                                                    <View
+                                                        key={`${item.date}-${valueBooth.booth_id || valueBooth.booth_detail_id || indexBooth}-${v.service_id || i}`}
+                                                        style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center'/*,borderBottomColor: '#ddd', borderBottomWidth: 0.5*/}]}> 
                                                         <Text style={[styles.text14, { flex: 1 }]}>{v.service_name}</Text>
                                                         <View style={[styles.containerRow, { flex: 0.55, justifyContent: 'space-around', alignItems: 'center' }]}>
                                                             <TouchableOpacity style={[styles.center, { width: 20, height: 20, backgroundColor: grayColor, borderRadius: 4 }]}
@@ -403,8 +414,9 @@ class SummaryScreen extends React.Component {
                             <View style={[styles.marginBetweenVertical]}></View>
                             <FlatList
                                 data={this.props.reducer.audit_reserv_date}
-                                keyExtractor={(item) => item.id}
+                                keyExtractor={(item, index) => item.date || `${index}`}
                                 extraData={this.state}
+                                scrollEnabled={false}
                                 renderItem={this._renderItem} />
                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                 <Text style={[styles.text16, { textAlign: 'center' }]}>{`โค้ดส่วนลด`}</Text>
