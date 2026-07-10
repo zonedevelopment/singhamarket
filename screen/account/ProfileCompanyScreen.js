@@ -7,19 +7,21 @@ import {
     Dimensions,
     BackHandler,
     Alert,
+    Platform,
     TextInput,
     ScrollView,
+    SafeAreaView,
     TouchableOpacity,
-    Platform
+    TouchableWithoutFeedback
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { Picker } from '@react-native-picker/picker'
+import { CommonActions } from '@react-navigation/native'
 import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import * as EmailValidator from 'email-validator';
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker'
 import { CheckBox } from 'react-native-elements'
 import {
     darkColor,
@@ -52,8 +54,11 @@ import Hepler from '../../utils/Helper'
 import { validateFormSecurity } from '../../utils/inputSecurity'
 import StorageServies from '../../utils/StorageServies'
 import OpenURLButton from '../../components/OpenURLButton'
+import IOSBackButtonOverlay from '../../components/IOSBackButtonOverlay'
+import IOSSelectField from '../../components/IOSSelectField'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IS_IOS = Platform.OS === 'ios'
 class ProfileCompanyScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -92,6 +97,41 @@ class ProfileCompanyScreen extends React.Component {
         LoadDS: false,
         LoadSD: false,
         LoadFrist: false,
+        provinceOpen: false,
+        districtOpen: false,
+        subDistrictOpen: false,
+        isTextInputFocused: false,
+    }
+
+    getRootNavigation = () => {
+        let navigation = this.props.navigation
+        while (navigation.getParent && navigation.getParent()) {
+            navigation = navigation.getParent()
+        }
+        return navigation
+    }
+
+    closeAllDropdowns = () => {
+        this.setState({
+            provinceOpen: false,
+            districtOpen: false,
+            subDistrictOpen: false,
+        })
+    }
+
+    handleInputFocus = (onFocus) => {
+        this.setState({ isTextInputFocused: true })
+        this.closeAllDropdowns()
+        if (onFocus) {
+            onFocus()
+        }
+    }
+
+    handleInputBlur = (onBlur) => {
+        this.setState({ isTextInputFocused: false })
+        if (onBlur) {
+            onBlur()
+        }
     }
 
     ComponentLeft = () => {
@@ -264,13 +304,14 @@ class ProfileCompanyScreen extends React.Component {
     }
 
     async Logout() {
-        this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'Profile' }],
-        });
         await StorageServies.clear()
         await this.props.saveUserInfo([])
-        this.props.navigation.navigate('Choice')
+        this.getRootNavigation().dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Choice' }],
+            })
+        )
     }
 
 
@@ -337,6 +378,19 @@ class ProfileCompanyScreen extends React.Component {
     LoadDistrict(province_id) {
         this.props.openIndicator()
         let formData = new FormData();
+        if (IS_IOS) {
+            this.setState({
+                ProvinceSelected: province_id,
+                DistrictData: [],
+                DistrictSelected: null,
+                SubDistrictData: [],
+                SubDistrictSelected: null,
+                Zipcode: '',
+                provinceOpen: false,
+                districtOpen: false,
+                subDistrictOpen: false,
+            })
+        }
         formData.append('province_id', province_id)
         Hepler.post(BASE_URL + DISTRICT_URL, formData, HEADERFORMDATA, (results) => {
             console.log('DISTRICT_URL', results)
@@ -376,6 +430,17 @@ class ProfileCompanyScreen extends React.Component {
     LoadSubDistrict(district_id) {
         this.props.openIndicator()
         let formData = new FormData();
+        if (IS_IOS) {
+            this.setState({
+                DistrictSelected: district_id,
+                SubDistrictData: [],
+                SubDistrictSelected: null,
+                Zipcode: '',
+                provinceOpen: false,
+                districtOpen: false,
+                subDistrictOpen: false,
+            })
+        }
         formData.append('district_id', district_id)
         Hepler.post(BASE_URL + SUBDISTRICT_URL, formData, HEADERFORMDATA, (results) => {
             console.log('SUBDISTRICT_URL', results)
@@ -415,266 +480,234 @@ class ProfileCompanyScreen extends React.Component {
         })
     }
 
+    renderInputField(label, value, onChangeText, options = {}) {
+        const {
+            inputRef,
+            keyboardType,
+            maxLength,
+            editable = true,
+            onBlur,
+            onFocus,
+            returnKeyType = 'next',
+            placeholder = label,
+            showLabel = !IS_IOS,
+        } = options
+
+        return (
+            <View>
+                {showLabel ? <Text style={[styles.text18, { color: primaryColor }]}>{label}</Text> : null}
+                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                    <TextInput
+                        ref={inputRef}
+                        style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: primaryColor }}
+                        returnKeyType={returnKeyType}
+                        keyboardType={keyboardType}
+                        maxLength={maxLength}
+                        editable={editable}
+                        value={value}
+                        placeholder={placeholder}
+                        placeholderTextColor={'#7C7B7B'}
+                        onBlur={() => this.handleInputBlur(onBlur)}
+                        onFocus={() => this.handleInputFocus(onFocus)}
+                        onChangeText={onChangeText}
+                    />
+                </View>
+            </View>
+        )
+    }
+
+    renderDropdownField({
+        label,
+        open,
+        value,
+        items,
+        setOpen,
+        onChangeValue,
+        placeholder,
+        zIndex,
+        disabled = false,
+        showLabel = !IS_IOS,
+    }) {
+        if (IS_IOS) {
+            return (
+                <IOSSelectField
+                    options={items.map((item) => ({ key: `${item.value}`, value: item.label }))}
+                    placeholder={placeholder}
+                    selectedValue={value}
+                    isOpen={open}
+                    disabled={disabled}
+                    onToggle={(next) => {
+                        this.setState({
+                            provinceOpen: label === 'จังหวัด' && !!next,
+                            districtOpen: label === 'อำเภอ' && !!next,
+                            subDistrictOpen: label === 'ตำบล' && !!next,
+                        })
+                    }}
+                    onValueChange={onChangeValue}
+                    zIndex={zIndex}
+                />
+            )
+        }
+
+        return (
+            <View style={{ zIndex }}>
+                {showLabel ? <Text style={[styles.text18, { color: primaryColor }]}>{label}</Text> : null}
+                <DropDownPicker
+                    open={IS_IOS && this.state.isTextInputFocused ? false : open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    disabled={disabled}
+                    placeholder={placeholder}
+                    listMode='SCROLLVIEW'
+                    closeAfterSelecting
+                    onChangeValue={onChangeValue}
+                    onOpen={() => {
+                        this.setState({
+                            provinceOpen: label === 'จังหวัด',
+                            districtOpen: label === 'อำเภอ',
+                            subDistrictOpen: label === 'ตำบล',
+                        })
+                    }}
+                    onClose={this.closeAllDropdowns}
+                    style={[styles.registerFieldShadow, dropdownStyles.field, disabled ? dropdownStyles.disabledField : null, { borderRadius: 50 }]}
+                    dropDownContainerStyle={[dropdownStyles.dropdown, { zIndex }]}
+                    textStyle={[styles.regular, { color: primaryColor, fontSize: 18 }]}
+                    placeholderStyle={[styles.regular, { color: '#7C7B7B', fontSize: 18 }]}
+                    ArrowDownIconComponent={() => <Icon name='chevron-down' size={12} color='gray' />}
+                    ArrowUpIconComponent={() => <Icon name='chevron-up' size={12} color='gray' />}
+                />
+            </View>
+        )
+    }
+
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 45 }]}>
-                <View style={[styles.container, { padding: 10 }]}>
+            <SafeAreaView style={[styles.container, IS_IOS ? styles.formPageBackground : { backgroundColor: 'white', paddingBottom: 45 }]}>
+                {/* {IS_IOS ? <IOSBackButtonOverlay onPress={this.handleBack} /> : null} */}
+                <View style={[styles.container, IS_IOS ? { alignItems: 'center', paddingTop: 12 } : { padding: 10 }]}>
+                    {IS_IOS ? (
+                        <View style={styles.formHeaderBlock}>
+                            {/* <Text style={styles.formHeaderTitle}>{`ข้อมูลนิติบุคคล`}</Text> */}
+                            <Text style={styles.formHeaderBrand}>{`SUN PLAZA`}</Text>
+                        </View>
+                    ) : null}
                     <ScrollView
+                        style={IS_IOS ? [styles.panelWhite, styles.registerPanelShadow] : null}
                         contentContainerStyle={{ flexGrow: 1, padding: 8 }}
-                        keyboardShouldPersistTaps="never">
+                        keyboardShouldPersistTaps="never"
+                        onPressIn={this.closeAllDropdowns}
+                        onTouchStart={this.closeAllDropdowns}>
+                        <TouchableWithoutFeedback onPress={this.closeAllDropdowns} accessible={false}>
                         <View>
-                            <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>
+                            {IS_IOS ? null : <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลนิติบุคคล`}</Text>}
                             <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                 <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อนิติบุคคล : ' + props.userInfo.name_customer}</Text>
                             </View>
                             <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                 <Text style={[styles.text16, { color: primaryColor }]}>{'เลขประจำตัวเสียภาษีอากร : ' + props.userInfo.numbertax}</Text>
                             </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor}]}>{'ที่อยู่ : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.address = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.address}
-                                        onChangeText={(text) => this.setState({ address: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ซอย : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.Soi = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.Soi}
-                                        onChangeText={(text) => this.setState({ Soi: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor}]}>{'ถนน : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.Road = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.Road}
-                                        onChangeText={(text) => this.setState({ Road: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.pickerStyle, { alignSelf: 'center', width: '85%', paddingRight: 15 }]}>
-                                    <Picker
-                                        selectedValue={this.state.ProvinceSelected}
-                                        style={[{ width: DEVICE_WIDTH - 100, color: primaryColor }]}
-                                        onValueChange={(itemValue, itemIndex) => this.LoadDistrict(itemValue)} >
-                                        <Picker.Item label='กรุณาเลือกจังหวัด' value={null} />
-                                        {
-                                            this.state.ProvinceData.map((v, i) => {
-                                                return (
-                                                    <Picker.Item key={v.value ?? i} label={v.label} value={v.value} />
-                                                )
-                                            })
-                                        }
-                                    </Picker>
-                                    {
-                                        Platform.OS === 'ios' ?
-                                            <Icon name={'chevron-down'} size={12} color={'gray'} />
-                                            :
-                                            null
-                                    }
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.pickerStyle, { alignSelf: 'center', width: '85%', paddingRight: 15 }]}>
-                                    <Picker
-                                        selectedValue={this.state.DistrictSelected}
-                                        style={[{ width: DEVICE_WIDTH - 100, color: primaryColor }]}
-                                        onValueChange={(itemValue, itemIndex) => this.LoadSubDistrict(itemValue)} >
-                                        <Picker.Item label='กรุณาเลือกอำเภอ' value={null} />
-                                        {
-                                            this.state.DistrictData.map((v, i) => {
-                                                return (
-                                                    <Picker.Item key={v.value ?? i} label={v.label} value={v.value} />
-                                                )
-                                            })
-                                        }
-                                    </Picker>
-                                    {
-                                        Platform.OS === 'ios' ?
-                                            <Icon name={'chevron-down'} size={12} color={'gray'} />
-                                            :
-                                            null
-                                    }
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.pickerStyle, { alignSelf: 'center', width: '85%', paddingRight: 15 }]}>
-                                    <Picker
-                                        selectedValue={this.state.SubDistrictSelected}
-                                        style={[{ width: DEVICE_WIDTH - 100, color: primaryColor }]}
-                                        onValueChange={(itemValue, itemIndex) => {
-                                            let data = this.state.SubDistrictData.filter((i) => i.value == itemValue)
-                                            // console.log(data)
-                                            // console.log(data[0].zipcode)
-                                            this.setState({
-                                                SubDistrictSelected: itemValue,
-                                                Zipcode: typeof data[0] === 'undefined' ? '' : data[0].zipcode
-                                            })
-                                        }}>
-                                        <Picker.Item label='กรุณาเลือกตำบล' value={null} />
-                                        {
-                                            this.state.SubDistrictData.map((v, i) => {
-                                                return (
-                                                    <Picker.Item key={v.value ?? i} label={v.label} value={v.value} />
-                                                )
-                                            })
-                                        }
-                                    </Picker>
-                                    {
-                                        Platform.OS === 'ios' ?
-                                            <Icon name={'chevron-down'} size={12} color={'gray'} />
-                                            :
-                                            null
-                                    }
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                  
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'รหัสไปรษณีย์ : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.Zipcode = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        editable={false}
-                                        value={this.state.Zipcode}
-                                        onChangeText={(text) => this.setState({ Zipcode: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'รหัสสาขา : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.branch_code = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.branch_code}
-                                        onChangeText={(text) => this.setState({ branch_code: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อสาขา : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.branch_name = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.branch_name}
-                                        onChangeText={(text) => this.setState({ branch_name: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
+                            {this.renderInputField('ที่อยู่', this.state.address, (text) => this.setState({ address: text }), {
+                                inputRef: (input) => { this.address = input },
+                            })}
+                            {this.renderInputField('ซอย', this.state.Soi, (text) => this.setState({ Soi: text }), {
+                                inputRef: (input) => { this.Soi = input },
+                            })}
+                            {this.renderInputField('ถนน', this.state.Road, (text) => this.setState({ Road: text }), {
+                                inputRef: (input) => { this.Road = input },
+                            })}
+                            {this.renderDropdownField({
+                                label: 'จังหวัด',
+                                open: this.state.provinceOpen,
+                                value: this.state.ProvinceSelected,
+                                items: this.state.ProvinceData,
+                                placeholder: 'กรุณาเลือกจังหวัด',
+                                zIndex: 3000,
+                                setOpen: (provinceOpen) => this.setState({ provinceOpen }),
+                                onChangeValue: (provinceId) => this.LoadDistrict(provinceId),
+                            })}
+                            {this.renderDropdownField({
+                                label: 'อำเภอ',
+                                open: this.state.districtOpen,
+                                value: this.state.DistrictSelected,
+                                items: this.state.DistrictData,
+                                placeholder: 'กรุณาเลือกอำเภอ',
+                                zIndex: 2000,
+                                disabled: this.state.DistrictData.length === 0,
+                                setOpen: (districtOpen) => this.setState({ districtOpen }),
+                                onChangeValue: (districtId) => this.LoadSubDistrict(districtId),
+                            })}
+                            {this.renderDropdownField({
+                                label: 'ตำบล',
+                                open: this.state.subDistrictOpen,
+                                value: this.state.SubDistrictSelected,
+                                items: this.state.SubDistrictData,
+                                placeholder: 'กรุณาเลือกตำบล',
+                                zIndex: 1000,
+                                disabled: this.state.SubDistrictData.length === 0,
+                                setOpen: (subDistrictOpen) => this.setState({ subDistrictOpen }),
+                                onChangeValue: (subDistrictId) => {
+                                    let data = this.state.SubDistrictData.filter((i) => i.value == subDistrictId)
+                                    this.setState({
+                                        SubDistrictSelected: subDistrictId,
+                                        Zipcode: typeof data[0] === 'undefined' ? '' : data[0].zipcode
+                                    })
+                                },
+                            })}
+                            {this.renderInputField('รหัสไปรษณีย์', this.state.Zipcode, (text) => this.setState({ Zipcode: text }), {
+                                inputRef: (input) => { this.Zipcode = input },
+                                editable: false,
+                            })}
+                            {this.renderInputField('รหัสสาขา', this.state.branch_code, (text) => this.setState({ branch_code: text }), {
+                                inputRef: (input) => { this.branch_code = input },
+                            })}
+                            {this.renderInputField('ชื่อสาขา', this.state.branch_name, (text) => this.setState({ branch_name: text }), {
+                                inputRef: (input) => { this.branch_name = input },
+                            })}
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลผู้มาติดต่อ`}</Text>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อ-นามสกุล : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.name = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.name}
-                                        onChangeText={(text) => this.setState({ name: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์ : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.phone = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.phone}
-                                        maxLength={10}
-                                        keyboardType='phone-pad'
-                                        onChangeText={(text) => this.setState({ phone: text.replace(/[^0-9\-]+/g, '') })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'อีเมล์ : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.email = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.email}
-                                        keyboardType={'email-address'}
-                                        onBlur={() => {
-                                            let e = this.state.email
-                                            if (!EmailValidator.validate(e)) {
-                                                Alert.alert('คำเตือน!', 'Email ไม่ถูกต้อง!',
-                                                    [
-                                                        {
-                                                            text: 'ตกลง', onPress: () => {
-                                                                this.setState({ email: '' })
-                                                                this.email.focus()
-                                                            }
-                                                        }
-                                                    ],
-                                                    { cancelable: false }
-                                                );
-                                            }
-                                        }}
-                                        onChangeText={(text) => this.setState({ email: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
+                            {this.renderInputField('ชื่อ-นามสกุล', this.state.name, (text) => this.setState({ name: text }), {
+                                inputRef: (input) => { this.name = input },
+                            })}
+                            {this.renderInputField('เบอร์โทรศัพท์', this.state.phone, (text) => this.setState({ phone: text.replace(/[^0-9\-]+/g, '') }), {
+                                inputRef: (input) => { this.phone = input },
+                                keyboardType: 'phone-pad',
+                                maxLength: 10,
+                            })}
+                            {this.renderInputField('อีเมล์', this.state.email, (text) => this.setState({ email: text }), {
+                                inputRef: (input) => { this.email = input },
+                                keyboardType: 'email-address',
+                                onBlur: () => {
+                                    let e = this.state.email
+                                    if (!EmailValidator.validate(e)) {
+                                        Alert.alert('คำเตือน!', 'Email ไม่ถูกต้อง!',
+                                            [
+                                                {
+                                                    text: 'ตกลง', onPress: () => {
+                                                        this.setState({ email: '' })
+                                                        this.email.focus()
+                                                    }
+                                                }
+                                            ],
+                                            { cancelable: false }
+                                        );
+                                    }
+                                }
+                            })}
 
 
 
                             <View style={[styles.marginBetweenVertical]}></View>
                             <Text style={[styles.text22, { color: primaryColor }]}>{`ข้อมูลเจ้าหน้าที่บัญชี`}</Text>
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อ-นามสกุล : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.accountname = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.accountname}
-                                        onChangeText={(text) => this.setState({ accountname: text })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
-
-                            <View style={[styles.containerRow, { alignItems: 'center' }]}>
-                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', flex: 0.95 }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เบอร์โทรศัพท์ : '}</Text>
-                                    <TextInput
-                                        ref={(input) => { this.accountphone = input; }}
-                                        style={[styles.text16, { flex: 1, color: primaryColor, textAlign: 'left' }]}
-                                        returnKeyType={'next'}
-                                        value={this.state.accountphone}
-                                        maxLength={10}
-                                        keyboardType='phone-pad'
-                                        onChangeText={(text) => this.setState({ accountphone: text.replace(/[^0-9\-]+/g, '') })} />
-                                </View>
-                                <Icon name='edit' size={20} color={primaryColor} />
-                            </View>
+                            {this.renderInputField('ชื่อ-นามสกุล', this.state.accountname, (text) => this.setState({ accountname: text }), {
+                                inputRef: (input) => { this.accountname = input },
+                            })}
+                            {this.renderInputField('เบอร์โทรศัพท์', this.state.accountphone, (text) => this.setState({ accountphone: text.replace(/[^0-9\-]+/g, '') }), {
+                                inputRef: (input) => { this.accountphone = input },
+                                keyboardType: 'phone-pad',
+                                maxLength: 10,
+                            })}
 
 
 
@@ -802,9 +835,10 @@ class ProfileCompanyScreen extends React.Component {
                                 <Text style={[styles.text14, { textDecorationLine: 'underline', color: primaryColor }]}>{`ยกเลิกการสมัครสมาชิก`}</Text>
                             </TouchableOpacity>
                         </View>
+                        </TouchableWithoutFeedback>
                     </ScrollView>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }
@@ -812,6 +846,28 @@ class ProfileCompanyScreen extends React.Component {
 const mapStateToProps = (state) => ({
     reducer: state.fetchReducer
 })
+
+const dropdownStyles = {
+    field: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: 'transparent',
+        borderRadius: 28,
+        margin: 10,
+        minHeight: 50,
+        paddingHorizontal: 15,
+    },
+    disabledField: {
+        backgroundColor: '#F3F3F3',
+    },
+    dropdown: {
+        backgroundColor: 'white',
+        borderColor: '#E5E5E5',
+        borderRadius: 24,
+        marginHorizontal: 10,
+        overflow: 'hidden',
+    },
+}
 
 const mapDispatchToProps = {
     openIndicator,

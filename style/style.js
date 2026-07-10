@@ -17,6 +17,7 @@ const COMPONENT_HIGHT = 50;
 const BANNER_HEIGHT = 250;
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HIGHT = Dimensions.get('window').height;
+const IS_IOS = Platform.OS === 'ios';
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -94,31 +95,31 @@ const styles = StyleSheet.create({
         shadowColor: '#8F8F8F',
         shadowOffset: {
             width: 0,
-            height: 8,
+            height: IS_IOS ? 8 : 8,
         },
-        shadowOpacity: 0.28,
-        shadowRadius: 12,
-        elevation: 9,
+        shadowOpacity: IS_IOS ? 0.18 : 0.28,
+        shadowRadius: IS_IOS ? 18 : 12,
+        elevation: IS_IOS ? 6 : 9,
     },
     registerPanelShadow: {
         shadowColor: '#8F8F8F',
         shadowOffset: {
             width: 0,
-            height: 6,
+            height: IS_IOS ? 10 : 6,
         },
-        shadowOpacity: 0.22,
-        shadowRadius: 10,
-        elevation: 8,
+        shadowOpacity: IS_IOS ? 0.16 : 0.22,
+        shadowRadius: IS_IOS ? 22 : 10,
+        elevation: IS_IOS ? 7 : 8,
     },
     registerFieldShadow: {
         shadowColor: '#8F8F8F',
         shadowOffset: {
             width: 0,
-            height: 7,
+            height: IS_IOS ? 8 : 7,
         },
-        shadowOpacity: 0.24,
-        shadowRadius: 11,
-        elevation: 8,
+        shadowOpacity: IS_IOS ? 0.16 : 0.24,
+        shadowRadius: IS_IOS ? 18 : 11,
+        elevation: IS_IOS ? 6 : 8,
     },
     TextAreaWithIcon: {
         paddingLeft: 15,
@@ -263,9 +264,9 @@ const styles = StyleSheet.create({
     },
     panelWhite: {
         backgroundColor: 'white',
-        width: DEVICE_WIDTH - 20,
-        borderRadius: 20,
-        padding: 10
+        width: DEVICE_WIDTH - (IS_IOS ? 20 : 20),
+        borderRadius: IS_IOS ? 32 : 20,
+        padding: IS_IOS ? 18 : 10
     },
     panelRectangleGray: {
         backgroundColor: grayColor,
@@ -281,12 +282,44 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: COMPONENT_HIGHT,
-        width: '95%',
+        width: IS_IOS ? '94%' : '95%',
         backgroundColor: 'white',
         justifyContent: 'space-between',
         borderRadius: COMPONENT_HIGHT / 2,
         margin: 10,
         overflow: 'hidden',
+    },
+    formPageBackground: {
+        backgroundColor: primaryColor,
+        paddingBottom: IS_IOS ? 40 : 0,
+    },
+    formHeaderBlock: {
+        alignItems: 'center',
+        paddingTop: IS_IOS ? 12 : 0,
+        paddingBottom: IS_IOS ? 16 : 0,
+    },
+    formHeaderTitle: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Regular' : 'SinghaEstate-Regular'
+    },
+    formHeaderBrand: {
+        color: secondaryColor,
+        fontSize: 40,
+        marginTop: 18,
+        fontFamily: Platform.OS == 'android' ? 'SinghaEstate-Bold' : 'SinghaEstate-Bold'
+    },
+    formScrollPanel: {
+        alignSelf: 'center',
+        width: DEVICE_WIDTH - 20,
+        backgroundColor: 'white',
+        borderRadius: 32,
+    },
+    formSectionTitle: {
+        color: primaryColor,
+        fontSize: 18,
+        marginLeft: '3%',
+        marginBottom: 4,
     },
     hr: {
         width: '90%',

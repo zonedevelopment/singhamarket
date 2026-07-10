@@ -10,11 +10,12 @@ import {
     Alert,
     Platform,
     BackHandler,
+    SafeAreaView,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { Picker } from 'native-base'
+import { Picker } from '@react-native-picker/picker'
 import { CheckBox } from 'react-native-elements'
 import DeviceInfo from 'react-native-device-info'
 import { NavigationBar } from 'navigationbar-react-native'
@@ -49,6 +50,8 @@ import { validateFormSecurity } from '../utils/inputSecurity'
 import { PASSWORD_POLICY_HINT, validatePasswordPolicy } from '../utils/passwordPolicy'
 import { value } from 'numeral'
 import { color } from 'react-native-reanimated'
+import IOSBackButtonOverlay from '../components/IOSBackButtonOverlay'
+import IOSSelectField from '../components/IOSSelectField'
 
 const VALIDATION_FIELD = {
     compname: {
@@ -105,6 +108,8 @@ const VALIDATION_FIELD = {
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const IOS_LOGO_TOP_PADDING = Platform.OS === 'ios' ? 20 : 0
+
 class RegisterCompanyScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -143,6 +148,13 @@ class RegisterCompanyScreen extends React.Component {
 
         validate_username : false,
         validate_compid : false,
+        openDropdown: null,
+    }
+
+    closeIOSDropdown = () => {
+        if (Platform.OS === 'ios' && this.state.openDropdown) {
+            this.setState({ openDropdown: null })
+        }
     }
 
     LoadProvince() {
@@ -178,7 +190,15 @@ class RegisterCompanyScreen extends React.Component {
     LoadDistrict(province_id) {
         this.props.openIndicator()
         let formData = new FormData();
-        this.setState({ ProvinceSelected: province_id })
+        this.setState(Platform.OS === 'ios' ? {
+            ProvinceSelected: province_id,
+            DistrictData: [],
+            DistrictSelected: null,
+            SubDistrictData: [],
+            SubDistrictSelected: null,
+            Zipcode: '',
+            openDropdown: null,
+        } : { ProvinceSelected: province_id })
         formData.append('province_id', province_id)
         Hepler.post(BASE_URL + DISTRICT_URL, formData, HEADERFORMDATA, (results) => {
             console.log('DISTRICT_URL', results)
@@ -207,7 +227,13 @@ class RegisterCompanyScreen extends React.Component {
     LoadSubDistrict(district_id) {
         this.props.openIndicator()
         let formData = new FormData();
-        this.setState({ DistrictSelected: district_id })
+        this.setState(Platform.OS === 'ios' ? {
+            DistrictSelected: district_id,
+            SubDistrictData: [],
+            SubDistrictSelected: null,
+            Zipcode: '',
+            openDropdown: null,
+        } : { DistrictSelected: district_id })
         formData.append('district_id', district_id)
         Hepler.post(BASE_URL + SUBDISTRICT_URL, formData, HEADERFORMDATA, (results) => {
             console.log('SUBDISTRICT_URL', results)
@@ -574,16 +600,19 @@ class RegisterCompanyScreen extends React.Component {
         const productSelected = props.product_type
 
         return (
-            <View style={[styles.container, { backgroundColor: primaryColor, paddingBottom: 40 }]}>
-                <View style={[styles.container, { alignItems: 'center' }]}>
+            <SafeAreaView style={[styles.container, styles.formPageBackground]}>
+                <IOSBackButtonOverlay onPress={this.handleBack} />
+                <View style={[styles.container, Platform.OS === 'ios' ? { alignItems: 'center', paddingTop: IOS_LOGO_TOP_PADDING } : { alignItems: 'center' }]}>
+                    {Platform.OS === 'ios' ? <Text style={styles.formHeaderTitle}>{`สมัครสมาชิก`}</Text> : null}
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <ScrollView
                         style={[styles.panelWhite, styles.registerPanelShadow]}
                         contentContainerStyle={{ flexGrow: 1 }}
-                        keyboardShouldPersistTaps='handled'>
+                        keyboardShouldPersistTaps='handled'
+                        onTouchStart={this.closeIOSDropdown}>
                         <View style={{ paddingBottom: 20 }}>
-                            <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>
-                            <View style={[styles.hr]}></View>
+                            {Platform.OS === 'ios' ? null : <Text style={[styles.text22, { color: primaryColor, alignSelf: 'center' }]}>{`สมัครสมาชิก`}</Text>}
+                            {Platform.OS === 'ios' ? null : <View style={[styles.hr]}></View>}
                             <View style={[styles.container]}>
                                 <Text style={[styles.text18, { color: primaryColor }]}>{`ลงทะเบียนแบบนิติบุคคล`}</Text>
                             </View>
@@ -596,6 +625,7 @@ class RegisterCompanyScreen extends React.Component {
                                     autoCapitalize={false}
                                     blurOnSubmit={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ compname: text })}
                                     onSubmitEditing={() => this.compid.focus()} />
                             </View>
@@ -615,6 +645,7 @@ class RegisterCompanyScreen extends React.Component {
                                             value={this.state.compid}
                                             onBlur={(e) => this.CheckIDCard()}
                                             placeholderTextColor={'#7C7B7B'}
+                                            onFocus={this.closeIOSDropdown}
                                             onChangeText={(text) => this.setState({ compid: text })}
                                             onSubmitEditing={() => this.compAddr.focus()} />
                                     </View>
@@ -629,6 +660,7 @@ class RegisterCompanyScreen extends React.Component {
                                     autoCapitalize={false}
                                     blurOnSubmit={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ compAddr: text })}
                                     onSubmitEditing={() => this.compSoi.focus()} />
                             </View>
@@ -641,6 +673,7 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     autoCapitalize={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ compSoi: text })}
                                     onSubmitEditing={() => this.compRoad.focus()} />
                             </View>
@@ -653,9 +686,21 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     autoCapitalize={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ compRoad: text })}
                                     onSubmitEditing={() => {/*this.branch_name.focus()*/ }} />
                             </View>
+                            {Platform.OS === 'ios' ? (
+                                <IOSSelectField
+                                    options={this.state.ProvinceData.map((v) => ({ key: `${v.value}`, value: v.label }))}
+                                    placeholder='กรุณาเลือกจังหวัด'
+                                    selectedValue={this.state.ProvinceSelected}
+                                    isOpen={this.state.openDropdown === 'province'}
+                                    onToggle={(openDropdown) => this.setState({ openDropdown: openDropdown ? 'province' : null })}
+                                    onValueChange={(provinceId) => this.LoadDistrict(provinceId)}
+                                    zIndex={3000}
+                                />
+                            ) : (
                             <View style={[styles.registerFieldShadow, styles.pickerStyle, { alignSelf: 'center', width: '95%', paddingRight: 15 }]}>
                                 <Picker
                                     placeholder='กรุณาเลือกจังหวัด'
@@ -681,6 +726,19 @@ class RegisterCompanyScreen extends React.Component {
                                         null
                                 }
                             </View>
+                            )}
+                            {Platform.OS === 'ios' ? (
+                                <IOSSelectField
+                                    options={this.state.DistrictData.map((v) => ({ key: `${v.value}`, value: v.label }))}
+                                    placeholder='กรุณาเลือกอำเภอ'
+                                    selectedValue={this.state.DistrictSelected}
+                                    isOpen={this.state.openDropdown === 'district'}
+                                    onToggle={(openDropdown) => this.setState({ openDropdown: openDropdown ? 'district' : null })}
+                                    onValueChange={(districtId) => this.LoadSubDistrict(districtId)}
+                                    disabled={this.state.DistrictData.length === 0}
+                                    zIndex={2000}
+                                />
+                            ) : (
                             <View style={[styles.registerFieldShadow, styles.pickerStyle, { alignSelf: 'center', width: '95%', paddingRight: 15 }]}>
                                 <Picker
                                     placeholder='กรุณาเลือกอำเภอ'
@@ -705,6 +763,25 @@ class RegisterCompanyScreen extends React.Component {
                                         null
                                 }
                             </View>
+                            )}
+                            {Platform.OS === 'ios' ? (
+                                <IOSSelectField
+                                    options={this.state.SubDistrictData.map((v) => ({ key: `${v.value}`, value: v.label }))}
+                                    placeholder='กรุณาเลือกตำบล'
+                                    selectedValue={this.state.SubDistrictSelected}
+                                    isOpen={this.state.openDropdown === 'subdistrict'}
+                                    onToggle={(openDropdown) => this.setState({ openDropdown: openDropdown ? 'subdistrict' : null })}
+                                    onValueChange={(subdistrictId) => {
+                                        let data = this.state.SubDistrictData.filter((i) => `${i.value}` == `${subdistrictId}`)
+                                        this.setState({
+                                            SubDistrictSelected: subdistrictId,
+                                            Zipcode: typeof data[0] === 'undefined' ? '' : data[0].zipcode
+                                        })
+                                    }}
+                                    disabled={this.state.SubDistrictData.length === 0}
+                                    zIndex={1000}
+                                />
+                            ) : (
                             <View style={[styles.registerFieldShadow, styles.pickerStyle, { alignSelf: 'center', width: '95%', paddingRight: 15 }]}>
                                 <Picker
                                     placeholder='กรุณาเลือกตำบล'
@@ -735,6 +812,7 @@ class RegisterCompanyScreen extends React.Component {
                                         null
                                 }
                             </View>
+                            )}
                           
                             <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
                                 <TextInput
@@ -746,6 +824,7 @@ class RegisterCompanyScreen extends React.Component {
                                     value={this.state.Zipcode}
                                     blurOnSubmit={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ zipcode: text })}
                                     onSubmitEditing={() => this.branch_code.focus()} />
                             </View>
@@ -759,6 +838,7 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     autoCapitalize={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ branch_code: text })}
                                     onSubmitEditing={() => this.branch_name.focus()} />
                             </View>
@@ -771,6 +851,7 @@ class RegisterCompanyScreen extends React.Component {
                                     autoCapitalize={false}
                                     blurOnSubmit={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ branch_name: text })}
                                     onSubmitEditing={() => this.name.focus()} />
                             </View>
@@ -810,6 +891,7 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     autoCapitalize={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ name: text })}
                                     onSubmitEditing={() => this.phone.focus()} />
                             </View>
@@ -826,6 +908,7 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     autoCapitalize={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ phone: text.replace(/[^0-9\-]+/g, '') })}
                                     onSubmitEditing={() => this.email.focus()} />
                             </View>
@@ -840,6 +923,7 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     keyboardType={'email-address'}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ email: text })}
                                     onSubmitEditing={() => this.accountName.focus()} />
                             </View>
@@ -857,6 +941,7 @@ class RegisterCompanyScreen extends React.Component {
                                     autoCapitalize={false}
                                     blurOnSubmit={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ accountName: text })}
                                     onSubmitEditing={() => this.accountPhone.focus()} />
                             </View>
@@ -872,6 +957,7 @@ class RegisterCompanyScreen extends React.Component {
                                     maxLength={10}
                                     blurOnSubmit={false}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ accountPhone: text.replace(/[^0-9\-]+/g, '') })}
                                     onSubmitEditing={() => this.username.focus()} />
                             </View>
@@ -889,6 +975,7 @@ class RegisterCompanyScreen extends React.Component {
                                     blurOnSubmit={false}
                                     value={this.state.username}
                                     placeholderTextColor={'#7C7B7B'}
+                                    onFocus={this.closeIOSDropdown}
                                     onBlur={(e) => this.CheckUserName()}
                                     onChangeText={(text) => {
                                         if (/^[a-zA-Z0-9.]+$/.test(text) || text == '') {
@@ -907,6 +994,7 @@ class RegisterCompanyScreen extends React.Component {
                                     placeholderTextColor={'#7C7B7B'}
                                     blurOnSubmit={false}
                                     secureTextEntry={true}
+                                    onFocus={this.closeIOSDropdown}
                                     onChangeText={(text) => this.setState({ password: text })} />
                             </View>
                             <Text style={[styles.text12, styles.regular, { width: '95%', alignSelf: 'center', color: '#7C7B7B', paddingHorizontal: 15 }]}>
@@ -1024,7 +1112,7 @@ class RegisterCompanyScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }
