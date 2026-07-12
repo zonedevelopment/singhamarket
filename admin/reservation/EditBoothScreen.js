@@ -14,7 +14,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { NavigationBar } from 'navigationbar-react-native'
 import { Picker } from '@react-native-picker/picker'
-import { CheckBox } from 'native-base'
+import { CheckBox } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import {
     darkColor,
@@ -80,7 +80,13 @@ class EditBoothScreen extends React.Component {
                  <View style={[styles.containerRow, { flex: 0.25, backgroundColor: item.booking_status_background_color, justifyContent: 'space-between', alignItems: 'center', padding: 5 }]}>
                     {/* <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View> */}
                      
-                    <CheckBox style={{ borderRadius: 10,marginRight:5}} checked={item.checked}  color={primaryColor} onPress={() =>{
+                    <CheckBox
+                        checked={item.checked}
+                        checkedColor={primaryColor}
+                        uncheckedColor={primaryColor}
+                        size={22}
+                        containerStyle={{ width: 32, height: 32, padding: 4, margin: 0, marginRight: 5, backgroundColor: 'transparent', borderWidth: 0 }}
+                        onPress={() =>{
                         if(item.booth_status_id == "1"){
                             this.CheckBooth(item)
                         }
