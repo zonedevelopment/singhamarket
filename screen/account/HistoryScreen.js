@@ -20,7 +20,6 @@ import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import DateTimePickerios from '@react-native-community/datetimepicker'
 import {
     darkColor,
     grayColor,
