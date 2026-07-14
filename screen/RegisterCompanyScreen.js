@@ -126,6 +126,7 @@ class RegisterCompanyScreen extends React.Component {
         branch_code: '',
         branch_name: '',
         name: '',
+        lastname: '',
         phone: '',
         email: '',
         username: '',
@@ -485,6 +486,15 @@ class RegisterCompanyScreen extends React.Component {
 
     validateIOSFields = () => {
         const fields = this.state
+        if (!fields.name.trim() || !fields.lastname.trim() || !fields.phone.trim()) {
+            return Alert.alert('กรุณากรอก ชื่อ นามสกุล และเบอร์โทรให้ครบ')
+        }
+        if (fields.phone.length !== 10) {
+            return Alert.alert('จำนวนเบอร์โทรศัพท์ไม่ถูกต้อง!')
+        }
+        if (!fields.licenseAgree) {
+            return Alert.alert('กรุณายอมรับข้อตกลงและเงื่อนไข')
+        }
         if (!fields.username.trim() || !fields.password.trim()) {
             return Alert.alert('กรุณากรอก Username และ Password ให้ครบ')
         }
@@ -498,6 +508,9 @@ class RegisterCompanyScreen extends React.Component {
             return Alert.alert('กรุณาตรวจสอบ Username หรือ Username นี้มีผู้ใช้งานแล้ว')
         }
         const securityError = validateFormSecurity([
+            { label: 'ชื่อ', value: fields.name, checkSql: false },
+            { label: 'นามสกุล', value: fields.lastname, checkSql: false },
+            { label: 'เบอร์โทรศัพท์', value: fields.phone, checkSql: true },
             { label: 'ชื่อผู้ใช้งาน', value: fields.username, checkSql: true },
             { label: 'รหัสผ่าน', value: fields.password, checkSql: false },
         ])
@@ -533,6 +546,7 @@ class RegisterCompanyScreen extends React.Component {
 
         ///ข้อมูลผู้มาติดต่อ
         formData.append('name', this.state.name)
+        formData.append('lastname', this.state.lastname)
         formData.append('phone', this.state.phone)
         formData.append('email', this.state.email)
         ///ข้อมูลออกใบเสร็จรับเงิน
@@ -642,10 +656,16 @@ class RegisterCompanyScreen extends React.Component {
                     accountTypeLabel='ลงทะเบียนแบบนิติบุคคล'
                     productTypes={this.state.ProductType}
                     selectedProducts={productSelected}
+                    name={this.state.name}
+                    lastname={this.state.lastname}
+                    phone={this.state.phone}
                     username={this.state.username}
                     password={this.state.password}
                     passwordHint={PASSWORD_POLICY_HINT}
                     onBack={this.handleBack}
+                    onNameChange={(name) => this.setState({ name })}
+                    onLastnameChange={(lastname) => this.setState({ lastname })}
+                    onPhoneChange={(phone) => this.setState({ phone: phone.replace(/[^0-9]/g, '') })}
                     onUsernameChange={(username) => this.setState({ username, validate_username: false })}
                     onUsernameBlur={() => this.CheckUserName()}
                     onPasswordChange={(password) => this.setState({ password })}
@@ -658,6 +678,8 @@ class RegisterCompanyScreen extends React.Component {
                             Alert.alert('กรุณาเลือกประเภทสินค้าก่อน')
                         }
                     }}
+                    licenseAgree={this.state.licenseAgree}
+                    onLicenseAgreeChange={(licenseAgree) => this.setState({ licenseAgree })}
                     onSubmit={() => this.validateFields()}
                     onLogin={() => this.props.navigation.navigate('Login')}
                 />

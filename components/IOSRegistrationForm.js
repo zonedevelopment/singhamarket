@@ -2,6 +2,7 @@ import React from 'react'
 import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioButton, RadioGroup } from 'react-native-flexi-radio-button'
+import { CheckBox } from 'react-native-elements'
 
 import IOSBackButtonOverlay from './IOSBackButtonOverlay'
 import styles from '../style/style'
@@ -11,16 +12,24 @@ const IOSRegistrationForm = ({
     accountTypeLabel,
     productTypes,
     selectedProducts,
+    name,
+    lastname,
+    phone,
     username,
     password,
     passwordHint,
     onBack,
+    onNameChange,
+    onLastnameChange,
+    onPhoneChange,
     onUsernameChange,
     onUsernameBlur,
     onPasswordChange,
     passwordRef,
     onSelectProductType,
     onOpenProductCategories,
+    licenseAgree,
+    onLicenseAgreeChange,
     onSubmit,
     onLogin,
 }) => (
@@ -35,6 +44,38 @@ const IOSRegistrationForm = ({
                 keyboardShouldPersistTaps='handled'>
                 <Text style={[styles.text20, { color: primaryColor, margin: 10 }]}>{accountTypeLabel}</Text>
 
+                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                    <TextInput
+                        style={{ width: '100%', height: '100%', color: primaryColor }}
+                        placeholder='ชื่อ'
+                        placeholderTextColor='#7C7B7B'
+                        value={name}
+                        returnKeyType='next'
+                        onChangeText={onNameChange}
+                    />
+                </View>
+                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                    <TextInput
+                        style={{ width: '100%', height: '100%', color: primaryColor }}
+                        placeholder='นามสกุล'
+                        placeholderTextColor='#7C7B7B'
+                        value={lastname}
+                        returnKeyType='next'
+                        onChangeText={onLastnameChange}
+                    />
+                </View>
+                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}>
+                    <TextInput
+                        style={{ width: '100%', height: '100%', color: primaryColor }}
+                        placeholder='เบอร์โทร'
+                        placeholderTextColor='#7C7B7B'
+                        keyboardType='phone-pad'
+                        maxLength={10}
+                        value={phone}
+                        returnKeyType='next'
+                        onChangeText={onPhoneChange}
+                    />
+                </View>
                 <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center' }]}> 
                     <TextInput
                         style={{ width: '100%', height: '100%', color: primaryColor }}
@@ -103,7 +144,18 @@ const IOSRegistrationForm = ({
                         : <Text style={styles.text14}>{`-`}</Text>}
                 </View>
 
-                <TouchableOpacity style={[styles.mainButton, styles.center]} onPress={onSubmit}>
+                <CheckBox
+                    title='ยอมรับข้อตกลงและเงื่อนไข'
+                    checked={licenseAgree}
+                    checkedColor={primaryColor}
+                    containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginHorizontal: 4 }}
+                    onPress={() => onLicenseAgreeChange(!licenseAgree)}
+                />
+
+                <TouchableOpacity
+                    disabled={!licenseAgree}
+                    style={[licenseAgree ? styles.mainButton : styles.mainButtonDisabled, styles.center]}
+                    onPress={onSubmit}>
                     <Text style={[styles.text18, { color: 'white' }]}>{`ยืนยัน`}</Text>
                 </TouchableOpacity>
                 <Text style={[styles.text14, { textAlign: 'center', marginTop: 20 }]}>{`ถ้าท่านเป็นสมาชิกอยู่ กรุณาเข้าสู่ระบบ`}</Text>

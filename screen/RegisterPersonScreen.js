@@ -295,7 +295,19 @@ class RegisterPersonScreen extends React.Component {
             apptype: apptype,
             licenseAgree: licenseAgree,
             privacyAgree: privacyAgree,
-            ...(Platform.OS === 'ios' ? { username: '', password: '' } : {}),
+            ...(Platform.OS === 'ios' ? {
+                name: '',
+                lastname: '',
+                idcard: '',
+                phone: '',
+                lineid: '',
+                email: '',
+                username: '',
+                password: '',
+                compAddr: '',
+                compSoi: '',
+                compRoad: '',
+            } : {}),
          })
         this.LoadProductType()
         this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
@@ -433,6 +445,15 @@ class RegisterPersonScreen extends React.Component {
 
     validateIOSFields = () => {
         const fields = this.state
+        if (!fields.name.trim() || !fields.lastname.trim() || !fields.phone.trim()) {
+            return Alert.alert('กรุณากรอก ชื่อ นามสกุล และเบอร์โทรให้ครบ')
+        }
+        if (fields.phone.length !== 10) {
+            return Alert.alert('จำนวนเบอร์โทรศัพท์ไม่ถูกต้อง!')
+        }
+        if (!fields.licenseAgree) {
+            return Alert.alert('กรุณายอมรับข้อตกลงและเงื่อนไข')
+        }
         if (!fields.username.trim() || !fields.password.trim()) {
             return Alert.alert('กรุณากรอก Username และ Password ให้ครบ')
         }
@@ -446,6 +467,9 @@ class RegisterPersonScreen extends React.Component {
             return Alert.alert('กรุณาตรวจสอบ Username หรือ Username นี้มีผู้ใช้งานแล้ว')
         }
         const securityError = validateFormSecurity([
+            { label: 'ชื่อ', value: fields.name, checkSql: false },
+            { label: 'นามสกุล', value: fields.lastname, checkSql: false },
+            { label: 'เบอร์โทรศัพท์', value: fields.phone, checkSql: true },
             { label: 'ชื่อผู้ใช้งาน', value: fields.username, checkSql: true },
             { label: 'รหัสผ่าน', value: fields.password, checkSql: false },
         ])
@@ -464,13 +488,14 @@ class RegisterPersonScreen extends React.Component {
 
     onSubmit = () =>{
         this.props.openIndicator()
+        const isIOS = Platform.OS === 'ios'
         let formData = new FormData();
         formData.append('name', this.state.name)
         formData.append('lastname', this.state.lastname)
-        formData.append('idcard', this.state.idcard)
+        formData.append('idcard', isIOS ? '' : this.state.idcard)
         formData.append('phone', this.state.phone)
-        formData.append('lineid', this.state.lineid)
-        formData.append('email', this.state.email)
+        formData.append('lineid', isIOS ? '' : this.state.lineid)
+        formData.append('email', isIOS ? '' : this.state.email)
         formData.append('username', this.state.username)
         formData.append('password', this.state.password)
         formData.append('productCate', this.state.productCate)
@@ -478,13 +503,13 @@ class RegisterPersonScreen extends React.Component {
         formData.append('licenseAgree', this.state.licenseAgree === true ? 'Y' : 'N')
         formData.append('privacyAgree', this.state.privacyAgree === true ? 'Y' : 'N')
 
-        formData.append('compAddr', this.state.compAddr)
-        formData.append('compSoi', this.state.compSoi)
-        formData.append('compRoad', this.state.compRoad)
-        formData.append('province_id', this.state.ProvinceSelected)
-        formData.append('district_id', this.state.DistrictSelected)
-        formData.append('subdistrict_id', this.state.SubDistrictSelected)
-        formData.append('zipcode', this.state.Zipcode)
+        formData.append('compAddr', isIOS ? '' : this.state.compAddr)
+        formData.append('compSoi', isIOS ? '' : this.state.compSoi)
+        formData.append('compRoad', isIOS ? '' : this.state.compRoad)
+        formData.append('province_id', isIOS ? '' : this.state.ProvinceSelected)
+        formData.append('district_id', isIOS ? '' : this.state.DistrictSelected)
+        formData.append('subdistrict_id', isIOS ? '' : this.state.SubDistrictSelected)
+        formData.append('zipcode', isIOS ? '' : this.state.Zipcode)
 
         console.log('formData', formData)
 
@@ -610,10 +635,16 @@ class RegisterPersonScreen extends React.Component {
                     accountTypeLabel='ลงทะเบียนแบบบุคคลธรรมดา'
                     productTypes={this.state.ProductType}
                     selectedProducts={productSelected}
+                    name={this.state.name}
+                    lastname={this.state.lastname}
+                    phone={this.state.phone}
                     username={this.state.username}
                     password={this.state.password}
                     passwordHint={PASSWORD_POLICY_HINT}
                     onBack={this.handleBack}
+                    onNameChange={(name) => this.setState({ name })}
+                    onLastnameChange={(lastname) => this.setState({ lastname })}
+                    onPhoneChange={(phone) => this.setState({ phone: phone.replace(/[^0-9]/g, '') })}
                     onUsernameChange={(username) => this.setState({ username, validate_username: false })}
                     onUsernameBlur={() => this.CheckUserName()}
                     onPasswordChange={(password) => this.setState({ password })}
@@ -626,6 +657,8 @@ class RegisterPersonScreen extends React.Component {
                             Alert.alert('กรุณาเลือกประเภทสินค้าก่อน')
                         }
                     }}
+                    licenseAgree={this.state.licenseAgree}
+                    onLicenseAgreeChange={(licenseAgree) => this.setState({ licenseAgree })}
                     onSubmit={() => this.validateFields()}
                     onLogin={() => this.props.navigation.navigate('Login')}
                 />
