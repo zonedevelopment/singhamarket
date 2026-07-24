@@ -8,6 +8,7 @@ import {
     Alert,
     Dimensions,
     BackHandler,
+    Platform,
     // Picker,
     TouchableOpacity
 } from 'react-native'
@@ -39,6 +40,7 @@ import {
 import Hepler from '../../utils/Helper'
 import { normalizeBoothList, updateBoothChecked } from '../../utils/boothSelection'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
+const BOTTOM_TAB_CLEARANCE = Platform.OS === 'ios' ? 120 : 90
 class BoothScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -349,8 +351,10 @@ class BoothScreen extends React.Component {
     render() {
         const props = this.props.reducer
         return (
-            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 50 }]}>
-                <ScrollView >
+            <View style={[styles.container, { backgroundColor: 'white' }]}>
+                <ScrollView
+                    contentContainerStyle={{ paddingBottom: BOTTOM_TAB_CLEARANCE }}
+                    showsVerticalScrollIndicator={false}>
                     <View style={[styles.container, { padding: 15 }]}>
                         <View style={[styles.containerRow]}>
                             <Text style={[styles.text18, styles.bold, { flex: 0.6, color: primaryColor }]}>{`เลือกบูธที่ต้องการขายของ`}</Text>
@@ -399,7 +403,8 @@ class BoothScreen extends React.Component {
                                     extraData={this.state}
                                     onRefresh={() => this.onRefresh()}
                                     refreshing={this.state.isFetching}
-                                    keyExtractor={(item) => item.booth_detail_id}
+                                    scrollEnabled={false}
+                                    keyExtractor={(item) => String(item.booth_detail_id)}
                                     renderItem={this._renderItem} />
                             :
                                 <View style={[styles.containerRow, { padding: 5, height: 55,alignSelf:'center' }]}>
@@ -408,7 +413,7 @@ class BoothScreen extends React.Component {
                         }
 
                     </View>
-                    <View style={[styles.center, { padding: 5, alignSelf: 'center', bottom: 15 }]}>
+                    <View style={[styles.center, { padding: 5, marginTop: 10, alignSelf: 'center' }]}>
                         <TouchableOpacity style={[styles.mainButton, styles.center]}
                             onPress={
                                 () => {

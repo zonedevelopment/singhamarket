@@ -8,6 +8,7 @@ import {
     ScrollView,
     Dimensions,
     BackHandler,
+    Platform,
     TouchableOpacity
 } from 'react-native'
 import moment from 'moment'
@@ -26,6 +27,8 @@ import {setStatePreviousScreen} from '../../actions'
 import styles from '../../style/style'
 
 const DEVICE_HEIGHT = Dimensions.get('screen').height
+const BOTTOM_TAB_CLEARANCE = Platform.OS === 'ios' ? 100 : 75
+const ACTION_AREA_HEIGHT = 80
 class DaySelectedScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -123,10 +126,21 @@ class DaySelectedScreen extends React.Component {
                         style={{ marginTop: 15 }}
                         data={daySelect}
                         numColumns={1}
-                        keyExtractor={(item) => item}
+                        contentContainerStyle={{
+                            paddingBottom: BOTTOM_TAB_CLEARANCE + ACTION_AREA_HEIGHT,
+                        }}
+                        keyExtractor={(item, index) => String(item.date || index)}
                         renderItem={this._renderItem} />
                 </View>
-                <View style={[styles.positionBottom, styles.center, { padding: 10, bottom: 10, alignSelf: 'center' }]}>
+                <View style={[
+                    styles.positionBottom,
+                    styles.center,
+                    {
+                        padding: 10,
+                        bottom: BOTTOM_TAB_CLEARANCE,
+                        alignSelf: 'center',
+                    },
+                ]}>
                     <TouchableOpacity style={[styles.mainButton, styles.center]}
                         onPress={
                             async () => {
