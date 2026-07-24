@@ -31,6 +31,7 @@ import {
     BASE_URL,
     GET_BOOTH_URL,
     CHECK_BOOTH_URL,
+    CHECK_LIMIT_RESERVATION_URL,
     SUBMIT_FAVERITE_URL
 } from '../../utils/contants'
 
@@ -44,6 +45,7 @@ import {
     setStatePreviousScreen
 } from '../../actions'
 import Hepler from '../../utils/Helper'
+import { normalizeBoothList, updateBoothChecked } from '../../utils/boothSelection'
 const DEVICE_HEIGHT = Dimensions.get('screen').height
 class BoothScreen extends React.Component {
     backHandlerSubscription = null
@@ -60,16 +62,11 @@ class BoothScreen extends React.Component {
 
     
     CheckBooth = (item) =>{
-        let arr = this.state.listBooth
-        let Selected = this.state.boothChecked
-        let index = arr.findIndex(obj => obj.booth_detail_id == item.booth_detail_id)
-        if(arr[index].checked == true){
-            arr[index].checked = false
-            var SelectedIndex = Selected.indexOf(obj => obj.booth_id == item.booth_detail_id);
-            Selected.splice(SelectedIndex, 1);
+        const selected = this.state.boothChecked
+        if(item.checked === true){
             this.setState({
-                listBooth : arr,
-                boothChecked : Selected,
+                listBooth: updateBoothChecked(this.state.listBooth, item.booth_detail_id, false),
+                boothChecked: selected.filter(obj => obj.booth_id != item.booth_detail_id),
             })
         }else{
 
@@ -82,21 +79,22 @@ class BoothScreen extends React.Component {
             })
             formData.append('partners_id',this.props.reducer.audit_reserv_partners.partners_id)
             formData.append('date',JSON.stringify(arrDate))
-            formData.append('lengthSelected',JSON.stringify(Selected.length))
+            formData.append('lengthSelected',JSON.stringify(selected.length))
             Hepler.post(BASE_URL + CHECK_LIMIT_RESERVATION_URL,formData,HEADERFORMDATA,(results)=>{
                 console.log('CHECK_LIMIT_RESERVATION_URL',results)
                 if (results.status == 'SUCCESS') {
                     if(results.data == true){
-                        arr[index].checked = true
-                        Selected.push({
+                        const booth = {
                             'booth_id' : item.booth_detail_id,
                             'booth_name' : item.booth_name,
                             'booth_amount' : item.booth_amount
-                        })
-                        this.setState({
-                            listBooth : arr,
-                            boothChecked : Selected,
-                        })
+                        }
+                        this.setState((state) => ({
+                            listBooth: updateBoothChecked(state.listBooth, item.booth_detail_id, true),
+                            boothChecked: state.boothChecked.some(obj => obj.booth_id == item.booth_detail_id)
+                                ? state.boothChecked
+                                : [...state.boothChecked, booth],
+                        }))
                     }else{
                         Alert.alert(results.message)
                     }
@@ -134,7 +132,7 @@ class BoothScreen extends React.Component {
                     {/* <View style={{ width: 15, height: 15, borderRadius: 10, margin: 2, backgroundColor: item.booth_status_id == 1 ? emptyColor : item.booth_status_id == 2 ? pendingColor : reservColor }}></View> */}
                    
                     <CheckBox
-                        checked={item.checked}
+                        checked={item.booth_status_id == "1" && item.checked === true}
                         checkedColor={primaryColor}
                         uncheckedColor={primaryColor}
                         size={22}
@@ -296,7 +294,8 @@ class BoothScreen extends React.Component {
                 console.log('GET_BOOTH_URL',results)
                 if (results.status == 'SUCCESS') {
                     this.setState({
-                        listBooth : results.data,
+                        listBooth : normalizeBoothList(results.data),
+                        boothChecked : [],
                         isFetching: false
                     })
                     this.props.dismissIndicator()
