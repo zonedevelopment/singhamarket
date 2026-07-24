@@ -6,6 +6,7 @@ import {
     FlatList,
     Dimensions,
     BackHandler,
+    Platform,
     ScrollView,
     TouchableOpacity
 } from 'react-native'
@@ -24,20 +25,34 @@ import {
 
 import styles from '../../style/style'
 
-const htmlContent = `
-    <h1>This HTML snippet is now rendered with native components !</h1>
-    <h2>Enjoy a webview-free and blazing fast application</h2>
-    <img src="https://i.imgur.com/dHLmxfO.jpg?2" />
-    <em style="textAlign: center;">Look at how happy this native cat is</em>
-`;
-
 const DEVICE_WIDTH = Dimensions.get('screen').width
+const BOTTOM_TAB_CLEARANCE = Platform.OS === 'ios' ? 120 : 90
+
+const sanitizeHtmlStyles = (html) => {
+    if (typeof html !== 'string') {
+        return ''
+    }
+
+    return html.replace(/style=(["'])(.*?)\1/gi, (attribute, quote, declarations) => {
+        const safeDeclarations = declarations
+            .split(';')
+            .filter((declaration) => {
+                const separatorIndex = declaration.indexOf(':')
+                const value = separatorIndex >= 0 ? declaration.slice(separatorIndex + 1) : ''
+                return !/(?:NaN|[+-]?Infinity|undefined|null)/i.test(value)
+            })
+            .join(';')
+
+        return safeDeclarations.trim() ? `style=${quote}${safeDeclarations}${quote}` : ''
+    })
+}
+
 class BuildingConditionScreen extends React.Component {
     backHandlerSubscription = null
 
 
     state = {
-        building_data : []
+        building_data : null
     }
 
     ComponentLeft = () => {
@@ -78,13 +93,17 @@ class BuildingConditionScreen extends React.Component {
         }
     }
 
-    async componentDidMount() {
-        const{ building_data } = this.props.route.params
-        await this.setState({building_data : building_data})
+    componentDidMount() {
+        const params = this.props.route && this.props.route.params
+        const buildingData = params && params.building_data
+        this.setState({ building_data: buildingData || null })
         this.backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     render() {
+        const buildingData = this.state.building_data
+        const conditionHtml = sanitizeHtmlStyles(buildingData && buildingData.building_condition)
+
         return (
             <View style={[styles.container, styles.backgroundPrimary]}>
                 <NavigationBar
@@ -104,10 +123,19 @@ class BuildingConditionScreen extends React.Component {
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <Text style={[styles.bold, { color: secondaryColor, fontSize: 40 }]}>{`SUN PLAZA`}</Text>
                     <Text style={[styles.text20, { color: 'white' }]}>{`ข้อตกลงและเงื่อนไขการจองพื้นที่`}</Text>
-                    <ScrollView>
+                    <ScrollView
+                        style={{ width: '100%' }}
+                        contentContainerStyle={{
+                            alignItems: 'center',
+                            flexGrow: 1,
+                            paddingBottom: BOTTOM_TAB_CLEARANCE,
+                        }}
+                        showsVerticalScrollIndicator={false}>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View>
-                                <HTML html={this.state.building_data.building_condition} imagesMaxWidth={DEVICE_WIDTH - 20} />
+                                {conditionHtml ? (
+                                    <HTML html={conditionHtml} imagesMaxWidth={DEVICE_WIDTH - 20} />
+                                ) : null}
                             </View>
                             <View style={[styles.containerRow, { justifyContent: 'space-around', alignItems: 'center', margin: 10 }]}>
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: grayColor, borderWidth: 0.5, borderColor: '#FFF' }]}
@@ -119,7 +147,7 @@ class BuildingConditionScreen extends React.Component {
                                 <TouchableOpacity style={[styles.twoButtonRound, styles.center, { backgroundColor: secondaryColor }]}
                                     onPress={
                                         () => this.props.navigation.navigate('Floorzone',{
-                                            building_data : this.state.building_data
+                                            building_data : buildingData
                                         })
                                     }>
                                     <Text style={[styles.text18, { color: '#FFF' }]}>{`ยอมรับ`}</Text>
