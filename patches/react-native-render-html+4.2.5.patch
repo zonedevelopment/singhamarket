@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-native-render-html/src/HTMLRenderers.js b/node_modules/react-native-render-html/src/HTMLRenderers.js
+index 7e6441c..a0facad 100644
+--- a/node_modules/react-native-render-html/src/HTMLRenderers.js
++++ b/node_modules/react-native-render-html/src/HTMLRenderers.js
+@@ -87,7 +87,12 @@ export function ul (htmlAttribs, children, convertedCSSStyles, passProps = {}) {
+         styleSet: 'VIEW'
+     });
+     const { rawChildren, nodeIndex, key, baseFontStyle, listsPrefixesRenderers } = passProps;
+-    const baseFontSize = baseFontStyle.fontSize || 14;
++    const parsedBaseFontSize = typeof baseFontStyle.fontSize === 'number'
++        ? baseFontStyle.fontSize
++        : parseFloat(baseFontStyle.fontSize);
++    const baseFontSize = Number.isFinite(parsedBaseFontSize) && parsedBaseFontSize > 0
++        ? parsedBaseFontSize
++        : 14;
+     const textProps = getTextProps(passProps);
+     children = children && children.map((child, index) => {
+         const rawChild = rawChildren[index];
