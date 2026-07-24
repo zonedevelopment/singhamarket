@@ -28,8 +28,8 @@ android {
         applicationId "th.co.zoneidea.sunplaza"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 52
-        versionName "1.1.5"
+        versionCode 54
+        versionName "1.1.7"
         multiDexEnabled true
 
         ndk {
@@ -107,10 +107,6 @@ android {
     }
 }
 
-configurations.all {
-    exclude group: 'com.google.firebase', module: 'firebase-iid'
-}
-
 dependencies {
     implementation("com.facebook.react:react-android")
 
@@ -121,6 +117,7 @@ dependencies {
     }
 
     implementation("com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}")
+    implementation("com.google.firebase:firebase-iid:21.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 }
 

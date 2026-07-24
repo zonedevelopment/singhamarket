@@ -1,0 +1,11 @@
+diff --git a/node_modules/@react-native-firebase/messaging/android/build.gradle b/node_modules/@react-native-firebase/messaging/android/build.gradle
+--- a/node_modules/@react-native-firebase/messaging/android/build.gradle
++++ b/node_modules/@react-native-firebase/messaging/android/build.gradle
+@@ -107,6 +107,7 @@ dependencies {
+   api appProject
+   implementation platform("com.google.firebase:firebase-bom:${ReactNative.ext.getVersion("firebase", "bom")}")
+   implementation "com.google.firebase:firebase-messaging"
++  implementation "com.google.firebase:firebase-iid:21.1.0"
+ }
+ 
+ ReactNative.shared.applyPackageVersion()
