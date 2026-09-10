@@ -161,12 +161,21 @@ class RegisterCompanyScreen extends React.Component {
 
     LoadProvince() {
         this.props.openIndicator()
-        Hepler.post(BASE_URL + PROVINCE_URL, null, HEADERFORMDATA, (results) => {
-            console.log('PROVINCE_URL', results)
+        const formData = new FormData()
+        formData.append('_request', 'province')
+        Hepler.post(BASE_URL + PROVINCE_URL, formData, HEADERFORMDATA, (results) => {
             this.props.dismissIndicator()
             if (results.status == 'SUCCESS') {
+                const provinceData = results.data.map((item) => ({
+                    ...item,
+                    value: item.value || item.id,
+                    label: item.label || item.name_th,
+                }))
                 this.setState({
-                    ProvinceData: results.data,
+                    ProvinceData: [
+                        { value: null, label: 'กรุณาเลือกจังหวัด' },
+                        ...provinceData,
+                    ],
                     ProvinceSelected: null,
                     DistrictData: [],
                     DistrictSelected: null,
@@ -190,6 +199,17 @@ class RegisterCompanyScreen extends React.Component {
     }
 
     LoadDistrict(province_id) {
+        if (province_id == null || province_id === '') {
+            this.setState({
+                ProvinceSelected: null,
+                DistrictData: [],
+                DistrictSelected: null,
+                SubDistrictData: [],
+                SubDistrictSelected: null,
+                Zipcode: '',
+            })
+            return
+        }
         this.props.openIndicator()
         let formData = new FormData();
         this.setState(Platform.OS === 'ios' ? {
