@@ -90,9 +90,9 @@ export const SET_MY_CART = 'SET_MY_CART'
  * API
  */
 //export const BASE_URL                 = 'https://benz.ots.co.th/singha'
-export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
+export const BASE_URL                 = 'http://192.168.1.136/sanplaza_api'
 // export const BASE_URL                 = 'https://sunplaza.singhaestate.co.th'
-export const API_PATH                 = '/api'
+export const API_PATH                 = ''
 // export const API_PATH                 = '/dev_api'
 
 export const GET_TIMEOUT_SUMMARY_URL  = `${API_PATH}/GetTimeoutSummary`
@@ -102,7 +102,7 @@ export const LOGIN_URL                = `${API_PATH}/Login`
 export const FORGET_PASSWORD_URL      = `${API_PATH}/ForgetPassword`
 export const BANNER_URL               = `${API_PATH}/Banner`
 export const NEWS_URL                 = `${API_PATH}/News`
-export const PROVINCE_URL             = `${API_PATH}/Province`
+export const PROVINCE_URL             = `${API_PATH}/GetProvince`
 export const DISTRICT_URL             = `${API_PATH}/District`
 export const SUBDISTRICT_URL          = `${API_PATH}/SubDistrict`
 export const ACCESSORY_URL            = `${API_PATH}/Accessory`

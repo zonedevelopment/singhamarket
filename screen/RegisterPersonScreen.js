@@ -139,7 +139,9 @@ class RegisterPersonScreen extends React.Component {
     
     LoadProvince() {
         this.props.openIndicator()
-        Hepler.post(BASE_URL + PROVINCE_URL, {}, { 'Content-Type': 'application/json' }, (results) => {
+        const formData = new FormData()
+        formData.append('_request', 'province')
+        Hepler.post(BASE_URL + PROVINCE_URL, formData, HEADERFORMDATA, (results) => {
             this.props.dismissIndicator()
             if (results.status == 'SUCCESS') {
                 const provinceData = results.data.map((item) => ({
