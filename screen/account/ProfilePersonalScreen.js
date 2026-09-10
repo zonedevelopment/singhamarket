@@ -134,7 +134,8 @@ class ProfilePersonalScreen extends React.Component {
         this.props.openIndicator()
         const formData = new FormData()
         formData.append('_request', 'province')
-        Hepler.post(BASE_URL + PROVINCE_URL, formData, HEADERFORMDATA, (results) => {
+        const provinceHeaders = IS_IOS ? {} : HEADERFORMDATA
+        Hepler.post(BASE_URL + PROVINCE_URL, formData, provinceHeaders, (results) => {
             console.log('PROVINCE_URL', results)
             if (results.status == 'SUCCESS') {
                 results.data.map((value, index) => {

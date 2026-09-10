@@ -368,7 +368,12 @@ class ProfileCompanyScreen extends React.Component {
 
     LoadProvince() {
         this.props.openIndicator()
-        Hepler.post(BASE_URL + PROVINCE_URL, null, HEADERFORMDATA, (results) => {
+        const provinceRequest = IS_IOS ? new FormData() : null
+        if (IS_IOS) {
+            provinceRequest.append('_request', 'province')
+        }
+        const provinceHeaders = IS_IOS ? {} : HEADERFORMDATA
+        Hepler.post(BASE_URL + PROVINCE_URL, provinceRequest, provinceHeaders, (results) => {
             console.log('PROVINCE_URL', results)
             if (results.status == 'SUCCESS') {
                 results.data.map((value, index) => {
