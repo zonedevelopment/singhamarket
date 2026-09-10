@@ -222,8 +222,8 @@ class ProfileCompanyScreen extends React.Component {
         const securityError = validateFormSecurity([
             ...(IS_IOS ? [
                 { label: 'ชื่อนิติบุคคล', value: this.state.companyName, checkSql: false },
-                { label: 'เลขประจำตัวผู้เสียภาษี', value: this.state.taxId, checkSql: true },
             ] : []),
+            { label: 'เลขประจำตัวผู้เสียภาษี', value: this.state.taxId, checkSql: true },
             { label: 'ที่อยู่', value: this.state.address, checkSql: false },
             { label: 'ซอย', value: this.state.Soi, checkSql: false },
             { label: 'ถนน', value: this.state.Road, checkSql: false },
@@ -240,15 +240,19 @@ class ProfileCompanyScreen extends React.Component {
             return Alert.alert(securityError)
         }
 
-        if (IS_IOS && (!this.state.companyName || this.state.taxId.length !== 13)) {
-            return Alert.alert('กรุณากรอกชื่อนิติบุคคลและเลขประจำตัวผู้เสียภาษี 13 หลักให้ครบ')
+        if (this.state.taxId.length !== 13) {
+            return Alert.alert('กรุณากรอกเลขประจำตัวผู้เสียภาษี 13 หลักให้ครบ')
+        }
+
+        if (IS_IOS && !this.state.companyName) {
+            return Alert.alert('กรุณากรอกชื่อนิติบุคคล')
         }
 
         let formData = new FormData();
         if (IS_IOS) {
             formData.append('compname', this.state.companyName)
-            formData.append('compid', this.state.taxId)
         }
+        formData.append('compid', this.state.taxId)
         formData.append('address', this.state.address)
         formData.append('Soi', this.state.Soi)
         formData.append('Road', this.state.Road)
@@ -276,7 +280,6 @@ class ProfileCompanyScreen extends React.Component {
                 if (IS_IOS) {
                     this.setState({
                         companyNameLocked: true,
-                        taxIdLocked: true,
                     })
                 }
                 this.props.dismissIndicator()
@@ -641,14 +644,11 @@ class ProfileCompanyScreen extends React.Component {
                             }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
                                 <Text style={[styles.text16, { color: primaryColor }]}>{'ชื่อนิติบุคคล : ' + props.userInfo.name_customer}</Text>
                             </View>}
-                            {IS_IOS ? this.renderInputField('เลขประจำตัวผู้เสียภาษี', this.state.taxId, (taxId) => this.setState({ taxId: taxId.replace(/[^0-9]/g, '') }), {
+                            {this.renderInputField('เลขประจำตัวผู้เสียภาษี', this.state.taxId, (taxId) => this.setState({ taxId: taxId.replace(/[^0-9]/g, '') }), {
                                 keyboardType: 'number-pad',
                                 maxLength: 13,
-                                placeholder: 'เลขประจำตัวผู้เสียภาษี (จำเป็น)',
-                                editable: !this.state.taxIdLocked,
-                            }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
-                                <Text style={[styles.text16, { color: primaryColor }]}>{'เลขประจำตัวเสียภาษีอากร : ' + props.userInfo.numbertax}</Text>
-                            </View>}
+                                placeholder: IS_IOS ? 'เลขประจำตัวผู้เสียภาษี (จำเป็น)' : 'เลขประจำตัวผู้เสียภาษี',
+                            })}
                             {this.renderInputField('ที่อยู่', this.state.address, (text) => this.setState({ address: text }), {
                                 inputRef: (input) => { this.address = input },
                                 placeholder: IS_IOS ? 'ที่อยู่ (จำเป็น)' : 'ที่อยู่',

@@ -282,8 +282,8 @@ class ProfilePersonalScreen extends React.Component {
             ...(IS_IOS ? [
                 { label: 'ชื่อ', value: this.state.firstName, checkSql: false },
                 { label: 'นามสกุล', value: this.state.lastName, checkSql: false },
-                { label: 'เลขประจำตัวประชาชน', value: this.state.citizenId, checkSql: true },
             ] : []),
+            { label: 'เลขประจำตัวประชาชน', value: this.state.citizenId, checkSql: true },
             { label: 'ที่อยู่', value: this.state.address, checkSql: false },
             { label: 'ซอย', value: this.state.Soi, checkSql: false },
             { label: 'ถนน', value: this.state.Road, checkSql: false },
@@ -296,16 +296,20 @@ class ProfilePersonalScreen extends React.Component {
             return Alert.alert(securityError)
         }
 
-        if (IS_IOS && (!this.state.firstName || !this.state.lastName || this.state.citizenId.length !== 13)) {
-            return Alert.alert('กรุณากรอกชื่อ นามสกุล และเลขประจำตัวประชาชน 13 หลักให้ครบ')
+        if (this.state.citizenId.length !== 13) {
+            return Alert.alert('กรุณากรอกเลขประจำตัวประชาชน 13 หลักให้ครบ')
+        }
+
+        if (IS_IOS && (!this.state.firstName || !this.state.lastName)) {
+            return Alert.alert('กรุณากรอกชื่อและนามสกุลให้ครบ')
         }
 
         let formData = new FormData();
         if (IS_IOS) {
             formData.append('name', this.state.firstName)
             formData.append('lastname', this.state.lastName)
-            formData.append('idcard', this.state.citizenId)
         }
+        formData.append('idcard', this.state.citizenId)
         formData.append('address', this.state.address)
         formData.append('Soi', this.state.Soi)
         formData.append('Road', this.state.Road)
@@ -328,7 +332,6 @@ class ProfilePersonalScreen extends React.Component {
                     this.setState({
                         firstNameLocked: true,
                         lastNameLocked: true,
-                        citizenIdLocked: true,
                     })
                 }
                 this.props.dismissIndicator()
@@ -446,7 +449,7 @@ class ProfilePersonalScreen extends React.Component {
             citizenId: props.userInfo.citizenid || props.userInfo.idcard || '',
             firstNameLocked: Boolean(props.userInfo.name),
             lastNameLocked: Boolean(props.userInfo.lastname),
-            citizenIdLocked: Boolean(props.userInfo.citizenid || props.userInfo.idcard),
+            citizenIdLocked: false,
             phoneNumber: props.userInfo.phone,
             lineid: props.userInfo.lineid,
             email: props.userInfo.email,
@@ -628,14 +631,11 @@ class ProfilePersonalScreen extends React.Component {
 
 
 
-                                {IS_IOS ? this.renderInputField('เลขประจำตัวประชาชน', this.state.citizenId, (citizenId) => this.setState({ citizenId: citizenId.replace(/[^0-9]/g, '') }), {
+                                {this.renderInputField('เลขประจำตัวประชาชน', this.state.citizenId, (citizenId) => this.setState({ citizenId: citizenId.replace(/[^0-9]/g, '') }), {
                                     keyboardType: 'number-pad',
                                     maxLength: 13,
-                                    placeholder: 'เลขประจำตัวประชาชน (จำเป็น)',
-                                    editable: !this.state.citizenIdLocked,
-                                }) : <View style={[styles.registerFieldShadow, styles.inputWithIcon, { alignSelf: 'center', backgroundColor: '#eee' }]}>
-                                    <Text style={[styles.text16, { color: primaryColor }]}>{'เลขประจำตัวประชาชน : ' + props.userInfo.citizenid}</Text>
-                                </View>}
+                                    placeholder: IS_IOS ? 'เลขประจำตัวประชาชน (จำเป็น)' : 'เลขประจำตัวประชาชน',
+                                })}
                                 {this.renderInputField('เบอร์โทรศัพท์', this.state.phoneNumber, (text) => this.setState({ phoneNumber: text.replace(/[^0-9\-]+/g, '') }), {
                                     inputRef: (input) => { this.phone = input },
                                     keyboardType: 'phone-pad',
