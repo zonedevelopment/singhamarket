@@ -3,7 +3,6 @@ import {
     View,
     Text,
     Image,
-    FlatList,
     TextInput,
     Alert,
     Dimensions,
@@ -193,7 +192,7 @@ class SummaryScreen extends React.Component {
                 {
                     item.ListBooth.map((valueBooth, indexBooth) => {
                         return (
-                            <View style={[styles.containerRow,{marginBottom:5}]}>
+                            <View key={valueBooth.booth_id || indexBooth} style={[styles.containerRow,{marginBottom:5}]}>
                                 <View style={{ flex: 0.15 }}>
                                     <View style={[styles.center, { alignItems: 'center', width: 50, height: 50, backgroundColor: valueBooth.status == false ? reservColor : emptyColor, borderRadius: 10 }]}>
                                         <Text style={[styles.text12, { textAlign: 'center', flexWrap: 'wrap' }]}>{valueBooth.booth_name}</Text>
@@ -395,6 +394,12 @@ class SummaryScreen extends React.Component {
 
 
     render() {
+        const userInfo = this.props.reducer.userInfo || {}
+
+        if (!userInfo.partners_id) {
+            return null
+        }
+
         let BoothCount = 0
         this.props.reducer.date_selected.map((vDate, iDate) => {
             BoothCount += vDate.ListBooth.length
@@ -417,16 +422,12 @@ class SummaryScreen extends React.Component {
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{`ประเภทสินค้าที่ขาย`}</Text>
                                     <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{` : `}</Text>
-                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{this.props.reducer.userInfo.product_type.category_name}</Text>
+                                    <Text style={[styles.text14, styles.bold, { color: 'white' }]}>{userInfo.product_type?.category_name || '-'}</Text>
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
                             <View style={[styles.marginBetweenVertical]}></View>
-                            <FlatList
-                                data={this.props.reducer.date_selected}
-                                keyExtractor={(item) => item.id}
-                                extraData={this.state}
-                                renderItem={this._renderItem} />
+                            {this.props.reducer.date_selected.map((item, index) => this._renderItem({ item, index }))}
                             <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
                                 <Text style={[styles.text16, { textAlign: 'center' }]}>{`โค้ดส่วนลด`}</Text>
                                 <View style={[styles.registerFieldShadow, styles.inputWithIcon, { width: '70%' }]}>

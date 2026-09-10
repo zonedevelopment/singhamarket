@@ -97,13 +97,13 @@ class ProfileScreen extends React.Component {
 
     resetToChoice = async () => {
         await StorageServies.clear()
-        await this.props.saveUserInfo([])
         this.getRootNavigation().dispatch(
             CommonActions.reset({
                 index: 0,
                 routes: [{ name: Platform.OS === 'ios' ? 'MainIOS' : 'Choice' }],
             })
         )
+        setTimeout(() => this.props.saveUserInfo([]), 0)
     }
 
     render() {
