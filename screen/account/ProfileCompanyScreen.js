@@ -21,7 +21,7 @@ import { NavigationBar } from 'navigationbar-react-native'
 import Icon from 'react-native-vector-icons/dist/FontAwesome'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import * as EmailValidator from 'email-validator';
-import DropDownPicker from 'react-native-dropdown-picker'
+import { Picker } from '@react-native-picker/picker'
 import { CheckBox } from 'react-native-elements'
 import {
     darkColor,
@@ -588,31 +588,27 @@ class ProfileCompanyScreen extends React.Component {
         return (
             <View style={{ zIndex }}>
                 {showLabel ? <Text style={[styles.text18, { color: primaryColor }]}>{label}</Text> : null}
-                <DropDownPicker
-                    open={IS_IOS && this.state.isTextInputFocused ? false : open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    disabled={disabled}
+                <View style={[
+                    styles.registerFieldShadow,
+                    styles.pickerStyle,
+                    { alignSelf: 'center', width: '95%', paddingRight: 15 },
+                    disabled ? { backgroundColor: '#F3F3F3' } : null,
+                ]}>
+                <Picker
                     placeholder={placeholder}
-                    listMode='SCROLLVIEW'
-                    closeAfterSelecting
-                    onChangeValue={onChangeValue}
-                    onOpen={() => {
-                        this.setState({
-                            provinceOpen: label === 'จังหวัด',
-                            districtOpen: label === 'อำเภอ',
-                            subDistrictOpen: label === 'ตำบล',
-                        })
-                    }}
-                    onClose={this.closeAllDropdowns}
-                    style={[styles.registerFieldShadow, dropdownStyles.field, disabled ? dropdownStyles.disabledField : null, { borderRadius: 50 }]}
-                    dropDownContainerStyle={[dropdownStyles.dropdown, { zIndex }]}
-                    textStyle={[styles.regular, { color: primaryColor, fontSize: 18 }]}
-                    placeholderStyle={[styles.regular, { color: '#7C7B7B', fontSize: 18 }]}
-                    ArrowDownIconComponent={() => <Icon name='chevron-down' size={12} color='gray' />}
-                    ArrowUpIconComponent={() => <Icon name='chevron-up' size={12} color='gray' />}
-                />
+                    enabled={!disabled}
+                    selectedValue={value}
+                    style={[styles.regular, { flex: 1, height: '100%', color: primaryColor }]}
+                    onValueChange={(itemValue) => onChangeValue(itemValue)}>
+                    {items.map((item, index) => (
+                        <Picker.Item
+                            key={item.value || item.label || `${label}-${index}`}
+                            label={item.label}
+                            value={item.value}
+                        />
+                    ))}
+                </Picker>
+                </View>
             </View>
         )
     }
@@ -896,28 +892,6 @@ class ProfileCompanyScreen extends React.Component {
 const mapStateToProps = (state) => ({
     reducer: state.fetchReducer
 })
-
-const dropdownStyles = {
-    field: {
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderColor: 'transparent',
-        borderRadius: 28,
-        margin: 10,
-        minHeight: 50,
-        paddingHorizontal: 15,
-    },
-    disabledField: {
-        backgroundColor: '#F3F3F3',
-    },
-    dropdown: {
-        backgroundColor: 'white',
-        borderColor: '#E5E5E5',
-        borderRadius: 24,
-        marginHorizontal: 10,
-        overflow: 'hidden',
-    },
-}
 
 const mapDispatchToProps = {
     openIndicator,
