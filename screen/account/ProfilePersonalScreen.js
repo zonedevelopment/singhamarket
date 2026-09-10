@@ -547,7 +547,11 @@ class ProfilePersonalScreen extends React.Component {
         if (IS_IOS) {
             return (
                 <IOSSelectField
-                    options={items.map((item) => ({ key: `${item.value}`, value: item.label }))}
+                    options={items.map((item) => ({
+                        ...item,
+                        key: `${item.value || item.id}`,
+                        value: item.name_th || item.label,
+                    }))}
                     placeholder={placeholder}
                     selectedValue={value}
                     isOpen={open}
