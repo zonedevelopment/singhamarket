@@ -52,6 +52,7 @@ const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 const _maxDate = moment().add(2, 'years').format(_format)
 const DEVICE_HEIGHT = Dimensions.get('screen').height
+const BOTTOM_TAB_CLEARANCE = Platform.OS === 'ios' ? 100 : 75
 class FloorZoneScreen extends React.Component {
     backHandlerSubscription = null
 
@@ -358,8 +359,10 @@ class FloorZoneScreen extends React.Component {
         const { building_data } = this.props.route.params
         //let setDateCalendar =  {...this.state._markedDates}//Object.assign({}, this.state._markedDates) //JSON.parse(JSON.stringify(this.state._markedDates))
         return (
-            <View style={[styles.container, { backgroundColor: 'white', paddingBottom: 55 }]}>
-                <ScrollView >
+            <View style={[styles.container, { backgroundColor: 'white' }]}>
+                <ScrollView
+                    contentContainerStyle={{ paddingBottom: BOTTOM_TAB_CLEARANCE }}
+                    showsVerticalScrollIndicator={false}>
                     <View style={[styles.container]}>
                         <Image style={[styles.fullWidth, { height: (DEVICE_HEIGHT / 2) - 150, resizeMode: 'stretch' }]} source={{ uri: building_data.building_img }} />
                         <View style={{ padding: 15 }}>
