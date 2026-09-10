@@ -8,6 +8,7 @@ import {
     Alert,
     Dimensions,
     BackHandler,
+    Platform,
     ScrollView,
     TouchableOpacity
 } from 'react-native'
@@ -41,6 +42,8 @@ import {
 } from '../../actions'
 import styles from '../../style/style'
 import Hepler from '../../utils/Helper'
+
+const BOTTOM_TAB_CLEARANCE = Platform.OS === 'ios' ? 100 : 75
 
 class SummaryScreen extends React.Component {
     backHandlerSubscription = null
@@ -397,11 +400,13 @@ class SummaryScreen extends React.Component {
             BoothCount += vDate.ListBooth.length
         })
         return (
-            <View style={[styles.container, styles.backgroundPrimary, { paddingBottom: 50 }]}>
+            <View style={[styles.container, styles.backgroundPrimary]}>
               
                 <View style={[styles.container, { alignItems: 'center' }]}>
                     <Text style={[styles.text20, { color: 'white' }]}>{`สรุปรายละเอียดการจองพื้นที่`}</Text>
-                    <ScrollView>
+                    <ScrollView
+                        contentContainerStyle={{ paddingBottom: BOTTOM_TAB_CLEARANCE }}
+                        showsVerticalScrollIndicator={false}>
                         <View style={[styles.panelWhite, styles.shadow]}>
                             <View style={[styles.container, { backgroundColor: secondaryColor, borderRadius: 8, height: 80, justifyContent: 'center', paddingLeft: 10 }]}>
                                 <View style={[styles.containerRow, { justifyContent: 'flex-start' }]}>
