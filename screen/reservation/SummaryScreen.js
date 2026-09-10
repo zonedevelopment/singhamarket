@@ -56,6 +56,7 @@ class SummaryScreen extends React.Component {
         total_final_price: 0,
         discount_coupon : '',
         coupon_id : '',
+        license_plate: '',
         arrDate : [],
     }
 
@@ -342,6 +343,7 @@ class SummaryScreen extends React.Component {
         formData.append('coupon_id',this.state.coupon_id)
         formData.append('coupon_code',this.state.discount_coupon)
         formData.append('coupon_price',this.state.discount_price)
+        formData.append('license_plate', this.state.license_plate.trim())
         formData.append('booking_total',this.state.total_area)
         formData.append('booking_service_total',this.state.total_other_service)
         formData.append('booking_vat_company',this.state.vat)
@@ -437,6 +439,20 @@ class SummaryScreen extends React.Component {
                                         onSubmitEditing={() => {
                                             this.CheckDiscount()
                                         }} />
+                                </View>
+                            </View>
+                            <View style={[styles.marginBetweenVertical]}></View>
+                            <View style={[styles.containerRow, { justifyContent: 'space-between', alignItems: 'center' }]}>
+                                <Text style={[styles.text16, { textAlign: 'center' }]}>{`ทะเบียนรถ`}</Text>
+                                <View style={[styles.registerFieldShadow, styles.inputWithIcon, { width: '70%' }]}>
+                                    <TextInput
+                                        style={{ width: '100%', height: '100%', alignSelf: 'flex-start', color: 'black' }}
+                                        placeholder='กรอกทะเบียนรถ'
+                                        returnKeyType='done'
+                                        maxLength={20}
+                                        value={this.state.license_plate}
+                                        onChangeText={(license_plate) => this.setState({ license_plate })}
+                                    />
                                 </View>
                             </View>
                             <View style={[styles.marginBetweenVertical]}></View>
